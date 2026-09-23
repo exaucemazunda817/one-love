@@ -8,8 +8,9 @@ export const metadata: Metadata = {
 };
 
 // Layout parent garantit déjà un utilisateur actif : on peut supposer non-null
-// ici. Pas de compteurs de dons/comptabilité/bénéficiaires — ces modules
-// n'existent pas encore (jalons 6 à 9).
+// ici. Pas de compteurs de dons/comptabilité/bénéficiaires/équipe/inventaire
+// sur cet écran — ces modules ont chacun leur propre tableau de bord, cette
+// page ne garde que ce qui n'a pas encore d'écran dédié.
 export default async function DashboardPage() {
   const user = (await getCurrentGestionUser())!;
 
@@ -50,12 +51,11 @@ export default async function DashboardPage() {
 
       <div className="rounded-xl border border-ol-line bg-ol-white p-6">
         <h2 className="text-sm font-bold uppercase tracking-[0.15em] text-ol-muted">
-          Prochains modules
+          Retrouvez chaque module dans le menu
         </h2>
         <p className="mt-2 max-w-measure text-[0.95rem] leading-relaxed text-ol-ink">
-          La comptabilité, les dons, le suivi des bénéficiaires, l&apos;équipe et
-          l&apos;inventaire arrivent progressivement. Ce tableau de bord s&apos;enrichira au
-          fur et à mesure.
+          Comptabilité, bénéficiaires, équipe et paie, inventaire — chacun a son propre écran,
+          visible selon votre rôle.
         </p>
       </div>
     </div>

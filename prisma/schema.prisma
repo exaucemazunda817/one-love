@@ -927,7 +927,10 @@ model Asset {
   usefulLifeYears   Int?
 
   condition AssetCondition @default(GOOD)
-  status    AssetStatus    @default(IN_USE)
+  /// Par défaut IN_STOCK : un bien fraîchement enregistré n'est en service
+  /// qu'une fois réellement affecté (voir AssetAssignment). Corrigé au jalon
+  /// 9 — le défaut IN_USE du jalon 0 datait d'avant que ce circuit existe.
+  status    AssetStatus    @default(IN_STOCK)
   location  String?
 
   disposedOn     DateTime? @db.Date

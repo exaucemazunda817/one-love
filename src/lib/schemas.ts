@@ -251,3 +251,76 @@ export const payrollEntrySchema = z
 export type TeamMemberInput = z.infer<typeof teamMemberSchema>;
 export type EmploymentContractInput = z.infer<typeof employmentContractSchema>;
 export type PayrollEntryInput = z.infer<typeof payrollEntrySchema>;
+
+// --- Inventaire (jalon 9) ---------------------------------------------------
+//
+// L'acquisition d'un bien N'EST PAS une écriture comptable ici — c'est une
+// dépense de trésorerie ordinaire saisie séparément dans la comptabilité
+// (voir le commentaire du modèle Asset). Ces champs sont indicatifs.
+
+export const assetSchema = z
+  .object({
+    label: z.string().trim().min(1, 'Champ requis.').max(160),
+    category: z.enum([
+      'VEHICLE',
+      'FURNITURE',
+      'IT_EQUIPMENT',
+      'TEACHING_MATERIAL',
+      'MEDICAL_EQUIPMENT',
+      'REAL_ESTATE',
+      'OTHER'
+    ]),
+    serialNumber: z.string().trim().max(80).optional().or(z.literal('')),
+    acquiredOn: z.string().optional().or(z.literal('')),
+    acquisitionAmount: decimalString(15, 2).optional().or(z.literal('')),
+    acquisitionCurrency: z.enum(['EUR', 'CDF', 'USD']).optional(),
+    acquisitionFxRate: decimalString(10, 8).optional().or(z.literal('')),
+    fundedByProjectId: optionalId,
+    isDonatedInKind: z.boolean().optional(),
+    usefulLifeYears: z.number().int().min(1).max(60).optional().nullable(),
+    location: z.string().trim().max(120).optional().or(z.literal(''))
+  })
+  .refine((data) => !data.acquisitionAmount || data.acquisitionCurrency, {
+    message: 'La devise est requise dès qu’un montant d’acquisition est saisi.',
+    path: ['acquisitionCurrency']
+  })
+  .refine(
+    (data) =>
+      !data.acquisitionAmount ||
+      data.acquisitionCurrency === 'EUR' ||
+      (data.acquisitionFxRate && Number(data.acquisitionFxRate) > 0),
+    { message: "Le taux de change est requis pour une devise autre que l'euro.", path: ['acquisitionFxRate'] }
+  );
+
+export const assetStatusUpdateSchema = z
+  .object({
+    status: z.enum(['IN_USE', 'IN_STOCK', 'UNDER_REPAIR', 'DISPOSED', 'LOST']),
+    condition: z.enum(['NEW', 'GOOD', 'WORN', 'OUT_OF_ORDER']).optional(),
+    location: z.string().trim().max(120).optional().or(z.literal('')),
+    disposalReason: z.string().trim().max(500).optional().or(z.literal(''))
+  })
+  .refine((data) => (data.status !== 'DISPOSED' && data.status !== 'LOST') || data.disposalReason, {
+    message: 'Le motif est requis pour retirer ou déclarer perdu un bien.',
+    path: ['disposalReason']
+  });
+
+export const assetAssignmentSchema = z
+  .object({
+    teamMemberId: optionalId,
+    siteLabel: z.string().trim().max(120).optional().or(z.literal('')),
+    assignedOn: z.string().refine((v) => !Number.isNaN(Date.parse(v)), 'Date invalide.'),
+    conditionOut: z.enum(['NEW', 'GOOD', 'WORN', 'OUT_OF_ORDER']).optional()
+  })
+  .refine((data) => data.teamMemberId || data.siteLabel, {
+    message: 'Choisissez une personne ou un site.',
+    path: ['siteLabel']
+  });
+
+export const assetReturnSchema = z.object({
+  conditionIn: z.enum(['NEW', 'GOOD', 'WORN', 'OUT_OF_ORDER']).optional()
+});
+
+export type AssetInput = z.infer<typeof assetSchema>;
+export type AssetStatusUpdateInput = z.infer<typeof assetStatusUpdateSchema>;
+export type AssetAssignmentInput = z.infer<typeof assetAssignmentSchema>;
+export type AssetReturnInput = z.infer<typeof assetReturnSchema>;

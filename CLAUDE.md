@@ -59,6 +59,40 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   Journal d'audit vérifié : jamais un prénom, uniquement des identifiants
   et le code de référence ; chaque consultation de fiche journalisée
   (`VIEW_SENSITIVE`).
+- **Jalon 9 — Inventaire : FAIT.** Registre des biens (`Asset`, code
+  `BIEN-2026-0001` généré automatiquement) avec catégorie, état, statut,
+  localisation, financement (fonds général ou projet), et historique
+  d'affectation (`AssetAssignment`) à une personne ou à un site — un seul
+  actif à la fois par bien, contrôlé côté API. La remise fixe le statut à
+  « En service », le retour à « En stock » (sauf bien déjà retiré/perdu).
+  Le retrait (« Retiré »/« Perdu ») exige un motif, imposé par le schéma zod.
+  **Aucun rôle « logistique » n'existant dans la matrice du plan**, décision
+  prise pour ce jalon : DIRECTION et TERRAIN gèrent le registre et les
+  affectations (à la différence du jalon 8, où DIRECTION n'était que
+  lectrice) ; COMPTABLE lit tout pour sa valeur financière (montant
+  d'acquisition, projet financeur) sans jamais modifier ; RH et LECTURE
+  n'ont aucun accès. Vérifié page **et** API pour les quatre rôles, avec des
+  comptes de test et un bien de test supprimés après coup.
+  **Valeur indicative** (`computeIndicativeValueEur`) : linéaire simple à
+  partir du montant d'acquisition et de la durée de vie utile, purement
+  informative — jamais une écriture, l'association n'amortit pas
+  (comptabilité de trésorerie). **L'achat lui-même n'est pas généré
+  automatiquement** : il se saisit séparément dans la comptabilité comme une
+  dépense ordinaire, conformément à la décision du jalon 0.
+  **Deux vrais bugs trouvés et corrigés en testant** : (1) le statut par
+  défaut d'un bien fraîchement créé était `IN_USE` (« En service ») dans le
+  schéma du jalon 0, un oubli antérieur au circuit d'affectation — corrigé en
+  `IN_STOCK` (« En stock »), cohérent avec le fait qu'un bien enregistré mais
+  jamais remis à personne n'est pas réellement « en service ». (2) La route
+  `POST /api/gestion/biens/[id]/affectations` (segment dynamique imbriqué
+  sous un autre segment dynamique `[id]`) renvoyait un vrai 404 de routage
+  Next.js en développement alors qu'elle existait bel et bien sur le disque
+  et apparaissait correctement dans le build de production — un simple
+  redémarrage du serveur de dev ne suffisait pas, il a fallu vider `.next`
+  puis redémarrer pour que Turbopack redécouvre la route. **Leçon retenue
+  pour ce projet** : si une route API à segments dynamiques imbriqués
+  renvoie un 404 en dev malgré un fichier `route.ts` au bon endroit, vider
+  `.next` avant de chercher un bug de code.
 - **Jalon 8 — Équipe et paie : FAIT.** Annuaire (`TeamMember`), contrats
   (`EmploymentContract`), versements de paie (`PayrollEntry`) avec cycle
   DRAFT → APPROVED → PAID. Un versement passé en PAID génère une et une seule
@@ -145,7 +179,7 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   Mobile Money est annoncée sur `/dons` comme « bientôt disponible », sans
   aucun appel réseau deviné. À reprendre dès que Mazunda a un accès réel
   (compte marchand, vraie doc transmise par SerdiPay).
-- Jalons 3, 4 (partie 2), 9, 10 : à faire. Voir le plan.
+- Jalons 3, 4 (partie 2), 10 : à faire. Voir le plan.
 
 **Décision de Mazunda (23/09) : le nouveau site ne fait AUCUNE référence à
 l'ancien WordPress.** Ni lien, ni mention « site en construction », ni
