@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
 import './globals.css';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import { org, identity } from '@/lib/content';
 
 // Lato est la police du site actuel : la garder évite de casser la
@@ -36,7 +38,19 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={lato.variable}>
-      <body>{children}</body>
+      <body className="flex min-h-screen flex-col">
+        <a
+          href="#contenu"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ol-ember-ink focus:px-5 focus:py-3 focus:text-sm focus:font-bold focus:text-ol-white"
+        >
+          Aller au contenu
+        </a>
+        <Header />
+        <main id="contenu" className="flex-1">
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   );
 }

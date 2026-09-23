@@ -20,9 +20,18 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
 ## État d'avancement
 
 - **Jalon 0 — Socle : FAIT.** Projet créé, schéma Prisma complet (27 tables)
-  poussé en base, tokens de couleur, page d'attente, typage et construction de
-  production propres, vérifié dans le navigateur à 1280 px et 375 px.
-- Jalons 1 à 10 : à faire. Voir le plan.
+  poussé en base, tokens de couleur, typage et construction de production
+  propres.
+- **Jalon 1 — Vitrine : FAIT.** 9 pages publiques (accueil, association,
+  actions, RÊVES 2, galerie, dons, contact, mentions légales, confidentialité)
+  plus sitemap et robots. En-tête avec menu mobile, pied de page, composant
+  d'apparition au défilement. Vérifié à 1280 px et 375 px : 13 routes en 200,
+  404 fonctionnel, console propre, aucun débordement horizontal.
+- Jalons 2 à 10 : à faire. Voir le plan.
+
+**Décision de Mazunda (23/09) : le nouveau site ne fait AUCUNE référence à
+l'ancien WordPress.** Ni lien, ni mention « site en construction », ni
+« ancien site ». C'est un site neuf et il se présente comme tel.
 
 ## Base de données
 
@@ -82,8 +91,13 @@ concernées sont des **mineurs vulnérables**.
   pas d'acte de naissance, leur âge est estimé.
 - Aucune photo d'enfant n'est publiable sans un `MediaConsent` `GRANTED` non
   révoqué. À faire respecter **par le code**, pas par une consigne.
-- Les photos déjà en ligne sur l'ancien WordPress n'ont aucun consentement
-  documenté : ne pas les reprendre telles quelles.
+- **Appliqué dès le jalon 1** : chaque image de `gallery` dans `content.ts`
+  porte un champ `publishable` et un `consentNote` justifiant la décision.
+  Seules les images non identifiantes (visages non visibles) et les supports
+  de communication que l'association a elle-même diffusés avec ses logos sont
+  publiées. Les portraits d'enfants reconnaissables restent à `false` tant que
+  Mazunda n'a pas confirmé que les consentements ont été recueillis. Les pages
+  n'affichent que `publishableGallery`, jamais `gallery`.
 
 ## Design
 
