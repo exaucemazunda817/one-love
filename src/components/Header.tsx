@@ -66,7 +66,7 @@ export function Header() {
         <div className="flex items-center gap-2 lg:hidden">
           <Link
             href="/dons"
-            className="rounded-full bg-ol-ember-ink px-4 py-2.5 text-sm font-bold text-ol-white"
+            className="inline-flex min-h-11 items-center justify-center rounded-full bg-ol-ember-ink px-4 text-sm font-bold text-ol-white"
           >
             Faire un don
           </Link>
