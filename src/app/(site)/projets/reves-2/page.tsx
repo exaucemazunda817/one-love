@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
 import { PageHero } from '@/components/PageHero';
 import { Reveal } from '@/components/Reveal';
 import { currentProject, publishableGallery } from '@/lib/content';
@@ -123,10 +122,9 @@ export default function Reves2Page() {
             </p>
             <Link
               href="/dons"
-              className="mt-7 inline-flex items-center gap-2 rounded-full bg-ol-amber px-6 py-3.5 text-sm font-bold text-ol-night transition-opacity hover:opacity-90"
+              className="mt-7 inline-flex items-center rounded-full bg-ol-amber px-6 py-3.5 text-sm font-bold text-ol-night transition-opacity hover:opacity-90"
             >
               Soutenir {currentProject.name}
-              <ArrowRight size={16} aria-hidden />
             </Link>
           </Reveal>
         </div>

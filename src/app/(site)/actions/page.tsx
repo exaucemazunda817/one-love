@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
 import { PageHero } from '@/components/PageHero';
 import { Reveal } from '@/components/Reveal';
 import { actions, quotes, currentProject } from '@/lib/content';
@@ -48,10 +47,9 @@ export default function ActionsPage() {
             <div className="mt-10">
               <Link
                 href="/projets/reves-2"
-                className="inline-flex items-center gap-2 rounded-full bg-ol-ember-ink px-6 py-3.5 text-sm font-bold text-ol-white transition-opacity hover:opacity-90"
+                className="inline-flex items-center rounded-full bg-ol-ember-ink px-6 py-3.5 text-sm font-bold text-ol-white transition-opacity hover:opacity-90"
               >
                 Voir {currentProject.name}, notre projet en cours
-                <ArrowRight size={16} aria-hidden />
               </Link>
             </div>
           </Reveal>

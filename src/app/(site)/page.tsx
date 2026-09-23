@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
 import { Reveal } from '@/components/Reveal';
 import {
   identity,
@@ -34,10 +33,9 @@ export default function HomePage() {
             <div className="flex flex-wrap gap-3 pt-2">
               <Link
                 href="/dons"
-                className="inline-flex items-center gap-2 rounded-full bg-ol-ember-ink px-6 py-3.5 text-sm font-bold text-ol-white transition-opacity hover:opacity-90"
+                className="inline-flex items-center rounded-full bg-ol-ember-ink px-6 py-3.5 text-sm font-bold text-ol-white transition-opacity hover:opacity-90"
               >
                 Soutenir l&apos;association
-                <ArrowRight size={16} aria-hidden />
               </Link>
               <Link
                 href="/actions"
@@ -134,10 +132,9 @@ export default function HomePage() {
             <Reveal>
               <Link
                 href="/actions"
-                className="inline-flex items-center gap-2 text-sm font-bold text-ol-ember-ink hover:underline"
+                className="text-sm font-bold text-ol-ember-ink hover:underline"
               >
                 Tout voir
-                <ArrowRight size={15} aria-hidden />
               </Link>
             </Reveal>
           </div>
@@ -176,10 +173,9 @@ export default function HomePage() {
               </p>
               <Link
                 href="/projets/reves-2"
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3.5 text-sm font-bold text-ol-cream transition-colors hover:border-ol-amber hover:text-ol-amber"
+                className="inline-flex items-center rounded-full border border-white/25 px-6 py-3.5 text-sm font-bold text-ol-cream transition-colors hover:border-ol-amber hover:text-ol-amber"
               >
                 Découvrir le projet
-                <ArrowRight size={16} aria-hidden />
               </Link>
             </div>
           </Reveal>
@@ -243,10 +239,9 @@ export default function HomePage() {
               <div className="mt-7 flex flex-wrap gap-3">
                 <Link
                   href="/dons"
-                  className="inline-flex items-center gap-2 rounded-full bg-ol-ember-ink px-6 py-3.5 text-sm font-bold text-ol-white transition-opacity hover:opacity-90"
+                  className="inline-flex items-center rounded-full bg-ol-ember-ink px-6 py-3.5 text-sm font-bold text-ol-white transition-opacity hover:opacity-90"
                 >
                   Faire un don
-                  <ArrowRight size={16} aria-hidden />
                 </Link>
                 <Link
                   href="/contact"
