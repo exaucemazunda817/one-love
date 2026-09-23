@@ -1,0 +1,1048 @@
+// Schéma complet de One Love — site public et logiciel de gestion.
+//
+// Il est posé en entier dès le premier jalon, alors que seules la vitrine et
+// les formulaires publics sont construits : c'est ce qui permet de livrer le
+// site d'abord sans se condamner à des migrations douloureuses quand la
+// comptabilité et le suivi des bénéficiaires arriveront.
+//
+// Convention de nommage reprise de gospel-nation : modèles et champs en
+// anglais camelCase, tables en snake_case pluriel via @@map, commentaires
+// métier en français.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Comptes et traçabilité
+// ---------------------------------------------------------------------------
+
+enum UserRole {
+  DIRECTION
+  COMPTABLE
+  TERRAIN
+  RH
+  LECTURE
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+/// Compte nominatif du logiciel de gestion. Créé par la DIRECTION, jamais par
+/// inscription ouverte. Le mot de passe unique partagé utilisé sur les autres
+/// projets ne convient pas ici : une comptabilité doit permettre de savoir qui
+/// a saisi quelle écriture.
+///
+/// `tokenVersion` s'incrémente à chaque suspension ou changement de mot de
+/// passe. C'est ce qui rend révocable une session signée HMAC, qui est par
+/// nature apatride : le cookie porte la version, le serveur la compare.
+model AppUser {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         UserRole
+  status       AccountStatus @default(ACTIVE)
+  tokenVersion Int           @default(0)
+  /// Force le changement du mot de passe provisoire à la première connexion.
+  mustChangePassword Boolean  @default(true)
+  lastLoginAt  DateTime?
+
+  createdById  String?
+  createdBy    AppUser?      @relation("UserCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  createdUsers AppUser[]     @relation("UserCreator")
+
+  teamMember   TeamMember?
+  auditLogs    AuditLog[]
+  createdTransactions   Transaction[] @relation("TransactionCreatedBy")
+  validatedTransactions Transaction[] @relation("TransactionValidatedBy")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([role, status])
+  @@map("app_users")
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  VALIDATE
+  LOCK
+  EXPORT
+  LOGIN
+  LOGIN_FAILED
+  VIEW_SENSITIVE
+}
+
+/// Piste d'audit. Double usage : obligation comptable (qui a saisi ou modifié
+/// une écriture) et trace RGPD (qui a consulté une fiche d'enfant, via
+/// l'action VIEW_SENSITIVE).
+///
+/// `actorEmail` duplique volontairement l'adresse en clair : la relation est
+/// en SetNull pour qu'une trace survive à la suppression du compte qui l'a
+/// produite, et une trace anonyme ne servirait à rien.
+model AuditLog {
+  id         String      @id @default(cuid())
+  actorId    String?
+  actor      AppUser?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  actorEmail String
+  action     AuditAction
+  entity     String
+  entityId   String
+  /// Avant/après de la modification, pour pouvoir reconstituer un historique.
+  changes    Json?
+  ipAddress  String?
+  createdAt  DateTime    @default(now())
+
+  @@index([entity, entityId])
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+  @@map("audit_logs")
+}
+
+/// Limitation de débit stockée en base : sur Vercel chaque requête peut tomber
+/// sur une instance différente, un compteur en mémoire ne limiterait rien.
+model RateLimitAttempt {
+  id        String   @id @default(cuid())
+  key       String
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+  @@map("rate_limit_attempts")
+}
+
+// ---------------------------------------------------------------------------
+// Projets, budgets et devises
+// ---------------------------------------------------------------------------
+
+/// Devises manipulées. Les dons arrivent en euros, les dépenses de terrain à
+/// Kinshasa sont en francs congolais, et certains contrats sont indexés en
+/// dollars — les trois coexistent réellement.
+enum Currency {
+  EUR
+  CDF
+  USD
+}
+
+enum ProjectStatus {
+  PLANNED
+  ACTIVE
+  COMPLETED
+  SUSPENDED
+}
+
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+/// Projet de l'association — RÊVES 2 en est un. C'est la clé d'affectation de
+/// tout le logiciel : un don fléché et une dépense imputée pointent tous deux
+/// ici, ce qui permet de sortir un bilan financier par projet sans tenir de
+/// comptabilité en partie double. C'est exactement ce qu'un bailleur comme
+/// Angel Foundation demandera.
+///
+/// Le même enregistrement sert de page publique, d'où les champs éditoriaux.
+model Project {
+  id             String            @id @default(cuid())
+  slug           String            @unique
+  name           String
+  /// Signification de l'acronyme, quand il y en a un : pour RÊVES,
+  /// « Réaménager – Éduquer – Valoriser – Écouter – Soigner ».
+  acronymMeaning String?
+  summary        String
+  content        String
+  coverImageUrl  String?
+  startsOn       DateTime?         @db.Date
+  endsOn         DateTime?         @db.Date
+  status         ProjectStatus     @default(PLANNED)
+  publication    PublicationStatus @default(DRAFT)
+  partnerName    String?
+  budgetEur      Decimal?          @db.Decimal(14, 2)
+  /// Faux pour un projet clos ou interne qu'on ne veut plus proposer au
+  /// fléchage des dons sur le site public.
+  isDonationTarget Boolean         @default(true)
+  displayOrder   Int               @default(0)
+
+  budgetLines  BudgetLine[]
+  donations    Donation[]
+  transactions Transaction[]
+  enrollments  ChildEnrollment[]
+  assets       Asset[]
+  newsArticles NewsArticle[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, publication])
+  @@map("projects")
+}
+
+/// Ligne de budget prévisionnel, toujours en euros — c'est la devise de la
+/// demande de financement — même quand la dépense réelle se fera en francs
+/// congolais. Le rapprochement prévu/réalisé se fait donc sur `amountEur`.
+model BudgetLine {
+  id         String               @id @default(cuid())
+  projectId  String
+  project    Project              @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  categoryId String?
+  category   TransactionCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  label      String
+  plannedEur Decimal              @db.Decimal(14, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+  @@map("budget_lines")
+}
+
+/// Taux de change historisés. On ne dépend d'aucune API extérieure : le
+/// responsable terrain saisit le taux réellement obtenu au bureau de change ou
+/// à la banque, justificatif à l'appui. Cette table ne sert qu'à proposer une
+/// valeur par défaut à la saisie, jamais à imposer un taux.
+model ExchangeRate {
+  id           String   @id @default(cuid())
+  fromCurrency Currency
+  toCurrency   Currency
+  /// Nombre d'unités de `toCurrency` pour 1 unité de `fromCurrency`.
+  rate         Decimal  @db.Decimal(18, 8)
+  effectiveOn  DateTime @db.Date
+  source       String
+  createdAt    DateTime @default(now())
+
+  @@unique([fromCurrency, toCurrency, effectiveOn])
+  @@index([effectiveOn])
+  @@map("exchange_rates")
+}
+
+// ---------------------------------------------------------------------------
+// Dons et donateurs
+// ---------------------------------------------------------------------------
+
+enum DonationMethod {
+  STRIPE
+  BANK_TRANSFER
+  MOBILE_MONEY
+  CASH
+  IN_KIND
+}
+
+enum DonationStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+  REFUNDED
+}
+
+/// Donateur. L'adresse postale complète est présente dès maintenant alors que
+/// les reçus fiscaux ne sont pas construits : c'est le strict nécessaire du
+/// formulaire CERFA 11580 (identité et adresse). Le jour où l'association
+/// confirme qu'elle est habilitée à en délivrer, il n'y a aucune migration à
+/// faire, seulement un écran et un PDF à écrire.
+model Donor {
+  id           String  @id @default(cuid())
+  isCompany    Boolean @default(false)
+  companyName  String?
+  firstName    String?
+  lastName     String?
+  email        String?
+  phone        String?
+  addressLine1 String?
+  addressLine2 String?
+  postalCode   String?
+  city         String?
+  country      String? @default("FR")
+  /// Le donateur a demandé un reçu fiscal. Enregistré même tant que le module
+  /// n'existe pas, pour pouvoir régulariser ensuite.
+  wantsReceipt Boolean @default(false)
+  notes        String?
+
+  donations Donation[]
+  receipts  TaxReceipt[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([lastName, firstName])
+  @@map("donors")
+}
+
+/// Don reçu. `projectId` nul signifie « fonds général, affecté selon les
+/// besoins », ce qui est déjà la règle annoncée sur le site actuel.
+///
+/// Les dons Mobile Money et par virement arrivent en PENDING et ne sont
+/// confirmés qu'à la main, après vérification du compte : on ne fait jamais
+/// confiance à une déclaration du visiteur. Stripe passe en CONFIRMED par
+/// webhook, après vérification serveur.
+///
+/// Un don confirmé génère une et une seule écriture de recette (relation 1-1
+/// portée par Transaction), ce qui rend le double comptage impossible.
+model Donation {
+  id        String   @id @default(cuid())
+  donorId   String?
+  donor     Donor?   @relation(fields: [donorId], references: [id], onDelete: SetNull)
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  amount    Decimal  @db.Decimal(18, 2)
+  currency  Currency @default(EUR)
+  fxRate    Decimal  @default(1) @db.Decimal(18, 8)
+  /// Contre-valeur en euros figée au moment du don. Jamais recalculée, sinon
+  /// le bilan d'un projet clos changerait à chaque variation du taux.
+  amountEur Decimal  @db.Decimal(14, 2)
+
+  method     DonationMethod
+  status     DonationStatus @default(PENDING)
+  isRecurring Boolean       @default(false)
+  receivedOn DateTime       @db.Date
+
+  stripePaymentIntentId String? @unique
+  mobileMoneyOperator   String?
+  mobileMoneyReference  String?
+  bankReference         String?
+
+  message String?
+  /// Par défaut on ne cite jamais un donateur publiquement sans son accord.
+  isAnonymousPublic Boolean @default(true)
+
+  confirmedById String?
+  confirmedAt   DateTime?
+
+  transaction Transaction?
+  receipt     TaxReceipt?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, receivedOn])
+  @@index([projectId, status])
+  @@index([method, status])
+  @@map("donations")
+}
+
+/// Reçu fiscal CERFA 11580. Table présente, écran volontairement NON construit :
+/// une association ne peut délivrer ce document que si elle remplit les
+/// conditions d'intérêt général des articles 200 et 238 bis du CGI, ce qui
+/// n'est pas un réglage logiciel et doit être confirmé par un rescrit fiscal.
+///
+/// `@@unique([fiscalYear, sequenceNumber])` rend possible dès l'activation la
+/// numérotation séquentielle sans trou qu'exige l'administration.
+model TaxReceipt {
+  id             String   @id @default(cuid())
+  donationId     String   @unique
+  donation       Donation @relation(fields: [donationId], references: [id], onDelete: Cascade)
+  donorId        String?
+  donor          Donor?   @relation(fields: [donorId], references: [id], onDelete: SetNull)
+  fiscalYear     Int
+  sequenceNumber Int
+  issuedOn       DateTime @db.Date
+  amountEur      Decimal  @db.Decimal(14, 2)
+  pdfBlobKey     String?
+  /// Un reçu annulé n'est jamais supprimé ni renuméroté : il est marqué.
+  cancelledAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([fiscalYear, sequenceNumber])
+  @@map("tax_receipts")
+}
+
+// ---------------------------------------------------------------------------
+// Comptabilité de trésorerie
+// ---------------------------------------------------------------------------
+
+enum AccountKind {
+  BANK
+  CASH
+  MOBILE_MONEY
+}
+
+/// Compte de trésorerie : banque en euros en France, caisse en francs
+/// congolais à Kinshasa, compte Mobile Money, caisse espèces.
+///
+/// Chaque compte n'a qu'UNE devise. C'est ce qui permet de suivre un transfert
+/// France vers Kinshasa sans partie double : il devient une paire d'écritures
+/// TRANSFER reliées par `transferGroupId`.
+model FinancialAccount {
+  id       String      @id @default(cuid())
+  name     String
+  currency Currency
+  kind     AccountKind
+  bankName String?
+  /// Quatre derniers caractères seulement : un IBAN complet n'a aucune raison
+  /// d'être stocké ici, il suffit de reconnaître le compte.
+  ibanLast4 String?
+  isActive Boolean     @default(true)
+
+  transactions Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("financial_accounts")
+}
+
+enum TransactionKind {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+enum TransactionStatus {
+  DRAFT
+  VALIDATED
+  LOCKED
+  CANCELLED
+}
+
+/// Nomenclature libre de recettes et de dépenses. Comptabilité de trésorerie
+/// assumée : pas de plan comptable associatif ANC 2018-06, qui serait
+/// disproportionné et exigerait quelqu'un sachant tenir une partie double.
+/// Arborescence à un seul niveau, suffisante pour un export lisible.
+model TransactionCategory {
+  id       String          @id @default(cuid())
+  code     String          @unique
+  label    String
+  kind     TransactionKind
+  parentId String?
+  parent   TransactionCategory?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children TransactionCategory[] @relation("CategoryTree")
+  isActive Boolean         @default(true)
+
+  transactions Transaction[]
+  budgetLines  BudgetLine[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([kind, isActive])
+  @@map("transaction_categories")
+}
+
+/// Écriture de trésorerie — le cœur du module comptable.
+///
+/// Trois colonnes solidaires pour l'argent : le montant d'origine avec sa
+/// devise (c'est ce qui figure sur la facture congolaise), le taux appliqué, et
+/// la contre-valeur en euros figée au moment de l'opération. On ne recalcule
+/// jamais cette contre-valeur.
+///
+/// Type Decimal et jamais Float : un flottant introduit des erreurs d'arrondi
+/// inacceptables sur de l'argent. Attention au passage, Prisma renvoie des
+/// objets Decimal.js non sérialisables vers un composant client — on convertit
+/// en chaîne côté serveur et tout calcul reste côté serveur.
+///
+/// LOCKED signifie exercice clos : l'écriture n'est plus modifiable.
+model Transaction {
+  id          String            @id @default(cuid())
+  kind        TransactionKind
+  status      TransactionStatus @default(DRAFT)
+  occurredOn  DateTime          @db.Date
+  label       String
+  description String?
+
+  amount    Decimal  @db.Decimal(18, 2)
+  currency  Currency
+  fxRate    Decimal  @default(1) @db.Decimal(18, 8)
+  amountEur Decimal  @db.Decimal(14, 2)
+
+  accountId  String?
+  account    FinancialAccount?    @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  categoryId String?
+  category   TransactionCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  projectId  String?
+  project    Project?             @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  /// Rattachements qui garantissent l'absence de double comptage : un don
+  /// confirmé et un versement de paie ne peuvent produire qu'une écriture.
+  donationId     String?       @unique
+  donation       Donation?     @relation(fields: [donationId], references: [id], onDelete: SetNull)
+  payrollEntryId String?       @unique
+  payrollEntry   PayrollEntry? @relation(fields: [payrollEntryId], references: [id], onDelete: SetNull)
+  assetId        String?
+  asset          Asset?        @relation(fields: [assetId], references: [id], onDelete: SetNull)
+
+  /// Relie les deux moitiés d'un transfert entre comptes de devises
+  /// différentes (sortie en euros de France, entrée en francs à Kinshasa).
+  transferGroupId String?
+
+  createdById   String?
+  createdBy     AppUser?  @relation("TransactionCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  /// Doit être un utilisateur différent de celui qui a saisi : séparation
+  /// minimale entre la saisie et la validation.
+  validatedById String?
+  validatedBy   AppUser?  @relation("TransactionValidatedBy", fields: [validatedById], references: [id], onDelete: SetNull)
+  validatedAt   DateTime?
+  lockedAt      DateTime?
+
+  documents Document[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([occurredOn, kind])
+  @@index([projectId, occurredOn])
+  @@index([categoryId, occurredOn])
+  @@index([status])
+  @@index([transferGroupId])
+  @@map("transactions")
+}
+
+/// Pièce jointe : justificatif comptable, document d'un membre de l'équipe,
+/// facture d'un bien, formulaire de consentement signé.
+///
+/// Toujours stockée sur Vercel Blob en accès PRIVÉ, jamais dans /public et
+/// jamais servie par une URL devinable. La relecture passe par une route
+/// authentifiée qui journalise l'accès.
+///
+/// Les clés étrangères nullables multiples remplacent une relation
+/// polymorphe, que Prisma ne sait pas exprimer : un document appartient à
+/// exactement une entité.
+model Document {
+  id        String @id @default(cuid())
+  blobKey   String @unique
+  fileName  String
+  mimeType  String
+  sizeBytes Int
+  label     String?
+
+  transactionId String?
+  transaction   Transaction?  @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  childId       String?
+  child         Child?        @relation(fields: [childId], references: [id], onDelete: Cascade)
+  teamMemberId  String?
+  teamMember    TeamMember?   @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  assetId       String?
+  asset         Asset?        @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  consentId     String?
+  consent       MediaConsent? @relation(fields: [consentId], references: [id], onDelete: Cascade)
+
+  uploadedById String?
+  createdAt    DateTime @default(now())
+
+  @@index([transactionId])
+  @@index([childId])
+  @@index([teamMemberId])
+  @@index([assetId])
+  @@map("documents")
+}
+
+// ---------------------------------------------------------------------------
+// Bénéficiaires
+//
+// Section la plus sensible du schéma. L'association est établie en France,
+// donc le RGPD s'applique pleinement à ses traitements, y compris ceux menés à
+// Kinshasa, et les personnes concernées sont des mineurs vulnérables.
+// Les choix ci-dessous sont délibérés et ne doivent pas être « enrichis »
+// sans décision explicite de l'association.
+// ---------------------------------------------------------------------------
+
+enum ChildStatus {
+  FIRST_CONTACT
+  ACTIVE_FOLLOW_UP
+  IN_REINTEGRATION
+  EXITED_POSITIVE
+  LOST_CONTACT
+  ARCHIVED
+}
+
+/// Enfant accompagné. Modèle volontairement minimaliste.
+///
+/// `referenceCode` est l'identifiant qui circule PARTOUT ailleurs :
+/// comptabilité, statistiques, exports, rapports aux bailleurs. L'identité ne
+/// vit que sur cette table, accessible au seul rôle TERRAIN.
+///
+/// `birthYear` plutôt qu'une date de naissance : la plupart de ces enfants
+/// n'ont pas d'acte de naissance et leur âge est estimé. Inscrire une date
+/// précise fabriquerait une fausse certitude.
+///
+/// Aucun champ de notes en texte libre, volontairement : c'est là que
+/// finissent systématiquement les données sensibles qu'on avait décidé de ne
+/// pas collecter. Ne jamais en ajouter un.
+model Child {
+  id              String  @id @default(cuid())
+  referenceCode   String  @unique
+  firstName       String
+  /// Initiale seulement, pas le nom complet.
+  lastNameInitial String?
+  sex             String?
+  birthYear       Int?
+  estimatedAge    Int?
+  /// Quartier de rattachement, jamais une adresse précise.
+  neighbourhood   String?
+
+  status         ChildStatus @default(FIRST_CONTACT)
+  firstContactOn DateTime    @db.Date
+  exitedOn       DateTime?   @db.Date
+  exitReason     String?
+
+  referentId String?
+  referent   TeamMember? @relation(fields: [referentId], references: [id], onDelete: SetNull)
+
+  enrollments ChildEnrollment[]
+  careEvents  CareEvent[]
+  consents    MediaConsent[]
+  documents   Document[]
+
+  /// Date de purge prévue, calculée à la sortie selon la durée de conservation
+  /// que l'association aura votée. Rend la purge automatisable au lieu de
+  /// reposer sur la bonne volonté de quelqu'un.
+  purgeDueOn DateTime? @db.Date
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([referentId])
+  @@index([purgeDueOn])
+  @@map("children")
+}
+
+/// Participation d'un enfant à un projet. Permet de compter les bénéficiaires
+/// par projet pour les rapports aux bailleurs sans jamais exporter d'identité.
+model ChildEnrollment {
+  id         String    @id @default(cuid())
+  childId    String
+  child      Child     @relation(fields: [childId], references: [id], onDelete: Cascade)
+  projectId  String
+  project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  enrolledOn DateTime  @db.Date
+  endedOn    DateTime? @db.Date
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([childId, projectId])
+  @@map("child_enrollments")
+}
+
+enum CareKind {
+  MEAL
+  HYGIENE
+  MEDICAL_CONSULTATION
+  VACCINATION
+  PSYCHOSOCIAL_INTERVIEW
+  WORKSHOP
+  SCHOOLING
+  OTHER
+}
+
+/// Trace qu'une PRESTATION a été délivrée — jamais un état de santé.
+///
+/// On enregistre qu'une consultation a eu lieu, sa date, le prestataire et son
+/// coût. Jamais le diagnostic, le traitement, le statut sérologique ni un
+/// compte rendu clinique : le dossier médical reste chez le soignant.
+///
+/// C'est cette limite qui fait sortir le logiciel de l'article 9 du RGPD
+/// (données de santé) et rend une analyse d'impact discutable plutôt
+/// qu'obligatoire. Ne jamais ajouter ici de champ décrivant l'état de l'enfant.
+model CareEvent {
+  id         String   @id @default(cuid())
+  childId    String
+  child      Child    @relation(fields: [childId], references: [id], onDelete: Cascade)
+  kind       CareKind
+  occurredOn DateTime @db.Date
+  providerName String?
+  recordedById String?
+
+  /// Coût de la prestation, qui alimente le suivi budgétaire du projet.
+  costAmount   Decimal?  @db.Decimal(18, 2)
+  costCurrency Currency?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([childId, occurredOn])
+  @@index([kind, occurredOn])
+  @@map("care_events")
+}
+
+enum ConsentScope {
+  WEBSITE
+  SOCIAL_MEDIA
+  DONOR_REPORTS
+  INTERNAL_ONLY
+}
+
+enum ConsentStatus {
+  GRANTED
+  REFUSED
+  WITHDRAWN
+  NOT_COLLECTED
+}
+
+/// Consentement à l'image, signé par le représentant légal ou le tuteur.
+///
+/// Un enum et non un booléen : NOT_COLLECTED (le cas des photos déjà en ligne
+/// sur l'ancien site) doit se distinguer de REFUSED. `revokedOn` rend le
+/// retrait effectif.
+///
+/// Règle à faire respecter par le code de publication, pas par une consigne :
+/// aucune photo d'enfant n'est publiable sans un consentement GRANTED, non
+/// révoqué, couvrant la portée visée.
+model MediaConsent {
+  id           String        @id @default(cuid())
+  childId      String
+  child        Child         @relation(fields: [childId], references: [id], onDelete: Cascade)
+  scope        ConsentScope
+  status       ConsentStatus @default(NOT_COLLECTED)
+  signedByName String?
+  signedByRole String?
+  signedOn     DateTime?     @db.Date
+  revokedOn    DateTime?     @db.Date
+
+  documents Document[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([childId, scope])
+  @@map("media_consents")
+}
+
+// ---------------------------------------------------------------------------
+// Équipe, contrats et paie
+// ---------------------------------------------------------------------------
+
+enum EngagementType {
+  SALARIED_DRC
+  CONTRACTOR_DRC
+  VOLUNTEER_FRANCE
+  VOLUNTEER_DRC
+  BOARD_MEMBER
+}
+
+enum ContractStatus {
+  ACTIVE
+  SUSPENDED
+  ENDED
+}
+
+enum PayrollStatus {
+  DRAFT
+  APPROVED
+  PAID
+}
+
+enum PayPeriodicity {
+  MONTHLY
+  WEEKLY
+  DAILY
+  ONE_OFF
+}
+
+/// Personne de l'équipe, salariée en RDC ou bénévole en France. Un seul modèle
+/// avec un type d'engagement : les deux partagent l'annuaire et les
+/// affectations de biens, mais seuls les engagements rémunérés portent un
+/// contrat. Un bénévole n'a pas de salaire ; ses remboursements de frais sont
+/// des dépenses de trésorerie ordinaires.
+model TeamMember {
+  id         String         @id @default(cuid())
+  firstName  String
+  lastName   String
+  engagement EngagementType
+  jobTitle   String?
+  email      String?
+  phone      String?
+  country    String         @default("CD")
+  city       String?
+  startedOn  DateTime?      @db.Date
+  endedOn    DateTime?      @db.Date
+  isActive   Boolean        @default(true)
+
+  /// Lien facultatif vers un compte du logiciel : tout le personnel n'a pas
+  /// besoin d'un accès, et tout utilisateur n'est pas un salarié.
+  appUserId String?  @unique
+  appUser   AppUser? @relation(fields: [appUserId], references: [id], onDelete: SetNull)
+
+  contracts        EmploymentContract[]
+  payrollEntries   PayrollEntry[]
+  assignedAssets   AssetAssignment[]
+  referredChildren Child[]
+  documents        Document[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([engagement, isActive])
+  @@map("team_members")
+}
+
+/// Contrat rémunéré. Le salaire de référence est le plus souvent en francs
+/// congolais, parfois indexé en dollars — d'où `grossCurrency`.
+///
+/// Un contrat n'alimente PAS la trésorerie par lui-même : seul un versement
+/// effectif crée une écriture.
+model EmploymentContract {
+  id            String         @id @default(cuid())
+  teamMemberId  String
+  teamMember    TeamMember     @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  reference     String?
+  startsOn      DateTime       @db.Date
+  endsOn        DateTime?      @db.Date
+  status        ContractStatus @default(ACTIVE)
+  grossAmount   Decimal        @db.Decimal(18, 2)
+  grossCurrency Currency
+  periodicity   PayPeriodicity @default(MONTHLY)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([teamMemberId, status])
+  @@map("employment_contracts")
+}
+
+/// Versement de rémunération pour une période donnée. Une fois passé en PAID,
+/// il génère une et une seule écriture de dépense (relation 1-1 portée par
+/// Transaction). C'est le pont entre les ressources humaines et la
+/// comptabilité, sans double saisie ni risque de double comptage.
+model PayrollEntry {
+  id           String        @id @default(cuid())
+  teamMemberId String
+  teamMember   TeamMember    @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  periodYear   Int
+  periodMonth  Int
+  amount       Decimal       @db.Decimal(18, 2)
+  currency     Currency
+  fxRate       Decimal       @default(1) @db.Decimal(18, 8)
+  amountEur    Decimal       @db.Decimal(14, 2)
+  status       PayrollStatus @default(DRAFT)
+  paidOn       DateTime?     @db.Date
+  /// Imputation à un projet, quand le poste est financé par un bailleur.
+  projectId    String?
+
+  transaction Transaction?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamMemberId, periodYear, periodMonth])
+  @@index([status, periodYear, periodMonth])
+  @@map("payroll_entries")
+}
+
+// ---------------------------------------------------------------------------
+// Biens de l'association
+// ---------------------------------------------------------------------------
+
+enum AssetCategory {
+  VEHICLE
+  FURNITURE
+  IT_EQUIPMENT
+  TEACHING_MATERIAL
+  MEDICAL_EQUIPMENT
+  REAL_ESTATE
+  OTHER
+}
+
+enum AssetCondition {
+  NEW
+  GOOD
+  WORN
+  OUT_OF_ORDER
+}
+
+enum AssetStatus {
+  IN_USE
+  IN_STOCK
+  UNDER_REPAIR
+  DISPOSED
+  LOST
+}
+
+/// Bien de l'association.
+///
+/// En comptabilité de trésorerie il n'y a pas d'amortissement comptable :
+/// `usefulLifeYears` sert uniquement à calculer une valeur indicative à
+/// l'affichage, pour l'inventaire et les rapports aux bailleurs. Cette valeur
+/// n'est jamais écrite comme une écriture. L'achat, lui, est une dépense de
+/// trésorerie ordinaire comme une autre.
+model Asset {
+  id            String        @id @default(cuid())
+  inventoryCode String        @unique
+  label         String
+  category      AssetCategory
+  serialNumber  String?
+
+  acquiredOn          DateTime? @db.Date
+  acquisitionAmount   Decimal?  @db.Decimal(18, 2)
+  acquisitionCurrency Currency?
+  acquisitionFxRate   Decimal?  @db.Decimal(18, 8)
+  acquisitionEur      Decimal?  @db.Decimal(14, 2)
+  /// Projet ou bailleur ayant financé le bien : souvent exigé dans les
+  /// rapports de fin de subvention.
+  fundedByProjectId String?
+  fundedByProject   Project? @relation(fields: [fundedByProjectId], references: [id], onDelete: SetNull)
+  isDonatedInKind   Boolean  @default(false)
+  usefulLifeYears   Int?
+
+  condition AssetCondition @default(GOOD)
+  status    AssetStatus    @default(IN_USE)
+  location  String?
+
+  disposedOn     DateTime? @db.Date
+  disposalReason String?
+
+  assignments  AssetAssignment[]
+  transactions Transaction[]
+  documents    Document[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, status])
+  @@index([fundedByProjectId])
+  @@map("assets")
+}
+
+/// Historique d'affectation d'un bien : qui l'a eu, quand, dans quel état il a
+/// été remis et rendu. Sans cet historique, un inventaire ne dit rien sur les
+/// disparitions.
+model AssetAssignment {
+  id           String      @id @default(cuid())
+  assetId      String
+  asset        Asset       @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  teamMemberId String?
+  teamMember   TeamMember? @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  /// Affectation à un lieu plutôt qu'à une personne (centre, bureau).
+  siteLabel    String?
+  assignedOn   DateTime    @db.Date
+  returnedOn   DateTime?   @db.Date
+  conditionOut AssetCondition?
+  conditionIn  AssetCondition?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([assetId, assignedOn])
+  @@map("asset_assignments")
+}
+
+// ---------------------------------------------------------------------------
+// Contenu et formulaires du site public
+// ---------------------------------------------------------------------------
+
+/// Actualité du site. Distincte de Project : un projet est une action
+/// structurante qui porte un budget, une actualité est un billet daté.
+model NewsArticle {
+  id            String            @id @default(cuid())
+  slug          String            @unique
+  title         String
+  excerpt       String
+  content       String
+  coverImageUrl String?
+  publishedAt   DateTime?
+  status        PublicationStatus @default(DRAFT)
+  authorName    String?
+  projectId     String?
+  project       Project?          @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, publishedAt])
+  @@map("news_articles")
+}
+
+/// Statut commun aux soumissions venues du site public. Un enum plutôt qu'un
+/// booléen « traité » : décliner et archiver ne sont pas la même chose.
+enum SubmissionStatus {
+  NEW
+  IN_REVIEW
+  ACCEPTED
+  DECLINED
+  ARCHIVED
+}
+
+model ContactMessage {
+  id          String           @id @default(cuid())
+  fullName    String
+  email       String
+  phone       String?
+  subject     String
+  message     String
+  status      SubmissionStatus @default(NEW)
+  handledById String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@map("contact_messages")
+}
+
+/// Candidature bénévole. Ne crée volontairement PAS de membre d'équipe
+/// automatiquement : accepter quelqu'un est une décision humaine, qui plus est
+/// dans une association travaillant auprès de mineurs.
+model VolunteerApplication {
+  id           String           @id @default(cuid())
+  firstName    String
+  lastName     String
+  email        String
+  phone        String?
+  country      String?
+  availability String?
+  skills       String?
+  motivation   String
+  status       SubmissionStatus @default(NEW)
+  teamMemberId String?
+  handledById  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@map("volunteer_applications")
+}
+
+model PartnershipRequest {
+  id               String           @id @default(cuid())
+  organisationName String
+  contactName      String
+  email            String
+  phone            String?
+  website          String?
+  partnershipType  String?
+  message          String
+  status           SubmissionStatus @default(NEW)
+  handledById      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@map("partnership_requests")
+}
+
+/// Inscription à la « Newsloveletter ». Double opt-in : `confirmedAt` fait foi,
+/// et `consentSource` / `consentIp` constituent la preuve du consentement que
+/// le RGPD impose de pouvoir produire.
+model NewsletterSubscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  firstName      String?
+  confirmToken   String    @unique @default(uuid())
+  confirmedAt    DateTime?
+  unsubscribedAt DateTime?
+  consentSource  String?
+  consentIp      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([confirmedAt])
+  @@map("newsletter_subscribers")
+}

@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+/* Palette échantillonnée sur la marque réelle, pas inventée :
+   - #3C3C3B et #BF5B17 proviennent des pixels du logo officiel
+     (public/brand/logo-one-love.png, récupéré sur associationonelove.org) ;
+   - #FFB119 et #6B6864 sont les couleurs d'accent et de texte secondaire
+     mesurées sur le site WordPress actuel.
+   Les variantes foncées existent parce que la terre cuite du logo n'atteint
+   pas 4,5:1 sur fond blanc : voir le commentaire de --ol-ember-ink. */
+:root {
+  --ol-white: #ffffff;
+  --ol-cream: #fbf8f4;
+  --ol-sand: #f2ece3;
+
+  --ol-ink: #24231f;
+  --ol-charcoal: #3c3c3b;
+  --ol-muted: #6b6864;
+  --ol-night: #1a1917;
+
+  /* Terre cuite du logo. DÉCORATIF UNIQUEMENT : filets, icônes, bordures,
+     aplats derrière du très gros texte. Mesurée à 4,45:1 sur blanc, elle
+     échoue au seuil AA de 4,5:1 — donc jamais de texte courant dessus. */
+  --ol-ember: #bf5b17;
+  /* La même, assombrie à 6,39:1 sur blanc. C'est ELLE qu'on utilise pour le
+     texte d'accent sur fond clair ET pour le fond des boutons pleins. */
+  --ol-ember-ink: #9a4712;
+  /* Ambre du site actuel. Réservé aux FONDS SOMBRES (9,67:1 sur --ol-night).
+     Sur blanc il tombe à 1,82:1 : ne jamais l'utiliser en texte sur fond clair. */
+  --ol-amber: #ffb119;
+
+  --ol-line: rgba(60, 60, 59, 0.14);
+  --ol-line-strong: rgba(60, 60, 59, 0.28);
+
+  --ol-motion-ui: 220ms;
+  --ol-motion-media: 420ms;
+}
+
+@theme inline {
+  --color-ol-white: var(--ol-white);
+  --color-ol-cream: var(--ol-cream);
+  --color-ol-sand: var(--ol-sand);
+  --color-ol-ink: var(--ol-ink);
+  --color-ol-charcoal: var(--ol-charcoal);
+  --color-ol-muted: var(--ol-muted);
+  --color-ol-night: var(--ol-night);
+  --color-ol-ember: var(--ol-ember);
+  --color-ol-ember-ink: var(--ol-ember-ink);
+  --color-ol-amber: var(--ol-amber);
+  --color-ol-line: var(--ol-line);
+  --color-ol-line-strong: var(--ol-line-strong);
+
+  --font-sans: var(--font-lato), system-ui, sans-serif;
+
+  --text-hero: 2.375rem;
+  --text-display: 3.25rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--ol-white);
+  color: var(--ol-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Cibles tactiles : jamais sous 44 px. Règle héritée de l'audit design de
+   gospel-nation, où des boutons de 32 px étaient inatteignables au pouce. */
+button,
+a[role="button"],
+input,
+select,
+textarea {
+  min-height: 44px;
+}
+
+/* Le pied de page est l'exception : y imposer 44 px par lien créait des
+   interlignes de 56 px pour du texte de 16 px. */
+footer a {
+  min-height: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ol-ember);
+  outline-offset: 2px;
+}
+
+/* Longueur de ligne maximale : au-delà, l'œil perd la ligne suivante.
+   Mesuré en caractères, pas en pixels. */
+@utility max-w-measure {
+  max-width: 62ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
