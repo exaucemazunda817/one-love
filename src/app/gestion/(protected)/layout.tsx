@@ -21,6 +21,7 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   const isDirection = user.role === 'DIRECTION';
   const canSeeAccounting = ['DIRECTION', 'COMPTABLE', 'LECTURE'].includes(user.role);
   const canSeeExpenseEntry = ['TERRAIN', 'COMPTABLE'].includes(user.role);
+  const canSeeBeneficiaries = ['DIRECTION', 'TERRAIN'].includes(user.role);
 
   return (
     <div className="min-h-screen bg-ol-cream">
@@ -48,6 +49,14 @@ export default async function ProtectedLayout({ children }: { children: React.Re
                   className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink"
                 >
                   Mes dépenses
+                </Link>
+              )}
+              {canSeeBeneficiaries && (
+                <Link
+                  href="/gestion/beneficiaires"
+                  className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink"
+                >
+                  Bénéficiaires
                 </Link>
               )}
               {isDirection && (

@@ -138,3 +138,68 @@ export const transactionEntrySchema = z
 export type FinancialAccountInput = z.infer<typeof financialAccountSchema>;
 export type TransactionCategoryInput = z.infer<typeof transactionCategorySchema>;
 export type TransactionEntryInput = z.infer<typeof transactionEntrySchema>;
+
+// --- Bénéficiaires (jalon 7) ---------------------------------------------
+//
+// Aucun champ de texte libre au-delà de ce que le schéma Prisma autorise
+// déjà : ne jamais ajouter ici un champ « notes » ou « description » sur un
+// enfant, même si une future demande semble raisonnable — voir le
+// commentaire du modèle Child dans schema.prisma.
+
+export const childSchema = z.object({
+  firstName: z.string().trim().min(1, 'Champ requis.').max(80),
+  lastNameInitial: z
+    .string()
+    .trim()
+    .max(1)
+    .optional()
+    .or(z.literal(''))
+    .refine((v) => !v || /^[A-Za-zÀ-ÿ]$/.test(v), 'Une seule lettre.'),
+  sex: z.enum(['F', 'M', '']).optional(),
+  birthYear: z
+    .number()
+    .int()
+    .min(new Date().getFullYear() - 25)
+    .max(new Date().getFullYear())
+    .optional()
+    .nullable(),
+  estimatedAge: z.number().int().min(0).max(25).optional().nullable(),
+  neighbourhood: z.string().trim().max(80).optional().or(z.literal('')),
+  firstContactOn: z.string().refine((v) => !Number.isNaN(Date.parse(v)), 'Date invalide.'),
+  referentId: z.string().trim().max(40).optional().or(z.literal(''))
+});
+
+export const careEventSchema = z.object({
+  kind: z.enum([
+    'MEAL',
+    'HYGIENE',
+    'MEDICAL_CONSULTATION',
+    'VACCINATION',
+    'PSYCHOSOCIAL_INTERVIEW',
+    'WORKSHOP',
+    'SCHOOLING',
+    'OTHER'
+  ]),
+  occurredOn: z.string().refine((v) => !Number.isNaN(Date.parse(v)), 'Date invalide.'),
+  providerName: z.string().trim().max(120).optional().or(z.literal('')),
+  costAmount: z.string().trim().max(20).optional().or(z.literal('')),
+  costCurrency: z.enum(['EUR', 'CDF', 'USD']).optional()
+});
+
+export const childEnrollmentSchema = z.object({
+  projectId: z.string().trim().min(1, 'Projet requis.').max(40),
+  enrolledOn: z.string().refine((v) => !Number.isNaN(Date.parse(v)), 'Date invalide.')
+});
+
+export const mediaConsentSchema = z.object({
+  scope: z.enum(['WEBSITE', 'SOCIAL_MEDIA', 'DONOR_REPORTS', 'INTERNAL_ONLY']),
+  status: z.enum(['GRANTED', 'REFUSED', 'WITHDRAWN', 'NOT_COLLECTED']),
+  signedByName: z.string().trim().max(120).optional().or(z.literal('')),
+  signedByRole: z.string().trim().max(80).optional().or(z.literal('')),
+  signedOn: z.string().optional().or(z.literal(''))
+});
+
+export type ChildInput = z.infer<typeof childSchema>;
+export type CareEventInput = z.infer<typeof careEventSchema>;
+export type ChildEnrollmentInput = z.infer<typeof childEnrollmentSchema>;
+export type MediaConsentInput = z.infer<typeof mediaConsentSchema>;

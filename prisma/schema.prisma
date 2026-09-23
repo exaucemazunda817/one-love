@@ -121,6 +121,24 @@ model RateLimitAttempt {
   @@map("rate_limit_attempts")
 }
 
+/// Interrupteur explicite du module Bénéficiaires (jalon 7), une seule ligne
+/// (`id` fixe "singleton"). Le code — schéma, écrans, routes — est
+/// entièrement construit, mais reste inactif tant que la DIRECTION ne l'a
+/// pas activé ici : les décisions RGPD (référent, base légale du suivi,
+/// durées de conservation, politique de protection de l'enfance) reviennent
+/// à l'association, jamais à un prestataire technique. Avant activation,
+/// aucun rôle — TERRAIN compris — ne peut créer de fiche enfant réelle.
+model AppSettings {
+  id                       String    @id @default("singleton")
+  beneficiariesEnabled     Boolean   @default(false)
+  beneficiariesEnabledAt   DateTime?
+  beneficiariesEnabledById String?
+
+  updatedAt DateTime @updatedAt
+
+  @@map("app_settings")
+}
+
 // ---------------------------------------------------------------------------
 // Projets, budgets et devises
 // ---------------------------------------------------------------------------

@@ -35,6 +35,30 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   injection `javascript:` bloquée. Session HMAC et `src/proxy.ts` posés pour
   `/gestion`, pas encore d'écran de lecture derrière (à faire si besoin avant
   le jalon 5).
+- **Jalon 7 — Bénéficiaires : FAIT, verrouillé.** Fiches enfants,
+  inscriptions par projet, prestations, consentements — construits en
+  entier, mais **inactifs tant que la DIRECTION ne les a pas activés
+  explicitement** (`AppSettings.beneficiariesEnabled`, une phrase de
+  confirmation à taper mot pour mot, pas juste un bouton). Décision prise
+  avec Mazunda le 23/09 : les décisions RGPD de l'association (référent,
+  base légale, durées de conservation, politique de protection de
+  l'enfance) restent en attente — le squelette est prêt, personne ne peut
+  encore y saisir de vraie donnée d'enfant. **`AppSettings` est vide en base
+  aujourd'hui** (mon activation de test a été annulée après vérification) :
+  la prochaine personne qui coche la case doit être une vraie décision de
+  l'association, jamais un réflexe.
+  Vérifié de bout en bout avec deux comptes de test (DIRECTION, TERRAIN,
+  supprimés après coup) : module bloqué à la fois page ET API avant
+  activation ; activation refusée sur une confirmation incorrecte ; après
+  activation, TERRAIN peut créer une fiche (code `OL-2026-0001` généré
+  automatiquement), l'inscrire à RÊVES 2, enregistrer une prestation sans
+  aucun champ clinique, accorder puis retirer un consentement (une seule
+  ligne par portée, jamais de doublon) ; DIRECTION ne voit que des
+  compteurs agrégés — accès à la liste et à toute fiche individuelle
+  refusé, page ET API (403), y compris en tapant l'URL directement.
+  Journal d'audit vérifié : jamais un prénom, uniquement des identifiants
+  et le code de référence ; chaque consultation de fiche journalisée
+  (`VIEW_SENSITIVE`).
 - **Jalon 6 — Comptabilité : FAIT.** Comptes de trésorerie, catégories (un
   seul niveau), journal avec cycle DRAFT → VALIDATED → LOCKED (ou
   → CANCELLED), pièces justificatives (Vercel Blob privé, repli local),
