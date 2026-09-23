@@ -52,7 +52,17 @@ export const newsletterSchema = z.object({
   firstName: z.string().trim().max(120).optional().or(z.literal(''))
 });
 
+export const donationSessionSchema = z.object({
+  // Montant en euros, saisi par le visiteur : borné à un intervalle large
+  // mais fini pour écarter une faute de frappe (ex. 100000 € au lieu de
+  // 100 €) et un envoi abusif automatisé.
+  amountEur: z.number().finite().min(1, 'Le don minimum est de 1 €.').max(100000, 'Montant trop élevé — contactez-nous directement.'),
+  projectSlug: z.string().trim().max(80).optional().or(z.literal('')),
+  donorEmail: email.optional().or(z.literal(''))
+});
+
 export type ContactInput = z.infer<typeof contactSchema>;
 export type VolunteerInput = z.infer<typeof volunteerSchema>;
 export type PartnershipInput = z.infer<typeof partnershipSchema>;
 export type NewsletterInput = z.infer<typeof newsletterSchema>;
+export type DonationSessionInput = z.infer<typeof donationSessionSchema>;

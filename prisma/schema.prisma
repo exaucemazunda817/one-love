@@ -261,7 +261,10 @@ model Donor {
   companyName  String?
   firstName    String?
   lastName     String?
-  email        String?
+  /// Unique quand renseigné (Postgres autorise plusieurs NULL malgré la
+  /// contrainte) : c'est ce qui permet un find-or-create par e-mail lors
+  /// d'un don en ligne, sans dupliquer un même donateur à chaque don.
+  email        String? @unique
   phone        String?
   addressLine1 String?
   addressLine2 String?
@@ -279,7 +282,6 @@ model Donor {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([email])
   @@index([lastName, firstName])
   @@map("donors")
 }

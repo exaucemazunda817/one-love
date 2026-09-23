@@ -35,7 +35,22 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   injection `javascript:` bloquée. Session HMAC et `src/proxy.ts` posés pour
   `/gestion`, pas encore d'écran de lecture derrière (à faire si besoin avant
   le jalon 5).
-- Jalons 3 à 10 : à faire. Voir le plan.
+- **Jalon 4 (partie 1) — Paiements Stripe : FAIT.** Checkout Session (carte +
+  SEPA) créée par appel REST direct (`src/lib/stripe.ts`, Basic Auth, pas de
+  SDK — même choix que Resend), webhook `/api/webhooks/stripe` avec
+  vérification de signature HMAC-SHA256 en Node `crypto` (six scénarios
+  vérifiés par script `tsx` autonome, dont horodatage rejoué et corps modifié
+  après signature). Logique de confirmation centralisée dans
+  `src/lib/donations.ts`, réutilisable pour SerdiPay et la confirmation
+  manuelle. Sans clés réelles, tout refuse proprement (503 sur la création de
+  session, 500 sur le webhook) plutôt que de planter — vérifié dans le
+  navigateur. **SerdiPay reporté** : la doc technique publique n'existe pas
+  (les deux liens « Documentation de l'API » du site renvoient vers `#`, le
+  sous-domaine qui ressemble à un portail développeur est vide). L'option
+  Mobile Money est annoncée sur `/dons` comme « bientôt disponible », sans
+  aucun appel réseau deviné. À reprendre dès que Mazunda a un accès réel
+  (compte marchand, vraie doc transmise par SerdiPay).
+- Jalons 3, 4 (partie 2), 5 à 10 : à faire. Voir le plan.
 
 **Décision de Mazunda (23/09) : le nouveau site ne fait AUCUNE référence à
 l'ancien WordPress.** Ni lien, ni mention « site en construction », ni
@@ -133,6 +148,25 @@ C'est une vraie association, avec de vrais donateurs.
 **Contradiction non résolue, à trancher avant les mentions légales** : le site
 actuel annonce le 44 rue de la Roquette (Paris 11e), une base officielle
 indique Châtenay-Malabry.
+
+## Bug réel trouvé et corrigé au jalon 4 (confirmation de don)
+
+`confirmDonation()` (`src/lib/donations.ts`) attrape les violations de
+contrainte unique (P2002) pour rester idempotente face à un webhook rejoué.
+Piège trouvé en testant avec un script `tsx` autonome : **deux contraintes
+uniques différentes peuvent déclencher ce même code d'erreur**, et elles ne
+veulent pas dire la même chose.
+- `Transaction.donationId` @unique violée = ce don précis a déjà sa
+  transaction (webhook rejoué pour le MÊME don) → cas normal, on répond
+  `alreadyConfirmed: true`.
+- `Donation.stripePaymentIntentId` (ou `serdipayTransactionId`) @unique
+  violée = un AUTRE don réclame déjà cette référence de paiement → jamais
+  anodin, potentiellement un bug ailleurs. La première version traitait les
+  deux cas de façon identique, donc silencieuse : un don pouvait rester
+  `PENDING` pour toujours sans jamais lever d'erreur visible.
+Corrigé en lisant `error.meta.target` (Prisma) pour distinguer les deux —
+vérifié empiriquement avec un script d'inspection avant de coder le correctif,
+plutôt que de deviner la forme de l'erreur.
 
 ## Piège React trouvé et corrigé au jalon 2
 
