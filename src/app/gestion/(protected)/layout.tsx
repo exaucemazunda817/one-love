@@ -19,11 +19,13 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   if (user.mustChangePassword) redirect('/gestion/changer-mot-de-passe');
 
   const isDirection = user.role === 'DIRECTION';
+  const canSeeAccounting = ['DIRECTION', 'COMPTABLE', 'LECTURE'].includes(user.role);
+  const canSeeExpenseEntry = ['TERRAIN', 'COMPTABLE'].includes(user.role);
 
   return (
     <div className="min-h-screen bg-ol-cream">
       <header className="border-b border-ol-line bg-ol-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
           <div className="flex items-center gap-6">
             <Link href="/gestion" className="text-sm font-black text-ol-charcoal">
               One Love — Gestion
@@ -32,6 +34,22 @@ export default async function ProtectedLayout({ children }: { children: React.Re
               <Link href="/gestion" className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink">
                 Tableau de bord
               </Link>
+              {canSeeAccounting && (
+                <Link
+                  href="/gestion/comptabilite"
+                  className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink"
+                >
+                  Comptabilité
+                </Link>
+              )}
+              {canSeeExpenseEntry && (
+                <Link
+                  href="/gestion/comptabilite/mes-depenses"
+                  className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink"
+                >
+                  Mes dépenses
+                </Link>
+              )}
               {isDirection && (
                 <>
                   <Link href="/gestion/comptes" className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink">
@@ -52,7 +70,7 @@ export default async function ProtectedLayout({ children }: { children: React.Re
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-5xl px-5 py-10 sm:px-8">{children}</main>
+      <main className="mx-auto max-w-6xl px-5 py-10 sm:px-8">{children}</main>
     </div>
   );
 }

@@ -68,3 +68,73 @@ export type VolunteerInput = z.infer<typeof volunteerSchema>;
 export type PartnershipInput = z.infer<typeof partnershipSchema>;
 export type NewsletterInput = z.infer<typeof newsletterSchema>;
 export type DonationSessionInput = z.infer<typeof donationSessionSchema>;
+
+// --- Comptabilité (jalon 6) --------------------------------------------
+//
+// Les montants sont des CHAÎNES validées par motif, jamais des `number` : un
+// écriture comptable doit garder la précision exacte saisie (surtout pour de
+// gros montants en francs congolais), sans passer par l'arrondi flottant de
+// JavaScript. La chaîne est transmise telle quelle à Prisma, qui la stocke
+// dans une colonne Decimal.
+const decimalString = (maxIntDigits: number, maxDecimals: number) =>
+  z
+    .string()
+    .trim()
+    .regex(
+      new RegExp(`^\\d{1,${maxIntDigits}}(\\.\\d{1,${maxDecimals}})?$`),
+      'Montant invalide (chiffres et point décimal uniquement).'
+    );
+
+const optionalId = z.string().trim().max(40).optional().or(z.literal(''));
+
+export const financialAccountSchema = z.object({
+  name: z.string().trim().min(1, 'Champ requis.').max(120),
+  currency: z.enum(['EUR', 'CDF', 'USD']),
+  kind: z.enum(['BANK', 'CASH', 'MOBILE_MONEY']),
+  bankName: z.string().trim().max(120).optional().or(z.literal('')),
+  ibanLast4: z
+    .string()
+    .trim()
+    .max(4)
+    .optional()
+    .or(z.literal(''))
+    .refine((v) => !v || /^\d{4}$/.test(v), 'Quatre chiffres exactement.')
+});
+
+export const transactionCategorySchema = z.object({
+  code: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .min(2)
+    .max(30)
+    .regex(/^[A-Z0-9_]+$/, 'Lettres majuscules, chiffres et underscores uniquement.'),
+  label: z.string().trim().min(1, 'Champ requis.').max(120),
+  kind: z.enum(['INCOME', 'EXPENSE']),
+  parentId: optionalId
+});
+
+// `refine` impose le taux de change dès que la devise n'est pas l'euro — pas
+// de valeur par défaut silencieuse, le taux réel doit toujours être saisi à
+// la main par la personne qui enregistre l'écriture.
+export const transactionEntrySchema = z
+  .object({
+    kind: z.enum(['INCOME', 'EXPENSE']),
+    occurredOn: z.string().refine((v) => !Number.isNaN(Date.parse(v)), 'Date invalide.'),
+    label: z.string().trim().min(1, 'Champ requis.').max(200),
+    description: z.string().trim().max(2000).optional().or(z.literal('')),
+    amount: decimalString(15, 2),
+    currency: z.enum(['EUR', 'CDF', 'USD']),
+    fxRate: decimalString(10, 8).optional().or(z.literal('')),
+    accountId: optionalId,
+    categoryId: optionalId,
+    projectId: optionalId
+  })
+  .refine((data) => data.currency === 'EUR' || (data.fxRate && Number(data.fxRate) > 0), {
+    message: "Le taux de change est requis pour une devise autre que l'euro.",
+    path: ['fxRate']
+  });
+
+export type FinancialAccountInput = z.infer<typeof financialAccountSchema>;
+export type TransactionCategoryInput = z.infer<typeof transactionCategorySchema>;
+export type TransactionEntryInput = z.infer<typeof transactionEntrySchema>;

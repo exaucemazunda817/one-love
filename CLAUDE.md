@@ -35,6 +35,26 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   injection `javascript:` bloquée. Session HMAC et `src/proxy.ts` posés pour
   `/gestion`, pas encore d'écran de lecture derrière (à faire si besoin avant
   le jalon 5).
+- **Jalon 6 — Comptabilité : FAIT.** Comptes de trésorerie, catégories (un
+  seul niveau), journal avec cycle DRAFT → VALIDATED → LOCKED (ou
+  → CANCELLED), pièces justificatives (Vercel Blob privé, repli local),
+  export Excel, bilan par projet. Écran séparé et restreint pour TERRAIN
+  (« Mes dépenses », dépenses uniquement, jamais le journal complet — vérifié
+  page ET API). Vérifié de bout en bout avec trois comptes de test
+  (COMPTABLE, DIRECTION, TERRAIN) : séparation des tâches à la validation
+  (le bouton disparaît sur ses propres écritures après rechargement),
+  verrouillage rendant une écriture réellement immuable (re-verrouiller et
+  re-valider refusés), export Excel, dépôt et relecture authentifiée d'un
+  justificatif, calcul de contre-valeur euro exact (145 000 CDF à 2900 = 50 €).
+  **Vrai bug corrigé avant de commencer ce jalon** : la table `projects`
+  était vide depuis le début — tout don flêché vers RÊVES 2 depuis le jalon 4
+  perdait silencieusement son rattachement. Projet RÊVES 2 créé en base avec
+  le contenu déjà vérifié de `content.ts`, rien d'inventé.
+  **Transferts entre comptes non construits** : le schéma les prévoit
+  (`TransactionKind.TRANSFER`, `transferGroupId`) mais la convention de signe
+  n'était définie nulle part — plutôt que de deviner, l'écran de saisie ne
+  propose que Recette/Dépense pour l'instant. À concevoir explicitement avec
+  Mazunda le jour où un vrai transfert France → Kinshasa doit être enregistré.
 - **Jalon 5 — Comptes nominatifs : FAIT.** Connexion e-mail/mot de passe
   (bcryptjs), changement de mot de passe forcé à la première connexion,
   cinq rôles, gestion des comptes et journal d'audit réservés à DIRECTION
