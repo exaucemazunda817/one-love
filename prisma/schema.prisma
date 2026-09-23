@@ -231,6 +231,10 @@ model ExchangeRate {
 // Dons et donateurs
 // ---------------------------------------------------------------------------
 
+/// STRIPE couvre la carte, le prélèvement SEPA et le virement géré par Stripe
+/// (jalon 4). MOBILE_MONEY est traité via SerdiPay (RDC). BANK_TRANSFER reste
+/// le virement manuel hors Stripe, saisi et rapproché à la main — c'est le
+/// seul moyen déjà en place aujourd'hui.
 enum DonationMethod {
   STRIPE
   BANK_TRANSFER
@@ -309,9 +313,16 @@ model Donation {
   isRecurring Boolean       @default(false)
   receivedOn DateTime       @db.Date
 
+  /// Identifiants côté prestataire. Chacun est UNIQUE : c'est la clé
+  /// d'idempotence qui empêche un webhook rejoué — ce qui arrive
+  /// normalement, les prestataires réessayant tant qu'ils n'ont pas reçu un
+  /// code de succès — de créditer deux fois le même paiement.
+  ///
+  /// Stripe couvre la carte, le prélèvement et le virement ; SerdiPay couvre
+  /// le Mobile Money local en RDC (décision de Mazunda, 23/09/2026).
   stripePaymentIntentId String? @unique
+  serdipayTransactionId String? @unique
   mobileMoneyOperator   String?
-  mobileMoneyReference  String?
   bankReference         String?
 
   message String?

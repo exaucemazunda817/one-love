@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { org, identity } from '@/lib/content';
+import { NewsletterForm } from '@/components/forms/NewsletterForm';
 
 export function Footer() {
   return (
@@ -76,6 +77,16 @@ export function Footer() {
               </Link>
             </li>
           </ul>
+        </div>
+
+        <div className="space-y-3 md:col-span-3 md:max-w-md">
+          <h2 className="text-sm font-bold uppercase tracking-[0.15em] text-ol-amber">
+            Lettre d&apos;information
+          </h2>
+          <p className="text-sm leading-relaxed">
+            Recevez nos actualités de terrain, quelques fois par an.
+          </p>
+          <NewsletterForm />
         </div>
       </div>
 

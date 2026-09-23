@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Mail, ExternalLink } from 'lucide-react';
 import { PageHero } from '@/components/PageHero';
 import { Reveal } from '@/components/Reveal';
+import { ContactTabs } from './ContactTabs';
 import { org } from '@/lib/content';
 
 export const metadata: Metadata = {
@@ -59,12 +60,22 @@ export default function ContactPage() {
             </Reveal>
           </div>
 
+        </div>
+      </section>
+
+      <section className="bg-ol-cream">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
           <Reveal>
-            <p className="mt-10 max-w-measure leading-relaxed text-ol-muted">
-              Un formulaire de contact, une candidature bénévole en ligne et une inscription
-              à notre lettre d&apos;information seront bientôt disponibles ici.
+            <h2 className="text-3xl font-black text-ol-charcoal sm:text-4xl">
+              Écrivez-nous directement
+            </h2>
+            <p className="mt-3 max-w-measure leading-relaxed text-ol-muted">
+              Choisissez le formulaire qui correspond à votre demande.
             </p>
           </Reveal>
+          <div className="mt-8">
+            <ContactTabs />
+          </div>
         </div>
       </section>
     </>

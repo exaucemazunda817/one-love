@@ -27,7 +27,15 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   plus sitemap et robots. En-tête avec menu mobile, pied de page, composant
   d'apparition au défilement. Vérifié à 1280 px et 375 px : 13 routes en 200,
   404 fonctionnel, console propre, aucun débordement horizontal.
-- Jalons 2 à 10 : à faire. Voir le plan.
+- **Jalon 2 — Formulaires publics : FAIT.** Contact, candidature bénévole et
+  partenariat (en onglets sur `/contact`), newsletter en double opt-in (pied
+  de page + `/newsletter/confirmer`) — zod, `allowRequest`, notification par
+  e-mail (Resend, silencieux tant que non configuré), écriture en base
+  vérifiée pour les quatre. Rate limiting testé (429 après la limite),
+  injection `javascript:` bloquée. Session HMAC et `src/proxy.ts` posés pour
+  `/gestion`, pas encore d'écran de lecture derrière (à faire si besoin avant
+  le jalon 5).
+- Jalons 3 à 10 : à faire. Voir le plan.
 
 **Décision de Mazunda (23/09) : le nouveau site ne fait AUCUNE référence à
 l'ancien WordPress.** Ni lien, ni mention « site en construction », ni
@@ -126,6 +134,18 @@ C'est une vraie association, avec de vrais donateurs.
 actuel annonce le 44 rue de la Roquette (Paris 11e), une base officielle
 indique Châtenay-Malabry.
 
+## Piège React trouvé et corrigé au jalon 2
+
+`event.currentTarget` redevient `null` dès que la phase de dispatch de
+l'événement se termine — comportement standard du DOM, pas un bug de React.
+Dans un gestionnaire `async`, y accéder après un `await` (ex. `event.
+currentTarget.reset()` après `await fetch(...)`) lève une exception : l'envoi
+réussissait bien côté serveur (201) mais l'utilisateur voyait « Une erreur est
+survenue ». **Toujours capturer la référence dans une variable AVANT le
+premier `await`** (`const formEl = event.currentTarget`), jamais relire
+`event.currentTarget` après. Les quatre formulaires du jalon 2 suivent cette
+règle — voir le commentaire dans `ContactForm.tsx` pour le détail.
+
 ## Pièges de déploiement (appris sur les projets précédents)
 
 - `"build": "prisma generate && next build"` — déjà en place. Sans lui, Vercel
@@ -137,6 +157,20 @@ indique Châtenay-Malabry.
 - Le domaine `associationonelove.org` est chez **OVH**, les e-mails passent par
   **Google**. Ne modifier que les enregistrements A et CNAME — **jamais les MX**.
   Pour Resend, vérifier un **sous-domaine** dédié afin de ne pas casser le SPF.
+
+## Paiements (précisé par Mazunda le 23/09/2026)
+
+**Stripe** : carte, prélèvement SEPA et virement géré par Stripe.
+**SerdiPay** : Mobile Money local en RDC — remplace le Mobile Money confirmé
+à la main envisagé initialement.
+Le virement bancaire manuel actuel (RIB publié) reste disponible en parallèle.
+
+`Donation.stripePaymentIntentId` et `Donation.serdipayTransactionId` sont tous
+deux `@unique` : c'est la clé d'idempotence qui empêche un webhook rejoué —
+cas normal, les deux prestataires réessaient tant qu'ils n'ont pas reçu un
+code de succès — de créditer deux fois le même don. Au jalon 4 : vérifier
+chaque paiement **côté serveur** auprès du prestataire, jamais sur la seule
+foi du contenu du webhook.
 
 ## Ce qui bloque, côté association
 
