@@ -203,3 +203,51 @@ export type ChildInput = z.infer<typeof childSchema>;
 export type CareEventInput = z.infer<typeof careEventSchema>;
 export type ChildEnrollmentInput = z.infer<typeof childEnrollmentSchema>;
 export type MediaConsentInput = z.infer<typeof mediaConsentSchema>;
+
+// --- Équipe et paie (jalon 8) ---------------------------------------------
+
+export const teamMemberSchema = z.object({
+  firstName: z.string().trim().min(1, 'Champ requis.').max(80),
+  lastName: z.string().trim().min(1, 'Champ requis.').max(80),
+  engagement: z.enum(['SALARIED_DRC', 'CONTRACTOR_DRC', 'VOLUNTEER_FRANCE', 'VOLUNTEER_DRC', 'BOARD_MEMBER']),
+  jobTitle: z.string().trim().max(120).optional().or(z.literal('')),
+  email: z.string().trim().toLowerCase().email('Adresse e-mail invalide.').max(180).optional().or(z.literal('')),
+  phone: z.string().trim().max(40).optional().or(z.literal('')),
+  city: z.string().trim().max(80).optional().or(z.literal('')),
+  startedOn: z.string().optional().or(z.literal(''))
+});
+
+export const employmentContractSchema = z
+  .object({
+    reference: z.string().trim().max(80).optional().or(z.literal('')),
+    startsOn: z.string().refine((v) => !Number.isNaN(Date.parse(v)), 'Date invalide.'),
+    endsOn: z.string().optional().or(z.literal('')),
+    grossAmount: decimalString(15, 2),
+    grossCurrency: z.enum(['EUR', 'CDF', 'USD']),
+    periodicity: z.enum(['MONTHLY', 'WEEKLY', 'DAILY', 'ONE_OFF']).default('MONTHLY')
+  })
+  .refine((data) => !data.endsOn || Date.parse(data.endsOn) >= Date.parse(data.startsOn), {
+    message: 'La fin du contrat ne peut pas précéder son début.',
+    path: ['endsOn']
+  });
+
+// `refine` impose le taux de change dès que la devise n'est pas l'euro — même
+// règle que pour une écriture comptable (transactionEntrySchema) : jamais de
+// taux par défaut silencieux.
+export const payrollEntrySchema = z
+  .object({
+    periodYear: z.number().int().min(2020).max(new Date().getFullYear() + 1),
+    periodMonth: z.number().int().min(1).max(12),
+    amount: decimalString(15, 2),
+    currency: z.enum(['EUR', 'CDF', 'USD']),
+    fxRate: decimalString(10, 8).optional().or(z.literal('')),
+    projectId: optionalId
+  })
+  .refine((data) => data.currency === 'EUR' || (data.fxRate && Number(data.fxRate) > 0), {
+    message: "Le taux de change est requis pour une devise autre que l'euro.",
+    path: ['fxRate']
+  });
+
+export type TeamMemberInput = z.infer<typeof teamMemberSchema>;
+export type EmploymentContractInput = z.infer<typeof employmentContractSchema>;
+export type PayrollEntryInput = z.infer<typeof payrollEntrySchema>;

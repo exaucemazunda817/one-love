@@ -193,12 +193,13 @@ model Project {
   isDonationTarget Boolean         @default(true)
   displayOrder   Int               @default(0)
 
-  budgetLines  BudgetLine[]
-  donations    Donation[]
-  transactions Transaction[]
-  enrollments  ChildEnrollment[]
-  assets       Asset[]
-  newsArticles NewsArticle[]
+  budgetLines    BudgetLine[]
+  donations      Donation[]
+  transactions   Transaction[]
+  enrollments    ChildEnrollment[]
+  assets         Asset[]
+  newsArticles   NewsArticle[]
+  payrollEntries PayrollEntry[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -853,7 +854,12 @@ model PayrollEntry {
   status       PayrollStatus @default(DRAFT)
   paidOn       DateTime?     @db.Date
   /// Imputation à un projet, quand le poste est financé par un bailleur.
+  /// Relation ajoutée au jalon 8 : absente du schéma initial du jalon 0, où
+  /// ce champ n'était qu'un scalaire sans clé étrangère réelle — un oubli,
+  /// pas un choix, corrigé dès que ce jalon en a eu besoin pour afficher le
+  /// nom du projet sur un versement.
   projectId    String?
+  project      Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
 
   transaction Transaction?
 

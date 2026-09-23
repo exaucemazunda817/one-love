@@ -22,6 +22,8 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   const canSeeAccounting = ['DIRECTION', 'COMPTABLE', 'LECTURE'].includes(user.role);
   const canSeeExpenseEntry = ['TERRAIN', 'COMPTABLE'].includes(user.role);
   const canSeeBeneficiaries = ['DIRECTION', 'TERRAIN'].includes(user.role);
+  const canSeeTeam = ['RH', 'DIRECTION', 'TERRAIN'].includes(user.role);
+  const canSeePayrollLedger = ['RH', 'DIRECTION', 'COMPTABLE'].includes(user.role);
 
   return (
     <div className="min-h-screen bg-ol-cream">
@@ -57,6 +59,19 @@ export default async function ProtectedLayout({ children }: { children: React.Re
                   className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink"
                 >
                   Bénéficiaires
+                </Link>
+              )}
+              {canSeeTeam && (
+                <Link href="/gestion/equipe" className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink">
+                  Équipe
+                </Link>
+              )}
+              {canSeePayrollLedger && (
+                <Link
+                  href="/gestion/equipe/paie"
+                  className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink"
+                >
+                  Registre de paie
                 </Link>
               )}
               {isDirection && (

@@ -59,6 +59,46 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   Journal d'audit vérifié : jamais un prénom, uniquement des identifiants
   et le code de référence ; chaque consultation de fiche journalisée
   (`VIEW_SENSITIVE`).
+- **Jalon 8 — Équipe et paie : FAIT.** Annuaire (`TeamMember`), contrats
+  (`EmploymentContract`), versements de paie (`PayrollEntry`) avec cycle
+  DRAFT → APPROVED → PAID. Un versement passé en PAID génère une et une seule
+  écriture de dépense (`markPayrollEntryPaid` dans `src/lib/team.ts`, même
+  schéma d'idempotence que les dons — relation 1-1 `Transaction.payrollEntryId`,
+  P2002 traité comme un rejeu inoffensif). La Transaction créée démarre en
+  DRAFT et suit le cycle normal de validation/verrouillage du jalon 6, sans
+  raccourci.
+  Matrice d'accès : RH a la pleine main (annuaire, contrats, paie).
+  DIRECTION lit tout, sans aucun bouton de création/action — **vrai bug
+  trouvé et corrigé en testant** : le bouton « Nouvelle personne » restait
+  visible pour DIRECTION dans `TeamManager.tsx`, qui n'avait aucune prop
+  `canManage` ; l'API le refusait déjà (403), mais l'interface proposait une
+  action interdite. COMPTABLE n'a accès qu'au registre de paie transversal
+  (`/gestion/equipe/paie`, montants et statuts uniquement, jamais l'annuaire
+  ni les contrats) — c'est la lecture littérale de « R (montants) » dans la
+  matrice du plan. TERRAIN reçoit un annuaire minimal filtré **côté serveur**
+  (nom, fonction, engagement — jamais coordonnées ni salaire), sans accès à
+  la fiche détaillée. LECTURE n'a aucun accès. Vérifié aux deux niveaux
+  (page et API, y compris en appelant les routes API directement en contournant
+  l'interface) pour les quatre rôles concernés, avec des comptes de test
+  supprimés après coup (y compris la Transaction et l'AuditLog générés).
+  **Deuxième vrai bug trouvé et corrigé** : `ENGAGEMENT_LABELS` (libellés
+  français des types d'engagement) était défini et exporté depuis
+  `TeamManager.tsx`, un module `'use client'`. Un composant serveur
+  (`page.tsx`) qui importe une constante depuis un module client ne reçoit
+  pas la vraie valeur — Next.js remplace les exports d'un module client par
+  une référence d'hydratation, donc l'accès `ENGAGEMENT_LABELS[...]` échouait
+  silencieusement et retombait sur l'enum brut (`SALARIED_DRC` affiché au lieu
+  de « Salarié — RDC »), sans aucune erreur dans les journaux serveur.
+  **Leçon retenue pour ce projet** : toute constante partagée entre un
+  composant serveur et un composant client doit vivre dans un module neutre
+  (`src/lib/*.ts`, sans `'use client'`), jamais être exportée depuis le
+  fichier client puis réimportée côté serveur — déplacé dans
+  `src/lib/team.ts`.
+  **Correctif de schéma au passage** : `PayrollEntry.projectId` n'avait pas
+  de vraie relation Prisma (contrairement à `Transaction.projectId`) — un
+  oubli du jalon 0, corrigé en ajoutant `Project.payrollEntries` /
+  `PayrollEntry.project`, poussé en base sans perte de données (table vide à
+  ce moment-là).
 - **Jalon 6 — Comptabilité : FAIT.** Comptes de trésorerie, catégories (un
   seul niveau), journal avec cycle DRAFT → VALIDATED → LOCKED (ou
   → CANCELLED), pièces justificatives (Vercel Blob privé, repli local),
@@ -105,7 +145,7 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   Mobile Money est annoncée sur `/dons` comme « bientôt disponible », sans
   aucun appel réseau deviné. À reprendre dès que Mazunda a un accès réel
   (compte marchand, vraie doc transmise par SerdiPay).
-- Jalons 3, 4 (partie 2), 5 à 10 : à faire. Voir le plan.
+- Jalons 3, 4 (partie 2), 9, 10 : à faire. Voir le plan.
 
 **Décision de Mazunda (23/09) : le nouveau site ne fait AUCUNE référence à
 l'ancien WordPress.** Ni lien, ni mention « site en construction », ni
