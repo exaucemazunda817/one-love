@@ -8,8 +8,9 @@ import { SESSION_COOKIE_NAME, verifySessionToken } from '@/lib/session';
 //
 // Le proxy ne fait que le contrôle grossier : le cookie est-il signé et non
 // expiré ? Il ne touche jamais à la base et ne fait jamais de bcrypt, qui ne
-// tournent pas en edge runtime. Le contrôle fin (compte actif, rôle, version
-// du jeton) appartiendra au layout serveur de /gestion, au jalon 5.
+// tournent pas en edge runtime. Le contrôle fin (compte actif, rôle réel)
+// appartient à getCurrentGestionUser() (src/lib/auth.ts), appelé par le
+// layout serveur de /gestion et par chaque route API sensible.
 //
 // Les routes API protégées sont gardées ICI aussi, pas seulement les pages :
 // sur abg-rdc, une première version ne protégeait que les pages et laissait
@@ -17,14 +18,17 @@ import { SESSION_COOKIE_NAME, verifySessionToken } from '@/lib/session';
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  const isPublicGestionRoute =
+    pathname === '/gestion/connexion' || pathname === '/api/gestion/connexion';
   const isProtected =
-    (pathname.startsWith('/gestion') && pathname !== '/gestion/connexion') ||
-    pathname.startsWith('/api/gestion');
+    (pathname.startsWith('/gestion') || pathname.startsWith('/api/gestion')) &&
+    !isPublicGestionRoute;
 
   if (!isProtected) return NextResponse.next();
 
   const token = request.cookies.get(SESSION_COOKIE_NAME)?.value;
-  if (await verifySessionToken(token)) return NextResponse.next();
+  const payload = await verifySessionToken(token);
+  if (payload) return NextResponse.next();
 
   if (pathname.startsWith('/api/')) {
     return NextResponse.json({ error: 'Non authentifié.' }, { status: 401 });

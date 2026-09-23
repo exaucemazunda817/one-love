@@ -35,6 +35,17 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   injection `javascript:` bloquée. Session HMAC et `src/proxy.ts` posés pour
   `/gestion`, pas encore d'écran de lecture derrière (à faire si besoin avant
   le jalon 5).
+- **Jalon 5 — Comptes nominatifs : FAIT.** Connexion e-mail/mot de passe
+  (bcryptjs), changement de mot de passe forcé à la première connexion,
+  cinq rôles, gestion des comptes et journal d'audit réservés à DIRECTION
+  (page **et** API, double verrou vérifié). Session étendue à
+  `{ userId, tokenVersion, exp }` — le rôle n'est jamais porté par le jeton,
+  toujours relu frais depuis la base (`getCurrentGestionUser`, mémoïsée par
+  requête avec `cache()` de React pour éviter de doubler les appels DB entre
+  le layout et chaque page). Vérifié en conditions réelles : un compte
+  suspendu perd l'accès à la requête suivante **sans se déconnecter**, sans
+  attendre l'expiration du cookie de 8 h ; auto-suspension bloquée ; dernier
+  compte DIRECTION actif protégé.
 - **Jalon 4 (partie 1) — Paiements Stripe : FAIT.** Checkout Session (carte +
   SEPA) créée par appel REST direct (`src/lib/stripe.ts`, Basic Auth, pas de
   SDK — même choix que Resend), webhook `/api/webhooks/stripe` avec
@@ -167,6 +178,41 @@ veulent pas dire la même chose.
 Corrigé en lisant `error.meta.target` (Prisma) pour distinguer les deux —
 vérifié empiriquement avec un script d'inspection avant de coder le correctif,
 plutôt que de deviner la forme de l'erreur.
+
+## Architecture publique vs logiciel de gestion (jalon 5)
+
+Le site public vit dans le groupe de routes `src/app/(site)/` avec son
+propre `layout.tsx` (en-tête, pied de page, bouton « Faire un don »). La
+racine `src/app/layout.tsx` est minimale (police, html/body). **Vrai défaut
+trouvé et corrigé** : avant cette séparation, `/gestion` héritait du layout
+racine et affichait donc le menu public et le bouton de don au-dessus de
+l'écran de connexion — pas acceptable pour un outil interne. `/gestion` a sa
+propre coquille indépendante (page de connexion en `<main>` autonome, puis
+`gestion/(protected)/layout.tsx`). **Ne jamais faire dépendre `/gestion`
+du layout du site public.**
+
+## Piège de test navigateur découvert au jalon 5 (spécifique à cet environnement)
+
+En testant la connexion, `computer left_click` avec un `ref` a échoué à
+déclencher plusieurs soumissions de formulaire (aucune requête n'atteignait
+le serveur), alors que le même clic via `element.click()` en JavaScript
+fonctionnait à chaque fois. Cause non identifiée avec certitude (probable
+décalage d'échelle entre la capture et le vrai viewport, déjà documenté sur
+gestion-scolaire le 09/09) — pas un bug de l'application : de vrais visiteurs
+cliquant avec une vraie souris ne sont pas concernés. **Pour ce projet,
+préférer un clic déclenché en JavaScript (`document.querySelector(...).
+click()`) à `computer left_click` sur les formulaires `/gestion`, et
+toujours vérifier `window.location.href` après coup plutôt que de se fier à
+une capture d'écran ou au titre d'onglet, qui peuvent rester figés pendant
+qu'une navigation React est encore en cours.**
+
+Piège Neon classique reproduit plusieurs fois pendant ces tests : le calcul
+se rendort en quelques secondes, y compris entre deux clics rapprochés dans
+le même test. Un simple `SELECT 1` avant de commencer ne suffit pas s'il
+s'écoule plus de quelques secondes avant la vraie requête. Pour une séquence
+de test un peu longue, lancer un petit script Node qui interroge la base
+toutes les 2 secondes en arrière-plan pendant toute la durée du test
+(pattern déjà utilisé sur gospel-nation pour ses constructions).
 
 ## Piège React trouvé et corrigé au jalon 2
 
