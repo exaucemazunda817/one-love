@@ -4,6 +4,8 @@ import { org, donationNotice } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'Politique de confidentialité',
+  description:
+    "Quelles données ce site collecte, comment elles sont utilisées et comment exercer vos droits RGPD auprès de l'association One Love.",
   robots: { index: false }
 };
 

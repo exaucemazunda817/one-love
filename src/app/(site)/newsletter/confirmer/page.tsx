@@ -5,6 +5,7 @@ import { ConfirmClient } from './ConfirmClient';
 
 export const metadata: Metadata = {
   title: 'Confirmation d’inscription',
+  description: "Confirmez votre inscription à la lettre d'information de l'association One Love.",
   robots: { index: false }
 };
 

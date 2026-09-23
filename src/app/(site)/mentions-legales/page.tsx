@@ -4,6 +4,7 @@ import { org } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'Mentions légales',
+  description: 'Éditeur, hébergeur et informations légales du site de l’association One Love.',
   robots: { index: false }
 };
 
