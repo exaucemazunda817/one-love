@@ -22,7 +22,10 @@ export default function MerciPage() {
             <CheckCircle2 size={24} className="mt-0.5 shrink-0 text-ol-ember-ink" aria-hidden />
             <p className="leading-relaxed text-ol-ink">
               Votre paiement a été transmis. Vous recevrez une confirmation par e-mail si vous
-              en avez fait la demande. Merci de faire vivre nos programmes de terrain.
+              en avez fait la demande. Si vous avez choisi un don mensuel, il se renouvellera
+              automatiquement chaque mois jusqu&apos;à ce que vous nous demandiez de l&apos;arrêter
+              — écrivez-nous à tout moment pour le modifier ou l&apos;interrompre. Merci de faire
+              vivre nos programmes de terrain.
             </p>
           </div>
           <Link

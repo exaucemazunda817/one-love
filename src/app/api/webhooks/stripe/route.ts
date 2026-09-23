@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyStripeWebhookSignature, type StripeWebhookEvent } from '@/lib/stripe';
-import { confirmDonation } from '@/lib/donations';
+import {
+  verifyStripeWebhookSignature,
+  getStripeSubscription,
+  type StripeWebhookEvent,
+  type StripeCheckoutSessionObject,
+  type StripeInvoiceObject
+} from '@/lib/stripe';
+import { confirmDonation, createConfirmedDonation } from '@/lib/donations';
 
 // Le corps DOIT être lu en texte brut, AVANT tout JSON.parse : la vérification
 // de signature Stripe porte sur les octets exacts envoyés, pas sur une
@@ -35,16 +41,22 @@ export async function POST(request: NextRequest) {
 
   try {
     if (event.type === 'checkout.session.completed') {
-      const session = event.data.object;
-      const donationId = session.metadata?.donationId;
+      const session = event.data.object as unknown as StripeCheckoutSessionObject;
 
+      // Don mensuel : ignoré ici volontairement. `invoice.paid` est la seule
+      // source de vérité pour un abonnement, premier prélèvement compris —
+      // traiter aussi ce premier paiement depuis checkout.session.completed
+      // créerait un don en double pour le premier mois.
+      if (session.mode === 'subscription') {
+        return NextResponse.json({ status: 'ignored', reason: 'subscription-mode' });
+      }
+
+      const donationId = session.metadata?.donationId;
       if (!donationId) {
         console.error('Session Stripe sans donationId en métadonnée', session.id);
         return NextResponse.json({ error: 'Métadonnée manquante' }, { status: 400 });
       }
       if (session.payment_status !== 'paid') {
-        // ex. paiement par virement Stripe encore en cours : on attend
-        // l'événement suivant plutôt que de confirmer un don non réglé.
         return NextResponse.json({ status: 'ignored', reason: 'not-paid' });
       }
       if (!session.payment_intent) {
@@ -56,6 +68,38 @@ export async function POST(request: NextRequest) {
         donationId,
         providerField: 'stripePaymentIntentId',
         providerReference: session.payment_intent
+      });
+    }
+
+    if (event.type === 'invoice.paid') {
+      const invoice = event.data.object as unknown as StripeInvoiceObject;
+
+      if (!invoice.subscription) {
+        // Facture hors abonnement (ex. facture ponctuelle créée à la main
+        // dans le tableau de bord Stripe) : hors du périmètre des dons
+        // mensuels, on ignore sans erreur.
+        return NextResponse.json({ status: 'ignored', reason: 'no-subscription' });
+      }
+
+      // Le projet et l'e-mail du donateur ne sont PAS sur la facture : ils
+      // vivent sur l'ABONNEMENT (subscription_data.metadata à la création de
+      // la session, voir src/lib/stripe.ts). Une facture par mois porte le
+      // même identifiant d'abonnement, donc la même métadonnée à chaque fois.
+      const subscription = await getStripeSubscription(invoice.subscription);
+
+      await createConfirmedDonation({
+        amountEur: invoice.amount_paid / 100,
+        method: 'STRIPE',
+        isRecurring: true,
+        projectSlug: subscription.metadata?.projectSlug || null,
+        donorEmail: subscription.metadata?.donorEmail || null,
+        providerField: 'stripePaymentIntentId',
+        // Pas littéralement un PaymentIntent : identifiant Stripe de la
+        // FACTURE, réutilisé comme clé d'idempotence (garanti présent et
+        // stable, contrairement à payment_intent qui peut être absent selon
+        // le moyen de paiement).
+        providerReference: invoice.id,
+        receivedOn: new Date()
       });
     }
 

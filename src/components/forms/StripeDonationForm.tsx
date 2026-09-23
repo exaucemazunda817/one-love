@@ -7,6 +7,7 @@ const presets = [10, 25, 50, 100];
 
 export function StripeDonationForm({ projectSlug }: { projectSlug?: string }) {
   const id = useId();
+  const [frequency, setFrequency] = useState<'once' | 'monthly'>('once');
   const [amount, setAmount] = useState<number | 'custom'>(25);
   const [customAmount, setCustomAmount] = useState('');
   const [email, setEmail] = useState('');
@@ -26,6 +27,7 @@ export function StripeDonationForm({ projectSlug }: { projectSlug?: string }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amountEur: finalAmount,
+          frequency,
           projectSlug: projectSlug || undefined,
           donorEmail: email || undefined
         })
@@ -55,7 +57,46 @@ export function StripeDonationForm({ projectSlug }: { projectSlug?: string }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <div>
-        <span className="mb-2 block text-sm font-bold text-ol-charcoal">Montant du don</span>
+        <span className="mb-2 block text-sm font-bold text-ol-charcoal">Fréquence du don</span>
+        <div
+          role="radiogroup"
+          aria-label="Fréquence du don"
+          className="inline-flex rounded-full border border-ol-line-strong p-1"
+        >
+          {(
+            [
+              { value: 'once', label: 'Une seule fois' },
+              { value: 'monthly', label: 'Tous les mois' }
+            ] as const
+          ).map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              role="radio"
+              aria-checked={frequency === option.value}
+              onClick={() => setFrequency(option.value)}
+              className={`rounded-full px-5 py-2 text-sm font-bold transition-colors ${
+                frequency === option.value
+                  ? 'bg-ol-ember-ink text-ol-white'
+                  : 'text-ol-charcoal hover:text-ol-ember-ink'
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+        {frequency === 'monthly' && (
+          <p className="mt-2 text-xs leading-relaxed text-ol-muted">
+            Prélèvement automatique chaque mois jusqu&apos;à ce que vous nous demandiez de
+            l&apos;arrêter — écrivez-nous à tout moment pour le modifier ou l&apos;interrompre.
+          </p>
+        )}
+      </div>
+
+      <div>
+        <span className="mb-2 block text-sm font-bold text-ol-charcoal">
+          Montant {frequency === 'monthly' ? 'mensuel' : 'du don'}
+        </span>
         <div className="flex flex-wrap gap-2.5">
           {presets.map((value) => (
             <button
@@ -136,7 +177,11 @@ export function StripeDonationForm({ projectSlug }: { projectSlug?: string }) {
         className="inline-flex items-center gap-2 rounded-full bg-ol-ember-ink px-6 py-3.5 text-sm font-bold text-ol-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
       >
         <CreditCard size={16} aria-hidden />
-        {pending ? 'Redirection…' : `Payer ${finalAmount ? `${finalAmount} €` : ''} par carte ou prélèvement`}
+        {pending
+          ? 'Redirection…'
+          : frequency === 'monthly'
+            ? `Donner ${finalAmount ? `${finalAmount} €/mois` : ''} par carte ou prélèvement`
+            : `Payer ${finalAmount ? `${finalAmount} €` : ''} par carte ou prélèvement`}
       </button>
       <p className="text-xs text-ol-muted">
         Paiement sécurisé par Stripe. Vous serez redirigé vers une page de paiement chiffrée.

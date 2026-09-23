@@ -30,35 +30,53 @@ export async function POST(request: NextRequest) {
   }
   const data = parsed.data;
 
-  const donation = await createPendingDonation({
-    amountEur: data.amountEur,
-    method: 'STRIPE',
-    projectSlug: data.projectSlug || null,
-    donorEmail: data.donorEmail || null
-  });
-
-  const project = donation.projectId
-    ? await prisma.project.findUnique({ where: { id: donation.projectId }, select: { name: true } })
+  const project = data.projectSlug
+    ? await prisma.project.findUnique({ where: { slug: data.projectSlug }, select: { name: true } })
     : null;
+  const description = project ? `Don — ${project.name} — ${org.name}` : `Don — ${org.name}`;
 
   try {
+    if (data.frequency === 'once') {
+      // Don unique : le Donation PENDING existe AVANT Checkout, pour porter
+      // son id dans les métadonnées de la session — voir confirmDonation().
+      const donation = await createPendingDonation({
+        amountEur: data.amountEur,
+        method: 'STRIPE',
+        projectSlug: data.projectSlug || null,
+        donorEmail: data.donorEmail || null
+      });
+
+      const session = await createDonationCheckoutSession({
+        amountEurCents: Math.round(data.amountEur * 100),
+        frequency: 'once',
+        donationId: donation.id,
+        description,
+        donorEmail: data.donorEmail || null,
+        successUrl: `${siteUrl}/dons/merci`,
+        cancelUrl: `${siteUrl}/dons?statut=annule`
+      });
+
+      if (!session.url) throw new Error('Stripe n’a renvoyé aucune URL de paiement.');
+      return NextResponse.json({ url: session.url }, { status: 201 });
+    }
+
+    // Don mensuel : aucun Donation créé ici — voir le commentaire de
+    // createDonationCheckoutSession dans src/lib/stripe.ts. Le projet et
+    // l'e-mail voyagent dans les métadonnées de l'ABONNEMENT.
     const session = await createDonationCheckoutSession({
       amountEurCents: Math.round(data.amountEur * 100),
-      donationId: donation.id,
-      description: project ? `Don — ${project.name} — ${org.name}` : `Don — ${org.name}`,
+      frequency: 'monthly',
+      projectSlug: data.projectSlug || null,
+      description: `${description} (don mensuel)`,
       donorEmail: data.donorEmail || null,
       successUrl: `${siteUrl}/dons/merci`,
       cancelUrl: `${siteUrl}/dons?statut=annule`
     });
 
     if (!session.url) throw new Error('Stripe n’a renvoyé aucune URL de paiement.');
-
     return NextResponse.json({ url: session.url }, { status: 201 });
   } catch (error) {
     console.error('Création de session Stripe échouée', error);
-    // Le don reste en base au statut PENDING : il ne sera jamais confirmé
-    // faute de paiement, mais rien n'est perdu si on veut relancer le
-    // donateur ou diagnostiquer l'échec depuis /gestion plus tard.
     return NextResponse.json(
       { error: 'Le paiement en ligne est momentanément indisponible. Merci de réessayer.' },
       { status: 502 }

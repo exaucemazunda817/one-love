@@ -57,6 +57,8 @@ export const donationSessionSchema = z.object({
   // mais fini pour écarter une faute de frappe (ex. 100000 € au lieu de
   // 100 €) et un envoi abusif automatisé.
   amountEur: z.number().finite().min(1, 'Le don minimum est de 1 €.').max(100000, 'Montant trop élevé — contactez-nous directement.'),
+  // Choix du donateur entre un don unique et un engagement mensuel récurrent.
+  frequency: z.enum(['once', 'monthly']).default('once'),
   projectSlug: z.string().trim().max(80).optional().or(z.literal('')),
   donorEmail: email.optional().or(z.literal(''))
 });

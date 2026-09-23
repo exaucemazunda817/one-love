@@ -142,3 +142,96 @@ export async function confirmDonation({
 
   return { alreadyConfirmed: false };
 }
+
+/**
+ * Crée un don DÉJÀ confirmé — utilisé pour les dons mensuels récurrents, où
+ * il n'existe pas de `Donation` PENDING préalable à faire basculer :
+ * chaque prélèvement mensuel (le premier compris) produit son propre don,
+ * à réception de l'événement `invoice.paid` de Stripe.
+ *
+ * Idempotente comme `confirmDonation()`, mais via un chemin différent : ici
+ * on cherche D'ABORD si `providerReference` existe déjà (le webhook peut être
+ * rejoué) avant de créer quoi que ce soit, pour ne jamais recréer un Donor ou
+ * un Project en double sur un simple rejeu.
+ */
+export async function createConfirmedDonation({
+  amountEur,
+  method,
+  isRecurring,
+  projectSlug,
+  donorEmail,
+  providerField,
+  providerReference,
+  receivedOn
+}: {
+  amountEur: number;
+  method: DonationMethod;
+  isRecurring: boolean;
+  projectSlug?: string | null;
+  donorEmail?: string | null;
+  providerField: 'stripePaymentIntentId' | 'serdipayTransactionId';
+  providerReference: string;
+  receivedOn: Date;
+}): Promise<{ created: boolean }> {
+  const existing = await prisma.donation.findFirst({ where: { [providerField]: providerReference } });
+  if (existing) return { created: false };
+
+  const project = projectSlug
+    ? await prisma.project.findUnique({ where: { slug: projectSlug } })
+    : null;
+  const donor = donorEmail
+    ? await prisma.donor.upsert({
+        where: { email: donorEmail },
+        update: {},
+        create: { email: donorEmail }
+      })
+    : null;
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      const donation = await tx.donation.create({
+        data: {
+          amount: amountEur,
+          currency: 'EUR',
+          fxRate: 1,
+          amountEur,
+          method,
+          status: 'CONFIRMED',
+          isRecurring,
+          receivedOn,
+          confirmedAt: new Date(),
+          projectId: project?.id,
+          donorId: donor?.id,
+          [providerField]: providerReference
+        }
+      });
+
+      await tx.transaction.create({
+        data: {
+          kind: 'INCOME',
+          status: 'DRAFT',
+          occurredOn: receivedOn,
+          label: project
+            ? `Don mensuel — ${project.name}`
+            : 'Don mensuel — fonds général',
+          amount: amountEur,
+          currency: 'EUR',
+          fxRate: 1,
+          amountEur,
+          projectId: project?.id,
+          donationId: donation.id
+        }
+      });
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      // Rejeu du webhook arrivé entre le findFirst ci-dessus et l'écriture :
+      // fenêtre de course étroite mais réelle, traitée comme un doublon
+      // inoffensif — le premier appel a déjà tout créé.
+      return { created: false };
+    }
+    throw error;
+  }
+
+  return { created: true };
+}
