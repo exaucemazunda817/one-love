@@ -199,7 +199,7 @@ export function MobileDonateBar({ locale }: { locale: Locale }) {
     <div className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 flex gap-2 rounded-full border border-gold/25 bg-night/60 p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,.7)] backdrop-blur-md dk:hidden">
       <a
         href={donateHref(pathname, locale)}
-        className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full bg-gold text-[16px] font-extrabold text-night no-underline hover:text-night"
+        className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full border border-cream/30 bg-white/10 text-[16px] font-extrabold text-cream no-underline hover:bg-white/20 hover:text-cream"
       >
         <HeartIcon size="1em" aria-hidden />
         {t.donate}
@@ -209,9 +209,9 @@ export function MobileDonateBar({ locale }: { locale: Locale }) {
       <Link
         href={localeHref('/contact', locale)}
         aria-label={t.whatsapp}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-cream"
+        className="flex h-12 w-12 items-center justify-center rounded-full border border-cream/30 bg-white/10 hover:bg-white/20"
       >
-        <WhatsappLogoIcon size={24} color="#3F5A47" aria-hidden />
+        <WhatsappLogoIcon size={24} color="#FBF7F1" aria-hidden />
       </Link>
     </div>
   );
