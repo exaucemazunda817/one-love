@@ -57,7 +57,7 @@ export function PartnersMarquee({ locale }: { locale: Locale }) {
           <p className="m-0 text-pretty text-[15px] leading-[1.55] text-ink-body">{t.subtitle}</p>
         </Reveal>
       </div>
-      <div className="mt-6 flex flex-col gap-1 sm:gap-2">
+      <div className="mt-5 flex flex-col">
         {ROWS.map((row, r) => {
           // La première rangée porte les noms (lecteurs d'écran) ; la seconde
           // est décorative.

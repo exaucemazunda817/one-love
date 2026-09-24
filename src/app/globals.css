@@ -405,37 +405,43 @@ html.js [data-reveal-variant='scale'][data-reveal='waiting'] {
   width: max-content;
   align-items: center;
   gap: 12px;
-  /* La marge verticale laisse la place au grossissement des tuiles au survol. */
-  padding: 8px 6px;
+  /* La marge verticale laisse la place au grossissement des tuiles et à leur
+     ombre portée, que le cadre (overflow: hidden) couperait sinon. */
+  padding: 10px 8px 22px;
   animation: ol-marquee var(--ol-marquee-speed, 110s) linear infinite;
   animation-direction: var(--ol-marquee-direction, normal);
 }
 
 @media (min-width: 640px) {
   .ol-marquee-track {
-    gap: 16px;
-    padding: 10px 8px;
+    gap: 18px;
+    padding: 12px 10px 30px;
   }
 }
 
-/* Tuile d'un logo : bordure fine et fond à peine teinté, qui s'éclaircissent
-   et grossissent au survol. */
+/* Tuile d'un logo : dégradé clair à l'intérieur (blanc en haut à gauche, sable
+   léger en bas à droite) et ombre portée chaude à l'extérieur. Au survol, la
+   tuile grossit et son ombre s'allonge, comme si elle se soulevait. */
 .ol-logo-tile {
-  border: 1px solid rgba(60, 35, 15, 0.12);
+  border: 1px solid rgba(60, 35, 15, 0.1);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.55);
+  background-color: #fff;
+  background-image: linear-gradient(155deg, #ffffff 0%, #fbf6ef 45%, #efe3d2 100%);
+  box-shadow:
+    0 1px 2px rgba(60, 35, 15, 0.08),
+    0 6px 14px -4px rgba(60, 35, 15, 0.18);
   transition:
     transform 300ms ease,
     border-color 300ms ease,
-    background-color 300ms ease,
     box-shadow 300ms ease;
 }
 
 .ol-logo-tile:hover {
   transform: scale(1.1);
-  border-color: rgba(60, 35, 15, 0.28);
-  background: #fff;
-  box-shadow: var(--shadow-ol-sm);
+  border-color: rgba(60, 35, 15, 0.22);
+  box-shadow:
+    0 2px 4px rgba(60, 35, 15, 0.08),
+    0 14px 26px -8px rgba(60, 35, 15, 0.3);
 }
 
 .ol-marquee:hover .ol-marquee-track {
