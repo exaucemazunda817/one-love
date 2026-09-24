@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { XIcon } from '@phosphor-icons/react';
 import { Reveal } from '@/components/Reveal';
 import { ToConfirm } from '@/components/site/ui';
+import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
 import { publishableGallery } from '@/lib/content';
 
 export interface NewsText {
@@ -46,7 +47,22 @@ export function NewsInteractive({ t }: { t: NewsText }) {
 
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6">
           {posts.map((p, i) => (
-            <Reveal key={`${p.tag}-${p.t}`} delay={(i % 3) * 90}>
+            <div key={`${p.tag}-${p.t}`}>
+            <div className="md:hidden">
+              <MobilePhotoCard
+                src={p.img}
+                alt={p.alt}
+                heightClass="h-[440px]"
+                badge={
+                  <span className="rounded-full bg-cream px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.08em] text-copper-700">
+                    {p.tag} · {p.date}
+                  </span>
+                }
+                title={p.t}
+                text={p.d}
+              />
+            </div>
+            <Reveal delay={(i % 3) * 90} className="hidden h-full md:block">
               <article className="flex h-full flex-col gap-3 overflow-hidden rounded-[20px] bg-white shadow-ol-sm">
                 <div className="relative aspect-[4/3]">
                   <Image src={p.img} alt={p.alt} fill sizes="(max-width: 1200px) 100vw, 380px" className="photo-tone object-cover" />
@@ -61,6 +77,7 @@ export function NewsInteractive({ t }: { t: NewsText }) {
                 </div>
               </article>
             </Reveal>
+            </div>
           ))}
         </div>
 

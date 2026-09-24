@@ -13,6 +13,7 @@ import {
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { Eyebrow, CallBanner } from '@/components/site/ui';
+import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { currentProject } from '@/lib/content';
 
@@ -94,9 +95,24 @@ export function ActionsPage({ locale }: { locale: Locale }) {
           const Icon = a.icon;
           const imgFirst = i % 2 === 0;
           return (
+            <div key={a.t}>
+            <div className="md:hidden">
+              <MobilePhotoCard
+                src={a.img}
+                alt={a.alt}
+                heightClass="h-[480px]"
+                badge={
+                  <span className="inline-flex items-center gap-2 rounded-full bg-cream px-3 py-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-copper-700">
+                    <Icon size={18} aria-hidden />
+                    {a.k}
+                  </span>
+                }
+                title={a.t}
+                text={a.d}
+              />
+            </div>
             <Reveal
-              key={a.t}
-              className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] items-center gap-[clamp(28px,5vw,64px)]"
+              className="hidden grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] items-center gap-[clamp(28px,5vw,64px)] md:grid"
             >
               <div className={`relative aspect-[4/3] overflow-hidden rounded-[20px] ${imgFirst ? 'dk:order-1' : 'dk:order-2'}`}>
                 <Image src={a.img} alt={a.alt} fill sizes="(max-width: 1200px) 100vw, 560px" loading="lazy" className="photo-tone object-cover object-[50%_35%]" />
@@ -112,6 +128,7 @@ export function ActionsPage({ locale }: { locale: Locale }) {
                 <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{a.d}</p>
               </div>
             </Reveal>
+            </div>
           );
         })}
       </section>

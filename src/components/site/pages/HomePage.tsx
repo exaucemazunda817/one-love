@@ -11,6 +11,7 @@ import {
   LockKeyIcon
 } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
+import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
 import { Brush, BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { DonationQuick } from '@/components/site/DonationQuick';
 import { localeHref, type Locale } from '@/lib/i18n';
@@ -252,9 +253,20 @@ export function HomePage({ locale }: { locale: Locale }) {
             <h2 className={h2Class}>{t.dayTitle}</h2>
             <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.daySubtitle}</p>
           </Reveal>
-          <div className="no-scrollbar grid auto-cols-[minmax(240px,1fr)] grid-flow-col gap-6 overflow-x-auto pb-3 [scroll-snap-type:x_mandatory]">
+          <div className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 md:auto-cols-[minmax(240px,1fr)] md:gap-6 overflow-x-auto pb-3 [scroll-snap-type:x_mandatory]">
             {t.day.map(([h, dt, d, img, alt, rot], i) => (
-              <Reveal key={h} delay={i * 90} className="flex flex-col gap-3.5 [scroll-snap-align:start]">
+              <div key={h} className="[scroll-snap-align:start]">
+              <div className="md:hidden">
+                <MobilePhotoCard
+                  src={img}
+                  alt={alt}
+                  heightClass="h-[420px]"
+                  badge={<span className="rounded-full bg-cream px-2.5 py-1 text-[13px] font-extrabold text-night">{h}</span>}
+                  title={dt}
+                  text={d}
+                />
+              </div>
+              <Reveal delay={i * 90} className="hidden flex-col gap-3.5 md:flex">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-[0_8px_24px_rgba(60,35,15,.12)]" style={{ transform: `rotate(${rot})` }}>
                   <Image src={img} alt={alt} fill sizes="(max-width: 768px) 60vw, 280px" loading="lazy" className="photo-tone object-cover object-[50%_35%]" />
                 </div>
@@ -265,6 +277,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                 <h3 className="m-0 font-serif text-[22px] font-semibold">{dt}</h3>
                 <p className="m-0 text-[16px] leading-[1.55] text-ink-body">{d}</p>
               </Reveal>
+              </div>
             ))}
           </div>
           <span className="text-[13px] text-ink-soft">{t.dayNote}</span>
