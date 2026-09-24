@@ -292,6 +292,66 @@ html.js [data-reveal-variant='zoom'][data-reveal='waiting'] img {
   transition-delay: 0ms;
 }
 
+/* Page Actualités : la carte se soulève au survol, sa photo regrossit
+   (même si la souris est sur le texte), et un liseré crème apparaît à
+   l'intérieur du cadre photo. */
+.ol-news-card {
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ol-news-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-ol-hover);
+}
+
+.ol-news-card:hover [data-reveal-variant='zoom'][data-reveal='shown'] img,
+.ol-gallery-frame:hover [data-reveal-variant='zoom'][data-reveal='shown'] img,
+.ol-gallery-frame:focus-visible [data-reveal-variant='zoom'][data-reveal='shown'] img {
+  transform: scale(1.06);
+  transition-duration: 700ms;
+  transition-delay: 0ms;
+}
+
+.ol-news-frame {
+  position: relative;
+}
+
+.ol-news-frame::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1.5px solid rgba(255, 250, 240, 0.85);
+  border-radius: 12px;
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    opacity 500ms ease,
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ol-news-card:hover .ol-news-frame::after,
+.ol-gallery-frame:hover::after,
+.ol-gallery-frame:focus-visible::after {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ol-news-card,
+  .ol-news-card:hover {
+    transform: none;
+    transition: none;
+  }
+
+  .ol-news-frame::after {
+    transition: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html.js [data-reveal] img {
     transform: none !important;
