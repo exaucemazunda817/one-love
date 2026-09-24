@@ -14,7 +14,7 @@ export function LoginForm() {
     setPending(true);
     setError(null);
 
-    // Capturée avant le premier `await` : voir src/components/forms/ContactForm.tsx
+    // Capturée avant le premier `await` : voir src/components/site/pages/ContactFormCard.tsx
     // pour l'explication (event.currentTarget redevient null après le dispatch).
     const formEl = event.currentTarget;
     const formData = new FormData(formEl);

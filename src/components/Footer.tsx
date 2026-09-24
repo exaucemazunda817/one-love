@@ -1,113 +1,87 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { org, identity } from '@/lib/content';
+import {
+  EnvelopeSimpleIcon,
+  WhatsappLogoIcon,
+  FacebookLogoIcon
+} from '@phosphor-icons/react/ssr';
 import { NewsletterForm } from '@/components/forms/NewsletterForm';
+import {
+  chrome,
+  localeHref,
+  CONTACT_EMAIL,
+  FACEBOOK_URL,
+  WHATSAPP_PLACEHOLDER,
+  type Locale
+} from '@/lib/i18n';
 
-export function Footer() {
+const linkClass =
+  'flex min-h-10 items-center text-[15px] text-on-dark-1 no-underline hover:text-gold-hover';
+
+export function Footer({ locale }: { locale: Locale }) {
+  const t = chrome[locale].footer;
   return (
-    <footer className="bg-ol-night text-ol-sand">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-3">
-        <div className="space-y-4">
-          <Image
-            src="/brand/logo-one-love.png"
-            alt={org.name}
-            width={185}
-            height={55}
-            className="h-10 w-auto brightness-0 invert"
-          />
-          <p className="max-w-measure text-sm leading-relaxed">{org.tagline}</p>
+    // 88 px de marge basse sous 1200 px : la barre de don flottante ne doit
+    // jamais masquer la dernière ligne du pied de page.
+    <footer className="bg-night pb-[88px] text-on-dark-1 dk:pb-0">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] pb-8 pt-[clamp(48px,7vw,80px)]">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,210px),1fr))] gap-8">
+          <div className="flex flex-col gap-3.5">
+            <Image src="/brand/logo-one-love-rond.png" alt="One Love" width={88} height={88} className="h-[88px] w-[88px]" />
+            <p className="m-0 font-serif text-[18px] italic leading-[1.4] text-cream">{t.motto}</p>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <span className="mb-1.5 text-[13px] font-extrabold tracking-[0.08em] text-gold">{t.explore}</span>
+            {t.links.map((l) => (
+              <Link key={l.href} href={localeHref(l.href, locale)} className={linkClass}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <span className="mb-1.5 text-[13px] font-extrabold tracking-[0.08em] text-gold">{t.reach}</span>
+            <a href={`mailto:${CONTACT_EMAIL}`} className={`${linkClass} gap-2`}>
+              <EnvelopeSimpleIcon size={20} aria-hidden />
+              {CONTACT_EMAIL}
+            </a>
+            {/* Numéro fictif de la maquette : affiché, jamais cliquable. */}
+            <span className="flex min-h-10 flex-wrap items-center gap-2 text-[15px] text-on-dark-1">
+              <WhatsappLogoIcon size={20} aria-hidden />
+              {WHATSAPP_PLACEHOLDER}
+              <span className="rounded-full border-[1.5px] border-dashed border-gold px-1.5 text-[12px] font-bold text-gold-hover">
+                {t.placeholder}
+              </span>
+            </span>
+            <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" className={`${linkClass} gap-2`}>
+              <FacebookLogoIcon size={20} aria-hidden />
+              Facebook
+            </a>
+          </div>
+
+          <div className="flex flex-col gap-2.5">
+            <span className="text-[13px] font-extrabold tracking-[0.08em] text-gold">{t.newsletter}</span>
+            <span className="text-[15px] leading-[1.5]">{t.newsletterText}</span>
+            <NewsletterForm locale={locale} />
+          </div>
         </div>
 
-        <div className="space-y-3">
-          <h2 className="text-sm font-bold uppercase tracking-[0.15em] text-ol-amber">
-            Découvrir
-          </h2>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/association" className="hover:text-ol-amber">
-                L&apos;association
-              </Link>
-            </li>
-            <li>
-              <Link href="/actions" className="hover:text-ol-amber">
-                Nos actions
-              </Link>
-            </li>
-            <li>
-              <Link href="/projets/reves-2" className="hover:text-ol-amber">
-                Le projet RÊVES 2
-              </Link>
-            </li>
-            <li>
-              <Link href="/galerie" className="hover:text-ol-amber">
-                Galerie
-              </Link>
-            </li>
-            <li>
-              <Link href="/dons" className="hover:text-ol-amber">
-                Faire un don
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div className="space-y-3">
-          <h2 className="text-sm font-bold uppercase tracking-[0.15em] text-ol-amber">
-            Nous joindre
-          </h2>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <a href={`mailto:${org.contactEmail}`} className="hover:text-ol-amber">
-                {org.contactEmail}
-              </a>
-            </li>
-            <li>
-              <a
-                href={org.facebookUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-ol-amber"
+        <div className="flex flex-wrap justify-between gap-3 border-t border-dark-line pt-5 text-[13px] text-on-dark-3">
+          <span>{t.legalLine}</span>
+          <div className="flex flex-wrap gap-5">
+            {t.legal.map((l) => (
+              <Link
+                key={l.href}
+                href={'frOnly' in l ? l.href : localeHref(l.href, locale)}
+                className="text-on-dark-3 underline hover:text-gold-hover"
               >
-                Facebook
-              </a>
-            </li>
-            <li>
-              <Link href="/contact" className="hover:text-ol-amber">
-                Formulaire de contact
+                {l.label}
               </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div className="space-y-3 md:col-span-3 md:max-w-md">
-          <h2 className="text-sm font-bold uppercase tracking-[0.15em] text-ol-amber">
-            Lettre d&apos;information
-          </h2>
-          <p className="text-sm leading-relaxed">
-            Recevez nos actualités de terrain, quelques fois par an.
-          </p>
-          <NewsletterForm />
-        </div>
-      </div>
-
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-6 text-xs sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <p>
-            © {new Date().getFullYear()} {org.legalName} — association loi 1901,
-            RNA {org.rna}.
-          </p>
-          <div className="flex flex-wrap gap-x-5 gap-y-2">
-            <Link href="/mentions-legales" className="hover:text-ol-amber">
-              Mentions légales
-            </Link>
-            <Link href="/confidentialite" className="hover:text-ol-amber">
-              Confidentialité
-            </Link>
+            ))}
           </div>
         </div>
       </div>
-
-      <p className="sr-only">{identity.mission}</p>
     </footer>
   );
 }

@@ -179,6 +179,24 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   Mobile Money est annoncée sur `/dons` comme « bientôt disponible », sans
   aucun appel réseau deviné. À reprendre dès que Mazunda a un accès réel
   (compte marchand, vraie doc transmise par SerdiPay).
+- **Refonte visuelle selon le dossier de maquettes (24/09) : FAITE en local, pas
+  encore commitée ni déployée.** Le site déjà en ligne est modifié, pas
+  reconstruit : mêmes routes, même Stripe, même base. Nouveau système de
+  design (Lora + Nunito Sans, tokens cuivre/nuit/crème, un seul point de
+  rupture `dk:` à 1200 px), bilingue FR (racine) / EN (`/en/...`, chemins
+  identiques). Pages : accueil, dons (3 étapes), association, actions,
+  s'impliquer, transparence, contact, parrainer, actualités/galerie, RÊVES 2,
+  plus pages légales/utilitaires restylées (FR seulement, voulu). Architecture
+  : `src/components/site/pages/*Page.tsx` (serveur, texte + métadonnées) +
+  `*Interactive.tsx` (client, état seulement) ; ne jamais passer une fonction
+  d'un composant serveur à un composant client (erreur « Functions cannot be
+  passed directly to Client Components »). La galerie n'affiche que
+  `publishableGallery`. Les articles d'actualités sont des EXEMPLES de la
+  maquette, signalés « à remplacer » à l'écran. Vérifié : 24 routes en 200,
+  aucun débordement horizontal à 320/375 px, build de production propre.
+  Reste : commit + push + vérifier que Vercel passe en READY ; tester le
+  bouton Stripe en ligne ; la bulle `MobileDonateBar` recouvre le bas du
+  premier écran mobile (comportement global voulu par la maquette).
 - Jalons 3, 4 (partie 2), 10 : à faire. Voir le plan.
 
 **Décision de Mazunda (23/09) : le nouveau site ne fait AUCUNE référence à

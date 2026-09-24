@@ -1,9 +1,32 @@
 'use client';
 
 import { useId, useState } from 'react';
+import type { Locale } from '@/lib/i18n';
 
-export function NewsletterForm() {
+const text = {
+  fr: {
+    label: 'Adresse e-mail',
+    submit: "S'inscrire",
+    pending: 'Envoi…',
+    sent: 'Vérifiez votre boîte de réception : un lien de confirmation vient de vous être envoyé.',
+    already: "Cette adresse est déjà inscrite à notre lettre d'information.",
+    unconfigured: "Votre inscription est enregistrée. L'envoi des confirmations sera activé prochainement.",
+    error: 'Une erreur est survenue. Merci de réessayer.'
+  },
+  en: {
+    label: 'Email address',
+    submit: 'Subscribe',
+    pending: 'Sending…',
+    sent: 'Check your inbox: we have just sent you a confirmation link.',
+    already: 'This address is already subscribed to our newsletter.',
+    unconfigured: 'Your subscription is saved. Confirmation emails will be switched on soon.',
+    error: 'Something went wrong. Please try again.'
+  }
+};
+
+export function NewsletterForm({ locale = 'fr' }: { locale?: Locale }) {
   const id = useId();
+  const t = text[locale];
   const [pending, setPending] = useState(false);
   const [status, setStatus] = useState<'idle' | 'sent' | 'already' | 'unconfigured' | 'error'>('idle');
 
@@ -12,11 +35,10 @@ export function NewsletterForm() {
     setPending(true);
     setStatus('idle');
 
-    // Capturée AVANT le premier `await` : voir ContactForm pour l'explication
-    // complète (event.currentTarget redevient null après le dispatch).
+    // Capturée AVANT le premier `await` : event.currentTarget redevient null
+    // une fois le gestionnaire d'événement terminé.
     const formEl = event.currentTarget;
-    const formData = new FormData(formEl);
-    const email = String(formData.get('email') || '');
+    const email = String(new FormData(formEl).get('email') || '');
 
     try {
       const response = await fetch('/api/newsletter', {
@@ -43,32 +65,18 @@ export function NewsletterForm() {
     }
   }
 
-  if (status === 'sent') {
+  if (status === 'sent' || status === 'already' || status === 'unconfigured') {
     return (
-      <p role="status" className="text-sm leading-relaxed">
-        Vérifiez votre boîte de réception : un lien de confirmation vient de vous être envoyé.
-      </p>
-    );
-  }
-  if (status === 'already') {
-    return (
-      <p role="status" className="text-sm leading-relaxed">
-        Cette adresse est déjà inscrite à notre lettre d&apos;information.
-      </p>
-    );
-  }
-  if (status === 'unconfigured') {
-    return (
-      <p role="status" className="text-sm leading-relaxed">
-        Votre inscription est enregistrée. L&apos;envoi des confirmations sera activé prochainement.
+      <p role="status" className="m-0 text-[15px] leading-[1.5] text-on-dark-1">
+        {t[status]}
       </p>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row" noValidate>
+    <form onSubmit={handleSubmit} className="flex flex-wrap gap-2" noValidate>
       <label htmlFor={id} className="sr-only">
-        Adresse e-mail
+        {t.label}
       </label>
       <input
         id={id}
@@ -77,19 +85,19 @@ export function NewsletterForm() {
         required
         maxLength={180}
         autoComplete="email"
-        placeholder="Votre adresse e-mail"
-        className="w-full rounded-full border border-white/25 bg-transparent px-5 py-3 text-sm text-ol-cream placeholder:text-ol-sand/70 focus:border-ol-amber focus:outline-none"
+        placeholder={t.label}
+        className="min-h-12 min-w-0 flex-1 rounded-lg border-[1.5px] border-dark-border bg-dark-surface px-3.5 text-[15px] text-cream placeholder:text-on-dark-3"
       />
       <button
         type="submit"
         disabled={pending}
-        className="shrink-0 rounded-full bg-ol-amber px-6 py-3 text-sm font-bold text-ol-night transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        className="min-h-12 cursor-pointer rounded-full border-2 border-gold bg-transparent px-[18px] text-[15px] font-bold text-gold-hover disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {pending ? 'Envoi…' : "S'inscrire"}
+        {pending ? t.pending : t.submit}
       </button>
       {status === 'error' && (
-        <p role="alert" className="text-sm font-bold text-ol-amber sm:hidden">
-          Une erreur est survenue.
+        <p role="alert" className="m-0 w-full text-[13px] font-bold text-gold-hover">
+          {t.error}
         </p>
       )}
     </form>

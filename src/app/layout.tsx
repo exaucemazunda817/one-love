@@ -1,14 +1,21 @@
 import type { Metadata } from 'next';
-import { Lato } from 'next/font/google';
+import { Lora, Nunito_Sans } from 'next/font/google';
 import './globals.css';
 import { org, identity } from '@/lib/content';
 
-// Lato est la police du site actuel : la garder évite de casser la
-// reconnaissance de la marque au moment de la bascule.
-const lato = Lato({
+// Les deux familles du design system 2026 : Lora pour les titres, chiffres
+// et citations ; Nunito Sans pour le texte et l'interface.
+const lora = Lora({
   subsets: ['latin'],
-  weight: ['400', '700', '900'],
-  variable: '--font-lato',
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-lora',
+  display: 'swap'
+});
+const nunito = Nunito_Sans({
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '800'],
+  variable: '--font-nunito',
   display: 'swap'
 });
 
@@ -39,7 +46,7 @@ export const metadata: Metadata = {
 // (voir gestion/connexion/page.tsx et gestion/(protected)/layout.tsx).
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={lato.variable}>
+    <html lang="fr" className={`${lora.variable} ${nunito.variable}`}>
       <body className="flex min-h-screen flex-col">{children}</body>
     </html>
   );

@@ -43,7 +43,10 @@ export async function POST(request: NextRequest) {
         amountEur: data.amountEur,
         method: 'STRIPE',
         projectSlug: data.projectSlug || null,
-        donorEmail: data.donorEmail || null
+        donorEmail: data.donorEmail || null,
+        donorFirstName: data.donorFirstName || null,
+        donorLastName: data.donorLastName || null,
+        donorCountry: data.donorCountry || null
       });
 
       const session = await createDonationCheckoutSession({

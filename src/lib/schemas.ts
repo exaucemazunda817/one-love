@@ -60,7 +60,10 @@ export const donationSessionSchema = z.object({
   // Choix du donateur entre un don unique et un engagement mensuel récurrent.
   frequency: z.enum(['once', 'monthly']).default('once'),
   projectSlug: z.string().trim().max(80).optional().or(z.literal('')),
-  donorEmail: email.optional().or(z.literal(''))
+  donorEmail: email.optional().or(z.literal('')),
+  donorFirstName: z.string().trim().max(120).optional().or(z.literal('')),
+  donorLastName: z.string().trim().max(120).optional().or(z.literal('')),
+  donorCountry: z.string().trim().max(2).optional().or(z.literal(''))
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;

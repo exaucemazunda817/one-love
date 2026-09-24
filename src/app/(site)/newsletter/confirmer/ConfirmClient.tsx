@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { CheckCircle2, XCircle } from 'lucide-react';
+import { CheckCircleIcon, XCircleIcon } from '@phosphor-icons/react';
 
 export function ConfirmClient() {
   const params = useSearchParams();
@@ -25,14 +25,14 @@ export function ConfirmClient() {
   }, [token]);
 
   if (state === 'pending') {
-    return <p className="text-ol-muted">Confirmation en cours…</p>;
+    return <p className="text-ink-soft">Confirmation en cours…</p>;
   }
 
   if (state === 'confirmed') {
     return (
       <div className="flex items-start gap-3">
-        <CheckCircle2 size={24} className="mt-0.5 shrink-0 text-ol-ember-ink" aria-hidden />
-        <p className="leading-relaxed text-ol-ink">
+        <CheckCircleIcon size={28} weight="fill" className="mt-0.5 shrink-0 text-sage-700" aria-hidden />
+        <p className="text-[17px] leading-[1.65] text-ink-body">
           Votre inscription est confirmée. Merci de nous suivre !
         </p>
       </div>
@@ -41,10 +41,10 @@ export function ConfirmClient() {
 
   return (
     <div className="flex items-start gap-3">
-      <XCircle size={24} className="mt-0.5 shrink-0 text-ol-ember-ink" aria-hidden />
-      <p className="leading-relaxed text-ol-ink">
+      <XCircleIcon size={28} weight="fill" className="mt-0.5 shrink-0 text-copper-700" aria-hidden />
+      <p className="text-[17px] leading-[1.65] text-ink-body">
         Ce lien de confirmation n&apos;est plus valide.{' '}
-        <Link href="/" className="font-bold text-ol-ember-ink underline underline-offset-2">
+        <Link href="/" className="font-bold text-copper-700 underline underline-offset-2">
           Retour à l&apos;accueil
         </Link>
         .

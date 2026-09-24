@@ -1,41 +1,100 @@
 @import "tailwindcss";
 
-/* Palette échantillonnée sur la marque réelle, pas inventée :
-   - #3C3C3B et #BF5B17 proviennent des pixels du logo officiel
-     (public/brand/logo-one-love.png, récupéré sur associationonelove.org) ;
-   - #FFB119 et #6B6864 sont les couleurs d'accent et de texte secondaire
-     mesurées sur le site WordPress actuel.
-   Les variantes foncées existent parce que la terre cuite du logo n'atteint
-   pas 4,5:1 sur fond blanc : voir le commentaire de --ol-ember-ink. */
+/* Design system de la refonte 2026 (handoff « design_handoff_one_love_site »,
+   README + « One Love - Design System »). Valeurs reprises telles quelles :
+   la maquette est en haute fidélité, on ne les « arrondit » pas. */
 :root {
+  --night: #0a0a0a;
+  --ink: #1e1a16;
+  --ink-body: #3a332c;
+  /* 7,1:1 sur crème : le gris le plus clair autorisé pour du texte. */
+  --ink-soft: #5c5248;
+
+  /* Cuivre. Le 600 porte les boutons et liens sur fond clair (blanc dessus :
+     5,4:1) ; le 500 est DÉCORATIF uniquement (pinceau, puces, focus) — il
+     n'atteint pas le contraste requis pour du texte. */
+  --copper-500: #c2651a;
+  --copper-600: #a9531a;
+  --copper-700: #8a4212;
+  --copper-800: #6e3410;
+  /* Or : boutons et accents sur fond noir UNIQUEMENT. */
+  --gold: #e89a2c;
+  --gold-hover: #f2b257;
+
+  --cream: #fbf7f1;
+  --sand: #f1e7d8;
+  --clay: #d9c7ae;
+  --field-line: #cdbba2;
+  --card-line: #e0d3c1;
+  --copper-tint: #fbf1e7;
+  --copper-tint-2: #f6e6d6;
+
+  --sage-700: #3f5a47;
+  --sage-300: #9db5a2;
+  --sage-100: #e3e9e1;
+
+  /* Textes secondaires sur fond noir, du plus clair au plus discret. */
+  --on-dark-1: #e9e1d6;
+  --on-dark-2: #cfc4b6;
+  --on-dark-3: #b8ac9e;
+  --dark-surface: #1e1a16;
+  --dark-line: #2a2521;
+  --dark-border: #5a5048;
+
+  --error: #b3261e;
+
+  /* Anciens jetons, conservés pour le logiciel de gestion (/gestion) et
+     re-cartographiés sur la nouvelle palette : l'outil interne suit la même
+     identité sans qu'il faille réécrire ses 40 écrans. */
   --ol-white: #ffffff;
-  --ol-cream: #fbf8f4;
-  --ol-sand: #f2ece3;
+  --ol-cream: var(--cream);
+  --ol-sand: var(--sand);
+  --ol-ink: var(--ink);
+  --ol-charcoal: var(--ink);
+  --ol-muted: var(--ink-soft);
+  --ol-night: var(--night);
+  --ol-ember: var(--copper-500);
+  --ol-ember-ink: var(--copper-600);
+  --ol-amber: var(--gold);
+  --ol-line: rgba(60, 35, 15, 0.14);
+  --ol-line-strong: rgba(60, 35, 15, 0.28);
+}
 
-  --ol-ink: #24231f;
-  --ol-charcoal: #3c3c3b;
-  --ol-muted: #6b6864;
-  --ol-night: #1a1917;
-
-  /* Terre cuite du logo. DÉCORATIF UNIQUEMENT : filets, icônes, bordures,
-     aplats derrière du très gros texte. Mesurée à 4,45:1 sur blanc, elle
-     échoue au seuil AA de 4,5:1 — donc jamais de texte courant dessus. */
-  --ol-ember: #bf5b17;
-  /* La même, assombrie à 6,39:1 sur blanc. C'est ELLE qu'on utilise pour le
-     texte d'accent sur fond clair ET pour le fond des boutons pleins. */
-  --ol-ember-ink: #9a4712;
-  /* Ambre du site actuel. Réservé aux FONDS SOMBRES (9,67:1 sur --ol-night).
-     Sur blanc il tombe à 1,82:1 : ne jamais l'utiliser en texte sur fond clair. */
-  --ol-amber: #ffb119;
-
-  --ol-line: rgba(60, 60, 59, 0.14);
-  --ol-line-strong: rgba(60, 60, 59, 0.28);
-
-  --ol-motion-ui: 220ms;
-  --ol-motion-media: 420ms;
+@theme {
+  /* Point de rupture UNIQUE de la maquette : sous 1200 px, en-tête mobile,
+     barre de don flottante, hero vertical. */
+  --breakpoint-dk: 75rem;
 }
 
 @theme inline {
+  --color-night: var(--night);
+  --color-ink: var(--ink);
+  --color-ink-body: var(--ink-body);
+  --color-ink-soft: var(--ink-soft);
+  --color-copper-500: var(--copper-500);
+  --color-copper-600: var(--copper-600);
+  --color-copper-700: var(--copper-700);
+  --color-copper-800: var(--copper-800);
+  --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
+  --color-cream: var(--cream);
+  --color-sand: var(--sand);
+  --color-clay: var(--clay);
+  --color-field-line: var(--field-line);
+  --color-card-line: var(--card-line);
+  --color-copper-tint: var(--copper-tint);
+  --color-copper-tint-2: var(--copper-tint-2);
+  --color-sage-700: var(--sage-700);
+  --color-sage-300: var(--sage-300);
+  --color-sage-100: var(--sage-100);
+  --color-on-dark-1: var(--on-dark-1);
+  --color-on-dark-2: var(--on-dark-2);
+  --color-on-dark-3: var(--on-dark-3);
+  --color-dark-surface: var(--dark-surface);
+  --color-dark-line: var(--dark-line);
+  --color-dark-border: var(--dark-border);
+  --color-error: var(--error);
+
   --color-ol-white: var(--ol-white);
   --color-ol-cream: var(--ol-cream);
   --color-ol-sand: var(--ol-sand);
@@ -49,7 +108,13 @@
   --color-ol-line: var(--ol-line);
   --color-ol-line-strong: var(--ol-line-strong);
 
-  --font-sans: var(--font-lato), system-ui, sans-serif;
+  --font-sans: var(--font-nunito), system-ui, sans-serif;
+  --font-serif: var(--font-lora), Georgia, serif;
+
+  /* Ombres teintées brun de la maquette. */
+  --shadow-ol-sm: 0 1px 2px rgba(60, 35, 15, 0.06), 0 2px 8px rgba(60, 35, 15, 0.05);
+  --shadow-ol-md: 0 1px 2px rgba(60, 35, 15, 0.06), 0 4px 16px rgba(60, 35, 15, 0.07);
+  --shadow-ol-lg: 0 1px 2px rgba(60, 35, 15, 0.06), 0 12px 40px rgba(60, 35, 15, 0.12);
 
   --text-hero: 2.375rem;
   --text-display: 3.25rem;
@@ -60,37 +125,59 @@ html {
 }
 
 body {
-  background-color: var(--ol-white);
-  color: var(--ol-ink);
+  background-color: var(--cream);
+  color: var(--ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Cibles tactiles : jamais sous 44 px. Règle héritée de l'audit design de
-   gospel-nation, où des boutons de 32 px étaient inatteignables au pouce. */
-button,
-a[role="button"],
-input,
-select,
-textarea {
-  min-height: 44px;
-}
+/* Règles de base dans @layer base : sans ça, étant hors couche, elles
+   l'emporteraient sur les classes utilitaires (min-h-9, etc.) et
+   écraseraient les tailles précises de la maquette. */
+@layer base {
+  /* Cibles tactiles : jamais sous 44 px par défaut. */
+  button,
+  a[role="button"],
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+  }
 
-/* Le pied de page est l'exception : y imposer 44 px par lien créait des
-   interlignes de 56 px pour du texte de 16 px. */
-footer a {
-  min-height: 0;
+  a {
+    color: var(--copper-600);
+    text-underline-offset: 3px;
+  }
+  a:hover {
+    color: var(--copper-700);
+  }
+
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
 }
 
 :focus-visible {
-  outline: 2px solid var(--ol-ember);
-  outline-offset: 2px;
+  outline: 3px solid var(--copper-500);
+  outline-offset: 3px;
 }
 
-/* Longueur de ligne maximale : au-delà, l'œil perd la ligne suivante.
-   Mesuré en caractères, pas en pixels. */
 @utility max-w-measure {
   max-width: 62ch;
+}
+
+/* Traitement photo commun à toutes les images couleur de la maquette. */
+@utility photo-tone {
+  filter: saturate(0.85) sepia(0.1);
+}
+
+/* Barre de défilement masquée des frises horizontales (défilement tactile
+   conservé). */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

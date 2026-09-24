@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { PageHero } from '@/components/PageHero';
+import { TextHero } from '@/components/site/ui';
 import { ConfirmClient } from './ConfirmClient';
 
 export const metadata: Metadata = {
@@ -12,12 +12,12 @@ export const metadata: Metadata = {
 export default function ConfirmPage() {
   return (
     <>
-      <PageHero title="Lettre d'information" />
-      <section className="bg-ol-white">
-        <div className="mx-auto max-w-2xl px-5 py-16 sm:px-8 sm:py-20">
+      <TextHero title="Lettre d'information" />
+      <section className="bg-cream">
+        <div className="mx-auto max-w-2xl px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">
           {/* useSearchParams exige un Suspense : sans lui, Next refuse de
               produire la page statique au build. */}
-          <Suspense fallback={<p className="text-ol-muted">Chargement…</p>}>
+          <Suspense fallback={<p className="text-ink-soft">Chargement…</p>}>
             <ConfirmClient />
           </Suspense>
         </div>

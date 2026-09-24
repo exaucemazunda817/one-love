@@ -21,22 +21,40 @@ export async function createPendingDonation({
   amountEur,
   method,
   projectSlug,
-  donorEmail
+  donorEmail,
+  donorFirstName,
+  donorLastName,
+  donorCountry
 }: {
   amountEur: number;
   method: DonationMethod;
   projectSlug?: string | null;
   donorEmail?: string | null;
+  donorFirstName?: string | null;
+  donorLastName?: string | null;
+  donorCountry?: string | null;
 }) {
   const project = projectSlug
     ? await prisma.project.findUnique({ where: { slug: projectSlug } })
     : null;
 
+  // `update` réécrit nom/pays à chaque nouveau don : un même donateur qui
+  // redonne avec une coordonnée mise à jour (ex. pays) voit sa fiche
+  // rafraîchie plutôt que figée sur son tout premier don.
   const donor = donorEmail
     ? await prisma.donor.upsert({
         where: { email: donorEmail },
-        update: {},
-        create: { email: donorEmail }
+        update: {
+          ...(donorFirstName ? { firstName: donorFirstName } : {}),
+          ...(donorLastName ? { lastName: donorLastName } : {}),
+          ...(donorCountry ? { country: donorCountry } : {})
+        },
+        create: {
+          email: donorEmail,
+          firstName: donorFirstName || null,
+          lastName: donorLastName || null,
+          country: donorCountry || 'FR'
+        }
       })
     : null;
 
