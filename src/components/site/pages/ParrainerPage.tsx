@@ -197,7 +197,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
                 {t.heroPost}
               </h1>
               <p className="-mt-1.5 m-0 max-w-[540px] text-pretty text-[15px] leading-[1.5] text-on-dark-1 dk:mt-0 dk:text-[20px] dk:leading-[1.6]">{t.heroIntro}</p>
-              <div className="flex flex-wrap items-center justify-center gap-5">
+              <div className="flex flex-wrap items-center justify-center gap-3">
                 <a
                   href="#inscription"
                   className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90"
@@ -205,7 +205,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
                   <HeartIcon size="1em" aria-hidden />
                   {t.heroCta}
                 </a>
-                <a href="#comment" className="text-[15px] font-bold text-cream underline underline-offset-4">
+                <a href="#comment" className="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-full border border-cream/35 px-[26px] text-[13px] font-semibold uppercase tracking-wide text-cream no-underline transition-colors hover:border-gold hover:text-gold-hover">
                   {t.heroScroll}
                 </a>
               </div>
