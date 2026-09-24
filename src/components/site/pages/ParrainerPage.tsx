@@ -208,7 +208,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
               <div className="flex flex-wrap items-center justify-center gap-5 dk:justify-start">
                 <a
                   href="#inscription"
-                  className="inline-flex min-h-[52px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-copper-600 px-7 text-[17px] font-bold text-white no-underline hover:bg-copper-700 hover:text-white"
+                  className="inline-flex min-h-[52px] items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream"
                 >
                   <HeartIcon size="1em" aria-hidden />
                   {t.heroCta}

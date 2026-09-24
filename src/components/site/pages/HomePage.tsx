@@ -175,11 +175,11 @@ export function HomePage({ locale }: { locale: Locale }) {
             </h1>
             <p className="m-0 max-w-[520px] text-pretty text-[20px] leading-[1.6] text-on-dark-1">{t.intro}</p>
             <div className="flex flex-wrap gap-3">
-              <a href="#don" className="inline-flex min-h-[52px] items-center gap-2 whitespace-nowrap rounded-full bg-copper-600 px-7 text-[17px] font-bold text-white no-underline hover:bg-copper-700 hover:text-white">
+              <a href="#don" className="inline-flex min-h-[52px] items-center gap-2 whitespace-nowrap rounded-full px-7 text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream">
                 <HeartIcon size="1em" aria-hidden />
                 {t.donate}
               </a>
-              <Link href={href('/parrainer')} className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full border-2 border-cream px-[26px] text-[17px] font-bold text-cream no-underline hover:bg-[rgba(251,247,241,.12)] hover:text-cream">
+              <Link href={href('/parrainer')} className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full px-[26px] text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream">
                 {t.sponsor}
               </Link>
             </div>
@@ -213,11 +213,11 @@ export function HomePage({ locale }: { locale: Locale }) {
           </h1>
           <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{t.intro}</p>
           <div className="flex flex-col gap-2.5">
-            <a href="#don" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-copper-600 text-[17px] font-bold text-white no-underline hover:text-white">
+            <a href="#don" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream">
               <HeartIcon size="1em" aria-hidden />
               {t.donate}
             </a>
-            <Link href={href('/parrainer')} className="inline-flex min-h-[52px] items-center justify-center rounded-full border-2 border-cream text-[17px] font-bold text-cream no-underline hover:text-cream">
+            <Link href={href('/parrainer')} className="inline-flex min-h-[52px] items-center justify-center rounded-full text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream">
               {t.sponsor}
             </Link>
           </div>
