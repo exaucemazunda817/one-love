@@ -16,19 +16,19 @@ const text = {
   }
 };
 
-// Bandes de logos façon n8n : trois rangées qui défilent en continu, à des
-// vitesses différentes et une sur deux dans l'autre sens. Chaque logo est posé
-// dans une tuile arrondie à bordure fine, qui grossit au survol ; les bords de
-// la bande s'estompent. Chaque rangée montre les 33 logos, dans un ordre
-// décalé pour qu'au départ deux rangées n'affichent pas les mêmes logos. La liste est doublée : l'animation déplace la piste de la moitié de
-// sa largeur, puis recommence sans à-coup. Sans animation (mouvement réduit),
-// chaque rangée se fait défiler à la main.
+// Bandes de logos façon n8n : deux rangées qui défilent en continu, à des
+// vitesses différentes et en sens opposés. Chaque logo est posé dans une tuile
+// arrondie à bordure fine, qui grossit au survol ; les bords de la bande
+// s'estompent. Chaque rangée montre les 33 logos, dans un ordre décalé pour
+// qu'au départ les deux rangées n'affichent pas les mêmes logos. La liste est
+// doublée : l'animation déplace la piste de la moitié de sa largeur, puis
+// recommence sans à-coup. Sans animation (mouvement réduit), chaque rangée se
+// fait défiler à la main.
 const ROWS = [
   { offset: 0, speed: '110s', reverse: false },
   // Une rangée inversée démarre en montrant la fin de sa liste : son décalage
-  // est choisi pour qu'elle n'affiche pas les mêmes logos que ses voisines.
-  { offset: 30, speed: '130s', reverse: true },
-  { offset: 11, speed: '120s', reverse: false }
+  // est choisi pour qu'elle n'affiche pas les mêmes logos que la première.
+  { offset: 25, speed: '130s', reverse: true }
 ];
 
 export function PartnersMarquee({ locale }: { locale: Locale }) {
@@ -59,8 +59,8 @@ export function PartnersMarquee({ locale }: { locale: Locale }) {
       </div>
       <div className="mt-6 flex flex-col gap-1 sm:gap-2">
         {ROWS.map((row, r) => {
-          // La première rangée porte les noms (lecteurs d'écran) ; les deux
-          // autres sont décoratives.
+          // La première rangée porte les noms (lecteurs d'écran) ; la seconde
+          // est décorative.
           const list = [...PARTNERS.slice(row.offset), ...PARTNERS.slice(0, row.offset)];
           return (
             <div key={r} className="ol-marquee" aria-hidden={r > 0 || undefined}>
