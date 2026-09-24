@@ -34,7 +34,7 @@ export function InnerHero({
     <section className="relative flex min-h-[min(82svh,640px)] items-end overflow-hidden bg-night text-cream dk:min-h-[min(64vh,580px)] dk:items-center">
       <Image src={image} alt={imageAlt} fill priority sizes="100vw" className="photo-tone object-cover" style={{ objectPosition }} />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.1)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)] dk:bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
-      <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:py-[88px]">
+      <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
         <div className="flex max-w-[620px] flex-col gap-4 dk:gap-6">
           <Eyebrow dark>{eyebrow}</Eyebrow>
           <h1 className="m-0 text-balance font-serif text-[38px] font-medium leading-[1.06] tracking-[-0.01em] dk:text-[clamp(38px,5vw,64px)]">

@@ -91,7 +91,7 @@ export function DonsPage({ locale }: { locale: Locale }) {
           style={{ objectPosition: '70% 30%' }}
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,.94)_0%,rgba(10,10,10,.82)_45%,rgba(10,10,10,.35)_100%)]" />
-        <div className="relative mx-auto flex max-w-[1200px] flex-col gap-[18px] px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">
+        <div className="relative mx-auto flex max-w-[1200px] flex-col gap-[18px] px-[clamp(20px,4vw,32px)] pb-[clamp(48px,7vw,88px)] pt-[clamp(120px,12vw,148px)]">
           <Eyebrow dark>{t.eyebrow}</Eyebrow>
           <h1 className="m-0 text-balance font-serif text-[clamp(38px,5vw,64px)] font-medium leading-[1.06]">
             {t.titlePre}

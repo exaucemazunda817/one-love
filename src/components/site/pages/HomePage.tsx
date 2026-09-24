@@ -191,7 +191,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
 
       {/* Hero — mobile */}
-      <section className="relative flex min-h-[calc(100svh-60px)] flex-col justify-end overflow-hidden bg-night text-cream dk:hidden">
+      <section className="relative flex min-h-svh flex-col justify-end overflow-hidden bg-night text-cream dk:hidden">
         <Image
           src="/photos/photo-dessin.jpg"
           alt={t.heroImgAlt}

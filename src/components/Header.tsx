@@ -46,10 +46,10 @@ export function Header({ locale }: { locale: Locale }) {
   return (
     <>
       {/* Desktop (≥ 1200 px) */}
-      <header className="sticky top-0 z-20 hidden bg-[rgba(10,10,10,.94)] backdrop-blur-[8px] dk:block">
-        <div className="mx-auto flex max-w-[1280px] items-center gap-4 px-8 py-3">
+      <header className="fixed inset-x-0 top-[max(1rem,env(safe-area-inset-top))] z-40 hidden px-8 dk:block">
+        <div className="mx-auto flex max-w-[1280px] items-center gap-4 rounded-full border border-gold/25 bg-night/60 py-2 pl-3 pr-3 shadow-[0_10px_40px_-10px_rgba(0,0,0,.7)] backdrop-blur-md">
           <Link href={localeHref('/', locale)} aria-label={t.home} className="flex flex-none">
-            <Image src={LOGO} alt="One Love" width={56} height={56} priority className="h-14 w-14" />
+            <Image src={LOGO} alt="One Love" width={48} height={48} priority className="h-12 w-12" />
           </Link>
           <nav className="flex min-w-0 flex-1 justify-center" aria-label={locale === 'fr' ? 'Navigation principale' : 'Main navigation'}>
             {t.nav.map((item) => {
@@ -99,7 +99,8 @@ export function Header({ locale }: { locale: Locale }) {
       </header>
 
       {/* Mobile (< 1200 px) */}
-      <header className="sticky top-0 z-20 flex items-center justify-between bg-[rgba(10,10,10,.96)] px-4 py-2 dk:hidden">
+      <header className="fixed inset-x-0 top-[max(1rem,env(safe-area-inset-top))] z-40 px-4 dk:hidden">
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between rounded-full border border-gold/25 bg-night/60 py-1.5 pl-2.5 pr-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,.7)] backdrop-blur-md">
         <Link href={localeHref('/', locale)} aria-label={t.home} className="flex">
           <Image src={LOGO} alt="One Love" width={44} height={44} priority className="h-11 w-11" />
         </Link>
@@ -122,6 +123,7 @@ export function Header({ locale }: { locale: Locale }) {
             <ListIcon size={24} color="#FBF7F1" aria-hidden />
           </button>
         </div>
+        </div>
       </header>
 
       {open && (
@@ -130,7 +132,7 @@ export function Header({ locale }: { locale: Locale }) {
           role="dialog"
           aria-modal="true"
           aria-label={locale === 'fr' ? 'Menu' : 'Menu'}
-          className="fixed inset-0 z-40 flex flex-col overflow-auto bg-night text-cream dk:hidden"
+          className="fixed inset-0 z-50 flex flex-col overflow-auto bg-night/85 text-cream backdrop-blur-xl dk:hidden"
         >
           <div className="flex items-center justify-between px-4 py-2">
             <Image src={LOGO} alt="One Love" width={44} height={44} className="h-11 w-11" />
