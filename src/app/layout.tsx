@@ -46,7 +46,12 @@ export const metadata: Metadata = {
 // (voir gestion/connexion/page.tsx et gestion/(protected)/layout.tsx).
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${lora.variable} ${nunito.variable}`}>
+    <html lang="fr" className={`${lora.variable} ${nunito.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Pose `js` avant le premier affichage : c'est ce qui autorise le
+            masquage des blocs d'apparition (voir globals.css). */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
       <body className="flex min-h-screen flex-col">{children}</body>
     </html>
   );

@@ -196,7 +196,7 @@ export function MobileDonateBar({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const t = chrome[locale];
   return (
-    <div className="fixed inset-x-3 bottom-3 z-30 flex gap-2 rounded-full bg-night p-2 shadow-[0_8px_24px_rgba(10,10,10,.3)] dk:hidden">
+    <div className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 flex gap-2 rounded-full border border-gold/25 bg-night/60 p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,.7)] backdrop-blur-md dk:hidden">
       <a
         href={donateHref(pathname, locale)}
         className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full bg-gold text-[16px] font-extrabold text-night no-underline hover:text-night"

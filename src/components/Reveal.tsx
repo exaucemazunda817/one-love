@@ -2,18 +2,24 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-// Apparition au défilement.
+// Apparition au défilement : le bloc est masqué tant qu'il n'a pas atteint
+// l'écran, puis glisse vers le haut en apparaissant. Les blocs déjà visibles au
+// chargement s'animent aussi, comme sur le site Gospel Nation.
 //
-// Ce composant a été écrit pour qu'il soit IMPOSSIBLE qu'il laisse du contenu
-// définitivement invisible. Deux régressions de ce type ont déjà coûté cher
-// sur les projets précédents : un `whileInView` seul ne se déclenche jamais
-// sur une section franchie trop vite, atteinte par une ancre ou déjà à l'écran
-// au chargement, et le contenu restait à opacité 0 pour de bon.
+// Le masquage est fait en CSS (globals.css, attribut data-reveal) et n'est actif
+// que si la classe `js` est posée sur <html> : sans JavaScript, tout est visible.
+// Si le JavaScript démarre mais que ce composant n'est jamais hydraté, le CSS
+// révèle le bloc tout seul après 4 s.
 //
-// La protection est structurelle, pas un filet de rattrapage : l'état initial
-// du rendu est VISIBLE. L'élément n'est masqué qu'une fois que le JavaScript
-// s'est exécuté et a constaté qu'il était hors de l'écran. Si le JavaScript
-// échoue, ne s'exécute pas ou arrive tard, le contenu est simplement là.
+// Deux pièges déjà rencontrés sur les projets précédents :
+// 1. Un IntersectionObserver seul laisse du contenu invisible pour de bon quand
+//    l'élément est déjà à l'écran au montage (ancre, rechargement en cours de
+//    page) ou qu'on le dépasse trop vite. On vérifie donc au montage ET à chaque
+//    défilement, et un bloc déjà dépassé est révélé.
+// 2. Un filet de sécurité qui révèle tout après un délai supprime l'effet : le
+//    nôtre ne concerne que les blocs réellement à l'écran.
+type State = 'pending' | 'waiting' | 'shown';
+
 export function Reveal({
   children,
   delay = 0,
@@ -24,60 +30,86 @@ export function Reveal({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  // `null` = le JavaScript n'a pas encore tranché, on rend visible sans animer.
-  const [shown, setShown] = useState<boolean | null>(null);
+  const [state, setState] = useState<State>('pending');
 
   useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
+    const el = ref.current;
+    if (!el) return;
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) {
-      setShown(true);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setState('shown');
       return;
     }
 
-    // Déjà à l'écran au montage : on affiche tout de suite, sans attendre un
-    // défilement qui ne viendra peut-être jamais.
-    const rect = node.getBoundingClientRect();
-    if (rect.top < window.innerHeight) {
-      setShown(true);
-      return;
+    let done = false;
+    let frame = 0;
+    let safetyNet = 0;
+    let observer: IntersectionObserver | undefined;
+
+    // Le haut du bloc est entré dans la partie basse de l'écran, ou il est déjà
+    // au-dessus (défilement rapide, ancre, position restaurée).
+    // Un bloc sans mise en page (page montée mais pas encore affichée pendant une
+    // navigation) a un rectangle nul : il ne compte pas comme « atteint ».
+    const reached = () => {
+      if (el.getClientRects().length === 0) return false;
+      return el.getBoundingClientRect().top < window.innerHeight * 0.92;
+    };
+
+    const onScroll = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        if (reached()) reveal();
+      });
+    };
+
+    const stop = () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      observer?.disconnect();
+      window.clearTimeout(safetyNet);
+      window.cancelAnimationFrame(frame);
+    };
+
+    function reveal() {
+      if (done) return;
+      done = true;
+      stop();
+      setState('shown');
     }
 
-    setShown(false);
+    if (reached()) {
+      // Laisse le navigateur peindre l'état masqué avant de lancer la transition.
+      frame = window.requestAnimationFrame(() => {
+        frame = window.requestAnimationFrame(reveal);
+      });
+      return stop;
+    }
 
-    const observer = new IntersectionObserver(
+    setState('waiting');
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setShown(true);
-            observer.disconnect();
-          }
-        }
+        if (entries[0]?.isIntersecting) reveal();
       },
-      { rootMargin: '0px 0px -8% 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -8% 0px' }
     );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
+    observer.observe(el);
 
-  const animating = shown !== null;
+    safetyNet = window.setTimeout(() => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) reveal();
+    }, 2500);
+
+    return stop;
+  }, []);
 
   return (
     <div
       ref={ref}
-      data-reveal
+      data-reveal={state}
       className={className}
-      style={
-        animating
-          ? {
-              opacity: shown ? 1 : 0,
-              transform: shown ? 'none' : 'translateY(24px)',
-              transition: `opacity 700ms ease ${delay}ms, transform 700ms ease ${delay}ms`
-            }
-          : undefined
-      }
+      style={delay ? ({ '--reveal-delay': `${delay}ms` } as React.CSSProperties) : undefined}
     >
       {children}
     </div>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { HeartIcon } from '@phosphor-icons/react/ssr';
 import { Eyebrow, BrushWord } from '@/components/site/ui';
+import { Reveal } from '@/components/Reveal';
 import { SponsorInteractive, type SponsorText } from '@/components/site/pages/SponsorInteractive';
 import type { Locale } from '@/lib/i18n';
 
@@ -196,7 +197,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
           />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.1)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)] dk:bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
           <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
-            <div className="flex max-w-[620px] flex-col gap-4 dk:gap-6">
+            <Reveal className="flex max-w-[620px] flex-col gap-4 dk:gap-6">
               <Eyebrow dark>{t.eyebrow}</Eyebrow>
               <h1 className="m-0 text-balance font-serif text-[38px] font-medium leading-[1.06] tracking-[-0.01em] dk:text-[clamp(38px,5vw,64px)]">
                 {t.heroPre}
@@ -216,7 +217,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
                   {t.heroScroll}
                 </a>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>

@@ -185,3 +185,43 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/* Apparition au défilement (voir components/Reveal.tsx).
+   « pending » = rendu serveur, pas encore hydraté ; « waiting » = hydraté et
+   sous la ligne de flottaison ; « shown » = révélé. Le masquage ne s'applique
+   que si le petit script du <head> a posé la classe `js` : sans JavaScript, tout
+   reste visible. Si le JavaScript démarre mais que l'hydratation n'aboutit
+   jamais (état « pending » à vie), le contenu se révèle de lui-même après 4 s. */
+html.js [data-reveal='pending'],
+html.js [data-reveal='waiting'] {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+html.js [data-reveal='pending'] {
+  animation: ol-reveal-failsafe 0.01s 4s forwards;
+}
+
+[data-reveal='shown'] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+@keyframes ol-reveal-failsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
