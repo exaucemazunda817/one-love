@@ -1,13 +1,17 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { TextHero } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { org } from '@/lib/content';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  locale: 'fr',
+  path: '/mentions-legales',
   title: 'Mentions légales',
   description: 'Éditeur, hébergeur et informations légales du site de l’association One Love.',
-  robots: { index: false }
-};
+  noindex: true,
+  frOnly: true
+});
 
 // À FAIRE CONFIRMER AVANT MISE EN LIGNE :
 //   1. L'adresse du siège. Le site actuel annonce le 44 rue de la Roquette

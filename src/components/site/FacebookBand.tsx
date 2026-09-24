@@ -22,9 +22,9 @@ export function FacebookBand({ locale }: { locale: Locale }) {
   const t = text[locale];
   return (
     <section className="mx-auto max-w-[1200px] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
-      <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-7 rounded-[20px] bg-night p-[clamp(28px,5vw,56px)] text-cream">
+      <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-7 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
         <div className="flex flex-col gap-3">
-          <FacebookLogoIcon size={40} color="#F2B257" aria-hidden />
+          <FacebookLogoIcon size={40} className="text-gold-hover" aria-hidden />
           <h2 className="m-0 text-balance font-serif text-[clamp(26px,3vw,38px)] font-medium leading-[1.2]">{t.title}</h2>
           <p className="m-0 max-w-[520px] text-[16px] leading-[1.6] text-on-dark-1">{t.body}</p>
         </div>

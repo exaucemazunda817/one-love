@@ -18,10 +18,8 @@ export function alternateHref(pathname: string): { locale: Locale; href: string 
   return { locale: 'fr', href: pathname === '/' ? '/en' : `/en${pathname}` };
 }
 
-// Coordonnées : le numéro WhatsApp de la maquette est FICTIF (« à
-// remplacer ») — il est affiché tel que dessiné mais jamais rendu cliquable,
-// pour ne pas envoyer des donateurs chez un inconnu.
-export const WHATSAPP_PLACEHOLDER = '+243 81 000 00 00';
+// Pas de numéro WhatsApp tant que l'association n'a pas fourni le vrai : le
+// numéro de la maquette était fictif.
 export const CONTACT_EMAIL = 'contact@associationonelove.org';
 export const FACEBOOK_URL = 'https://www.facebook.com/associationonelove';
 export const FACEBOOK_REELS_URL = 'https://www.facebook.com/associationonelove/reels';
@@ -55,7 +53,6 @@ export const chrome = {
         { label: 'Faire un don', href: '/dons' }
       ],
       reach: 'NOUS JOINDRE',
-      placeholder: 'à remplacer',
       newsletter: "LETTRE D'INFORMATION",
       newsletterText: 'Recevez nos actualités de terrain, quelques fois par an.',
       emailLabel: 'Adresse e-mail',
@@ -96,7 +93,6 @@ export const chrome = {
         { label: 'Donate', href: '/dons' }
       ],
       reach: 'CONTACT US',
-      placeholder: 'placeholder',
       newsletter: 'NEWSLETTER',
       newsletterText: 'News from the field, a few times a year.',
       emailLabel: 'Email address',

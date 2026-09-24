@@ -61,9 +61,9 @@ export function ContactFormCard({
 
   if (sent) {
     return (
-      <div className="flex flex-col items-start gap-3 rounded-[20px] bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+      <div className="flex flex-col items-start gap-3 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-sage-100">
-          <CheckIcon size={28} color="#3F5A47" aria-hidden />
+          <CheckIcon size={28} className="text-sage-700" aria-hidden />
         </span>
         <h3 className="m-0 font-serif text-[24px] font-semibold leading-[1.25]">{t.thanksTitle}</h3>
         <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.thanksText}</p>
@@ -75,7 +75,7 @@ export function ContactFormCard({
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-[20px] bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
       <h2 className="m-0 font-serif text-[24px] font-semibold leading-[1.25]">{t.formTitle}</h2>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-3.5">
         <label className="flex flex-col gap-2">

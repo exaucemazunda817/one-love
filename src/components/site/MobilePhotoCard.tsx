@@ -17,7 +17,7 @@ export function MobilePhotoCard({
 }: {
   src: string;
   alt: string;
-  badge: React.ReactNode;
+  badge?: React.ReactNode;
   title: string;
   text: string;
   action?: React.ReactNode;
@@ -25,7 +25,7 @@ export function MobilePhotoCard({
   imagePosition?: string;
 }) {
   return (
-    <Reveal className={`relative w-full overflow-hidden rounded-[20px] bg-night shadow-[0_8px_24px_rgba(60,35,15,.18)] ${heightClass}`}>
+    <Reveal className={`relative w-full overflow-hidden rounded-card bg-night shadow-ol-photo ${heightClass}`}>
       <Reveal variant="zoom" className="absolute inset-0">
         <Image
           src={src}
@@ -39,9 +39,11 @@ export function MobilePhotoCard({
       </Reveal>
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,0)_18%,rgba(10,10,10,.6)_52%,rgba(10,10,10,.94)_100%)]" />
       <div className="absolute inset-0 flex flex-col justify-end gap-2.5 p-5 text-cream">
-        <Reveal delay={120} className="flex">
-          {badge}
-        </Reveal>
+        {badge && (
+          <Reveal delay={120} className="flex">
+            {badge}
+          </Reveal>
+        )}
         <Reveal delay={240}>
           <h3 className="m-0 text-balance font-serif text-[24px] font-semibold leading-[1.2] text-cream">{title}</h3>
         </Reveal>

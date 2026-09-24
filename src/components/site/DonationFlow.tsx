@@ -85,7 +85,7 @@ const T = {
     summary: 'Récapitulatif',
     perMonth: 'par mois',
     once: 'une fois',
-    eqConfirm: (eq: string) => `${eq} (équivalence à confirmer)`,
+    eqConfirm: (eq: string) => `${eq} (équivalence indicative)`,
     genericThanks: 'Merci : chaque euro rejoint directement les programmes de terrain.',
     allocation: 'Affectation :',
     encrypted: 'Paiement chiffré, reçu par e-mail',
@@ -151,7 +151,7 @@ const T = {
     summary: 'Summary',
     perMonth: 'per month',
     once: 'once',
-    eqConfirm: (eq: string) => `${eq} (equivalent, to be confirmed)`,
+    eqConfirm: (eq: string) => `${eq} (indicative equivalent)`,
     genericThanks: 'Thank you: every euro goes directly to our field programmes.',
     allocation: 'Allocation:',
     encrypted: 'Encrypted payment, receipt by email',
@@ -251,8 +251,8 @@ export function DonationFlow({ locale }: { locale: Locale }) {
                     disabled={n > step}
                     onClick={() => n < step && setStep(n)}
                     aria-current={cur ? 'step' : undefined}
-                    className={`inline-flex min-h-0 items-center gap-1.5 border-0 bg-transparent p-0 text-left text-[13px] font-bold ${
-                      n <= step ? 'cursor-pointer text-ink' : 'cursor-default text-[#8C8177]'
+                    className={`inline-flex min-h-11 items-center gap-1.5 border-0 bg-transparent p-0 text-left text-[13px] font-bold ${
+                      n <= step ? 'cursor-pointer text-ink' : 'cursor-default text-taupe'
                     }`}
                   >
                     <span
@@ -282,7 +282,7 @@ export function DonationFlow({ locale }: { locale: Locale }) {
                     aria-checked={freq === k}
                     onClick={() => setFreq(k)}
                     className={`min-h-11 cursor-pointer rounded-full border-0 text-[15px] font-bold text-ink ${
-                      freq === k ? 'bg-white shadow-[0_1px_3px_rgba(60,35,15,.15)]' : 'bg-transparent'
+                      freq === k ? 'bg-white shadow-ol-xs' : 'bg-transparent'
                     }`}
                   >
                     {t.freqs[k]}
@@ -299,7 +299,7 @@ export function DonationFlow({ locale }: { locale: Locale }) {
                       type="button"
                       aria-pressed={cur === c}
                       onClick={() => setCur(c)}
-                      className={`min-h-9 min-w-12 cursor-pointer rounded-md border-[1.5px] px-2.5 text-[13px] font-bold ${
+                      className={`min-h-11 min-w-12 cursor-pointer rounded-md border-[1.5px] px-2.5 text-[13px] font-bold ${
                         cur === c ? 'border-ink bg-ink text-cream' : 'border-field-line bg-white text-ink'
                       }`}
                     >
@@ -554,7 +554,7 @@ export function DonationFlow({ locale }: { locale: Locale }) {
               type="button"
               disabled={noNext || pending}
               onClick={goNext}
-              className="inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border-0 bg-copper-600 px-6 text-[15px] font-bold text-white disabled:cursor-not-allowed disabled:bg-[#C9B8A6]"
+              className="inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border-0 bg-copper-600 px-6 text-[15px] font-bold text-white disabled:cursor-not-allowed disabled:bg-disabled"
             >
               {step < 3 ? (
                 <>
@@ -582,7 +582,7 @@ export function DonationFlow({ locale }: { locale: Locale }) {
         </div>
 
         {/* Récapitulatif — sticky */}
-        <div className="flex flex-col gap-4 rounded-[20px] bg-night p-7 text-cream dk:sticky dk:top-[100px]">
+        <div className="flex flex-col gap-4 rounded-card bg-night p-7 text-cream dk:sticky dk:top-[100px]">
           <h3 className="m-0 font-serif text-[20px] font-semibold">{t.summary}</h3>
           <div>
             <span className="block font-serif text-[36px] font-semibold leading-none">{amountStr}</span>
@@ -608,7 +608,7 @@ export function DonationFlow({ locale }: { locale: Locale }) {
           </div>
           <div className="border-t border-dark-line pt-4 text-[13px] text-on-dark-3">
             <p className="m-0">{t.badge}</p>
-            <Link href={localeHref('/contact', locale)} className="text-on-dark-2 underline">
+            <Link href={localeHref('/contact', locale)} className="inline-flex min-h-11 items-center text-on-dark-2 underline">
               {t.question}
             </Link>
           </div>

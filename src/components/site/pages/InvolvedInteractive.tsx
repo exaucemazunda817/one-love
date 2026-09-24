@@ -7,7 +7,7 @@ import {
   PackageIcon,
   MegaphoneIcon,
   HandshakeIcon,
-  WhatsappLogoIcon,
+  EnvelopeSimpleIcon,
   CheckIcon
 } from '@phosphor-icons/react';
 import { Reveal } from '@/components/Reveal';
@@ -108,7 +108,7 @@ export function InvolvedInteractive({
                 <button
                   type="button"
                   onClick={() => pick(w.k)}
-                  className={`flex min-h-12 w-full cursor-pointer flex-col items-start gap-3 rounded-[20px] border-2 bg-white px-6 py-7 text-left ${
+                  className={`flex min-h-12 w-full cursor-pointer flex-col items-start gap-3 rounded-card border-2 bg-white px-6 py-7 text-left ${
                     interest === w.k ? 'border-copper-600 bg-copper-tint' : 'border-transparent'
                   }`}
                 >
@@ -133,16 +133,16 @@ export function InvolvedInteractive({
           </h2>
           <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.formIntro}</p>
           <Link href={href('/contact')} className="inline-flex min-h-11 items-center gap-1.5 font-bold no-underline">
-            <WhatsappLogoIcon size={22} color="#3F5A47" aria-hidden />
+            <EnvelopeSimpleIcon size={22} className="text-sage-700" aria-hidden />
             {t.whatsapp}
           </Link>
         </Reveal>
 
         <Reveal delay={90}>
           {sent ? (
-            <div className="flex flex-col items-start gap-3 rounded-[20px] bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+            <div className="flex flex-col items-start gap-3 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
               <span className="flex h-14 w-14 items-center justify-center rounded-full bg-sage-100">
-                <CheckIcon size={28} color="#3F5A47" aria-hidden />
+                <CheckIcon size={28} className="text-sage-700" aria-hidden />
               </span>
               <h3 className="m-0 font-serif text-[24px] font-semibold leading-[1.25]">{t.thanksTitle}</h3>
               <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.thanksText}</p>
@@ -151,7 +151,7 @@ export function InvolvedInteractive({
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-[20px] bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+            <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
               <label className="flex flex-col gap-2">
                 <span className="text-[15px] font-bold">{t.interestLabel}</span>
                 <select

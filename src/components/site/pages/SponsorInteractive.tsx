@@ -5,7 +5,6 @@ import Image from 'next/image';
 import {
   CheckIcon,
   CaretDownIcon,
-  QuotesIcon,
   ShieldCheckIcon,
   EnvelopeOpenIcon,
   ImageIcon,
@@ -32,17 +31,12 @@ export interface SponsorText {
   plansProg: { name: string; price: number; tag: string; items: string[] }[];
   perMonth: string;
   monthUnit: string;
-  plansConfirm: string;
   receiveTitle: string;
   receiveAlt: string;
   receive: { t: string; d: string }[];
   charterTitle: string;
   charterIntro: string;
   charter: string[];
-  quote: string;
-  quoteName: string;
-  quoteRole: string;
-  quoteFictional: string;
   faqTitle: string;
   faq: { q: string; a: string }[];
   inscriptionTitlePre: string;
@@ -138,7 +132,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
             <Reveal key={h.n} delay={i * 90} className="flex flex-col gap-3">
               <div className="flex items-center gap-3.5">
                 <span className="font-serif text-[48px] leading-none text-copper-600">{h.n}</span>
-                <Brush fill="#D9C7AE" className="h-2 flex-1" />
+                <Brush fill="var(--clay)" className="h-2 flex-1" />
               </div>
               <h3 className="m-0 font-serif text-[24px] font-semibold">{h.t}</h3>
               <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{h.d}</p>
@@ -197,8 +191,8 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                 role="radio"
                 aria-checked={plan === i}
                 onClick={() => setPlan(i)}
-                className={`relative flex cursor-pointer flex-col gap-3.5 rounded-[20px] border-2 px-6 py-7 text-left ${
-                  plan === i ? 'border-copper-600 bg-white shadow-[0_12px_32px_rgba(60,35,15,.14)]' : 'border-card-line bg-sand'
+                className={`relative flex cursor-pointer flex-col gap-3.5 rounded-card border-2 px-6 py-7 text-left ${
+                  plan === i ? 'border-copper-600 bg-white shadow-ol-hover' : 'border-card-line bg-sand'
                 }`}
               >
                 <span className="flex w-full items-center justify-between gap-2">
@@ -212,7 +206,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                 <span className="flex flex-col gap-2">
                   {p.items.map((it) => (
                     <span key={it} className="flex items-start gap-2.5 text-[15px] leading-[1.45]">
-                      <CheckIcon size={18} color="#3F5A47" className="mt-0.5 flex-none" aria-hidden />
+                      <CheckIcon size={18} className="text-sage-700 mt-0.5 flex-none" aria-hidden />
                       {it}
                     </span>
                   ))}
@@ -220,13 +214,12 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
               </button>
             ))}
           </div>
-          <span className="text-[13px] text-ink-soft">{t.plansConfirm}</span>
         </div>
       </section>
 
       {/* Ce que vous recevez */}
       <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
-        <Reveal className="relative aspect-[4/5] max-h-[560px] overflow-hidden rounded-[20px]">
+        <Reveal className="relative aspect-[4/5] max-h-[560px] overflow-hidden rounded-card">
           <Image src="/photos/photo-mains.jpg" alt={t.receiveAlt} fill sizes="(max-width: 1200px) 100vw, 560px" className="photo-tone object-cover" />
         </Reveal>
         <Reveal delay={90} className="flex flex-col gap-6">
@@ -250,33 +243,20 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
 
       {/* Charte de protection */}
       <section id="charte" className="mx-auto scroll-mt-20 px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
-        <Reveal className="grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-8 rounded-[20px] bg-night p-[clamp(28px,5vw,56px)] text-cream">
+        <Reveal className="grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-8 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
           <div className="flex flex-col gap-3.5">
-            <ShieldCheckIcon size={40} color="#9DB5A2" aria-hidden />
+            <ShieldCheckIcon size={40} className="text-sage-300" aria-hidden />
             <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.2]">{t.charterTitle}</h2>
             <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{t.charterIntro}</p>
           </div>
           <div className="flex flex-col gap-3.5">
             {t.charter.map((c) => (
               <div key={c} className="flex items-start gap-3 text-[16px] leading-[1.55]">
-                <Brush fill="#E89A2C" className="mt-2.5 h-2 w-[22px] flex-none" />
+                <Brush fill="var(--gold)" className="mt-2.5 h-2 w-[22px] flex-none" />
                 <span>{c}</span>
               </div>
             ))}
           </div>
-        </Reveal>
-      </section>
-
-      {/* Témoignage */}
-      <section className="mx-auto max-w-[840px] px-[clamp(20px,4vw,32px)] pb-[clamp(40px,6vw,72px)]">
-        <Reveal>
-          <figure className="m-0 flex flex-col gap-4 rounded-[20px] bg-white p-8 shadow-ol-sm">
-            <QuotesIcon size={36} className="text-copper-600" aria-hidden />
-            <blockquote className="m-0 font-serif text-[22px] italic leading-[1.45]">{t.quote}</blockquote>
-            <figcaption className="text-[15px]">
-              <b>{t.quoteName}</b> · {t.quoteRole} · <span className="text-ink-soft">{t.quoteFictional}</span>
-            </figcaption>
-          </figure>
         </Reveal>
       </section>
 
@@ -293,7 +273,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
             return (
               <Reveal key={f.q} variant={i % 2 === 0 ? 'left' : 'right'} repeat>
                 <div
-                  className={`overflow-hidden rounded-[20px] border border-card-line shadow-ol-sm transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-ol-md ${
+                  className={`overflow-hidden rounded-card border border-card-line shadow-ol-sm transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-ol-md ${
                     i % 2 === 0 ? 'bg-white' : 'bg-sand'
                   } ${open ? 'ring-2 ring-copper-600/30' : ''}`}
                 >
@@ -351,7 +331,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
               <b className="font-serif text-[26px] font-medium">
                 {chosen.name} · {chosenPrice} / {t.monthUnit}
               </b>
-              <a href="#formules" className="text-[15px] font-bold">
+              <a href="#formules" className="inline-flex min-h-11 items-center self-start text-[15px] font-bold">
                 {t.change}
               </a>
             </div>
@@ -359,9 +339,9 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
 
           <Reveal delay={90}>
             {sent ? (
-              <div className="flex flex-col items-start gap-3.5 rounded-[20px] bg-white p-[clamp(20px,3vw,32px)] py-3 shadow-ol-lg">
+              <div className="flex flex-col items-start gap-3.5 rounded-card bg-white p-[clamp(20px,3vw,32px)] py-3 shadow-ol-lg">
                 <span className="flex h-14 w-14 items-center justify-center rounded-full bg-sage-100">
-                  <CheckIcon size={28} color="#3F5A47" aria-hidden />
+                  <CheckIcon size={28} className="text-sage-700" aria-hidden />
                 </span>
                 <h3 className="m-0 font-serif text-[26px] font-semibold">{t.thanksTitle}</h3>
                 <p className="m-0 text-[16px] leading-[1.6] text-ink-body">{t.thanksText}</p>
@@ -370,7 +350,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-[20px] bg-white p-[clamp(20px,3vw,32px)] shadow-ol-lg">
+              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-lg">
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-3.5">
                   <label className="flex flex-col gap-2">
                     <span className="text-[15px] font-bold">{t.firstName}</span>

@@ -17,8 +17,8 @@ export function BrushDefs() {
     <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
       <defs>
         <linearGradient id="ol-brush" x1="0" x2="1">
-          <stop offset="0" stopColor="#C2651A" />
-          <stop offset="1" stopColor="#E89A2C" />
+          <stop offset="0" style={{ stopColor: 'var(--copper-500)' }} />
+          <stop offset="1" style={{ stopColor: 'var(--gold)' }} />
         </linearGradient>
       </defs>
     </svg>
@@ -45,7 +45,7 @@ export function Brush({
       className={className}
       style={style}
     >
-      <path d={BRUSH_PATH} fill={fill} />
+      <path d={BRUSH_PATH} style={{ fill }} />
     </svg>
   );
 }
@@ -90,30 +90,6 @@ export function Eyebrow({
   );
 }
 
-/** Étiquette « à confirmer » : contenu fictif ou provisoire de la maquette,
- * à retirer dès que l'association aura validé la donnée réelle. */
-export function ToConfirm({
-  children,
-  dark = false,
-  className
-}: {
-  children: ReactNode;
-  dark?: boolean;
-  className?: string;
-}) {
-  return (
-    <span
-      className={cx(
-        'self-start rounded-full border-[1.5px] border-dashed px-2 py-px text-[12px] font-bold',
-        dark ? 'border-gold text-gold-hover' : 'border-copper-600 text-copper-700',
-        className
-      )}
-    >
-      {children}
-    </span>
-  );
-}
-
 /** En-tête sobre des pages utilitaires et légales (sans photo). */
 export function TextHero({ eyebrow, title, intro }: { eyebrow?: string; title: string; intro?: string }) {
   return (
@@ -137,28 +113,6 @@ export const h2Class =
 // d'appel.
 /** Rectangle décoratif (chevrons répétés) tenant lieu de photo tant que
  * l'association n'a pas fourni le vrai visuel — jamais une photo inventée. */
-export function PlaceholderPhoto({
-  label,
-  ratio = '4/5',
-  className
-}: {
-  label: ReactNode;
-  ratio?: string;
-  className?: string;
-}) {
-  return (
-    <div
-      className={cx('flex items-center justify-center rounded-[20px] p-5 text-center', className)}
-      style={{
-        aspectRatio: ratio,
-        background: 'repeating-linear-gradient(135deg,#F1E7D8 0 10px,#EDE1CF 10px 20px)'
-      }}
-    >
-      <span className="text-[14px] font-bold text-ink-soft">{label}</span>
-    </div>
-  );
-}
-
 /** Bandeau d'appel noir de fin de page (Qui sommes-nous, Notre action). */
 export function CallBanner({
   title,
@@ -179,7 +133,7 @@ export function CallBanner({
 }) {
   return (
     <section className="mx-auto max-w-[1200px] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
-      <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-7 rounded-[20px] bg-night p-[clamp(28px,5vw,56px)] text-cream">
+      <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-7 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
         <div className="flex flex-col gap-3">
           <h2 className="m-0 text-balance font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.2]">{title}</h2>
           <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{text}</p>

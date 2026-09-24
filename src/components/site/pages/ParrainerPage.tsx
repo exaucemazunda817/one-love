@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { HeartIcon } from '@phosphor-icons/react/ssr';
 import { Eyebrow, BrushWord } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
@@ -39,7 +40,6 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     ],
     perMonth: 'par mois',
     monthUnit: 'mois',
-    plansConfirm: 'Montants et contenus des formules à confirmer par l’association.',
     receiveTitle: 'Ce que vous recevez',
     receiveAlt: "Des mains d'enfants colorient des lettres.",
     receive: [
@@ -56,16 +56,12 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
       "Les cadeaux passent par l'équipe, pour rester équitables entre les enfants.",
       "Les visites se font sur rendez-vous, accompagnées d'un membre de One Love."
     ],
-    quote: "« Chaque trimestre, je reçois quelques lignes et un dessin. Je vois les progrès en lecture, et je sais que je fais partie de son chemin. »",
-    quoteName: 'Pascal D.',
-    quoteRole: 'parrain depuis 2023',
-    quoteFictional: 'témoignage fictif, à remplacer',
     faqTitle: 'Questions fréquentes',
     faq: [
       { q: 'Puis-je arrêter ou modifier mon parrainage ?', a: 'Oui, à tout moment, par simple e-mail. Aucun engagement de durée.' },
       { q: 'Mon don va-t-il à un seul enfant ?', a: "Votre parrainage est lié à un enfant que nous vous présentons. Les moyens sont mutualisés au sein du programme pour qu'aucun enfant ne soit laissé de côté." },
       { q: 'Puis-je écrire à mon filleul ou lui rendre visite ?', a: "Oui, par l'intermédiaire de l'équipe. Les visites se font sur rendez-vous, accompagnées d'un membre de One Love." },
-      { q: 'Quelles nouvelles vais-je recevoir ?', a: "Un message chaque trimestre avec une photo respectueuse ou un dessin, et un bilan annuel. Réponses à confirmer par l'association." }
+      { q: 'Quelles nouvelles vais-je recevoir ?', a: "Un message chaque trimestre avec une photo respectueuse ou un dessin, et un bilan annuel." }
     ],
     inscriptionTitlePre: 'Devenir ',
     inscriptionTitleWord: 'parrain',
@@ -120,7 +116,6 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     ],
     perMonth: 'per month',
     monthUnit: 'month',
-    plansConfirm: 'Plan amounts and contents to be confirmed by the association.',
     receiveTitle: 'What you receive',
     receiveAlt: "Children's hands colouring in letters.",
     receive: [
@@ -137,16 +132,12 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
       'Gifts go through the team, to stay fair between children.',
       'Visits are by appointment, accompanied by a One Love team member.'
     ],
-    quote: "“Every quarter I get a few lines and a drawing. I can see the progress in reading, and I know I'm part of his journey.”",
-    quoteName: 'Pascal D.',
-    quoteRole: 'sponsor since 2023',
-    quoteFictional: 'sample testimonial, to be replaced',
     faqTitle: 'Frequently asked questions',
     faq: [
       { q: 'Can I stop or change my sponsorship?', a: 'Yes, at any time, with a simple email. No minimum term.' },
       { q: 'Does my gift go to one child only?', a: 'Your sponsorship is linked to a child we introduce to you. Funds are pooled within the programme so that no child is left out.' },
       { q: 'Can I write to or visit my sponsored child?', a: 'Yes, through the team. Visits are by appointment, accompanied by a One Love team member.' },
-      { q: 'What updates will I receive?', a: 'A message every quarter with a respectful photo or a drawing, and a yearly review. Answers to be confirmed by the association.' }
+      { q: 'What updates will I receive?', a: 'A message every quarter with a respectful photo or a drawing, and a yearly review.' }
     ],
     inscriptionTitlePre: 'Become a ',
     inscriptionTitleWord: 'sponsor',
@@ -173,7 +164,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
 
 export function parrainerMetadata(locale: Locale): Metadata {
   const t = text[locale];
-  return { title: t.title, description: t.desc };
+  return pageMetadata({ locale, path: '/parrainer', title: t.title, description: t.desc });
 }
 
 export function ParrainerPage({ locale }: { locale: Locale }) {

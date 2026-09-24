@@ -1,14 +1,18 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { TextHero } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { org, donationNotice } from '@/lib/content';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  locale: 'fr',
+  path: '/confidentialite',
   title: 'Politique de confidentialité',
   description:
     "Quelles données ce site collecte, comment elles sont utilisées et comment exercer vos droits RGPD auprès de l'association One Love.",
-  robots: { index: false }
-};
+  noindex: true,
+  frOnly: true
+});
 
 // Cette page décrit ce que le site fait RÉELLEMENT aujourd'hui : il ne
 // collecte aucune donnée, puisque les formulaires n'existent pas encore

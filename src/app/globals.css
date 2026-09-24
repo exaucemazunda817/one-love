@@ -43,6 +43,11 @@
 
   --error: #b3261e;
 
+  /* Teintes secondaires de la maquette, jusqu'ici écrites en dur. */
+  --taupe: #8c8177;
+  --track: #ede3d5;
+  --disabled: #c9b8a6;
+
   /* Anciens jetons, conservés pour le logiciel de gestion (/gestion) et
      re-cartographiés sur la nouvelle palette : l'outil interne suit la même
      identité sans qu'il faille réécrire ses 40 écrans. */
@@ -94,6 +99,12 @@
   --color-dark-line: var(--dark-line);
   --color-dark-border: var(--dark-border);
   --color-error: var(--error);
+  --color-taupe: var(--taupe);
+  --color-track: var(--track);
+  --color-disabled: var(--disabled);
+
+  /* Arrondi des cartes de la maquette. */
+  --radius-card: 20px;
 
   --color-ol-white: var(--ol-white);
   --color-ol-cream: var(--ol-cream);
@@ -115,6 +126,11 @@
   --shadow-ol-sm: 0 1px 2px rgba(60, 35, 15, 0.06), 0 2px 8px rgba(60, 35, 15, 0.05);
   --shadow-ol-md: 0 1px 2px rgba(60, 35, 15, 0.06), 0 4px 16px rgba(60, 35, 15, 0.07);
   --shadow-ol-lg: 0 1px 2px rgba(60, 35, 15, 0.06), 0 12px 40px rgba(60, 35, 15, 0.12);
+  --shadow-ol-xs: 0 1px 3px rgba(60, 35, 15, 0.15);
+  --shadow-ol-card: 0 8px 24px rgba(60, 35, 15, 0.12);
+  --shadow-ol-photo: 0 8px 24px rgba(60, 35, 15, 0.18);
+  --shadow-ol-hover: 0 12px 32px rgba(60, 35, 15, 0.14);
+  --shadow-ol-float: 0 10px 40px -10px rgba(0, 0, 0, 0.7);
 
   --text-hero: 2.375rem;
   --text-display: 3.25rem;

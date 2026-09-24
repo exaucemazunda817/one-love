@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { HeartIcon, StarIcon, LeafIcon } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
-import { PlaceholderPhoto, CallBanner, ToConfirm, h2Class } from '@/components/site/ui';
+import { CallBanner, h2Class } from '@/components/site/ui';
 import { PartnersMarquee } from '@/components/site/PartnersMarquee';
 import { localeHref, type Locale } from '@/lib/i18n';
 
@@ -26,8 +27,6 @@ const text = {
       'Co-construire des programmes de (ré)insertion professionnelle.',
       'Accompagner les bénéficiaires dans leur accomplissement professionnel et/ou personnel.'
     ],
-    foundersPhoto: 'Photo des fondateurs · à fournir',
-    foundersSub: 'Kanda Kabangu et son épouse',
     foundersEyebrow: 'Les fondateurs',
     foundersQuote: '« Depuis que nous nous sommes rencontrés en 2010, ma femme et moi avons eu à cœur de vivre un rêve commun : aimer et aider ceux qui en ont besoin. »',
     foundersName: 'Kanda Kabangu',
@@ -41,16 +40,6 @@ const text = {
     pageQuote: "« One Love, une équipe qui pense que l'Amour est divin et qu'il peut agir en nous qui sommes ordinaires par des actes extraordinaires ! »",
     pageQuoteCite: 'Présentation de la page Facebook de One Love',
     valuesQuote: "« L'amour que nous souhaitons transmettre est une prolongation de nos valeurs : ce n'est pas pour détruire mais pour construire, non pour imposer mais pour démontrer par nos actes d'amour que l'Homme est aimé au-delà des frontières, des cultures ou des religions. »",
-    teamTitle: "L'équipe",
-    teamSubtitle: 'Une équipe jeune et dynamique, à Kinshasa et en France.',
-    teamPhoto: 'Photo',
-    team: [
-      ['Kanda Kabangu', 'Cofondateur'],
-      ['Prénom Nom', 'Coordination à Kinshasa'],
-      ['Prénom Nom', 'Responsable pédagogique'],
-      ['Prénom Nom', 'Suivi médical et psychosocial']
-    ],
-    teamConfirm: 'Noms, rôles et photos à fournir',
     bannerTitle: 'Rejoindre ce qui a commencé en 2010.',
     bannerText: 'Un don, un parrainage ou quelques heures de votre temps.'
   },
@@ -73,8 +62,6 @@ const text = {
       'Co-build (re)integration programmes into work.',
       'Support beneficiaries in their professional and/or personal fulfilment.'
     ],
-    foundersPhoto: 'Founders photo · to be supplied',
-    foundersSub: 'Kanda Kabangu and his wife',
     foundersEyebrow: 'The founders',
     foundersQuote: '“Since we met in 2010, my wife and I have shared one dream: to love and help those in need.”',
     foundersName: 'Kanda Kabangu',
@@ -88,16 +75,6 @@ const text = {
     pageQuote: '“One Love, a team that believes Love is divine and can work through ordinary people like us by means of extraordinary acts!”',
     pageQuoteCite: "From One Love's Facebook page",
     valuesQuote: '“The love we wish to pass on is an extension of our values: not to destroy but to build, not to impose but to show through acts of love that every person is loved, beyond borders, cultures or religions.”',
-    teamTitle: 'The team',
-    teamSubtitle: 'A young, dynamic team in Kinshasa and France.',
-    teamPhoto: 'Photo',
-    team: [
-      ['Kanda Kabangu', 'Co-founder'],
-      ['First Last', 'Kinshasa coordination'],
-      ['First Last', 'Education lead'],
-      ['First Last', 'Medical and psychosocial care']
-    ],
-    teamConfirm: 'Names, roles and photos to be supplied',
     bannerTitle: 'Join what began in 2010.',
     bannerText: 'A gift, a sponsorship or a few hours of your time.'
   }
@@ -105,7 +82,7 @@ const text = {
 
 export function associationMetadata(locale: Locale): Metadata {
   const t = text[locale];
-  return { title: t.title, description: t.desc };
+  return pageMetadata({ locale, path: '/association', title: t.title, description: t.desc });
 }
 
 export function AssociationPage({ locale }: { locale: Locale }) {
@@ -145,19 +122,10 @@ export function AssociationPage({ locale }: { locale: Locale }) {
       </section>
 
       <section className="bg-sand">
-        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
-          <Reveal>
-            <PlaceholderPhoto
-              label={
-                <>
-                  {t.foundersPhoto}
-                  <br />
-                  {t.foundersSub}
-                </>
-              }
-            />
-          </Reveal>
-          <Reveal delay={90} className="flex flex-col gap-5">
+        {/* Pas encore de photo des fondateurs : le témoignage occupe seul la
+            section plutôt qu'à côté d'un cadre vide. */}
+        <div className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
+          <Reveal className="flex max-w-[760px] flex-col gap-5">
             <span className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-copper-700">{t.foundersEyebrow}</span>
             <blockquote className="m-0 font-serif text-[clamp(24px,2.6vw,32px)] italic leading-[1.4]">{t.foundersQuote}</blockquote>
             <b className="text-[17px]">{t.foundersName}</b>
@@ -174,7 +142,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
           {t.values.map((v, i) => {
             const Icon = v.icon;
             return (
-              <Reveal key={v.t} delay={i * 90} className={`flex flex-col gap-3.5 rounded-[20px] ${v.bg} ${v.fg} px-7 py-8`}>
+              <Reveal key={v.t} delay={i * 90} className={`flex flex-col gap-3.5 rounded-card ${v.bg} ${v.fg} px-7 py-8`}>
                 <Icon size={34} className={v.ic} aria-hidden />
                 <p className="m-0 font-serif text-[26px] leading-[1.3]">{v.t}</p>
               </Reveal>
@@ -188,23 +156,6 @@ export function AssociationPage({ locale }: { locale: Locale }) {
             <figcaption className="text-[14px] text-ink-soft">{t.pageQuoteCite}</figcaption>
           </figure>
         </Reveal>
-      </section>
-
-      <section className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] pb-[clamp(56px,8vw,104px)]">
-        <Reveal className="flex flex-col gap-2.5">
-          <h2 className={h2Class}>{t.teamTitle}</h2>
-          <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.teamSubtitle}</p>
-        </Reveal>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-5">
-          {t.team.map(([n, r], i) => (
-            <Reveal key={n + r} delay={i * 90} className="flex flex-col gap-2.5">
-              <PlaceholderPhoto label={t.teamPhoto} ratio="1/1" />
-              <b className="text-[17px]">{n}</b>
-              <span className="text-[15px] text-ink-soft">{r}</span>
-            </Reveal>
-          ))}
-        </div>
-        <ToConfirm>{t.teamConfirm}</ToConfirm>
       </section>
 
       <PartnersMarquee locale={locale} />

@@ -33,22 +33,18 @@ const text = {
     badge: 'Association loi 1901 · RNA W951001528',
     heroImgAlt: 'Deux garçons dessinent à une table en plein air, au centre One Love.',
     stats: [
-      ['2010', '', 'année de fondation'],
-      ['48', '*', 'enfants accompagnés en 2026'],
-      ['6', '*', 'formateurs et animateurs'],
-      ['3', '', 'axes : éducation, soin, insertion']
+      ['2010', 'année de fondation'],
+      ['3', 'axes : éducation, soin, insertion']
     ] as const,
-    statsNote: '* Chiffres à confirmer par l’association.',
     dayEyebrow: 'RÊVES 2 · carnet de bord',
     dayTitle: 'Une journée à One Love',
-    daySubtitle: 'Ce que votre soutien rend possible, heure par heure.',
+    daySubtitle: 'Ce que votre soutien rend possible, au fil de la journée.',
     day: [
-      ['8 h', "L'arrivée", 'Les enfants arrivent au centre, prêts à découvrir et apprendre.', '/photos/photo-joie.jpg', 'Un garçon rit en arrivant au centre.', '-1.5deg'],
-      ['9 h', "Atelier d'écriture", "Lire et écrire en petits groupes : le premier levier d'autonomie.", '/photos/photo-ecriture.jpg', 'Une jeune fille écrit dans son cahier.', '1deg'],
-      ['11 h', 'Français', "Maîtriser la langue de l'école pour ouvrir l'accès à la scolarité.", '/photos/photo-cahier.jpg', 'Un garçon écrit, concentré.', '-1deg'],
-      ['14 h', 'Création et jeu', 'Dessin, sport, musique : retrouver la confiance et la vie en groupe.', '/photos/photo-mains.jpg', 'Des mains colorient des lettres.', '1.5deg']
+      ["L'arrivée", 'Les enfants arrivent au centre, prêts à découvrir et apprendre.', '/photos/photo-joie.jpg', 'Un garçon rit en arrivant au centre.', '-1.5deg'],
+      ["Atelier d'écriture", "Lire et écrire en petits groupes : le premier levier d'autonomie.", '/photos/photo-ecriture.jpg', 'Une jeune fille écrit dans son cahier.', '1deg'],
+      ['Français', "Maîtriser la langue de l'école pour ouvrir l'accès à la scolarité.", '/photos/photo-cahier.jpg', 'Un garçon écrit, concentré.', '-1deg'],
+      ['Création et jeu', 'Dessin, sport, musique : retrouver la confiance et la vie en groupe.', '/photos/photo-mains.jpg', 'Des mains colorient des lettres.', '1.5deg']
     ] as const,
-    dayNote: 'Horaires indicatifs, à confirmer.',
     projectEyebrow: 'Projet en cours · sept. à déc. 2026',
     projectSupport: 'Soutenir RÊVES 2',
     projectLink: 'Le projet',
@@ -60,20 +56,8 @@ const text = {
       { icon: UsersThreeIcon, t: 'S’engager', d: 'Bénévolat, dons en nature, collectes, partenariats avec des entreprises ou des églises.', cta: 'S’impliquer', bg: 'bg-sage-100', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-sage-700', href: '/s-impliquer' }
     ],
     testimonials: [
-      { q: '« Depuis que nous nous sommes rencontrés en 2010, ma femme et moi avons eu à cœur de vivre un rêve commun : aimer et aider ceux qui en ont besoin. »', name: 'Kanda Kabangu', role: 'cofondateur', fictional: false },
-      { q: '« J’ai animé les ateliers d’écriture en septembre. Voir un enfant signer son prénom pour la première fois, ça ne s’oublie pas. »', name: 'Grâce N.', role: 'bénévole', fictional: true }
+      { q: '« Depuis que nous nous sommes rencontrés en 2010, ma femme et moi avons eu à cœur de vivre un rêve commun : aimer et aider ceux qui en ont besoin. »', name: 'Kanda Kabangu', role: 'cofondateur' },
     ],
-    fictionalNote: 'témoignage fictif, à remplacer',
-    newsTitle: 'Nouvelles du terrain',
-    newsSubtitle: 'Suivez RÊVES 2 semaine après semaine.',
-    newsAll: 'Toutes les actualités',
-    partners: 'Partenaires',
-    partnerLogo: 'Logo partenaire',
-    news: [
-      ['/photos/photo-ecriture.jpg', 'Une jeune fille écrit.', 'RÊVES 2', '5 sept. 2026', 'Premiers pas dans l’alphabétisation'],
-      ['/photos/photo-cahier.jpg', 'Un garçon écrit dans son cahier.', 'Éducation', 'Sept. 2026', 'Le français, langue de l’école'],
-      ['/photos/photo-dessin.jpg', 'Deux garçons dessinent.', 'Culture', 'Sept. 2026', 'Jeu, sport et création']
-    ] as const,
     donTitlePre: 'Chaque don prolonge un accompagnement qui a déjà ',
     donTitleWord: 'commencé',
     donTitlePost: '.',
@@ -97,22 +81,18 @@ const text = {
     badge: 'Registered non-profit (France) · RNA W951001528',
     heroImgAlt: 'Two boys drawing at an outdoor table at the One Love centre.',
     stats: [
-      ['2010', '', 'year founded'],
-      ['48', '*', 'children supported in 2026'],
-      ['6', '*', 'trainers and facilitators'],
-      ['3', '', 'focus areas: education, care, integration']
+      ['2010', 'year founded'],
+      ['3', 'focus areas: education, care, integration']
     ] as const,
-    statsNote: '* Figures to be confirmed by the association.',
     dayEyebrow: 'RÊVES 2 · logbook',
     dayTitle: 'A day at One Love',
-    daySubtitle: 'What your support makes possible, hour by hour.',
+    daySubtitle: 'What your support makes possible, through the day.',
     day: [
-      ['8 am', 'Arrival', 'The children arrive at the centre, ready to discover and learn.', '/photos/photo-joie.jpg', 'A boy laughs as he arrives at the centre.', '-1.5deg'],
-      ['9 am', 'Writing workshop', 'Reading and writing in small groups: the first step towards independence.', '/photos/photo-ecriture.jpg', 'A girl writes in her notebook.', '1deg'],
-      ['11 am', 'French', 'Mastering the language of school opens the door to education.', '/photos/photo-cahier.jpg', 'A boy writes, focused.', '-1deg'],
-      ['2 pm', 'Creativity and play', 'Drawing, sport, music: regaining confidence and group life.', '/photos/photo-mains.jpg', 'Hands colouring in letters.', '1.5deg']
+      ['Arrival', 'The children arrive at the centre, ready to discover and learn.', '/photos/photo-joie.jpg', 'A boy laughs as he arrives at the centre.', '-1.5deg'],
+      ['Writing workshop', 'Reading and writing in small groups: the first step towards independence.', '/photos/photo-ecriture.jpg', 'A girl writes in her notebook.', '1deg'],
+      ['French', 'Mastering the language of school opens the door to education.', '/photos/photo-cahier.jpg', 'A boy writes, focused.', '-1deg'],
+      ['Creativity and play', 'Drawing, sport, music: regaining confidence and group life.', '/photos/photo-mains.jpg', 'Hands colouring in letters.', '1.5deg']
     ] as const,
-    dayNote: 'Indicative times, to be confirmed.',
     projectEyebrow: 'Current project · Sept. to Dec. 2026',
     projectSupport: 'Support RÊVES 2',
     projectLink: 'The project',
@@ -124,20 +104,8 @@ const text = {
       { icon: UsersThreeIcon, t: 'Take part', d: 'Volunteering, in-kind gifts, fundraising, partnerships with companies or churches.', cta: 'Get involved', bg: 'bg-sage-100', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-sage-700', href: '/s-impliquer' }
     ],
     testimonials: [
-      { q: '“Since we met in 2010, my wife and I have shared one dream: to love and help those in need.”', name: 'Kanda Kabangu', role: 'co-founder', fictional: false },
-      { q: '“I led the writing workshops in September. Seeing a child sign their name for the first time is something you never forget.”', name: 'Grâce N.', role: 'volunteer', fictional: true }
+      { q: '“Since we met in 2010, my wife and I have shared one dream: to love and help those in need.”', name: 'Kanda Kabangu', role: 'co-founder' },
     ],
-    fictionalNote: 'sample testimonial, to be replaced',
-    newsTitle: 'News from the field',
-    newsSubtitle: 'Follow RÊVES 2 week by week.',
-    newsAll: 'All news',
-    partners: 'Partners',
-    partnerLogo: 'Partner logo',
-    news: [
-      ['/photos/photo-ecriture.jpg', 'A girl writing.', 'RÊVES 2', '5 Sept. 2026', 'First steps in literacy'],
-      ['/photos/photo-cahier.jpg', 'A boy writes in his notebook.', 'Education', 'Sept. 2026', 'French, the language of school'],
-      ['/photos/photo-dessin.jpg', 'Two boys drawing.', 'Culture', 'Sept. 2026', 'Play, sport and creativity']
-    ] as const,
     donTitlePre: 'Every gift extends support that has already ',
     donTitleWord: 'begun',
     donTitlePost: '.',
@@ -180,7 +148,7 @@ export function HomePage({ locale }: { locale: Locale }) {
               </Link>
             </div>
             <span className="flex items-center gap-2 text-[14px] text-on-dark-2">
-              <SealCheckIcon size={20} color="#9DB5A2" aria-hidden />
+              <SealCheckIcon size={20} className="text-sage-300" aria-hidden />
               {t.badge}
             </span>
           </div>
@@ -211,7 +179,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             </Link>
           </div>
           <span className="flex items-center gap-2 text-[13px] text-on-dark-2">
-            <SealCheckIcon size={18} color="#9DB5A2" aria-hidden />
+            <SealCheckIcon size={18} className="text-sage-300" aria-hidden />
             {t.badge}
           </span>
         </div>
@@ -219,19 +187,15 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       {/* Chiffres */}
       <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(28px,4vw,44px)]">
-        <div className="grid grid-cols-2 gap-x-5 gap-y-5 md:grid-cols-4 md:gap-x-6">
-          {t.stats.map(([n, mark, l]) => (
+        <div className="grid max-w-[720px] grid-cols-2 gap-x-5 gap-y-5 md:gap-x-6">
+          {t.stats.map(([n, l]) => (
             <Reveal key={l} className="flex flex-col gap-1">
-              <span className="font-serif text-[clamp(30px,3.4vw,42px)] font-semibold leading-none">
-                {n}
-                <sup className="text-[0.4em] text-copper-600">{mark}</sup>
-              </span>
+              <span className="font-serif text-[clamp(30px,3.4vw,42px)] font-semibold leading-none">{n}</span>
               <Brush className="h-1.5 w-11" />
               <span className="text-[15px] leading-[1.35] text-ink-body">{l}</span>
             </Reveal>
           ))}
         </div>
-        <Reveal><p className="mt-4 text-[13px] text-ink-soft">{t.statsNote}</p></Reveal>
       </section>
 
       <PartnersMarquee locale={locale} />
@@ -245,27 +209,25 @@ export function HomePage({ locale }: { locale: Locale }) {
             <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.daySubtitle}</p>
           </Reveal>
           <div className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 md:auto-cols-[minmax(240px,1fr)] md:gap-6 overflow-x-auto pb-3 [scroll-snap-type:x_mandatory]">
-            {t.day.map(([h, dt, d, img, alt, rot], i) => (
-              <div key={h} className="[scroll-snap-align:start]">
+            {t.day.map(([dt, d, img, alt, rot], i) => (
+              <div key={dt} className="[scroll-snap-align:start]">
               <div className="md:hidden">
                 <MobilePhotoCard
                   src={img}
                   alt={alt}
                   heightClass="h-[420px]"
-                  badge={<span className="rounded-full bg-cream px-2.5 py-1 text-[13px] font-extrabold text-night">{h}</span>}
                   title={dt}
                   text={d}
                 />
               </div>
               <Reveal delay={i * 90} className="hidden flex-col gap-3.5 md:flex">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-[0_8px_24px_rgba(60,35,15,.12)]" style={{ transform: `rotate(${rot})` }}>
+                <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-ol-card" style={{ transform: `rotate(${rot})` }}>
                   <Reveal variant="zoom" className="absolute inset-0">
                     <Image src={img} alt={alt} fill sizes="(max-width: 768px) 60vw, 280px" loading="lazy" className="photo-tone object-cover object-[50%_35%]" />
                   </Reveal>
                 </div>
-                <Reveal variant="soft" delay={180 + i * 90} className="flex items-center gap-2.5">
-                  <span className="rounded-full bg-ink px-2.5 py-1 text-[13px] font-extrabold text-cream">{h}</span>
-                  <Brush fill="#D9C7AE" className="h-2 flex-1" />
+                <Reveal variant="soft" delay={180 + i * 90}>
+                  <Brush fill="var(--clay)" className="h-2 w-full" stretch />
                 </Reveal>
                 <Reveal variant="soft" delay={280 + i * 90}>
                   <h3 className="m-0 font-serif text-[22px] font-semibold">{dt}</h3>
@@ -277,7 +239,6 @@ export function HomePage({ locale }: { locale: Locale }) {
               </div>
             ))}
           </div>
-          <span className="text-[13px] text-ink-soft">{t.dayNote}</span>
         </div>
       </section>
 
@@ -285,7 +246,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <section className="relative overflow-hidden bg-night text-cream">
         <Image src="/photos/photo-ecriture.jpg" alt={t.projectImgAlt} fill sizes="100vw" className="photo-tone object-cover object-[60%_30%]" />
         <div className="relative mx-auto max-w-[1280px] px-[clamp(12px,4vw,48px)] py-[clamp(40px,8vw,120px)]">
-          <Reveal className="flex max-w-[520px] flex-col gap-[18px] rounded-[20px] bg-[rgba(10,10,10,.9)] p-[clamp(28px,4vw,48px)]">
+          <Reveal className="flex max-w-[520px] flex-col gap-[18px] rounded-card bg-[rgba(10,10,10,.9)] p-[clamp(28px,4vw,48px)]">
             <Eyebrow dark>{t.projectEyebrow}</Eyebrow>
             <h2 className="m-0 font-serif text-[clamp(40px,5vw,64px)] font-medium leading-none">{currentProject.name}</h2>
             <p className="m-0 text-[15px] font-bold tracking-[0.04em] text-gold-hover">{currentProject.acronymMeaning}</p>
@@ -312,7 +273,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           {t.ways.map((w, i) => {
             const Icon = w.icon;
             const isAnchor = w.href.startsWith('#');
-            const cls = `flex min-h-[280px] flex-col gap-3.5 rounded-[20px] ${w.bg} ${w.fg} px-7 py-8 no-underline transition-transform hover:-translate-y-[3px] hover:${w.fg}`;
+            const cls = `flex min-h-[280px] flex-col gap-3.5 rounded-card ${w.bg} ${w.fg} px-7 py-8 no-underline transition-transform hover:-translate-y-[3px] hover:${w.fg}`;
             const inner = (
               <>
                 <Icon size={36} className={w.ic} aria-hidden />
@@ -342,56 +303,17 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
 
       {/* Témoignages */}
-      <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] pb-[clamp(64px,9vw,112px)]">
+      <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pb-[clamp(64px,9vw,112px)]">
         {t.testimonials.map((f, i) => (
           <Reveal key={f.name} delay={i * 90}>
-            <figure className="m-0 flex flex-col gap-4 rounded-[20px] bg-white p-8 shadow-ol-sm">
+            <figure className="m-0 flex max-w-[760px] flex-col gap-4 rounded-card bg-white p-8 shadow-ol-sm">
               <blockquote className="m-0 font-serif text-[22px] italic leading-[1.45]">{f.q}</blockquote>
               <figcaption className="text-[15px]">
                 <b>{f.name}</b> · {f.role}
-                {f.fictional && <span className="text-ink-soft"> · {t.fictionalNote}</span>}
               </figcaption>
             </figure>
           </Reveal>
         ))}
-      </section>
-
-      {/* Nouvelles du terrain */}
-      <section className="bg-sand">
-        <div className="mx-auto grid max-w-[1280px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-16 gap-y-10 px-[clamp(20px,4vw,48px)] py-[clamp(64px,9vw,120px)]">
-          <Reveal className="flex flex-col gap-4">
-            <h2 className={h2Class}>{t.newsTitle}</h2>
-            <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.newsSubtitle}</p>
-            <Link href={href('/galerie')} className="inline-flex min-h-11 items-center gap-1.5 font-bold no-underline">
-              {t.newsAll}
-              <ArrowRightIcon aria-hidden />
-            </Link>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-6">
-              <span className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-ink-soft">{t.partners}</span>
-              <span className="text-[18px] font-extrabold">{currentProject.partnerName}</span>
-              <span className="flex min-h-12 min-w-[120px] items-center justify-center rounded-lg border-[1.5px] border-dashed border-field-line text-[13px] text-ink-soft">
-                {t.partnerLogo}
-              </span>
-            </div>
-          </Reveal>
-          <div className="flex flex-col gap-3">
-            {t.news.map(([img, alt, tag, date, title], i) => (
-              <Reveal key={title} delay={i * 90}>
-                <Link href={href('/galerie')} className="grid grid-cols-[96px_minmax(0,1fr)] items-center gap-[18px] rounded-xl bg-cream p-3 text-ink no-underline hover:text-ink hover:shadow-ol-md">
-                  <div className="relative h-24 w-24 overflow-hidden rounded-lg">
-                    <Image src={img} alt={alt} fill sizes="96px" loading="lazy" className="photo-tone object-cover" />
-                  </div>
-                  <div className="flex min-w-0 flex-col gap-1.5">
-                    <span className="text-[13px] font-bold text-ink-soft">
-                      {tag} · {date}
-                    </span>
-                    <span className="font-serif text-[20px] font-semibold leading-[1.3]">{title}</span>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
       </section>
 
       <div className="pt-[clamp(8px,2vw,24px)]">
@@ -410,7 +332,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div className="flex flex-col gap-2.5 pt-1.5">
             {t.trust.map(([Icon, label]) => (
               <span key={label} className="flex items-center gap-2.5 text-[15px]">
-                <Icon size={22} color="#3F5A47" aria-hidden />
+                <Icon size={22} className="text-sage-700" aria-hidden />
                 {label}
               </span>
             ))}

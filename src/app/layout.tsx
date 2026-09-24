@@ -36,7 +36,8 @@ export const metadata: Metadata = {
     locale: 'fr_FR',
     siteName: org.name,
     title: `${org.name} — ${org.tagline}`,
-    description: identity.mission
+    description: identity.mission,
+    images: [{ url: '/og/partage-fr.jpg', width: 1200, height: 630, alt: `${org.name} — ${org.tagline}` }]
   }
 };
 
@@ -50,7 +51,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* Pose `js` avant le premier affichage : c'est ce qui autorise le
             masquage des blocs d'apparition (voir globals.css). */}
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        {/* Pose aussi lang="en" sous /en avant le premier affichage : la
+            racine est commune aux deux langues. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.classList.add('js');if(/^\\/en(\\/|$)/.test(location.pathname))document.documentElement.lang='en'"
+          }}
+        />
       </head>
       <body className="flex min-h-screen flex-col">{children}</body>
     </html>

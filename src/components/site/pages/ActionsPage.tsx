@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -70,7 +71,7 @@ const text = {
 
 export function actionsMetadata(locale: Locale): Metadata {
   const t = text[locale];
-  return { title: t.title, description: t.desc };
+  return pageMetadata({ locale, path: '/actions', title: t.title, description: t.desc });
 }
 
 export function ActionsPage({ locale }: { locale: Locale }) {
@@ -114,7 +115,7 @@ export function ActionsPage({ locale }: { locale: Locale }) {
             <Reveal
               className="hidden grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] items-center gap-[clamp(28px,5vw,64px)] md:grid"
             >
-              <div className={`relative aspect-[4/3] overflow-hidden rounded-[20px] ${imgFirst ? 'dk:order-1' : 'dk:order-2'}`}>
+              <div className={`relative aspect-[4/3] overflow-hidden rounded-card ${imgFirst ? 'dk:order-1' : 'dk:order-2'}`}>
                 <Reveal variant="zoom" className="absolute inset-0">
                   <Image src={a.img} alt={a.alt} fill sizes="(max-width: 1200px) 100vw, 560px" loading="lazy" className="photo-tone object-cover object-[50%_35%]" />
                 </Reveal>

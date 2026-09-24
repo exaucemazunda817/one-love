@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowRightIcon } from '@phosphor-icons/react/ssr';
+import { pageMetadata } from '@/lib/seo';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
-import { ToConfirm } from '@/components/site/ui';
 import { InvolvedInteractive } from '@/components/site/pages/InvolvedInteractive';
-import type { Locale } from '@/lib/i18n';
+import { localeHref, type Locale } from '@/lib/i18n';
 
 const text = {
   fr: {
@@ -23,19 +25,12 @@ const text = {
       { k: 'partenariat' as const, t: 'Partenariats', d: 'Entreprises, églises, fondations : construisons un projet ensemble, comme avec Angel Foundation.', cta: 'Devenir partenaire' }
     ],
     needsTitle: 'Nos besoins en nature',
-    needsIntro: 'Du matériel en bon état, collecté en France ou à Kinshasa. Écrivez-nous avant tout envoi.',
-    needsConfirm: 'Liste à confirmer',
-    needs: [
-      'Cahiers, crayons, stylos et ardoises',
-      'Livres de lecture en français, niveau débutant',
-      'Ballons, maillots et matériel de sport',
-      'Ordinateurs portables récents, en état de marche',
-      'Matériel de dessin et de peinture'
-    ],
+    needsIntro: 'Du matériel en bon état, collecté en France ou à Kinshasa. Nos besoins changent selon les ateliers : écrivez-nous pour connaître ceux du moment, avant tout envoi.',
+    needsCta: 'Nous écrire',
     formTitlePre: 'Parlons de votre ',
     formTitleWord: 'engagement',
     formIntro: 'Dites-nous ce qui vous intéresse, nous revenons vers vous rapidement.',
-    whatsapp: 'Ou écrivez-nous sur WhatsApp',
+    whatsapp: 'Ou écrivez-nous depuis la page Contact',
     interestLabel: 'Je souhaite',
     interests: {
       benevolat: 'Devenir bénévole',
@@ -72,19 +67,12 @@ const text = {
       { k: 'partenariat' as const, t: 'Partnerships', d: 'Companies, churches, foundations: let’s build a project together, as with Angel Foundation.', cta: 'Become a partner' }
     ],
     needsTitle: 'What we need',
-    needsIntro: 'Equipment in good condition, collected in France or Kinshasa. Please contact us before sending anything.',
-    needsConfirm: 'List to be confirmed',
-    needs: [
-      'Notebooks, pencils, pens and slates',
-      'Beginner-level French reading books',
-      'Balls, jerseys and sports equipment',
-      'Recent, working laptops',
-      'Drawing and painting supplies'
-    ],
+    needsIntro: 'Equipment in good condition, collected in France or Kinshasa. Our needs change with the workshops: write to us to find out what is needed now, before sending anything.',
+    needsCta: 'Write to us',
     formTitlePre: "Let's talk about your ",
     formTitleWord: 'involvement',
     formIntro: "Tell us what interests you and we'll get back to you quickly.",
-    whatsapp: 'Or message us on WhatsApp',
+    whatsapp: 'Or write to us from the Contact page',
     interestLabel: 'I would like to',
     interests: {
       benevolat: 'Volunteer',
@@ -108,7 +96,7 @@ const text = {
 
 export function involvedMetadata(locale: Locale): Metadata {
   const t = text[locale];
-  return { title: t.title, description: t.desc };
+  return pageMetadata({ locale, path: '/s-impliquer', title: t.title, description: t.desc });
 }
 
 export function InvolvedPage({ locale }: { locale: Locale }) {
@@ -137,14 +125,12 @@ export function InvolvedPage({ locale }: { locale: Locale }) {
                 <h2 className="m-0 font-serif text-[clamp(28px,3vw,38px)] font-medium leading-[1.2]">{t.needsTitle}</h2>
                 <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.needsIntro}</p>
               </Reveal>
-              <ul className="mt-7 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-3 p-0">
-                {t.needs.map((n, i) => (
-                  <Reveal key={n} delay={i * 60} className="flex items-center gap-2.5 rounded-xl bg-white px-4 py-3 text-[15px]">
-                    {n}
-                  </Reveal>
-                ))}
-              </ul>
-              <ToConfirm className="mt-6">{t.needsConfirm}</ToConfirm>
+              <Reveal delay={90} className="mt-5">
+                <Link href={localeHref('/contact', locale)} className="inline-flex min-h-11 items-center gap-1.5 font-bold no-underline">
+                  {t.needsCta}
+                  <ArrowRightIcon aria-hidden />
+                </Link>
+              </Reveal>
             </div>
           </section>
         }

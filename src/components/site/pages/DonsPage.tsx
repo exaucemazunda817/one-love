@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { FileTextIcon } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { HeroBackground } from '@/components/site/HeroBackground';
-import { BrushWord, Eyebrow, ToConfirm } from '@/components/site/ui';
+import { BrushWord, Eyebrow } from '@/components/site/ui';
 import { DonationFlow } from '@/components/site/DonationFlow';
 import { CancelNotice } from '@/app/(site)/dons/CancelNotice';
 import { localeHref, type Locale } from '@/lib/i18n';
@@ -21,13 +21,6 @@ export const text = {
     fundsTitle: "L'emploi de vos dons",
     fundsIntro:
       "Sauf mention spéciale, l'affectation de vos dons se fait en fonction des besoins des programmes de terrain. Si vous souhaitez soutenir un programme en particulier, précisez-le lors de votre virement.",
-    report: 'Rapport d’activité 2025 (PDF)',
-    funds: [
-      ['Programmes de terrain', 82, 'Ateliers, matériel pédagogique, suivi médical et psychosocial'],
-      ['Formation des animateurs', 10, 'Formateurs et ressources pédagogiques'],
-      ['Fonctionnement', 8, 'Frais bancaires, communication, administration']
-    ] as const,
-    breakdownConfirm: 'Répartition à confirmer',
     privacyTitle: 'Respect de votre vie privée',
     privacyText: "One Love ne commercialise pas ses fichiers de donateurs, de clients ni d'abonnés. Voir notre",
     privacyLink: 'politique de confidentialité',
@@ -50,13 +43,6 @@ export const text = {
     fundsTitle: 'How your gifts are used',
     fundsIntro:
       'Unless otherwise specified, your gift is allocated according to the needs of our field programmes. If you would like to support a specific programme, please mention it in your transfer.',
-    report: '2025 activity report (PDF)',
-    funds: [
-      ['Field programmes', 82, 'Workshops, teaching materials, medical and psychosocial care'],
-      ['Facilitator training', 10, 'Trainers and teaching resources'],
-      ['Operations', 8, 'Banking fees, communication, administration']
-    ] as const,
-    breakdownConfirm: 'Breakdown to be confirmed',
     privacyTitle: 'Respecting your privacy',
     privacyText: 'One Love does not sell its donor, customer or subscriber lists. See our',
     privacyLink: 'privacy policy',
@@ -71,7 +57,12 @@ export const text = {
 };
 
 export function donsMetadata(locale: Locale): Metadata {
-  return { title: text[locale].eyebrow === 'Support us' ? 'Donate' : 'Faire un don', description: text[locale].metaDescription };
+  return pageMetadata({
+    locale,
+    path: '/dons',
+    title: locale === 'en' ? 'Donate' : 'Faire un don',
+    description: text[locale].metaDescription
+  });
 }
 
 export function DonsPage({ locale }: { locale: Locale }) {
@@ -102,33 +93,10 @@ export function DonsPage({ locale }: { locale: Locale }) {
       <DonationFlow locale={locale} />
 
       <section className="bg-sand">
-        <div className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
-          <Reveal className="flex flex-wrap items-end justify-between gap-4">
-            <div className="flex max-w-[560px] flex-col gap-3">
-              <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.fundsTitle}</h2>
-              <p className="m-0 text-[16px] leading-[1.6] text-ink-body">{t.fundsIntro}</p>
-            </div>
-            <span className="inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-copper-600 px-4 text-[14px] font-bold text-copper-700">
-              <FileTextIcon size={18} aria-hidden />
-              {t.report}
-            </span>
-          </Reveal>
-          <div className="mt-10 flex flex-col gap-5">
-            {t.funds.map(([label, pct, desc], i) => (
-              <Reveal key={label} delay={i * 90} className="flex flex-col gap-2">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-[16px] font-bold">{label}</span>
-                  <span className="font-serif text-[22px] font-semibold">{pct}%</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-card-line">
-                  <div className="h-full rounded-full bg-copper-600" style={{ width: `${pct}%` }} />
-                </div>
-                <span className="text-[14px] text-ink-soft">{desc}</span>
-              </Reveal>
-            ))}
-          </div>
-          <ToConfirm className="mt-6">{t.breakdownConfirm}</ToConfirm>
-        </div>
+        <Reveal className="mx-auto flex max-w-[1200px] flex-col gap-3 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
+          <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.fundsTitle}</h2>
+          <p className="m-0 max-w-measure text-[16px] leading-[1.6] text-ink-body">{t.fundsIntro}</p>
+        </Reveal>
       </section>
 
       <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">

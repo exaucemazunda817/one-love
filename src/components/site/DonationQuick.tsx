@@ -38,7 +38,7 @@ const text = {
     card: 'Carte · SEPA',
     transfer: 'Virement',
     mobile: 'Mobile Money bientôt',
-    note: 'Équivalences et conversions indicatives, à confirmer.'
+    note: 'Équivalences et conversions indicatives.'
   },
   en: {
     title: 'Give in 30 seconds',
@@ -60,7 +60,7 @@ const text = {
     card: 'Card · SEPA',
     transfer: 'Bank transfer',
     mobile: 'Mobile Money soon',
-    note: 'Equivalents and conversions are indicative, to be confirmed.'
+    note: 'Equivalents and conversions are indicative.'
   }
 };
 
@@ -95,7 +95,7 @@ export function DonationQuick({ locale }: { locale: Locale }) {
   }
 
   return (
-    <div className="flex flex-col gap-[18px] rounded-[20px] bg-white p-[clamp(22px,3vw,32px)] shadow-[0_1px_2px_rgba(60,35,15,.06),0_12px_40px_rgba(60,35,15,.12)]">
+    <div className="flex flex-col gap-[18px] rounded-card bg-white p-[clamp(22px,3vw,32px)] shadow-ol-lg">
       <div className="flex flex-col gap-1">
         <h3 className="m-0 font-serif text-[26px] font-semibold">{t.title}</h3>
         <span className="text-[15px] text-ink-soft">{t.subtitle}</span>
@@ -110,7 +110,7 @@ export function DonationQuick({ locale }: { locale: Locale }) {
             aria-checked={freq === k}
             onClick={() => setFreq(k)}
             className={`min-h-11 cursor-pointer rounded-full border-0 text-[15px] font-bold text-ink ${
-              freq === k ? 'bg-white shadow-[0_1px_3px_rgba(60,35,15,.15)]' : 'bg-transparent'
+              freq === k ? 'bg-white shadow-ol-xs' : 'bg-transparent'
             }`}
           >
             {t.freqs[k]}
@@ -127,7 +127,7 @@ export function DonationQuick({ locale }: { locale: Locale }) {
               type="button"
               aria-pressed={cur === c}
               onClick={() => setCur(c)}
-              className={`min-h-9 min-w-12 cursor-pointer rounded-md border-[1.5px] px-2.5 text-[13px] font-bold ${
+              className={`min-h-11 min-w-12 cursor-pointer rounded-md border-[1.5px] px-2.5 text-[13px] font-bold ${
                 cur === c ? 'border-ink bg-ink text-cream' : 'border-field-line bg-white text-ink'
               }`}
             >

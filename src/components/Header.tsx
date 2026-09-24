@@ -47,7 +47,7 @@ export function Header({ locale }: { locale: Locale }) {
     <>
       {/* Desktop (≥ 1200 px) */}
       <header className="fixed inset-x-0 top-[max(1rem,env(safe-area-inset-top))] z-40 hidden px-8 dk:block">
-        <div className="mx-auto flex max-w-[1280px] items-center gap-4 rounded-full border border-gold/25 bg-night/60 py-2 pl-3 pr-3 shadow-[0_10px_40px_-10px_rgba(0,0,0,.7)] backdrop-blur-md">
+        <div className="mx-auto flex max-w-[1280px] items-center gap-4 rounded-full border border-gold/25 bg-night/60 py-2 pl-3 pr-3 shadow-ol-float backdrop-blur-md">
           <Link href={localeHref('/', locale)} aria-label={t.home} className="flex flex-none">
             <Image src={LOGO} alt="One Love" width={48} height={48} priority className="h-12 w-12" />
           </Link>
@@ -100,7 +100,7 @@ export function Header({ locale }: { locale: Locale }) {
 
       {/* Mobile (< 1200 px) */}
       <header className="fixed inset-x-0 top-[max(1rem,env(safe-area-inset-top))] z-40 px-4 dk:hidden">
-        <div className="mx-auto flex max-w-[1280px] items-center justify-between rounded-full border border-gold/25 bg-night/60 py-1.5 pl-2.5 pr-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,.7)] backdrop-blur-md">
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between rounded-full border border-gold/25 bg-night/60 py-1.5 pl-2.5 pr-1.5 shadow-ol-float backdrop-blur-md">
         <Link href={localeHref('/', locale)} aria-label={t.home} className="flex">
           <Image src={LOGO} alt="One Love" width={44} height={44} priority className="h-11 w-11" />
         </Link>
@@ -120,7 +120,7 @@ export function Header({ locale }: { locale: Locale }) {
             aria-controls="menu-mobile"
             className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-0 bg-dark-surface"
           >
-            <ListIcon size={24} color="#FBF7F1" aria-hidden />
+            <ListIcon size={24} className="text-cream" aria-hidden />
           </button>
         </div>
         </div>
@@ -142,7 +142,7 @@ export function Header({ locale }: { locale: Locale }) {
               aria-label={t.closeMenu}
               className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-0 bg-dark-surface"
             >
-              <XIcon size={24} color="#FBF7F1" aria-hidden />
+              <XIcon size={24} className="text-cream" aria-hidden />
             </button>
           </div>
           <nav className="flex flex-1 flex-col px-5 py-2">
@@ -154,7 +154,7 @@ export function Header({ locale }: { locale: Locale }) {
                 className="flex min-h-14 items-center justify-between border-b border-dark-line font-serif text-[22px] text-cream no-underline hover:text-gold-hover"
               >
                 {item.label}
-                <CaretRightIcon size={18} color="#8C8177" aria-hidden />
+                <CaretRightIcon size={18} className="text-taupe" aria-hidden />
               </Link>
             ))}
           </nav>

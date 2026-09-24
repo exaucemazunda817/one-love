@@ -293,12 +293,43 @@ Deux interdits vérifiés par calcul de contraste :
 
 Lancer le skill `audit-design-site` avant de considérer la vitrine terminée.
 
+Aucune couleur, ombre ou arrondi écrit en dur dans les composants publics : tout
+passe par les jetons de `globals.css` (`text-taupe`, `bg-track`,
+`bg-disabled`, `rounded-card` = 20 px, `shadow-ol-xs/sm/md/lg/card/photo/hover/float`).
+Les icônes Phosphor prennent leur couleur par `className="text-…"`, pas par
+l'attribut `color`. Les tailles de police restent celles de la maquette
+(handoff haute fidélité) : ne pas les « arrondir ».
+
 ## Contenu
 
 Tout est centralisé dans `src/lib/content.ts`, avec une distinction stricte
 entre contenu vérifié et provisoire. **Règle : ne jamais transformer un
 `[À COMPLÉTER]` en contenu définitif sans confirmation explicite de Mazunda.**
 C'est une vraie association, avec de vrais donateurs.
+
+**Plus aucune étiquette « à confirmer » à l'écran (audit du 24/09/2026).** Les
+composants `ToConfirm` et `PlaceholderPhoto` ont été supprimés : un donateur
+voyait « témoignage fictif, à remplacer » sur une page de collecte. Un contenu
+non vérifié est désormais **retiré**, jamais affiché avec une étiquette.
+Décisions de Mazunda à cette date :
+- Retirés (fictifs ou non vérifiés) : témoignages « Grâce N. » et « Pascal D. »,
+  articles d'exemple (accueil et Actualités), chiffres « 48 enfants » et
+  « 6 formateurs », horaires de « Une journée à One Love », liste des besoins en
+  nature, répartition des fonds 82/10/8 %, faux rapports PDF, faux numéro
+  WhatsApp, section Équipe, cadres « photo à fournir », adresse et horaires de
+  visite. À remettre seulement avec les vraies données de l'association.
+- **Validés par Mazunda** : montants des formules de parrainage (20/35/50 € et
+  25/30/20 €) et contenu des formules.
+- Conservés car exacts : « 2010 » et « 3 axes » ; conversions de devises
+  présentées comme « indicatives ».
+
+**Aperçus de partage** : `src/lib/seo.ts` (`pageMetadata`) donne à chaque page
+son titre, sa langue et son image. Images statiques `public/og/partage-fr.jpg`
+et `partage-en.jpg` (JPEG ~80 Ko) : générées une fois avec `next/og` puis
+figées, car la version générée à la volée sortait en PNG de ~780 Ko, trop lourd
+pour WhatsApp. Ne pas remettre un `opengraph-image` dans le groupe `(site-en)` :
+Next le publie sous une adresse suffixée (`/en/opengraph-image-1cwhjg`) et la
+référence en dur répond 404.
 
 **Contradiction non résolue, à trancher avant les mentions légales** : le site
 actuel annonce le 44 rue de la Roquette (Paris 11e), une base officielle

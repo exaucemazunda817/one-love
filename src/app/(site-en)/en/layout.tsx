@@ -1,3 +1,4 @@
+import { HtmlLang } from '@/components/HtmlLang';
 import { SiteShell } from '@/components/site/SiteShell';
 
 // Site public en anglais, sous /en. Le <html lang="fr"> de la racine est
@@ -6,6 +7,7 @@ import { SiteShell } from '@/components/site/SiteShell';
 export default function EnglishLayout({ children }: { children: React.ReactNode }) {
   return (
     <div lang="en" className="flex min-h-screen flex-col">
+      <HtmlLang lang="en" />
       <SiteShell locale="en">{children}</SiteShell>
     </div>
   );
