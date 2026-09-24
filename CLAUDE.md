@@ -318,6 +318,13 @@ Décisions de Mazunda à cette date :
   nature, répartition des fonds 82/10/8 %, faux rapports PDF, faux numéro
   WhatsApp, section Équipe, cadres « photo à fournir », adresse et horaires de
   visite. À remettre seulement avec les vraies données de l'association.
+- **Actualités remises selon la maquette (24/09, à la demande de Mazunda)** :
+  filtres par catégorie + cartes, avec effets au survol (carte soulevée, photo
+  qui regrossit, liseré crème dans le cadre — classes `ol-news-card` /
+  `ol-news-frame` / `ol-gallery-frame` dans `globals.css`). Seuls les 5
+  articles adossés à des faits vérifiés de RÊVES 2 sont remis ; « Premier bilan
+  médical » (oct. 2026, donc pas encore arrivé) reste écarté, et la date du
+  partenariat Angel Foundation est « 2026 » faute de mois vérifié.
 - **Validés par Mazunda** : montants des formules de parrainage (20/35/50 € et
   25/30/20 €) et contenu des formules.
 - Conservés car exacts : « 2010 » et « 3 axes » ; conversions de devises
