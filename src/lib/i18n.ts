@@ -24,6 +24,7 @@ export function alternateHref(pathname: string): { locale: Locale; href: string 
 export const WHATSAPP_PLACEHOLDER = '+243 81 000 00 00';
 export const CONTACT_EMAIL = 'contact@associationonelove.org';
 export const FACEBOOK_URL = 'https://www.facebook.com/associationonelove';
+export const FACEBOOK_REELS_URL = 'https://www.facebook.com/associationonelove/reels';
 
 export const chrome = {
   fr: {

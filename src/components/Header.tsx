@@ -4,8 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { HeartIcon, ListIcon, XIcon, CaretRightIcon } from '@phosphor-icons/react';
-import { chrome, localeHref, alternateHref, type Locale } from '@/lib/i18n';
+import { HeartIcon, ListIcon, XIcon, CaretRightIcon, FacebookLogoIcon } from '@phosphor-icons/react';
+import { chrome, localeHref, alternateHref, FACEBOOK_URL, type Locale } from '@/lib/i18n';
 import { cx } from '@/components/site/ui';
 
 const LOGO = '/brand/logo-one-love-rond.png';
@@ -158,6 +158,15 @@ export function Header({ locale }: { locale: Locale }) {
               </Link>
             ))}
           </nav>
+          <a
+            href={FACEBOOK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mx-5 mt-2 flex min-h-12 items-center gap-2.5 text-[15px] text-on-dark-1 no-underline hover:text-gold-hover"
+          >
+            <FacebookLogoIcon size={22} aria-hidden />
+            Facebook
+          </a>
           <div className="flex flex-col gap-3 px-5 pb-7 pt-4">
             <div className="flex gap-2 text-[14px] font-extrabold">
               {locale === 'fr' ? (

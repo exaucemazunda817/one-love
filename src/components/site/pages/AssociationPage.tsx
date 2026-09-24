@@ -37,6 +37,8 @@ const text = {
       { icon: StarIcon, t: "Croire à l'impossible.", bg: 'bg-white', fg: 'text-ink', ic: 'text-copper-600' },
       { icon: LeafIcon, t: "Conduire nos actions dans le respect de l'environnement.", bg: 'bg-sage-100', fg: 'text-ink', ic: 'text-sage-700' }
     ],
+    pageQuote: "« One Love, une équipe qui pense que l'Amour est divin et qu'il peut agir en nous qui sommes ordinaires par des actes extraordinaires ! »",
+    pageQuoteCite: 'Présentation de la page Facebook de One Love',
     valuesQuote: "« L'amour que nous souhaitons transmettre est une prolongation de nos valeurs : ce n'est pas pour détruire mais pour construire, non pour imposer mais pour démontrer par nos actes d'amour que l'Homme est aimé au-delà des frontières, des cultures ou des religions. »",
     teamTitle: "L'équipe",
     teamSubtitle: 'Une équipe jeune et dynamique, à Kinshasa et en France.',
@@ -82,6 +84,8 @@ const text = {
       { icon: StarIcon, t: 'Believe in the impossible.', bg: 'bg-white', fg: 'text-ink', ic: 'text-copper-600' },
       { icon: LeafIcon, t: 'Carry out our actions with respect for the environment.', bg: 'bg-sage-100', fg: 'text-ink', ic: 'text-sage-700' }
     ],
+    pageQuote: '“One Love, a team that believes Love is divine and can work through ordinary people like us by means of extraordinary acts!”',
+    pageQuoteCite: "From One Love's Facebook page",
     valuesQuote: '“The love we wish to pass on is an extension of our values: not to destroy but to build, not to impose but to show through acts of love that every person is loved, beyond borders, cultures or religions.”',
     teamTitle: 'The team',
     teamSubtitle: 'A young, dynamic team in Kinshasa and France.',
@@ -177,6 +181,12 @@ export function AssociationPage({ locale }: { locale: Locale }) {
           })}
         </div>
         <Reveal><p className="m-0 max-w-[900px] font-serif text-[clamp(20px,2.2vw,26px)] italic leading-[1.5] text-ink-body">{t.valuesQuote}</p></Reveal>
+        <Reveal>
+          <figure className="m-0 flex max-w-[900px] flex-col gap-2 border-l-[3px] border-copper-600 pl-5">
+            <blockquote className="m-0 font-serif text-[clamp(18px,2vw,22px)] leading-[1.5] text-ink">{t.pageQuote}</blockquote>
+            <figcaption className="text-[14px] text-ink-soft">{t.pageQuoteCite}</figcaption>
+          </figure>
+        </Reveal>
       </section>
 
       <section className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] pb-[clamp(56px,8vw,104px)]">

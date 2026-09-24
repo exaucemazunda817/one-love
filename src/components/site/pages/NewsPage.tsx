@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { InnerHero } from '@/components/site/InnerHero';
 import { NewsInteractive, type NewsText } from '@/components/site/pages/NewsInteractive';
+import { FacebookBand } from '@/components/site/FacebookBand';
 import type { Locale } from '@/lib/i18n';
 
 const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: string; titlePre: string; titleWord: string; intro: string; heroAlt: string }> = {
@@ -75,6 +76,10 @@ export function NewsPage({ locale }: { locale: Locale }) {
       />
 
       <NewsInteractive t={t} />
+
+      <div className="pt-[clamp(40px,6vw,72px)]">
+        <FacebookBand locale={locale} />
+      </div>
     </>
   );
 }

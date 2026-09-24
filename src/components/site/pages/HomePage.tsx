@@ -13,6 +13,7 @@ import {
 import { Reveal } from '@/components/Reveal';
 import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
 import { HeroBackground } from '@/components/site/HeroBackground';
+import { FacebookBand } from '@/components/site/FacebookBand';
 import { Brush, BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { DonationQuick } from '@/components/site/DonationQuick';
 import { localeHref, type Locale } from '@/lib/i18n';
@@ -389,6 +390,10 @@ export function HomePage({ locale }: { locale: Locale }) {
           </div>
         </div>
       </section>
+
+      <div className="pt-[clamp(40px,6vw,72px)]">
+        <FacebookBand locale={locale} />
+      </div>
 
       {/* Don */}
       <section id="don" className="mx-auto grid max-w-[1200px] scroll-mt-20 grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,32px)] py-[clamp(64px,9vw,112px)]">
