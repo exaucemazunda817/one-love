@@ -16,7 +16,7 @@ export const org = {
   tagline: "L'amour et la foi, notre carburant.",
   /// Numéro au Répertoire National des Associations.
   rna: 'W951001528',
-  foundedYear: 2010,
+  foundedYear: 2013,
   founders: 'Kanda Kabangu et son épouse',
 
   // ATTENTION — contradiction non résolue, à trancher AVANT de publier les

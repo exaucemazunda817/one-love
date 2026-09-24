@@ -22,7 +22,7 @@ import { currentProject } from '@/lib/content';
 
 const text = {
   fr: {
-    eyebrow: 'Kinshasa, RDC · depuis 2010',
+    eyebrow: 'Kinshasa, RDC · depuis 2013',
     titlePre: "L'",
     titleWord: 'amour',
     titlePost: ' et la foi, notre carburant.',
@@ -33,7 +33,7 @@ const text = {
     badge: 'Association loi 1901 · RNA W951001528',
     heroImgAlt: 'Deux garçons dessinent à une table en plein air, au centre One Love.',
     stats: [
-      ['2010', 'année de fondation'],
+      ['2013', 'année de fondation'],
       ['3', 'axes : éducation, soin, insertion']
     ] as const,
     dayEyebrow: 'RÊVES 2 · carnet de bord',
@@ -70,7 +70,7 @@ const text = {
     ] as const
   },
   en: {
-    eyebrow: 'Kinshasa, DRC · since 2010',
+    eyebrow: 'Kinshasa, DRC · since 2013',
     titlePre: '',
     titleWord: 'Love',
     titlePost: ' and faith are what drive us.',
@@ -81,7 +81,7 @@ const text = {
     badge: 'Registered non-profit (France) · RNA W951001528',
     heroImgAlt: 'Two boys drawing at an outdoor table at the One Love centre.',
     stats: [
-      ['2010', 'year founded'],
+      ['2013', 'year founded'],
       ['3', 'focus areas: education, care, integration']
     ] as const,
     dayEyebrow: 'RÊVES 2 · logbook',

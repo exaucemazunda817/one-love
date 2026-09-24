@@ -327,8 +327,16 @@ Décisions de Mazunda à cette date :
   partenariat Angel Foundation est « 2026 » faute de mois vérifié.
 - **Validés par Mazunda** : montants des formules de parrainage (20/35/50 € et
   25/30/20 €) et contenu des formules.
-- Conservés car exacts : « 2010 » et « 3 axes » ; conversions de devises
-  présentées comme « indicatives ».
+- Conservés car exacts : « 3 axes » ; conversions de devises présentées comme
+  « indicatives ».
+- **Année de fondation : 2013** (confirmé par Mazunda le 24/09, conforme à la
+  vidéo YouTube fondatrice d'oct. 2014 : « créée en septembre 2013 »). Le site
+  affichait 2010 par erreur. **2010 est l'année où le couple fondateur s'est
+  rencontré** : la citation « Depuis que nous nous sommes rencontrés en 2010 »
+  reste donc juste et ne doit pas être modifiée. L'année vient de
+  `org.foundedYear` (content.ts) sauf dans quelques textes écrits en dur
+  (accueil, L'association) et dans les images `public/og/partage-*.jpg`, où
+  elle est inscrite dans l'image : à refaire si elle change.
 
 **Aperçus de partage** : `src/lib/seo.ts` (`pageMetadata`) donne à chaque page
 son titre, sa langue et son image. Images statiques `public/og/partage-fr.jpg`

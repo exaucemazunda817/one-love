@@ -30,7 +30,7 @@ const text = {
     foundersEyebrow: 'Les fondateurs',
     foundersQuote: '« Depuis que nous nous sommes rencontrés en 2010, ma femme et moi avons eu à cœur de vivre un rêve commun : aimer et aider ceux qui en ont besoin. »',
     foundersName: 'Kanda Kabangu',
-    foundersText: "Nous sommes une équipe dynamique et pleine d'enthousiasme, passionnée par le défi de rendre le monde meilleur. Et nous ne ménageons pas nos efforts pour y arriver. L'association a été fondée en 2010 par Kanda Kabangu et son épouse.",
+    foundersText: "Nous sommes une équipe dynamique et pleine d'enthousiasme, passionnée par le défi de rendre le monde meilleur. Et nous ne ménageons pas nos efforts pour y arriver. L'association a été fondée en 2013 par Kanda Kabangu et son épouse.",
     valuesTitle: 'Nos valeurs',
     values: [
       { icon: HeartIcon, t: "Aimer l'autre comme soi-même.", bg: 'bg-night', fg: 'text-cream', ic: 'text-gold-hover' },
@@ -40,7 +40,7 @@ const text = {
     pageQuote: "« One Love, une équipe qui pense que l'Amour est divin et qu'il peut agir en nous qui sommes ordinaires par des actes extraordinaires ! »",
     pageQuoteCite: 'Présentation de la page Facebook de One Love',
     valuesQuote: "« L'amour que nous souhaitons transmettre est une prolongation de nos valeurs : ce n'est pas pour détruire mais pour construire, non pour imposer mais pour démontrer par nos actes d'amour que l'Homme est aimé au-delà des frontières, des cultures ou des religions. »",
-    bannerTitle: 'Rejoindre ce qui a commencé en 2010.',
+    bannerTitle: 'Rejoindre ce qui a commencé en 2013.',
     bannerText: 'Un don, un parrainage ou quelques heures de votre temps.'
   },
   en: {
@@ -65,7 +65,7 @@ const text = {
     foundersEyebrow: 'The founders',
     foundersQuote: '“Since we met in 2010, my wife and I have shared one dream: to love and help those in need.”',
     foundersName: 'Kanda Kabangu',
-    foundersText: 'We are a dynamic, enthusiastic team, passionate about the challenge of making the world a better place, and we spare no effort to get there. The association was founded in 2010 by Kanda Kabangu and his wife.',
+    foundersText: 'We are a dynamic, enthusiastic team, passionate about the challenge of making the world a better place, and we spare no effort to get there. The association was founded in 2013 by Kanda Kabangu and his wife.',
     valuesTitle: 'Our values',
     values: [
       { icon: HeartIcon, t: 'Love others as yourself.', bg: 'bg-night', fg: 'text-cream', ic: 'text-gold-hover' },
@@ -75,7 +75,7 @@ const text = {
     pageQuote: '“One Love, a team that believes Love is divine and can work through ordinary people like us by means of extraordinary acts!”',
     pageQuoteCite: "From One Love's Facebook page",
     valuesQuote: '“The love we wish to pass on is an extension of our values: not to destroy but to build, not to impose but to show through acts of love that every person is loved, beyond borders, cultures or religions.”',
-    bannerTitle: 'Join what began in 2010.',
+    bannerTitle: 'Join what began in 2013.',
     bannerText: 'A gift, a sponsorship or a few hours of your time.'
   }
 };
