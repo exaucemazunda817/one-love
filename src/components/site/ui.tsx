@@ -123,7 +123,7 @@ export function TextHero({ eyebrow, title, intro }: { eyebrow?: string; title: s
         <h1 className="m-0 max-w-[820px] text-balance font-serif text-[clamp(34px,5vw,56px)] font-medium leading-[1.1] tracking-[-0.01em]">
           {title}
         </h1>
-        {intro && <p className="m-0 max-w-[620px] text-pretty text-[17px] leading-[1.6] text-on-dark-1">{intro}</p>}
+        {intro && <p className="-mt-1.5 m-0 max-w-[620px] text-pretty text-[15px] leading-[1.5] text-on-dark-1 dk:mt-0 dk:text-[17px] dk:leading-[1.6]">{intro}</p>}
       </Reveal>
     </section>
   );

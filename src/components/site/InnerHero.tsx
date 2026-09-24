@@ -44,7 +44,7 @@ export function InnerHero({
             {titlePost}
           </h1>
           {intro && (
-            <p className="m-0 max-w-[540px] text-pretty text-[17px] leading-[1.6] text-on-dark-1 dk:text-[20px]">{intro}</p>
+            <p className="-mt-1.5 m-0 max-w-[540px] text-pretty text-[15px] leading-[1.5] text-on-dark-1 dk:mt-0 dk:text-[20px] dk:leading-[1.6]">{intro}</p>
           )}
           {cta && (
             <div className="flex flex-wrap justify-center gap-3 dk:justify-start">

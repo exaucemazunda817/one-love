@@ -204,7 +204,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
                 <BrushWord>{t.heroWord}</BrushWord>
                 {t.heroPost}
               </h1>
-              <p className="m-0 max-w-[540px] text-pretty text-[17px] leading-[1.6] text-on-dark-1 dk:text-[20px]">{t.heroIntro}</p>
+              <p className="-mt-1.5 m-0 max-w-[540px] text-pretty text-[15px] leading-[1.5] text-on-dark-1 dk:mt-0 dk:text-[20px] dk:leading-[1.6]">{t.heroIntro}</p>
               <div className="flex flex-wrap items-center justify-center gap-5 dk:justify-start">
                 <a
                   href="#inscription"

@@ -98,7 +98,7 @@ export function DonsPage({ locale }: { locale: Locale }) {
             {t.titlePre}
             <BrushWord>{t.titleWord}</BrushWord>
           </h1>
-          <p className="m-0 max-w-[560px] text-pretty text-[clamp(17px,1.6vw,20px)] leading-[1.6] text-on-dark-1">{t.intro}</p>
+          <p className="-mt-1.5 m-0 max-w-[560px] text-pretty text-[15px] leading-[1.5] text-on-dark-1 dk:mt-0 dk:text-[clamp(17px,1.6vw,20px)] dk:leading-[1.6]">{t.intro}</p>
           </Reveal>
         </div>
       </section>
