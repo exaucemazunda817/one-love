@@ -118,7 +118,7 @@ export function ToConfirm({
 export function TextHero({ eyebrow, title, intro }: { eyebrow?: string; title: string; intro?: string }) {
   return (
     <section className="bg-night text-cream">
-      <Reveal className="mx-auto flex max-w-[1200px] flex-col gap-4 px-[clamp(20px,4vw,32px)] pb-[clamp(40px,6vw,72px)] pt-[clamp(120px,12vw,148px)]">
+      <Reveal className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-center dk:items-start dk:text-left px-[clamp(20px,4vw,32px)] pb-[clamp(40px,6vw,72px)] pt-[clamp(120px,12vw,148px)]">
         {eyebrow && <Eyebrow dark>{eyebrow}</Eyebrow>}
         <h1 className="m-0 max-w-[820px] text-balance font-serif text-[clamp(34px,5vw,56px)] font-medium leading-[1.1] tracking-[-0.01em]">
           {title}

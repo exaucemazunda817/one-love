@@ -1,4 +1,4 @@
-import { Header, MobileDonateBar } from '@/components/Header';
+import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { BrushDefs } from '@/components/site/ui';
 import type { Locale } from '@/lib/i18n';
@@ -20,7 +20,6 @@ export function SiteShell({ locale, children }: { locale: Locale; children: Reac
         {children}
       </main>
       <Footer locale={locale} />
-      <MobileDonateBar locale={locale} />
     </>
   );
 }

@@ -22,9 +22,7 @@ const linkClass =
 export function Footer({ locale }: { locale: Locale }) {
   const t = chrome[locale].footer;
   return (
-    // 88 px de marge basse sous 1200 px : la barre de don flottante ne doit
-    // jamais masquer la dernière ligne du pied de page.
-    <footer className="bg-night pb-[88px] text-on-dark-1 dk:pb-0">
+    <footer className="bg-night text-on-dark-1">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] pb-8 pt-[clamp(48px,7vw,80px)]">
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,210px),1fr))] gap-8">
           <Reveal variant="soft" className="flex flex-col gap-3.5">

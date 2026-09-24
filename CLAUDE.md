@@ -195,8 +195,9 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   maquette, signalés « à remplacer » à l'écran. Vérifié : 24 routes en 200,
   aucun débordement horizontal à 320/375 px, build de production propre.
   Reste : commit + push + vérifier que Vercel passe en READY ; tester le
-  bouton Stripe en ligne ; la bulle `MobileDonateBar` recouvre le bas du
-  premier écran mobile (comportement global voulu par la maquette).
+  bouton Stripe en ligne. Décision de Mazunda (24/09) : la barre basse mobile
+  « Faire un don » + WhatsApp a été supprimée (le don est déjà dans le menu) ;
+  la barre de navigation est une pilule flottante en verre dépoli.
 - Jalons 3, 4 (partie 2), 10 : à faire. Voir le plan.
 
 **Décision de Mazunda (23/09) : le nouveau site ne fait AUCUNE référence à

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { HeartIcon, ListIcon, XIcon, CaretRightIcon, WhatsappLogoIcon } from '@phosphor-icons/react';
+import { HeartIcon, ListIcon, XIcon, CaretRightIcon } from '@phosphor-icons/react';
 import { chrome, localeHref, alternateHref, type Locale } from '@/lib/i18n';
 import { cx } from '@/components/site/ui';
 
@@ -188,31 +188,5 @@ export function Header({ locale }: { locale: Locale }) {
         </div>
       )}
     </>
-  );
-}
-
-/** Barre flottante mobile : « Faire un don » + WhatsApp. */
-export function MobileDonateBar({ locale }: { locale: Locale }) {
-  const pathname = usePathname();
-  const t = chrome[locale];
-  return (
-    <div className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 flex gap-2 rounded-full border border-gold/25 bg-night/60 p-1.5 shadow-[0_10px_40px_-10px_rgba(0,0,0,.7)] backdrop-blur-md dk:hidden">
-      <a
-        href={donateHref(pathname, locale)}
-        className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full border border-cream/30 bg-white/10 text-[16px] font-extrabold text-cream no-underline hover:bg-white/20 hover:text-cream"
-      >
-        <HeartIcon size="1em" aria-hidden />
-        {t.donate}
-      </a>
-      {/* Le numéro WhatsApp de la maquette est fictif : le bouton mène à la
-          page Contact tant que le vrai numéro n'est pas fourni. */}
-      <Link
-        href={localeHref('/contact', locale)}
-        aria-label={t.whatsapp}
-        className="flex h-12 w-12 items-center justify-center rounded-full border border-cream/30 bg-white/10 hover:bg-white/20"
-      >
-        <WhatsappLogoIcon size={24} color="#FBF7F1" aria-hidden />
-      </Link>
-    </div>
   );
 }
