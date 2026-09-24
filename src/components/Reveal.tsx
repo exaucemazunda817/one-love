@@ -29,12 +29,16 @@ export function Reveal({
   children,
   delay = 0,
   className = '',
-  variant = 'up'
+  variant = 'up',
+  repeat = false
 }: {
   children: React.ReactNode;
   delay?: number;
   className?: string;
   variant?: 'up' | 'soft' | 'pop' | 'zoom' | 'left' | 'right' | 'scale';
+  // Rejoue l'animation à chaque retour dans l'écran : le bloc se remet en
+  // attente dès qu'il est entièrement sorti (comme la FAQ du campus ENA).
+  repeat?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<State>('pending');
@@ -46,6 +50,29 @@ export function Reveal({
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setState('shown');
       return;
+    }
+
+    if (repeat) {
+      const enter = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting) setState('shown');
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -8% 0px' }
+      );
+      // Sorti de l'écran : on le masque tout de suite, sans transition, pour
+      // que l'entrée suivante reparte du début.
+      const leave = new IntersectionObserver(
+        (entries) => {
+          if (entries[0] && !entries[0].isIntersecting && el.getClientRects().length > 0) setState('waiting');
+        },
+        { threshold: 0 }
+      );
+      enter.observe(el);
+      leave.observe(el);
+      return () => {
+        enter.disconnect();
+        leave.disconnect();
+      };
     }
 
     let done = false;
@@ -109,7 +136,7 @@ export function Reveal({
     }, 2500);
 
     return stop;
-  }, []);
+  }, [repeat]);
 
   return (
     <div
