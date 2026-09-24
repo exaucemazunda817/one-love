@@ -82,9 +82,9 @@ export function DonsPage({ locale }: { locale: Locale }) {
     <>
       <section className="relative overflow-hidden bg-night text-cream">
         <HeroBackground src="/photos/photo-ecriture.jpg" alt="" position="70% 30%" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,.94)_0%,rgba(10,10,10,.82)_45%,rgba(10,10,10,.35)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.62)_0%,rgba(10,10,10,.74)_50%,rgba(10,10,10,.86)_100%)]" />
         <div className="relative mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pb-[clamp(48px,7vw,88px)] pt-[clamp(120px,12vw,148px)]">
-          <Reveal className="mx-auto flex max-w-[620px] flex-col items-center gap-[18px] text-center dk:mx-0 dk:max-w-none dk:items-start dk:text-left">
+          <Reveal className="mx-auto flex max-w-[620px] flex-col items-center gap-[18px] text-center dk:max-w-[760px]">
           <Eyebrow dark>{t.eyebrow}</Eyebrow>
           <h1 className="m-0 text-balance font-serif text-[clamp(38px,5vw,64px)] font-medium leading-[1.06]">
             {t.titlePre}

@@ -187,17 +187,17 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
       >
         <div className="relative flex min-h-svh w-full items-end dk:min-h-0 dk:items-center">
           <HeroBackground src="/photos/photo-joie.jpg" alt={t.heroAlt} position="45% 30%" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.1)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)] dk:bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.1)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)] dk:bg-[linear-gradient(180deg,rgba(10,10,10,.6)_0%,rgba(10,10,10,.72)_50%,rgba(10,10,10,.84)_100%)]" />
           <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
-            <Reveal className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:mx-0 dk:items-start dk:text-left dk:gap-6">
+            <Reveal className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:max-w-[760px] dk:gap-6">
               <Eyebrow dark>{t.eyebrow}</Eyebrow>
-              <h1 className="m-0 text-balance font-serif text-[38px] font-medium leading-[1.06] tracking-[-0.01em] dk:text-[clamp(38px,5vw,64px)]">
+              <h1 className="m-0 text-balance font-serif text-[32px] font-medium leading-[1.08] tracking-[-0.01em] dk:text-[clamp(38px,5vw,64px)]">
                 {t.heroPre}
                 <BrushWord>{t.heroWord}</BrushWord>
                 {t.heroPost}
               </h1>
               <p className="-mt-1.5 m-0 max-w-[540px] text-pretty text-[15px] leading-[1.5] text-on-dark-1 dk:mt-0 dk:text-[20px] dk:leading-[1.6]">{t.heroIntro}</p>
-              <div className="flex flex-wrap items-center justify-center gap-5 dk:justify-start">
+              <div className="flex flex-wrap items-center justify-center gap-5">
                 <a
                   href="#inscription"
                   className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90"

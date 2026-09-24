@@ -158,17 +158,17 @@ export function HomePage({ locale }: { locale: Locale }) {
       {/* Hero — desktop */}
       <section className="relative hidden min-h-[min(88vh,780px)] overflow-hidden bg-night text-cream dk:flex dk:items-center">
         <HeroBackground src="/photos/photo-dessin.jpg" alt={t.heroImgAlt} position="50% 42%" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.6)_0%,rgba(10,10,10,.72)_50%,rgba(10,10,10,.84)_100%)]" />
         <div className="relative mx-auto w-full max-w-[1280px] px-12 py-24">
-          <div className="flex max-w-[600px] flex-col gap-7">
+          <div className="mx-auto flex max-w-[760px] flex-col items-center gap-7 text-center">
             <Eyebrow dark>{t.eyebrow}</Eyebrow>
             <h1 className="m-0 text-balance font-serif text-[clamp(48px,5.4vw,72px)] font-medium leading-[1.06] tracking-[-0.01em]">
               {t.titlePre}
               <BrushWord>{t.titleWord}</BrushWord>
               {t.titlePost}
             </h1>
-            <p className="m-0 max-w-[520px] text-pretty text-[20px] leading-[1.6] text-on-dark-1">{t.intro}</p>
-            <div className="flex flex-wrap gap-3">
+            <p className="m-0 max-w-[560px] text-pretty text-[20px] leading-[1.6] text-on-dark-1">{t.intro}</p>
+            <div className="flex flex-wrap justify-center gap-3">
               <a href="#don" className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90">
                 <HeartIcon size="1em" aria-hidden />
                 {t.donate}
@@ -189,17 +189,17 @@ export function HomePage({ locale }: { locale: Locale }) {
       <section className="relative flex min-h-svh flex-col justify-end overflow-hidden bg-night text-cream dk:hidden">
         <HeroBackground src="/photos/photo-dessin.jpg" alt={t.heroImgAlt} position="62% 30%" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.15)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)]" />
-        <div className="relative flex flex-col gap-[18px] px-5 pb-10 pt-[120px]">
+        <div className="relative flex flex-col items-center gap-[14px] px-5 pb-10 pt-[120px] text-center">
           <Eyebrow dark className="text-[12px]">
             {t.eyebrow}
           </Eyebrow>
-          <h1 className="m-0 font-serif text-[38px] font-medium leading-[1.1]">
+          <h1 className="m-0 font-serif text-[32px] font-medium leading-[1.1]">
             {t.titlePre}
             <BrushWord>{t.titleWord}</BrushWord>
             {t.titlePost}
           </h1>
-          <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{t.intro}</p>
-          <div className="flex flex-col gap-2.5">
+          <p className="-mt-1 m-0 text-[15px] leading-[1.5] text-on-dark-1">{t.intro}</p>
+          <div className="flex w-full flex-col gap-2.5">
             <a href="#don" className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90">
               <HeartIcon size="1em" aria-hidden />
               {t.donate}
