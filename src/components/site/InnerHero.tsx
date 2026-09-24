@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { HeartIcon } from '@phosphor-icons/react/ssr';
 import { Eyebrow, BrushWord } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
+import { HeroBackground } from '@/components/site/HeroBackground';
 import { localeHref, type Locale } from '@/lib/i18n';
 
 // Hero des pages secondaires — README : « min(64vh,580px) / mobile
@@ -33,7 +33,7 @@ export function InnerHero({
   const href = (p: string) => localeHref(p, locale);
   return (
     <section className="relative flex min-h-[min(82svh,640px)] items-end overflow-hidden bg-night text-cream dk:min-h-[min(64vh,580px)] dk:items-center">
-      <Image src={image} alt={imageAlt} fill priority sizes="100vw" className="photo-tone object-cover" style={{ objectPosition }} />
+      <HeroBackground src={image} alt={imageAlt} position={objectPosition} />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.1)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)] dk:bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
       <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
         <Reveal className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:mx-0 dk:items-start dk:text-left dk:gap-6">

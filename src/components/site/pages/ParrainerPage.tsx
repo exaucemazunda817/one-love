@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { HeartIcon } from '@phosphor-icons/react/ssr';
 import { Eyebrow, BrushWord } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
+import { HeroBackground } from '@/components/site/HeroBackground';
 import { SponsorInteractive, type SponsorText } from '@/components/site/pages/SponsorInteractive';
 import type { Locale } from '@/lib/i18n';
 
@@ -186,15 +186,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
         style={{ minHeight: 'min(80vh,720px)' }}
       >
         <div className="relative flex min-h-svh w-full items-end dk:min-h-0 dk:items-center">
-          <Image
-            src="/photos/photo-joie.jpg"
-            alt={t.heroAlt}
-            fill
-            priority
-            sizes="100vw"
-            className="photo-tone object-cover"
-            style={{ objectPosition: '45% 30%' }}
-          />
+          <HeroBackground src="/photos/photo-joie.jpg" alt={t.heroAlt} position="45% 30%" />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.1)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)] dk:bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
           <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
             <Reveal className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:mx-0 dk:items-start dk:text-left dk:gap-6">

@@ -33,7 +33,7 @@ const text = {
       { icon: FirstAidIcon, k: 'Santé', t: 'Un suivi médical régulier', d: "Chaque enfant du programme bénéficie d'un suivi médical, pour que la santé ne soit jamais un frein à l'apprentissage.", img: '/photos/photo-joie.jpg', alt: 'Un garçon rit, assis sur un muret.' },
       { icon: ChatCircleDotsIcon, k: 'Écoute', t: 'Accompagnement psychosocial et spirituel', d: 'Un espace pour parler, être entendu et reprendre confiance, avec des encadrants formés.', img: '/photos/photo-mains.jpg', alt: 'Des mains colorient des lettres.' },
       { icon: SoccerBallIcon, k: 'Culture et sport', t: 'Activités culturelles, sportives et artistiques', d: 'Le jeu, le sport et la création ne sont pas des à-côtés : ils rendent la confiance et réapprennent la vie en groupe.', img: '/photos/photo-dessin.jpg', alt: 'Deux garçons dessinent ensemble.' },
-      { icon: BriefcaseIcon, k: 'Insertion', t: '(Ré)insertion professionnelle', d: 'Co-construire des programmes de (ré)insertion professionnelle et accompagner chacun dans son accomplissement professionnel et personnel.', img: '/photos/photo-atelier.jpg', alt: 'Un garçon écrit, concentré.' }
+      { icon: BriefcaseIcon, k: 'Insertion', t: '(Ré)insertion professionnelle', d: 'Co-construire des programmes de (ré)insertion professionnelle et accompagner chacun dans son accomplissement professionnel et personnel.', img: '/photos/photo-cahier.jpg', alt: 'Un garçon écrit, concentré.' }
     ],
     revesEyebrow: 'Projet en cours · septembre à décembre 2026',
     revesText:
@@ -57,7 +57,7 @@ const text = {
       { icon: FirstAidIcon, k: 'Health', t: 'Regular medical care', d: 'Every child in the programme receives medical follow-up, so that health never gets in the way of learning.', img: '/photos/photo-joie.jpg', alt: 'A boy laughs, sitting on a low wall.' },
       { icon: ChatCircleDotsIcon, k: 'Listening', t: 'Psychosocial and spiritual support', d: 'A space to talk, be heard and regain confidence, with trained staff.', img: '/photos/photo-mains.jpg', alt: 'Hands colouring in letters.' },
       { icon: SoccerBallIcon, k: 'Culture and sport', t: 'Cultural, sports and art activities', d: 'Play, sport and creativity are not extras: they restore confidence and teach children to live together again.', img: '/photos/photo-dessin.jpg', alt: 'Two boys drawing together.' },
-      { icon: BriefcaseIcon, k: 'Integration', t: 'Professional (re)integration', d: 'Co-designing professional (re)integration programmes and supporting each person in their professional and personal fulfilment.', img: '/photos/photo-atelier.jpg', alt: 'A boy writes, focused.' }
+      { icon: BriefcaseIcon, k: 'Integration', t: 'Professional (re)integration', d: 'Co-designing professional (re)integration programmes and supporting each person in their professional and personal fulfilment.', img: '/photos/photo-cahier.jpg', alt: 'A boy writes, focused.' }
     ],
     revesEyebrow: 'Current project · September to December 2026',
     revesText:
@@ -115,17 +115,23 @@ export function ActionsPage({ locale }: { locale: Locale }) {
               className="hidden grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] items-center gap-[clamp(28px,5vw,64px)] md:grid"
             >
               <div className={`relative aspect-[4/3] overflow-hidden rounded-[20px] ${imgFirst ? 'dk:order-1' : 'dk:order-2'}`}>
-                <Image src={a.img} alt={a.alt} fill sizes="(max-width: 1200px) 100vw, 560px" loading="lazy" className="photo-tone object-cover object-[50%_35%]" />
+                <Reveal variant="zoom" className="absolute inset-0">
+                  <Image src={a.img} alt={a.alt} fill sizes="(max-width: 1200px) 100vw, 560px" loading="lazy" className="photo-tone object-cover object-[50%_35%]" />
+                </Reveal>
               </div>
               <div className={`flex flex-col gap-3.5 ${imgFirst ? 'dk:order-2' : 'dk:order-1'}`}>
-                <div className="flex items-center gap-3">
+                <Reveal variant="soft" delay={200} className="flex items-center gap-3">
                   <span className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-copper-tint-2">
                     <Icon size={28} className="text-copper-600" aria-hidden />
                   </span>
                   <Eyebrow>{a.k}</Eyebrow>
-                </div>
-                <h2 className="m-0 font-serif text-[clamp(28px,3vw,38px)] font-medium leading-[1.2]">{a.t}</h2>
-                <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{a.d}</p>
+                </Reveal>
+                <Reveal variant="soft" delay={320}>
+                  <h2 className="m-0 font-serif text-[clamp(28px,3vw,38px)] font-medium leading-[1.2]">{a.t}</h2>
+                </Reveal>
+                <Reveal variant="soft" delay={440}>
+                  <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{a.d}</p>
+                </Reveal>
               </div>
             </Reveal>
             </div>

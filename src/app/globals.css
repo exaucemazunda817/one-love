@@ -246,3 +246,39 @@ html.js [data-reveal-variant='pop'][data-reveal='waiting'] {
     opacity 400ms ease var(--reveal-delay, 0ms),
     transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--reveal-delay, 0ms);
 }
+
+/* Image de carte : apparaît en se dézoomant, regrossit légèrement au survol. */
+html.js [data-reveal-variant='zoom'][data-reveal='pending'],
+html.js [data-reveal-variant='zoom'][data-reveal='waiting'] {
+  transform: none;
+}
+
+html.js [data-reveal-variant='zoom'][data-reveal='pending'] img,
+html.js [data-reveal-variant='zoom'][data-reveal='waiting'] img {
+  transform: scale(1.15);
+}
+
+[data-reveal-variant='zoom'] img {
+  transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+[data-reveal-variant='zoom'][data-reveal='shown'] {
+  transition: opacity 700ms ease var(--reveal-delay, 0ms);
+}
+
+[data-reveal-variant='zoom'][data-reveal='shown'] img {
+  transform: none;
+}
+
+[data-reveal-variant='zoom'][data-reveal='shown']:hover img {
+  transform: scale(1.06);
+  transition-duration: 700ms;
+  transition-delay: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] img {
+    transform: none !important;
+    transition: none !important;
+  }
+}

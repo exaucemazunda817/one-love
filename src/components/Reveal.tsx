@@ -20,7 +20,8 @@ import { useEffect, useRef, useState } from 'react';
 //    nôtre ne concerne que les blocs réellement à l'écran.
 type State = 'pending' | 'waiting' | 'shown';
 
-// `soft` : glissement court (20 px, 0,5 s) pour les petits éléments du pied de
+// `zoom` : pour l'image d'une carte, qui apparaît en se dézoomant (et regrossit
+// légèrement au survol). `soft` : glissement court (20 px, 0,5 s) pour les petits éléments du pied de
 // page. `pop` : l'élément grandit de 0 à sa taille, pour les icônes.
 export function Reveal({
   children,
@@ -31,7 +32,7 @@ export function Reveal({
   children: React.ReactNode;
   delay?: number;
   className?: string;
-  variant?: 'up' | 'soft' | 'pop';
+  variant?: 'up' | 'soft' | 'pop' | 'zoom';
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<State>('pending');

@@ -15,7 +15,7 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
     categories: ['Tout', 'RÊVES 2', 'Éducation', 'Culture', 'Santé'],
     posts: [
       { tag: 'RÊVES 2', date: '5 sept. 2026', t: "Premiers pas dans l'alphabétisation", d: "Samedi 5 septembre, les enfants ont ouvert leurs cahiers pour le lancement de RÊVES 2.", img: '/photos/photo-ecriture.jpg', alt: 'Une jeune fille écrit.' },
-      { tag: 'Éducation', date: 'Sept. 2026', t: "Le français, langue de l'école", d: "Pourquoi l'apprentissage du français est au cœur de la deuxième phase.", img: '/photos/photo-atelier.jpg', alt: 'Un garçon écrit dans son cahier.' },
+      { tag: 'Éducation', date: 'Sept. 2026', t: "Le français, langue de l'école", d: "Pourquoi l'apprentissage du français est au cœur de la deuxième phase.", img: '/photos/photo-cahier.jpg', alt: 'Un garçon écrit dans son cahier.' },
       { tag: 'Culture', date: 'Sept. 2026', t: 'Jeu, sport et création', d: 'Dessin, musique et football : réapprendre la vie en groupe.', img: '/photos/photo-dessin.jpg', alt: 'Deux garçons dessinent.' },
       { tag: 'RÊVES 2', date: 'Sept. 2026', t: 'Nos formateurs mobilisés', d: "L'équipe d'animateurs formée pour encadrer les ateliers.", img: '/photos/photo-mains.jpg', alt: 'Des mains colorient des lettres.' },
       { tag: 'Santé', date: 'Oct. 2026', t: 'Premier bilan médical', d: 'Le suivi médical régulier démarre pour chaque enfant du programme.', img: '/photos/photo-joie.jpg', alt: 'Un garçon rit.' },
@@ -39,7 +39,7 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
     categories: ['All', 'RÊVES 2', 'Education', 'Culture', 'Health'],
     posts: [
       { tag: 'RÊVES 2', date: '5 Sept. 2026', t: 'First steps in literacy', d: 'On Saturday 5 September, the children opened their notebooks for the launch of RÊVES 2.', img: '/photos/photo-ecriture.jpg', alt: 'A girl writing.' },
-      { tag: 'Education', date: 'Sept. 2026', t: 'French, the language of school', d: 'Why learning French is at the heart of the second phase.', img: '/photos/photo-atelier.jpg', alt: 'A boy writes in his notebook.' },
+      { tag: 'Education', date: 'Sept. 2026', t: 'French, the language of school', d: 'Why learning French is at the heart of the second phase.', img: '/photos/photo-cahier.jpg', alt: 'A boy writes in his notebook.' },
       { tag: 'Culture', date: 'Sept. 2026', t: 'Play, sport and creativity', d: 'Drawing, music and football: learning to live together again.', img: '/photos/photo-dessin.jpg', alt: 'Two boys drawing.' },
       { tag: 'RÊVES 2', date: 'Sept. 2026', t: 'Our trainers at work', d: 'The team of facilitators trained to run the workshops.', img: '/photos/photo-mains.jpg', alt: 'Hands colouring in letters.' },
       { tag: 'Health', date: 'Oct. 2026', t: 'First medical check-ups', d: 'Regular medical follow-up begins for every child in the programme.', img: '/photos/photo-joie.jpg', alt: 'A boy laughing.' },

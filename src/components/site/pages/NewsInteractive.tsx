@@ -65,15 +65,23 @@ export function NewsInteractive({ t }: { t: NewsText }) {
             <Reveal delay={(i % 3) * 90} className="hidden h-full md:block">
               <article className="flex h-full flex-col gap-3 overflow-hidden rounded-[20px] bg-white shadow-ol-sm">
                 <div className="relative aspect-[4/3]">
-                  <Image src={p.img} alt={p.alt} fill sizes="(max-width: 1200px) 100vw, 380px" className="photo-tone object-cover" />
+                  <Reveal variant="zoom" className="absolute inset-0">
+                    <Image src={p.img} alt={p.alt} fill sizes="(max-width: 1200px) 100vw, 380px" className="photo-tone object-cover" />
+                  </Reveal>
                 </div>
                 <div className="flex flex-1 flex-col gap-2 px-5 pb-5">
-                  <span className="flex items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.08em] text-copper-700">
-                    {p.tag}
-                    <span className="text-ink-soft">· {p.date}</span>
-                  </span>
-                  <h3 className="m-0 font-serif text-[21px] font-semibold leading-[1.25]">{p.t}</h3>
-                  <p className="m-0 text-[15px] leading-[1.55] text-ink-body">{p.d}</p>
+                  <Reveal variant="soft" delay={180 + (i % 3) * 90}>
+                    <span className="flex items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.08em] text-copper-700">
+                      {p.tag}
+                      <span className="text-ink-soft">· {p.date}</span>
+                    </span>
+                  </Reveal>
+                  <Reveal variant="soft" delay={280 + (i % 3) * 90}>
+                    <h3 className="m-0 font-serif text-[21px] font-semibold leading-[1.25]">{p.t}</h3>
+                  </Reveal>
+                  <Reveal variant="soft" delay={380 + (i % 3) * 90}>
+                    <p className="m-0 text-[15px] leading-[1.55] text-ink-body">{p.d}</p>
+                  </Reveal>
                 </div>
               </article>
             </Reveal>
@@ -103,14 +111,16 @@ export function NewsInteractive({ t }: { t: NewsText }) {
                     onClick={() => setLb(i)}
                     className="block aspect-[4/5] w-full cursor-pointer overflow-hidden rounded-[16px] border-0 p-0"
                   >
-                    <Image
-                      src={photoItem.src}
-                      alt={photoItem.caption}
-                      width={400}
-                      height={500}
-                      sizes="(max-width: 1200px) 50vw, 25vw"
-                      className="photo-tone h-full w-full object-cover"
-                    />
+                    <Reveal variant="zoom" className="h-full w-full">
+                      <Image
+                        src={photoItem.src}
+                        alt={photoItem.caption}
+                        width={400}
+                        height={500}
+                        sizes="(max-width: 1200px) 50vw, 25vw"
+                        className="photo-tone h-full w-full object-cover"
+                      />
+                    </Reveal>
                   </button>
                 </Reveal>
               ))}

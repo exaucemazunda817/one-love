@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { FileTextIcon } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
+import { HeroBackground } from '@/components/site/HeroBackground';
 import { BrushWord, Eyebrow, ToConfirm } from '@/components/site/ui';
 import { DonationFlow } from '@/components/site/DonationFlow';
 import { CancelNotice } from '@/app/(site)/dons/CancelNotice';
@@ -81,15 +81,7 @@ export function DonsPage({ locale }: { locale: Locale }) {
   return (
     <>
       <section className="relative overflow-hidden bg-night text-cream">
-        <Image
-          src="/photos/photo-ecriture.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="photo-tone object-cover"
-          style={{ objectPosition: '70% 30%' }}
-        />
+        <HeroBackground src="/photos/photo-ecriture.jpg" alt="" position="70% 30%" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,.94)_0%,rgba(10,10,10,.82)_45%,rgba(10,10,10,.35)_100%)]" />
         <div className="relative mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pb-[clamp(48px,7vw,88px)] pt-[clamp(120px,12vw,148px)]">
           <Reveal className="mx-auto flex max-w-[620px] flex-col items-center gap-[18px] text-center dk:mx-0 dk:max-w-none dk:items-start dk:text-left">

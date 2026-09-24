@@ -12,6 +12,7 @@ import {
 } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
+import { HeroBackground } from '@/components/site/HeroBackground';
 import { Brush, BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { DonationQuick } from '@/components/site/DonationQuick';
 import { localeHref, type Locale } from '@/lib/i18n';
@@ -42,7 +43,7 @@ const text = {
     day: [
       ['8 h', "L'arrivée", 'Les enfants arrivent au centre, prêts à découvrir et apprendre.', '/photos/photo-joie.jpg', 'Un garçon rit en arrivant au centre.', '-1.5deg'],
       ['9 h', "Atelier d'écriture", "Lire et écrire en petits groupes : le premier levier d'autonomie.", '/photos/photo-ecriture.jpg', 'Une jeune fille écrit dans son cahier.', '1deg'],
-      ['11 h', 'Français', "Maîtriser la langue de l'école pour ouvrir l'accès à la scolarité.", '/photos/photo-atelier.jpg', 'Un garçon écrit, concentré.', '-1deg'],
+      ['11 h', 'Français', "Maîtriser la langue de l'école pour ouvrir l'accès à la scolarité.", '/photos/photo-cahier.jpg', 'Un garçon écrit, concentré.', '-1deg'],
       ['14 h', 'Création et jeu', 'Dessin, sport, musique : retrouver la confiance et la vie en groupe.', '/photos/photo-mains.jpg', 'Des mains colorient des lettres.', '1.5deg']
     ] as const,
     dayNote: 'Horaires indicatifs, à confirmer.',
@@ -68,7 +69,7 @@ const text = {
     partnerLogo: 'Logo partenaire',
     news: [
       ['/photos/photo-ecriture.jpg', 'Une jeune fille écrit.', 'RÊVES 2', '5 sept. 2026', 'Premiers pas dans l’alphabétisation'],
-      ['/photos/photo-atelier.jpg', 'Un garçon écrit dans son cahier.', 'Éducation', 'Sept. 2026', 'Le français, langue de l’école'],
+      ['/photos/photo-cahier.jpg', 'Un garçon écrit dans son cahier.', 'Éducation', 'Sept. 2026', 'Le français, langue de l’école'],
       ['/photos/photo-dessin.jpg', 'Deux garçons dessinent.', 'Culture', 'Sept. 2026', 'Jeu, sport et création']
     ] as const,
     donTitlePre: 'Chaque don prolonge un accompagnement qui a déjà ',
@@ -106,7 +107,7 @@ const text = {
     day: [
       ['8 am', 'Arrival', 'The children arrive at the centre, ready to discover and learn.', '/photos/photo-joie.jpg', 'A boy laughs as he arrives at the centre.', '-1.5deg'],
       ['9 am', 'Writing workshop', 'Reading and writing in small groups: the first step towards independence.', '/photos/photo-ecriture.jpg', 'A girl writes in her notebook.', '1deg'],
-      ['11 am', 'French', 'Mastering the language of school opens the door to education.', '/photos/photo-atelier.jpg', 'A boy writes, focused.', '-1deg'],
+      ['11 am', 'French', 'Mastering the language of school opens the door to education.', '/photos/photo-cahier.jpg', 'A boy writes, focused.', '-1deg'],
       ['2 pm', 'Creativity and play', 'Drawing, sport, music: regaining confidence and group life.', '/photos/photo-mains.jpg', 'Hands colouring in letters.', '1.5deg']
     ] as const,
     dayNote: 'Indicative times, to be confirmed.',
@@ -132,7 +133,7 @@ const text = {
     partnerLogo: 'Partner logo',
     news: [
       ['/photos/photo-ecriture.jpg', 'A girl writing.', 'RÊVES 2', '5 Sept. 2026', 'First steps in literacy'],
-      ['/photos/photo-atelier.jpg', 'A boy writes in his notebook.', 'Education', 'Sept. 2026', 'French, the language of school'],
+      ['/photos/photo-cahier.jpg', 'A boy writes in his notebook.', 'Education', 'Sept. 2026', 'French, the language of school'],
       ['/photos/photo-dessin.jpg', 'Two boys drawing.', 'Culture', 'Sept. 2026', 'Play, sport and creativity']
     ] as const,
     donTitlePre: 'Every gift extends support that has already ',
@@ -156,14 +157,7 @@ export function HomePage({ locale }: { locale: Locale }) {
     <>
       {/* Hero — desktop */}
       <section className="relative hidden min-h-[min(88vh,780px)] overflow-hidden bg-night text-cream dk:flex dk:items-center">
-        <Image
-          src="/photos/photo-dessin.jpg"
-          alt={t.heroImgAlt}
-          fill
-          priority
-          sizes="100vw"
-          className="photo-tone object-cover object-[50%_42%]"
-        />
+        <HeroBackground src="/photos/photo-dessin.jpg" alt={t.heroImgAlt} position="50% 42%" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
         <div className="relative mx-auto w-full max-w-[1280px] px-12 py-24">
           <div className="flex max-w-[600px] flex-col gap-7">
@@ -193,14 +187,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       {/* Hero — mobile */}
       <section className="relative flex min-h-svh flex-col justify-end overflow-hidden bg-night text-cream dk:hidden">
-        <Image
-          src="/photos/photo-dessin.jpg"
-          alt={t.heroImgAlt}
-          fill
-          priority
-          sizes="100vw"
-          className="photo-tone object-cover object-[62%_30%]"
-        />
+        <HeroBackground src="/photos/photo-dessin.jpg" alt={t.heroImgAlt} position="62% 30%" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.15)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)]" />
         <div className="relative flex flex-col gap-[18px] px-5 pb-10 pt-[120px]">
           <Eyebrow dark className="text-[12px]">
@@ -268,14 +255,20 @@ export function HomePage({ locale }: { locale: Locale }) {
               </div>
               <Reveal delay={i * 90} className="hidden flex-col gap-3.5 md:flex">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-[0_8px_24px_rgba(60,35,15,.12)]" style={{ transform: `rotate(${rot})` }}>
-                  <Image src={img} alt={alt} fill sizes="(max-width: 768px) 60vw, 280px" loading="lazy" className="photo-tone object-cover object-[50%_35%]" />
+                  <Reveal variant="zoom" className="absolute inset-0">
+                    <Image src={img} alt={alt} fill sizes="(max-width: 768px) 60vw, 280px" loading="lazy" className="photo-tone object-cover object-[50%_35%]" />
+                  </Reveal>
                 </div>
-                <div className="flex items-center gap-2.5">
+                <Reveal variant="soft" delay={180 + i * 90} className="flex items-center gap-2.5">
                   <span className="rounded-full bg-ink px-2.5 py-1 text-[13px] font-extrabold text-cream">{h}</span>
                   <Brush fill="#D9C7AE" className="h-2 flex-1" />
-                </div>
-                <h3 className="m-0 font-serif text-[22px] font-semibold">{dt}</h3>
-                <p className="m-0 text-[16px] leading-[1.55] text-ink-body">{d}</p>
+                </Reveal>
+                <Reveal variant="soft" delay={280 + i * 90}>
+                  <h3 className="m-0 font-serif text-[22px] font-semibold">{dt}</h3>
+                </Reveal>
+                <Reveal variant="soft" delay={380 + i * 90}>
+                  <p className="m-0 text-[16px] leading-[1.55] text-ink-body">{d}</p>
+                </Reveal>
               </Reveal>
               </div>
             ))}

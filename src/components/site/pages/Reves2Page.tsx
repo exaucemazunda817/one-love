@@ -133,13 +133,15 @@ export function Reves2Page({ locale }: { locale: Locale }) {
               <Reveal key={photo.src} delay={(index % 3) * 90}>
                 <figure className="m-0 flex flex-col gap-3">
                   <div className="relative aspect-[4/5] overflow-hidden rounded-[16px]">
-                    <Image
-                      src={photo.src}
-                      alt={photo.caption}
-                      fill
-                      sizes="(max-width: 1200px) 100vw, 33vw"
-                      className="photo-tone object-cover"
-                    />
+                    <Reveal variant="zoom" className="absolute inset-0">
+                      <Image
+                        src={photo.src}
+                        alt={photo.caption}
+                        fill
+                        sizes="(max-width: 1200px) 100vw, 33vw"
+                        className="photo-tone object-cover"
+                      />
+                    </Reveal>
                   </div>
                   <figcaption className="text-[14px] leading-[1.5] text-ink-soft">{photo.caption}</figcaption>
                 </figure>

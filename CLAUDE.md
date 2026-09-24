@@ -198,6 +198,13 @@ Prisma 6.19.3 · PostgreSQL Neon · zod · motion · police Lato.
   bouton Stripe en ligne. Décision de Mazunda (24/09) : la barre basse mobile
   « Faire un don » + WhatsApp a été supprimée (le don est déjà dans le menu) ;
   la barre de navigation est une pilule flottante en verre dépoli.
+  Bandeaux : `HeroBackground` fait tourner au hasard, toutes les ~6 s, les cinq
+  photos d'enfants de `src/lib/hero-photos.ts` (fondu, tirage sans remise,
+  pause si onglet masqué / économie de données / animations réduites). Ne pas
+  retirer `isolate` du conteneur : sans lui, le calque entrant passe au-dessus
+  du texte. `photo-atelier.jpg` était le collage « Formateurs » décrit à tort
+  comme « un garçon écrit » : remplacé par `photo-cahier.jpg` (IMG_7578, en
+  haute définition).
 - Jalons 3, 4 (partie 2), 10 : à faire. Voir le plan.
 
 **Décision de Mazunda (23/09) : le nouveau site ne fait AUCUNE référence à
