@@ -27,26 +27,24 @@ export function PartnersMarquee({ locale }: { locale: Locale }) {
       <Image
         src={`/partenaires/${p.slug}.webp`}
         alt={hidden ? '' : p.name}
-        width={120}
-        height={120}
+        width={132}
+        height={132}
         unoptimized
         loading="lazy"
-        className="h-[104px] w-[104px] rounded-full opacity-90 transition-all duration-300 hover:scale-110 hover:opacity-100 sm:h-[120px] sm:w-[120px]"
+        className="h-[104px] w-[104px] rounded-full shadow-[0_6px_16px_rgba(60,35,15,.2)] transition-[transform,box-shadow] duration-300 ease-out hover:scale-110 hover:shadow-[0_12px_28px_rgba(60,35,15,.32)] sm:h-[124px] sm:w-[124px]"
       />
     </li>
   );
 
   return (
-    <section className="overflow-hidden py-[clamp(48px,7vw,88px)]" aria-label={t.label}>
-      <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-3 px-[clamp(20px,4vw,32px)] text-center">
-        <Reveal variant="scale" className="flex max-w-[640px] flex-col items-center gap-3">
-          <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.15]">{t.title}</h2>
-          <p className="m-0 text-pretty text-[16px] leading-[1.6] text-ink-body">{t.subtitle}</p>
+    <section className="overflow-hidden pb-[clamp(28px,4vw,48px)] pt-[clamp(12px,2vw,24px)]" aria-label={t.label}>
+      <div className="mx-auto flex max-w-[1200px] flex-col items-center px-[clamp(20px,4vw,32px)] text-center">
+        <Reveal variant="scale" className="flex max-w-[640px] flex-col items-center gap-2">
+          <h2 className="m-0 font-serif text-[clamp(26px,3vw,36px)] font-medium leading-[1.15]">{t.title}</h2>
+          <p className="m-0 text-pretty text-[15px] leading-[1.55] text-ink-body">{t.subtitle}</p>
         </Reveal>
       </div>
-      <div className="ol-marquee relative mt-10 overflow-hidden">
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-cream to-transparent sm:w-32" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-cream to-transparent sm:w-32" />
+      <div className="ol-marquee mt-6">
         <ul className="ol-marquee-track m-0 list-none p-0">
           {PARTNERS.map((p) => renderItem(p, false))}
           {PARTNERS.map((p) => renderItem(p, true))}

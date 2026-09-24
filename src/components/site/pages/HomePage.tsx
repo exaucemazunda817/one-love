@@ -218,21 +218,23 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
 
       {/* Chiffres */}
-      <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-x-6 gap-y-8">
+      <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(28px,4vw,44px)]">
+        <div className="grid grid-cols-2 gap-x-5 gap-y-5 md:grid-cols-4 md:gap-x-6">
           {t.stats.map(([n, mark, l]) => (
-            <Reveal key={l} className="flex flex-col gap-1.5">
-              <span className="font-serif text-[clamp(40px,4.4vw,56px)] font-semibold leading-none">
+            <Reveal key={l} className="flex flex-col gap-1">
+              <span className="font-serif text-[clamp(30px,3.4vw,42px)] font-semibold leading-none">
                 {n}
                 <sup className="text-[0.4em] text-copper-600">{mark}</sup>
               </span>
-              <Brush className="h-2 w-14" />
-              <span className="text-[16px] leading-[1.4] text-ink-body">{l}</span>
+              <Brush className="h-1.5 w-11" />
+              <span className="text-[15px] leading-[1.35] text-ink-body">{l}</span>
             </Reveal>
           ))}
         </div>
-        <Reveal><p className="mt-6 text-[13px] text-ink-soft">{t.statsNote}</p></Reveal>
+        <Reveal><p className="mt-4 text-[13px] text-ink-soft">{t.statsNote}</p></Reveal>
       </section>
+
+      <PartnersMarquee locale={locale} />
 
       {/* Une journée */}
       <section className="overflow-hidden bg-sand">
@@ -391,8 +393,6 @@ export function HomePage({ locale }: { locale: Locale }) {
           </div>
         </div>
       </section>
-
-      <PartnersMarquee locale={locale} />
 
       <div className="pt-[clamp(8px,2vw,24px)]">
         <FacebookBand locale={locale} />

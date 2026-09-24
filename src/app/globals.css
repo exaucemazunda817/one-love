@@ -315,12 +315,18 @@ html.js [data-reveal-variant='scale'][data-reveal='waiting'] {
   }
 }
 
+.ol-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
+
 .ol-marquee-track {
   display: flex;
   width: max-content;
   align-items: center;
-  gap: 32px;
-  padding-block: 12px;
+  gap: 36px;
+  padding: 20px 18px 28px;
   animation: ol-marquee 75s linear infinite;
 }
 
@@ -331,6 +337,8 @@ html.js [data-reveal-variant='scale'][data-reveal='waiting'] {
 @media (prefers-reduced-motion: reduce) {
   .ol-marquee {
     overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .ol-marquee-track {
