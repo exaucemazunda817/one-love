@@ -3,6 +3,7 @@
 // publiés par l'association. Aucune adresse de site n'est renseignée : ne pas en
 // inventer, à ajouter seulement quand l'association les fournit.
 export const PARTNERS = [
+  { slug: 'angel-foundation', name: "Angel Foundation" },
   { slug: 'medikemos', name: "Medikemos" },
   { slug: 'kitea', name: "Kitea" },
   { slug: 'ppc', name: "PPC" },
