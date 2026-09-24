@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { TextHero } from '@/components/site/ui';
+import { Reveal } from '@/components/Reveal';
 import { org, donationNotice } from '@/lib/content';
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default function ConfidentialitePage() {
 
       <section className="bg-cream">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">
-          <div className="flex max-w-measure flex-col gap-3">
+          <Reveal className="flex max-w-measure flex-col gap-3">
             <h2 className="m-0 font-serif text-[26px] font-medium leading-[1.2]">
               Données collectées par ce site
             </h2>
@@ -32,26 +33,26 @@ export default function ConfidentialitePage() {
               comporte ni formulaire, ni compte, ni traceur publicitaire, et ne dépose
               aucun cookie de mesure d&apos;audience.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="flex max-w-measure flex-col gap-3">
+          <Reveal className="flex max-w-measure flex-col gap-3">
             <h2 className="m-0 font-serif text-[26px] font-medium leading-[1.2]">Si vous nous écrivez</h2>
             <p className="m-0 text-[17px] leading-[1.65] text-ink-body">
               Les courriels que vous nous adressez sont conservés le temps nécessaire au
               traitement de votre demande. Ils ne sont ni cédés ni revendus.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="flex max-w-measure flex-col gap-3">
+          <Reveal className="flex max-w-measure flex-col gap-3">
             <h2 className="m-0 font-serif text-[26px] font-medium leading-[1.2]">Donateurs</h2>
             <p className="m-0 text-[17px] leading-[1.65] text-ink-body">
               {donationNotice.privacy} Les informations liées à un virement sont conservées
               par l&apos;association pour les seuls besoins de sa comptabilité, dans les
               délais légaux applicables.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="flex max-w-measure flex-col gap-3">
+          <Reveal className="flex max-w-measure flex-col gap-3">
             <h2 className="m-0 font-serif text-[26px] font-medium leading-[1.2]">Vos droits</h2>
             <p className="m-0 text-[17px] leading-[1.65] text-ink-body">
               Conformément au Règlement général sur la protection des données et à la loi
@@ -61,16 +62,16 @@ export default function ConfidentialitePage() {
               {org.privacyEmail}, ou par courrier à {org.legalName},{' '}
               {org.addressAsPublished}.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="flex max-w-measure flex-col gap-3">
+          <Reveal className="flex max-w-measure flex-col gap-3">
             <h2 className="m-0 font-serif text-[26px] font-medium leading-[1.2]">Images des enfants</h2>
             <p className="m-0 text-[17px] leading-[1.65] text-ink-body">
               L&apos;association accompagne des mineurs. Les photographies publiées sur ce
               site sont sélectionnées avec une attention particulière, et toute demande de
               retrait adressée à {org.privacyEmail} est traitée sans délai.
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
     </>

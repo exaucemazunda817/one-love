@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { TextHero } from '@/components/site/ui';
+import { Reveal } from '@/components/Reveal';
 import { org } from '@/lib/content';
 
 export const metadata: Metadata = {
@@ -22,7 +23,7 @@ export default function MentionsLegalesPage() {
 
       <section className="bg-cream">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">
-          <div className="flex max-w-measure flex-col gap-3">
+          <Reveal className="flex max-w-measure flex-col gap-3">
             <h2 className="m-0 font-serif text-[26px] font-medium leading-[1.2]">Éditeur du site</h2>
             <p className="m-0 text-[17px] leading-[1.65] text-ink-body">
               {org.legalName}, association régie par la loi du 1<sup>er</sup> juillet 1901,
@@ -32,27 +33,27 @@ export default function MentionsLegalesPage() {
               <br />
               Courriel : {org.contactEmail}
             </p>
-          </div>
+          </Reveal>
 
-          <div className="flex max-w-measure flex-col gap-3">
+          <Reveal className="flex max-w-measure flex-col gap-3">
             <h2 className="m-0 font-serif text-[26px] font-medium leading-[1.2]">Hébergement</h2>
             <p className="m-0 text-[17px] leading-[1.65] text-ink-body">
               Le site est hébergé par Vercel Inc., 440 N Barranca Ave #4133, Covina,
               CA 91723, États-Unis. Les données de l&apos;association sont stockées dans
               l&apos;Union européenne.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="flex max-w-measure flex-col gap-3">
+          <Reveal className="flex max-w-measure flex-col gap-3">
             <h2 className="m-0 font-serif text-[26px] font-medium leading-[1.2]">Propriété intellectuelle</h2>
             <p className="m-0 text-[17px] leading-[1.65] text-ink-body">
               Les textes, photographies et éléments graphiques de ce site sont la
               propriété de {org.legalName}, sauf mention contraire. Toute reproduction
               sans autorisation est interdite.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="flex max-w-measure flex-col gap-3">
+          <Reveal className="flex max-w-measure flex-col gap-3">
             <h2 className="m-0 font-serif text-[26px] font-medium leading-[1.2]">Droit à l&apos;image</h2>
             <p className="m-0 text-[17px] leading-[1.65] text-ink-body">
               Les personnes figurant sur les photographies publiées sur ce site ont été
@@ -60,7 +61,7 @@ export default function MentionsLegalesPage() {
               demande de retrait peut être adressée à {org.privacyEmail} et sera traitée
               sans délai.
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
     </>

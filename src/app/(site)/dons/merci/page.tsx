@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CheckCircleIcon } from '@phosphor-icons/react/ssr';
 import { TextHero, btn } from '@/components/site/ui';
+import { Reveal } from '@/components/Reveal';
 
 export const metadata: Metadata = {
   title: 'Merci pour votre don',
@@ -20,7 +21,7 @@ export default function MerciPage() {
       <TextHero eyebrow="Don" title="Merci pour votre soutien" />
       <section className="bg-cream">
         <div className="mx-auto flex max-w-2xl flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">
-          <div className="flex items-start gap-3.5 rounded-[20px] bg-white p-6 shadow-ol-sm">
+          <Reveal className="flex items-start gap-3.5 rounded-[20px] bg-white p-6 shadow-ol-sm">
             <CheckCircleIcon size={28} weight="fill" className="mt-0.5 shrink-0 text-sage-700" aria-hidden />
             <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">
               Votre paiement a été transmis. Vous recevrez une confirmation par e-mail si vous en avez fait la demande.
@@ -28,7 +29,7 @@ export default function MerciPage() {
               vous nous demandiez de l&apos;arrêter : écrivez-nous à tout moment pour le modifier ou l&apos;interrompre.
               Merci de faire vivre nos programmes de terrain.
             </p>
-          </div>
+          </Reveal>
           <Link href="/" className={`${btn.outlineCopper} min-h-[52px] self-start px-7 text-[17px]`}>
             Retour à l&apos;accueil
           </Link>

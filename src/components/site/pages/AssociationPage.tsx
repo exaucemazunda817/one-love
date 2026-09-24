@@ -176,7 +176,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
             );
           })}
         </div>
-        <p className="m-0 max-w-[900px] font-serif text-[clamp(20px,2.2vw,26px)] italic leading-[1.5] text-ink-body">{t.valuesQuote}</p>
+        <Reveal><p className="m-0 max-w-[900px] font-serif text-[clamp(20px,2.2vw,26px)] italic leading-[1.5] text-ink-body">{t.valuesQuote}</p></Reveal>
       </section>
 
       <section className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] pb-[clamp(56px,8vw,104px)]">

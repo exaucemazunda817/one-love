@@ -241,7 +241,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             </Reveal>
           ))}
         </div>
-        <p className="mt-6 text-[13px] text-ink-soft">{t.statsNote}</p>
+        <Reveal><p className="mt-6 text-[13px] text-ink-soft">{t.statsNote}</p></Reveal>
       </section>
 
       {/* Une journée */}

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Reveal } from '@/components/Reveal';
 
 // Primitives visuelles du design system 2026. Les valeurs (tailles,
 // espacements, couleurs) sont celles de la maquette, au pixel près.
@@ -178,7 +179,7 @@ export function CallBanner({
 }) {
   return (
     <section className="mx-auto max-w-[1200px] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-7 rounded-[20px] bg-night p-[clamp(28px,5vw,56px)] text-cream">
+      <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-7 rounded-[20px] bg-night p-[clamp(28px,5vw,56px)] text-cream">
         <div className="flex flex-col gap-3">
           <h2 className="m-0 text-balance font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.2]">{title}</h2>
           <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{text}</p>
@@ -198,7 +199,7 @@ export function CallBanner({
             {sponsorLabel}
           </a>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

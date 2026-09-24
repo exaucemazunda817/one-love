@@ -67,6 +67,7 @@ export function Reveal({
   return (
     <div
       ref={ref}
+      data-reveal
       className={className}
       style={
         animating
