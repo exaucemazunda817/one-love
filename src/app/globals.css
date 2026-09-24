@@ -393,18 +393,9 @@ html.js [data-reveal-variant='scale'][data-reveal='waiting'] {
 
 .ol-marquee {
   overflow: hidden;
-  /* Fondu aux deux bords, plus un léger voile fixe au centre (le masque est posé
-     sur le cadre, pas sur la piste : il ne bouge pas avec le défilement). */
-  --ol-fade: linear-gradient(
-    to right,
-    transparent 0,
-    #000 12%,
-    #000 45%,
-    rgba(0, 0, 0, 0.22) 50%,
-    #000 55%,
-    #000 88%,
-    transparent 100%
-  );
+  /* Fondu aux deux bords, comme la bande d'intégrations de n8n (le masque est
+     posé sur le cadre, pas sur la piste : il ne bouge pas avec le défilement). */
+  --ol-fade: linear-gradient(to right, transparent 0, #000 16%, #000 84%, transparent 100%);
   -webkit-mask-image: var(--ol-fade);
   mask-image: var(--ol-fade);
 }
@@ -413,9 +404,38 @@ html.js [data-reveal-variant='scale'][data-reveal='waiting'] {
   display: flex;
   width: max-content;
   align-items: center;
-  gap: 16px;
-  padding: 12px 8px;
-  animation: ol-marquee 75s linear infinite;
+  gap: 12px;
+  /* La marge verticale laisse la place au grossissement des tuiles au survol. */
+  padding: 8px 6px;
+  animation: ol-marquee var(--ol-marquee-speed, 110s) linear infinite;
+  animation-direction: var(--ol-marquee-direction, normal);
+}
+
+@media (min-width: 640px) {
+  .ol-marquee-track {
+    gap: 16px;
+    padding: 10px 8px;
+  }
+}
+
+/* Tuile d'un logo : bordure fine et fond à peine teinté, qui s'éclaircissent
+   et grossissent au survol. */
+.ol-logo-tile {
+  border: 1px solid rgba(60, 35, 15, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.55);
+  transition:
+    transform 300ms ease,
+    border-color 300ms ease,
+    background-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.ol-logo-tile:hover {
+  transform: scale(1.1);
+  border-color: rgba(60, 35, 15, 0.28);
+  background: #fff;
+  box-shadow: var(--shadow-ol-sm);
 }
 
 .ol-marquee:hover .ol-marquee-track {
