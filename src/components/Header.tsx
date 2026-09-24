@@ -179,7 +179,7 @@ export function Header({ locale }: { locale: Locale }) {
             <a
               href={donate}
               onClick={() => setOpen(false)}
-              className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-gold text-[17px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night"
+              className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-cream/30 bg-white/10 text-[17px] font-extrabold text-cream no-underline hover:bg-white/20 hover:text-cream"
             >
               <HeartIcon size="1em" aria-hidden />
               {t.donate}
