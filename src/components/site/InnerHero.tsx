@@ -50,14 +50,14 @@ export function InnerHero({
             <div className="flex flex-wrap justify-center gap-3 dk:justify-start">
               <Link
                 href={href('/dons')}
-                className="inline-flex min-h-[52px] items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream"
+                className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90"
               >
                 <HeartIcon size="1em" aria-hidden />
                 {cta.donate}
               </Link>
               <Link
                 href={href('/parrainer')}
-                className="inline-flex min-h-[52px] items-center justify-center whitespace-nowrap rounded-full px-[26px] text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream"
+                className="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-full border border-cream/35 px-[26px] text-[13px] font-semibold uppercase tracking-wide text-cream no-underline transition-colors hover:border-gold hover:text-gold-hover"
               >
                 {cta.sponsor}
               </Link>

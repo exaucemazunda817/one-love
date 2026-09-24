@@ -175,11 +175,11 @@ export function HomePage({ locale }: { locale: Locale }) {
             </h1>
             <p className="m-0 max-w-[520px] text-pretty text-[20px] leading-[1.6] text-on-dark-1">{t.intro}</p>
             <div className="flex flex-wrap gap-3">
-              <a href="#don" className="inline-flex min-h-[52px] items-center gap-2 whitespace-nowrap rounded-full px-7 text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream">
+              <a href="#don" className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90">
                 <HeartIcon size="1em" aria-hidden />
                 {t.donate}
               </a>
-              <Link href={href('/parrainer')} className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full px-[26px] text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream">
+              <Link href={href('/parrainer')} className="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-full border border-cream/35 px-[26px] text-[13px] font-semibold uppercase tracking-wide text-cream no-underline transition-colors hover:border-gold hover:text-gold-hover">
                 {t.sponsor}
               </Link>
             </div>
@@ -213,11 +213,11 @@ export function HomePage({ locale }: { locale: Locale }) {
           </h1>
           <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{t.intro}</p>
           <div className="flex flex-col gap-2.5">
-            <a href="#don" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream">
+            <a href="#don" className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90">
               <HeartIcon size="1em" aria-hidden />
               {t.donate}
             </a>
-            <Link href={href('/parrainer')} className="inline-flex min-h-[52px] items-center justify-center rounded-full text-[17px] font-bold no-underline border border-cream/35 bg-white/10 text-cream backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,.25)] hover:bg-white/20 hover:text-cream">
+            <Link href={href('/parrainer')} className="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-full border border-cream/35 px-[26px] text-[13px] font-semibold uppercase tracking-wide text-cream no-underline transition-colors hover:border-gold hover:text-gold-hover">
               {t.sponsor}
             </Link>
           </div>
