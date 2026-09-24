@@ -281,8 +281,9 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
       </section>
 
       {/* Questions fréquentes */}
+      <div className="overflow-x-clip">
       <section id="faq" className="mx-auto max-w-[1000px] scroll-mt-20 px-[clamp(20px,4vw,32px)] pb-[clamp(56px,8vw,104px)]">
-        <Reveal className="mb-8 text-center">
+        <Reveal variant="scale" className="mb-8 text-center">
           <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.15]">{t.faqTitle}</h2>
         </Reveal>
         <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
@@ -290,7 +291,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
             const open = faqOpen === i;
             const panelId = `${id}-faq-${i}`;
             return (
-              <Reveal key={f.q} delay={i * 80}>
+              <Reveal key={f.q} variant={i % 2 === 0 ? 'left' : 'right'}>
                 <div
                   className={`overflow-hidden rounded-[20px] border border-card-line shadow-ol-sm transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-ol-md ${
                     i % 2 === 0 ? 'bg-white' : 'bg-sand'
@@ -330,6 +331,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
           })}
         </div>
       </section>
+      </div>
 
       {/* Inscription */}
       <section id="inscription" className="scroll-mt-20 bg-sand">

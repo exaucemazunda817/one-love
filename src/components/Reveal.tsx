@@ -20,6 +20,8 @@ import { useEffect, useRef, useState } from 'react';
 //    nôtre ne concerne que les blocs réellement à l'écran.
 type State = 'pending' | 'waiting' | 'shown';
 
+// `left` / `right` : glissement latéral de 50 px (cartes de la FAQ, comme sur
+// le campus ENA). `scale` : grossit de 90 % à 100 % (titre de section).
 // `zoom` : pour l'image d'une carte, qui apparaît en se dézoomant (et regrossit
 // légèrement au survol). `soft` : glissement court (20 px, 0,5 s) pour les petits éléments du pied de
 // page. `pop` : l'élément grandit de 0 à sa taille, pour les icônes.
@@ -32,7 +34,7 @@ export function Reveal({
   children: React.ReactNode;
   delay?: number;
   className?: string;
-  variant?: 'up' | 'soft' | 'pop' | 'zoom';
+  variant?: 'up' | 'soft' | 'pop' | 'zoom' | 'left' | 'right' | 'scale';
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<State>('pending');

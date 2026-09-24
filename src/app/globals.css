@@ -282,3 +282,25 @@ html.js [data-reveal-variant='zoom'][data-reveal='waiting'] img {
     transition: none !important;
   }
 }
+
+/* Glissement latéral et grossissement (FAQ, d'après le campus ENA). */
+html.js [data-reveal-variant='left'][data-reveal='pending'],
+html.js [data-reveal-variant='left'][data-reveal='waiting'] {
+  transform: translateX(-50px);
+}
+
+html.js [data-reveal-variant='right'][data-reveal='pending'],
+html.js [data-reveal-variant='right'][data-reveal='waiting'] {
+  transform: translateX(50px);
+}
+
+html.js [data-reveal-variant='scale'][data-reveal='pending'],
+html.js [data-reveal-variant='scale'][data-reveal='waiting'] {
+  transform: scale(0.9);
+}
+
+[data-reveal-variant='left'][data-reveal='shown'],
+[data-reveal-variant='right'][data-reveal='shown'],
+[data-reveal-variant='scale'][data-reveal='shown'] {
+  transition-duration: 600ms;
+}
