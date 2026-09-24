@@ -3,6 +3,7 @@ import { HeartIcon, StarIcon, LeafIcon } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { PlaceholderPhoto, CallBanner, ToConfirm, h2Class } from '@/components/site/ui';
+import { PartnersMarquee } from '@/components/site/PartnersMarquee';
 import { localeHref, type Locale } from '@/lib/i18n';
 
 const text = {
@@ -205,6 +206,8 @@ export function AssociationPage({ locale }: { locale: Locale }) {
         </div>
         <ToConfirm>{t.teamConfirm}</ToConfirm>
       </section>
+
+      <PartnersMarquee locale={locale} />
 
       <CallBanner
         title={t.bannerTitle}

@@ -14,6 +14,7 @@ import { Reveal } from '@/components/Reveal';
 import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
 import { HeroBackground } from '@/components/site/HeroBackground';
 import { FacebookBand } from '@/components/site/FacebookBand';
+import { PartnersMarquee } from '@/components/site/PartnersMarquee';
 import { Brush, BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { DonationQuick } from '@/components/site/DonationQuick';
 import { localeHref, type Locale } from '@/lib/i18n';
@@ -391,7 +392,9 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <div className="pt-[clamp(40px,6vw,72px)]">
+      <PartnersMarquee locale={locale} />
+
+      <div className="pt-[clamp(8px,2vw,24px)]">
         <FacebookBand locale={locale} />
       </div>
 

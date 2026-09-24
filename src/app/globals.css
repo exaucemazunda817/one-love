@@ -304,3 +304,36 @@ html.js [data-reveal-variant='scale'][data-reveal='waiting'] {
 [data-reveal-variant='scale'][data-reveal='shown'] {
   transition-duration: 600ms;
 }
+
+/* Bande de partenaires : défilement continu, pause au survol. */
+@keyframes ol-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ol-marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 32px;
+  padding-block: 12px;
+  animation: ol-marquee 75s linear infinite;
+}
+
+.ol-marquee:hover .ol-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ol-marquee {
+    overflow-x: auto;
+  }
+
+  .ol-marquee-track {
+    animation: none;
+  }
+}
