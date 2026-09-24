@@ -317,16 +317,28 @@ html.js [data-reveal-variant='scale'][data-reveal='waiting'] {
 
 .ol-marquee {
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+  /* Fondu aux deux bords, plus un léger voile fixe au centre (le masque est posé
+     sur le cadre, pas sur la piste : il ne bouge pas avec le défilement). */
+  --ol-fade: linear-gradient(
+    to right,
+    transparent 0,
+    #000 12%,
+    #000 45%,
+    rgba(0, 0, 0, 0.22) 50%,
+    #000 55%,
+    #000 88%,
+    transparent 100%
+  );
+  -webkit-mask-image: var(--ol-fade);
+  mask-image: var(--ol-fade);
 }
 
 .ol-marquee-track {
   display: flex;
   width: max-content;
   align-items: center;
-  gap: 36px;
-  padding: 20px 18px 28px;
+  gap: 16px;
+  padding: 12px 8px;
   animation: ol-marquee 75s linear infinite;
 }
 

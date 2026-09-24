@@ -16,7 +16,7 @@ const text = {
   }
 };
 
-// Bande de logos qui défile en continu (pause au survol, fondu sur les bords).
+// Bande de logos qui défile en continu (pause au survol, fondu sur les bords et un petit voile au milieu).
 // La liste est répétée deux fois : l'animation déplace la piste de la moitié de
 // sa largeur, puis recommence sans à-coup. Sans animation (mouvement réduit),
 // la bande se fait à la main.
@@ -24,15 +24,17 @@ export function PartnersMarquee({ locale }: { locale: Locale }) {
   const t = text[locale];
   const renderItem = (p: (typeof PARTNERS)[number], hidden: boolean) => (
     <li key={`${hidden ? 'b' : 'a'}-${p.slug}`} className="flex-none" aria-hidden={hidden || undefined}>
-      <Image
-        src={`/partenaires/${p.slug}.webp`}
-        alt={hidden ? '' : p.name}
-        width={132}
-        height={132}
-        unoptimized
-        loading="lazy"
-        className="h-[104px] w-[104px] rounded-full shadow-[0_6px_16px_rgba(60,35,15,.2)] transition-[transform,box-shadow] duration-300 ease-out hover:scale-110 hover:shadow-[0_12px_28px_rgba(60,35,15,.32)] sm:h-[124px] sm:w-[124px]"
-      />
+      <div className="h-[84px] w-[152px] p-3 opacity-80 transition-[transform,opacity] duration-300 ease-out hover:scale-110 hover:opacity-100 sm:h-[128px] sm:w-[224px] sm:p-6">
+        <Image
+          src={`/partenaires/${p.slug}.webp`}
+          alt={hidden ? '' : p.name}
+          width={224}
+          height={128}
+          unoptimized
+          loading="lazy"
+          className="h-full w-full object-contain"
+        />
+      </div>
     </li>
   );
 
