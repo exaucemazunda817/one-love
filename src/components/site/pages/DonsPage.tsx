@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { FileTextIcon } from '@phosphor-icons/react/ssr';
@@ -79,14 +80,24 @@ export function DonsPage({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <section className="bg-night text-cream">
-        <div className="mx-auto max-w-[1280px] px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,80px)]">
+      <section className="relative overflow-hidden bg-night text-cream">
+        <Image
+          src="/photos/photo-ecriture.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="photo-tone object-cover"
+          style={{ objectPosition: '70% 30%' }}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,.94)_0%,rgba(10,10,10,.82)_45%,rgba(10,10,10,.35)_100%)]" />
+        <div className="relative mx-auto flex max-w-[1200px] flex-col gap-[18px] px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">
           <Eyebrow dark>{t.eyebrow}</Eyebrow>
-          <h1 className="mt-3 font-serif text-[clamp(38px,5vw,56px)] font-medium leading-[1.08]">
+          <h1 className="m-0 text-balance font-serif text-[clamp(38px,5vw,64px)] font-medium leading-[1.06]">
             {t.titlePre}
             <BrushWord>{t.titleWord}</BrushWord>
           </h1>
-          <p className="mt-5 max-w-measure text-[18px] leading-[1.6] text-on-dark-1">{t.intro}</p>
+          <p className="m-0 max-w-[560px] text-pretty text-[clamp(17px,1.6vw,20px)] leading-[1.6] text-on-dark-1">{t.intro}</p>
         </div>
       </section>
 

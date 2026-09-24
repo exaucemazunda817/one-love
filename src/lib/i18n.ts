@@ -29,12 +29,13 @@ export const chrome = {
   fr: {
     home: 'One Love, accueil',
     nav: [
-      { label: "L'association", href: '/association' },
+      { label: 'Accueil', href: '/' },
       { label: 'Nos actions', href: '/actions' },
       { label: 'Parrainer', href: '/parrainer' },
       { label: "S'impliquer", href: '/s-impliquer' },
       { label: 'Transparence', href: '/transparence' },
       { label: 'Actualités', href: '/galerie' },
+      { label: "L'association", href: '/association' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Faire un don',
@@ -69,12 +70,13 @@ export const chrome = {
   en: {
     home: 'One Love, home',
     nav: [
-      { label: 'About us', href: '/association' },
+      { label: 'Home', href: '/' },
       { label: 'Our work', href: '/actions' },
       { label: 'Sponsor', href: '/parrainer' },
       { label: 'Get involved', href: '/s-impliquer' },
       { label: 'Transparency', href: '/transparence' },
       { label: 'News', href: '/galerie' },
+      { label: 'About us', href: '/association' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Donate',
