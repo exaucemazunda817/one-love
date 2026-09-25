@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo';
 import { HeartIcon, StarIcon, LeafIcon } from '@phosphor-icons/react/ssr';
+import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { CallBanner, h2Class } from '@/components/site/ui';
@@ -31,6 +32,7 @@ const text = {
     foundersQuote: '« Depuis que nous nous sommes rencontrés en 2010, ma femme et moi avons eu à cœur de vivre un rêve commun : aimer et aider ceux qui en ont besoin. »',
     foundersName: 'Kanda Kabangu',
     foundersText: "Nous sommes une équipe dynamique et pleine d'enthousiasme, passionnée par le défi de rendre le monde meilleur. Et nous ne ménageons pas nos efforts pour y arriver. L'association a été fondée en 2013 par Kanda Kabangu et son épouse.",
+    storyLink: 'Découvrir notre histoire',
     valuesTitle: 'Nos valeurs',
     values: [
       { icon: HeartIcon, t: "Aimer l'autre comme soi-même.", bg: 'bg-night', fg: 'text-cream', ic: 'text-gold-hover' },
@@ -66,6 +68,7 @@ const text = {
     foundersQuote: '“Since we met in 2010, my wife and I have shared one dream: to love and help those in need.”',
     foundersName: 'Kanda Kabangu',
     foundersText: 'We are a dynamic, enthusiastic team, passionate about the challenge of making the world a better place, and we spare no effort to get there. The association was founded in 2013 by Kanda Kabangu and his wife.',
+    storyLink: 'Discover our story',
     valuesTitle: 'Our values',
     values: [
       { icon: HeartIcon, t: 'Love others as yourself.', bg: 'bg-night', fg: 'text-cream', ic: 'text-gold-hover' },
@@ -130,6 +133,12 @@ export function AssociationPage({ locale }: { locale: Locale }) {
             <blockquote className="m-0 font-serif text-[clamp(24px,2.6vw,32px)] italic leading-[1.4]">{t.foundersQuote}</blockquote>
             <b className="text-[17px]">{t.foundersName}</b>
             <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.foundersText}</p>
+            <Link
+              href={href('/histoire')}
+              className="inline-flex min-h-11 items-center gap-2 self-start text-[16px] font-bold text-copper-700 underline-offset-4 hover:underline"
+            >
+              {t.storyLink} <span aria-hidden>→</span>
+            </Link>
           </Reveal>
         </div>
       </section>

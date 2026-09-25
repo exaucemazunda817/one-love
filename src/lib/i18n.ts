@@ -35,6 +35,7 @@ export const chrome = {
       { label: 'Transparence', href: '/transparence' },
       { label: 'Actualités', href: '/galerie' },
       { label: "L'association", href: '/association' },
+      { label: 'Notre histoire', href: '/histoire' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Faire un don',
@@ -46,6 +47,7 @@ export const chrome = {
       explore: 'DÉCOUVRIR',
       links: [
         { label: "L'association", href: '/association' },
+        { label: 'Notre histoire', href: '/histoire' },
         { label: 'Nos actions', href: '/actions' },
         { label: 'Le projet RÊVES 2', href: '/projets/reves-2' },
         { label: 'Parrainer un enfant', href: '/parrainer' },
@@ -75,6 +77,7 @@ export const chrome = {
       { label: 'Transparency', href: '/transparence' },
       { label: 'News', href: '/galerie' },
       { label: 'About us', href: '/association' },
+      { label: 'Our story', href: '/histoire' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Donate',
@@ -86,6 +89,7 @@ export const chrome = {
       explore: 'EXPLORE',
       links: [
         { label: 'About us', href: '/association' },
+        { label: 'Our story', href: '/histoire' },
         { label: 'Our work', href: '/actions' },
         { label: 'The RÊVES 2 project', href: '/projets/reves-2' },
         { label: 'Sponsor a child', href: '/parrainer' },
