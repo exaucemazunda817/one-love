@@ -50,3 +50,6 @@ next-env.d.ts
 
 # Affiches sources des partenaires (les logos utilisés sont dans public/partenaires)
 src/IMG_*
+
+# Sources brutes de la page Notre histoire (captures et vidéos envoyées par Mazunda)
+/HISTOIRE ONE LOVE/
