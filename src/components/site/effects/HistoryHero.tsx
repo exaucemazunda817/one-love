@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
+import { BrushWord, Eyebrow } from '@/components/site/ui';
 
 // Ouverture de la page « Notre histoire » (effet repris du « zoom texte » du
 // template « Site Immersif ») : une photo naît entre les deux mots du titre,
@@ -85,7 +86,10 @@ export function HistoryHero({
   const push = (w - gapW) / 2;
   const wordsOpacity = 1 - seg(p, 0.35, 0.6);
   const topOpacity = 1 - seg(p, 0.02, 0.2);
-  const introOpacity = seg(p, 0.78, 0.95);
+  // Une fois la photo en plein écran, le bandeau se pose dans le MÊME design
+  // que les autres pages (InnerHero) : même dégradé, même bloc de texte.
+  // Reprend le minutage de l'ancien intro seul (0,78 → 0,95).
+  const settle = seg(p, 0.78, 0.95);
 
   return (
     <section ref={sectionRef} aria-label={`${wordA} ${wordB}`} className="relative h-[230svh] bg-night text-cream">
@@ -101,10 +105,28 @@ export function HistoryHero({
           }}
         >
           <Image src={image} alt={imageAlt} fill priority sizes="100vw" className="photo-tone object-cover" />
-          <div
-            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.15)_0%,rgba(10,10,10,.25)_45%,rgba(10,10,10,.8)_100%)]"
-            style={{ opacity: introOpacity }}
-          />
+        </div>
+
+        {/* Bandeau final : même dégradé et même bloc de texte que les autres
+            pages (InnerHero), qui se pose une fois la photo en plein écran.
+            Eyebrow + titre sont un écho purement visuel du vrai <h1> déjà lu
+            plus haut dans le défilement — masqués aux lecteurs d'écran ;
+            l'intro, elle, n'existe qu'ici et reste accessible. */}
+        <div className="pointer-events-none absolute inset-0 flex items-end overflow-hidden dk:items-center" style={{ opacity: settle }}>
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.1)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)] dk:bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
+          <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
+            <div className="mx-auto flex max-w-[620px] flex-col items-center gap-4 text-center dk:mx-0 dk:items-start dk:gap-6 dk:text-left">
+              <div aria-hidden="true" className="flex flex-col items-center gap-4 dk:items-start dk:gap-6">
+                <Eyebrow dark>{eyebrow}</Eyebrow>
+                <p className="m-0 text-balance font-serif text-[32px] font-medium leading-[1.08] tracking-[-0.01em] dk:text-[clamp(38px,5vw,64px)]">
+                  {wordA} <BrushWord>{wordB}</BrushWord>
+                </p>
+              </div>
+              <p className="-mt-1.5 m-0 max-w-[460px] text-pretty text-[15px] leading-[1.5] text-on-dark-1 dk:mt-0 dk:max-w-[540px] dk:text-[20px] dk:leading-[1.6]">
+                {intro}
+              </p>
+            </div>
+          </div>
         </div>
 
         <span
@@ -120,15 +142,10 @@ export function HistoryHero({
         >
           <span style={{ transform: `translateX(${-push}px)` }}>{wordA}</span>
           <span ref={gapRef} aria-hidden className="inline-block" style={{ width: `${gapW + fontPx * 0.25}px` }} />
-          <span style={{ transform: `translateX(${push}px)` }}>{wordB}</span>
+          <span style={{ transform: `translateX(${push}px)` }}>
+            <BrushWord>{wordB}</BrushWord>
+          </span>
         </h1>
-
-        <p
-          className="absolute bottom-[12%] m-0 max-w-[620px] px-5 text-center font-serif text-[clamp(20px,2.6vw,30px)] leading-[1.35] text-cream"
-          style={{ opacity: introOpacity, transform: `translateY(${(1 - introOpacity) * 24}px)` }}
-        >
-          {intro}
-        </p>
       </div>
     </section>
   );

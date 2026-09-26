@@ -4,8 +4,8 @@ import { HeartIcon } from '@phosphor-icons/react/ssr';
 import { pageMetadata } from '@/lib/seo';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
-import { YouTubeLite } from '@/components/site/YouTubeLite';
 import { HistoryHero } from '@/components/site/effects/HistoryHero';
+import { YouTubeLite } from '@/components/site/YouTubeLite';
 import { CountUp } from '@/components/site/effects/CountUp';
 import { YearRoll } from '@/components/site/effects/YearRoll';
 import { CallBanner } from '@/components/site/ui';
@@ -186,11 +186,11 @@ const text = {
     eyebrow: 'Depuis 2013',
     titlePre: 'Notre ',
     titleWord: 'histoire',
+    wordA: 'Notre',
+    wordB: 'histoire',
     intro: 'Un couple, trois garçons rencontrés dans la rue, puis un centre qui accueille une centaine d’enfants chaque semaine.',
     heroAlt: 'Des garçons de One Love sur le chemin de l’école.',
     jumpLabel: 'Aller à une période',
-    wordA: 'Notre',
-    wordB: 'histoire',
     pathTitle: 'Le chemin parcouru',
     // Chiffres publiés par l'association sur Instagram, chacun daté.
     path: [
@@ -211,11 +211,11 @@ const text = {
     eyebrow: 'Since 2013',
     titlePre: 'Our ',
     titleWord: 'story',
+    wordA: 'Our',
+    wordB: 'story',
     intro: 'A couple, three boys met on the street, then a centre that welcomes around a hundred children every week.',
     heroAlt: 'One Love boys on their way to school.',
     jumpLabel: 'Jump to a period',
-    wordA: 'Our',
-    wordB: 'story',
     pathTitle: 'How far we have come',
     path: [
       { value: 3, prefix: '', label: 'boys met on the street', when: 'summer 2016' },
@@ -311,16 +311,16 @@ export function HistoryPage({ locale }: { locale: Locale }) {
         image="/histoire/2023-rentree.webp"
         imageAlt={t.heroAlt}
         fallback={
-        <InnerHero
-          locale={locale}
-          eyebrow={t.eyebrow}
-          titlePre={t.titlePre}
-          titleWord={t.titleWord}
-          intro={t.intro}
-          image="/histoire/2023-rentree.webp"
-          imageAlt={t.heroAlt}
-          objectPosition="50% 45%"
-        />
+          <InnerHero
+            locale={locale}
+            eyebrow={t.eyebrow}
+            titlePre={t.titlePre}
+            titleWord={t.titleWord}
+            intro={t.intro}
+            image="/histoire/2023-rentree.webp"
+            imageAlt={t.heroAlt}
+            objectPosition="50% 45%"
+          />
         }
       />
 
