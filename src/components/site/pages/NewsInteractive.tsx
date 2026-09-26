@@ -10,7 +10,8 @@ import { publishableGallery } from '@/lib/content';
 export interface NewsText {
   categoriesLabel: string;
   categories: string[];
-  posts: { tag: string; date: string; t: string; d: string; img: string; alt: string }[];
+  readLabel: string;
+  posts: { tag: string; date: string; t: string; url: string; d: string; img: string; alt: string }[];
   galleryTitle: string;
   galleryIntro: string;
   galleryEmpty: string;
@@ -63,10 +64,25 @@ export function NewsInteractive({ t }: { t: NewsText }) {
                   }
                   title={p.t}
                   text={p.d}
+                  action={
+                    <a
+                      href={p.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-h-11 items-center gap-1.5 text-[15px] font-bold text-gold-hover no-underline hover:text-gold-hover"
+                    >
+                      {t.readLabel} <span aria-hidden>↗</span>
+                    </a>
+                  }
                 />
               </div>
               <Reveal delay={(i % 3) * 90} className="hidden h-full md:block">
-                <article className="ol-news-card flex h-full flex-col gap-3 overflow-hidden rounded-card bg-white shadow-ol-sm">
+                <a
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ol-news-card flex h-full flex-col gap-3 overflow-hidden rounded-card bg-white text-ink no-underline shadow-ol-sm hover:text-ink"
+                >
                   <div className="ol-news-frame relative aspect-[4/3] overflow-hidden">
                     <Reveal variant="zoom" className="absolute inset-0">
                       <Image src={p.img} alt={p.alt} fill sizes="(max-width: 1200px) 50vw, 380px" className="photo-tone object-cover" />
@@ -85,8 +101,11 @@ export function NewsInteractive({ t }: { t: NewsText }) {
                     <Reveal variant="soft" delay={380 + (i % 3) * 90}>
                       <p className="m-0 text-[15px] leading-[1.55] text-ink-body">{p.d}</p>
                     </Reveal>
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-1 text-[14px] font-bold text-copper-700">
+                      {t.readLabel} <span aria-hidden>↗</span>
+                    </span>
                   </div>
-                </article>
+                </a>
               </Reveal>
             </div>
           ))}
