@@ -178,6 +178,33 @@ body {
   outline-offset: 3px;
 }
 
+/* Champ « montant libre » des modules de don : le contour de sélection
+   général se dessinait À L'INTÉRIEUR de la boîte arrondie et n'en laissait
+   voir que deux barres verticales. On le retire du champ et on met en valeur
+   toute la boîte : une lueur cuivrée qui apparaît en douceur. */
+.ol-amount-input:focus,
+.ol-amount-input:focus-visible {
+  outline: none;
+}
+
+.ol-amount-box {
+  transition:
+    box-shadow 250ms ease,
+    border-color 250ms ease,
+    background-color 250ms ease;
+}
+
+.ol-amount-box:focus-within {
+  border-color: var(--copper-600);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--copper-500) 22%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ol-amount-box {
+    transition: none;
+  }
+}
+
 @utility max-w-measure {
   max-width: 62ch;
 }

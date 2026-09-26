@@ -20,6 +20,7 @@ import {
   formatFromEur,
   formatCustom,
   toEur,
+  sanitizeAmount,
   startStripeCheckout
 } from '@/lib/donation-ui';
 import { bankTransfer, currentProject } from '@/lib/content';
@@ -328,22 +329,23 @@ export function DonationFlow({ locale }: { locale: Locale }) {
               <label className="flex flex-col gap-2">
                 <span className="text-[15px] font-bold">{t.customLabel}</span>
                 <div
-                  className={`flex min-h-14 items-center gap-2 rounded-xl border-2 px-4 ${
+                  className={`ol-amount-box flex min-h-14 items-center gap-2 rounded-xl border-2 px-4 ${
                     isCustom ? 'border-copper-600 bg-copper-tint' : 'border-card-line bg-white'
                   }`}
                 >
                   <input
-                    type="number"
+                    type="text"
                     inputMode="decimal"
-                    min={1}
+                    autoComplete="off"
+                    aria-label={t.customLabel}
                     placeholder={t.customPlaceholder}
                     value={custom}
                     onChange={(e) => {
-                      setCustom(e.target.value);
+                      setCustom(sanitizeAmount(e.target.value));
                       setAmt(-1);
                     }}
                     onFocus={() => setAmt(-1)}
-                    className="min-w-0 flex-1 border-0 bg-transparent text-[20px] font-extrabold text-ink outline-none"
+                    className="ol-amount-input min-w-0 flex-1 border-0 bg-transparent text-[20px] font-extrabold text-ink outline-none"
                   />
                   <span className="text-[17px] font-extrabold text-ink-soft">{SYMBOL[cur]}</span>
                 </div>

@@ -12,6 +12,36 @@ export const RATE = { EUR: 1, USD: 1.1, CDF: 3100 } as const;
 export const SYMBOL: Record<Currency, string> = { EUR: '€', USD: '$', CDF: 'FC' };
 const NUM_LOCALE: Record<Locale, string> = { fr: 'fr-FR', en: 'en-GB' };
 
+// Touches de la rangée du haut d'un clavier AZERTY tapées sans Maj (Mac et
+// Windows) : & é " ' ( § - è ! _ ç à. Sur un champ de type « number », le
+// navigateur les rejetait en silence et rien ne s'affichait (signalé par
+// Mazunda le 26/09/2026). On les convertit en chiffres.
+const AZERTY_DIGITS: Record<string, string> = {
+  '&': '1', 'é': '2', '"': '3', "'": '4', '(': '5',
+  '§': '6', '-': '6', 'è': '7', '!': '8', '_': '8', 'ç': '9', 'à': '0'
+};
+
+/**
+ * Nettoie la saisie d'un montant libre : chiffres uniquement (touches AZERTY
+ * converties), un seul séparateur décimal (virgule ou point) et deux
+ * décimales au plus.
+ */
+export function sanitizeAmount(raw: string): string {
+  let out = '';
+  let sep = false;
+  for (const ch of raw) {
+    const c = AZERTY_DIGITS[ch] ?? ch;
+    if (c >= '0' && c <= '9') {
+      const decimals = sep ? out.length - Math.max(out.indexOf(','), out.indexOf('.')) - 1 : 0;
+      if (!sep || decimals < 2) out += c;
+    } else if ((c === ',' || c === '.') && !sep && out.length > 0) {
+      out += c;
+      sep = true;
+    }
+  }
+  return out.slice(0, 9);
+}
+
 /** Montant de référence en euros, affiché dans la devise choisie. */
 export function formatFromEur(eur: number, currency: Currency, locale: Locale): string {
   if (currency === 'EUR') return `${eur} €`;
