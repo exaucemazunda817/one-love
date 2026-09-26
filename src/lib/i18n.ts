@@ -29,13 +29,13 @@ export const chrome = {
     home: 'One Love, accueil',
     nav: [
       { label: 'Accueil', href: '/' },
+      { label: "L'association", href: '/association' },
+      { label: 'Notre histoire', href: '/histoire' },
       { label: 'Nos actions', href: '/actions' },
+      { label: 'Actualités', href: '/galerie' },
       { label: 'Parrainer', href: '/parrainer' },
       { label: "S'impliquer", href: '/s-impliquer' },
       { label: 'Transparence', href: '/transparence' },
-      { label: 'Actualités', href: '/galerie' },
-      { label: "L'association", href: '/association' },
-      { label: 'Notre histoire', href: '/histoire' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Faire un don',
@@ -71,13 +71,13 @@ export const chrome = {
     home: 'One Love, home',
     nav: [
       { label: 'Home', href: '/' },
+      { label: 'About us', href: '/association' },
+      { label: 'Our story', href: '/histoire' },
       { label: 'Our work', href: '/actions' },
+      { label: 'News', href: '/galerie' },
       { label: 'Sponsor', href: '/parrainer' },
       { label: 'Get involved', href: '/s-impliquer' },
       { label: 'Transparency', href: '/transparence' },
-      { label: 'News', href: '/galerie' },
-      { label: 'About us', href: '/association' },
-      { label: 'Our story', href: '/histoire' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Donate',
