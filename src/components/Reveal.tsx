@@ -30,7 +30,7 @@ export function Reveal({
   delay = 0,
   className = '',
   variant = 'up',
-  repeat = false
+  repeat = true
 }: {
   children: React.ReactNode;
   delay?: number;
@@ -38,6 +38,10 @@ export function Reveal({
   variant?: 'up' | 'soft' | 'pop' | 'zoom' | 'left' | 'right' | 'scale';
   // Rejoue l'animation à chaque retour dans l'écran : le bloc se remet en
   // attente dès qu'il est entièrement sorti (comme la FAQ du campus ENA).
+  // Activé par défaut sur tout le site depuis le 26/09/2026, à la demande de
+  // Mazunda : un effet joué une seule fois donnait l'impression d'être cassé
+  // quand on revenait sur la page sans la recharger. `repeat={false}` rétablit
+  // l'ancien comportement (une seule fois) pour un bloc précis.
   repeat?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -57,7 +61,10 @@ export function Reveal({
         (entries) => {
           if (entries[0]?.isIntersecting) setState('shown');
         },
-        { threshold: 0.1, rootMargin: '0px 0px -8% 0px' }
+        // Pas de marge rognée en bas de l'écran : un bloc posé tout en bas de
+        // la page (dernière ligne du pied de page) n'y entrerait jamais, faute
+        // de pouvoir défiler plus loin, et resterait invisible.
+        { threshold: 0.12 }
       );
       // Sorti de l'écran : on le masque tout de suite, sans transition, pour
       // que l'entrée suivante reparte du début.
