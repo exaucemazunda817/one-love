@@ -225,7 +225,10 @@ export function HomePage({ locale }: { locale: Locale }) {
                 />
               </div>
               <Reveal delay={i * 90} className="hidden flex-col gap-3.5 md:flex">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl shadow-ol-card" style={{ transform: `rotate(${rot})` }}>
+                <div
+                  className="ol-news-frame ol-gallery-frame relative aspect-[4/5] overflow-hidden rounded-xl shadow-ol-card"
+                  style={{ transform: `rotate(${rot})` }}
+                >
                   <Reveal variant="zoom" className="absolute inset-0">
                     <Image src={img} alt={alt} fill sizes="(max-width: 768px) 60vw, 280px" loading="lazy" className="photo-tone object-cover object-[50%_35%]" />
                   </Reveal>
