@@ -125,7 +125,7 @@ export function InvolvedInteractive({
 
       {between}
 
-      <section id="formulaire" className="mx-auto grid scroll-mt-20 max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start gap-[clamp(32px,5vw,64px)] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
+      <section id="formulaire" className="mx-auto grid scroll-mt-[var(--header-clear)] max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start gap-[clamp(32px,5vw,64px)] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
         <Reveal className="flex flex-col gap-4">
           <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">
             {t.formTitlePre}

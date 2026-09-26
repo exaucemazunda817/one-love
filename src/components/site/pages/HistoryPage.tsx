@@ -368,7 +368,7 @@ export function HistoryPage({ locale }: { locale: Locale }) {
             key={c.id}
             id={c.id}
             aria-labelledby={`${c.id}-titre`}
-            className="grid scroll-mt-28 gap-8 dk:grid-cols-[300px_minmax(0,1fr)] dk:gap-14"
+            className="grid scroll-mt-[var(--header-clear-lg)] gap-8 dk:grid-cols-[300px_minmax(0,1fr)] dk:gap-14"
           >
             <Reveal className="flex flex-col gap-3 dk:sticky dk:top-28 dk:self-start">
               <span className="whitespace-nowrap font-serif text-[clamp(32px,3.4vw,42px)] font-medium leading-none tabular-nums text-copper-600">

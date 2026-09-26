@@ -325,7 +325,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       </div>
 
       {/* Don */}
-      <section id="don" className="mx-auto grid max-w-[1200px] scroll-mt-20 grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,32px)] py-[clamp(64px,9vw,112px)]">
+      <section id="don" className="mx-auto grid max-w-[1200px] scroll-mt-[var(--header-clear)] grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,32px)] py-[clamp(64px,9vw,112px)]">
         <Reveal className="flex flex-col gap-[18px]">
           <h2 className={`${h2Class} text-balance`}>
             {t.donTitlePre}

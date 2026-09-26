@@ -123,7 +123,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
   return (
     <>
       {/* Comment ça marche */}
-      <section id="comment" className="mx-auto flex max-w-[1200px] scroll-mt-20 flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
+      <section id="comment" className="mx-auto flex max-w-[1200px] scroll-mt-[var(--header-clear)] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
         <Reveal>
           <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.howTitle}</h2>
         </Reveal>
@@ -142,7 +142,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
       </section>
 
       {/* Formules */}
-      <section id="formules" className="scroll-mt-20 bg-sand">
+      <section id="formules" className="scroll-mt-[var(--header-clear)] bg-sand">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-7 px-[clamp(16px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
           <div className="flex flex-wrap items-end justify-between gap-5">
             <Reveal className="flex max-w-[620px] flex-col gap-2.5">
@@ -242,7 +242,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
       </section>
 
       {/* Charte de protection */}
-      <section id="charte" className="mx-auto scroll-mt-20 px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
+      <section id="charte" className="mx-auto scroll-mt-[var(--header-clear)] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
         <Reveal className="grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-8 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
           <div className="flex flex-col gap-3.5">
             <ShieldCheckIcon size={40} className="text-sage-300" aria-hidden />
@@ -262,7 +262,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
 
       {/* Questions fréquentes */}
       <div className="overflow-x-clip">
-      <section id="faq" className="mx-auto max-w-[1000px] scroll-mt-20 px-[clamp(20px,4vw,32px)] pb-[clamp(56px,8vw,104px)]">
+      <section id="faq" className="mx-auto max-w-[1000px] scroll-mt-[var(--header-clear)] px-[clamp(20px,4vw,32px)] pb-[clamp(56px,8vw,104px)]">
         <Reveal variant="scale" repeat className="mb-8 text-center">
           <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.15]">{t.faqTitle}</h2>
         </Reveal>
@@ -314,7 +314,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
       </div>
 
       {/* Inscription */}
-      <section id="inscription" className="scroll-mt-20 bg-sand">
+      <section id="inscription" className="scroll-mt-[var(--header-clear)] bg-sand">
         <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start gap-[clamp(32px,5vw,64px)] px-[clamp(16px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
           <Reveal className="flex flex-col gap-4">
             <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">

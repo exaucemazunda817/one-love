@@ -4,6 +4,16 @@
    README + « One Love - Design System »). Valeurs reprises telles quelles :
    la maquette est en haute fidélité, on ne les « arrondit » pas. */
 :root {
+  /* Dégagement sous le menu flottant (fixed, top: max(1rem, safe-area)) pour
+     qu'un lien d'ancrage ne pose jamais sa cible sous le menu. Mesuré sans
+     encoche : bord bas du menu ≈ 78 px (mobile) / 82 px (bureau) ; le +8 px
+     couvre les deux. Avec `env(safe-area-inset-top)`, reste valable sur un
+     téléphone à encoche, où le menu descend d'autant (audit du 27/09/2026:
+     scroll-mt-20 fixe ne couvrait déjà plus le bureau de 2 px, et aurait
+     laissé la cible 30-40 px sous le menu sur un iPhone à encoche). */
+  --header-clear: calc(env(safe-area-inset-top, 0px) + 90px);
+  --header-clear-lg: calc(env(safe-area-inset-top, 0px) + 112px);
+
   --night: #0a0a0a;
   --ink: #1e1a16;
   --ink-body: #3a332c;
