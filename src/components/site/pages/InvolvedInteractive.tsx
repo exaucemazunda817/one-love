@@ -171,6 +171,7 @@ export function InvolvedInteractive({
                   <span className="text-[15px] font-bold">{t.name}</span>
                   <input
                     name="name"
+                    autoComplete="name"
                     required
                     maxLength={120}
                     className="min-h-[52px] rounded-lg border-[1.5px] border-field-line bg-white px-3.5 text-[17px] text-ink outline-none focus:border-copper-600"
@@ -181,6 +182,7 @@ export function InvolvedInteractive({
                   <input
                     name="email"
                     type="email"
+                    autoComplete="email"
                     required
                     maxLength={180}
                     className="min-h-[52px] rounded-lg border-[1.5px] border-field-line bg-white px-3.5 text-[17px] text-ink outline-none focus:border-copper-600"
@@ -192,6 +194,7 @@ export function InvolvedInteractive({
                   <span className="text-[15px] font-bold">{t.org}</span>
                   <input
                     name="org"
+                    autoComplete="organization"
                     placeholder={t.orgPlaceholder}
                     maxLength={160}
                     className="min-h-[52px] rounded-lg border-[1.5px] border-field-line bg-white px-3.5 text-[17px] text-ink outline-none focus:border-copper-600"

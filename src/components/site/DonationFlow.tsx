@@ -432,7 +432,7 @@ export function DonationFlow({ locale }: { locale: Locale }) {
                   type="checkbox"
                   checked={newsletter}
                   onChange={(e) => setNewsletter(e.target.checked)}
-                  className="mt-0.5 min-h-0 accent-copper-600"
+                  className="mt-0.5 h-[22px] min-h-0 w-[22px] flex-none accent-copper-600"
                 />
                 <span className="text-[15px] leading-[1.4]">{t.newsletterOptIn}</span>
               </label>

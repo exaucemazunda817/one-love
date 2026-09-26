@@ -171,6 +171,13 @@ body {
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
+
+  /* Titres équilibrés : évite un mot seul sur la dernière ligne. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
 }
 
 :focus-visible {

@@ -8,6 +8,11 @@ import { useEffect, useState, type RefObject } from 'react';
 // sans être vu), puis à `true` quand il revient. Demande de Mazunda
 // (26/09/2026) : un effet joué une seule fois semblait cassé au retour.
 //
+// Un bloc ENTIÈREMENT visible joue toujours son effet, même tout en bas de
+// l'écran : sans ça, les chiffres visibles en bas de l'écran d'ouverture de
+// l'accueil restaient figés sur leur valeur de départ (« 2000 », « 0 ») tant
+// qu'on ne défilait pas — relevé à l'audit du 26/09/2026.
+//
 // Vérification au montage ET à chaque défilement (pas seulement un
 // IntersectionObserver, qui rate les éléments déjà à l'écran ou franchis
 // trop vite — piège déjà rencontré sur ce projet).
@@ -35,7 +40,7 @@ export function useSeen(ref: RefObject<Element | null>, threshold = 0.88): boole
         if (current === true && !inView) {
           current = false;
           setSeen(false);
-        } else if (current !== true && r.top < vh * threshold && r.bottom > 0) {
+        } else if (current !== true && r.bottom > 0 && (r.top < vh * threshold || r.bottom <= vh)) {
           current = true;
           setSeen(true);
         }
@@ -50,9 +55,15 @@ export function useSeen(ref: RefObject<Element | null>, threshold = 0.88): boole
     });
     window.addEventListener('scroll', check, { passive: true });
     window.addEventListener('resize', check, { passive: true });
+    // La mise en page peut glisser SANS défilement (polices et images qui
+    // finissent de charger) : un bloc sorti de l'écran au montage y entre
+    // alors tout seul. L'observateur réagit à ces glissements.
+    const observer = new IntersectionObserver(check, { threshold: [0, 0.25, 0.5, 1] });
+    observer.observe(el);
     return () => {
       window.removeEventListener('scroll', check);
       window.removeEventListener('resize', check);
+      observer.disconnect();
       cancelAnimationFrame(frame);
     };
   }, [ref, threshold]);
