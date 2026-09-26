@@ -449,6 +449,32 @@ dossier Stripe (dont un numéro SIREN, que beaucoup d'associations n'ont pas) ·
 accès au compte OVH · décisions RGPD (référent, base légale, durées de
 conservation, consentements photo).
 
+## Effets animés (26/09/2026)
+
+- **Les effets d'apparition se rejouent à chaque retour** (demande de
+  Mazunda : joués une seule fois, ils semblaient cassés sans recharger la
+  page). `Reveal` a désormais `repeat` activé par défaut ; `repeat={false}`
+  rétablit l'ancien comportement pour un bloc précis. Un bloc ne se remet en
+  attente qu'une fois ENTIÈREMENT sorti de l'écran. Pas de marge rognée en
+  bas de l'écran pour l'entrée : sinon la dernière ligne du pied de page n'y
+  entre jamais et reste invisible.
+- Effets inspirés du skill « site-immersif », réécrits pour ce site (le code
+  du modèle n'a pas de licence, il n'est pas copié), dans
+  `src/components/site/effects/` : `CountUp` (chiffre qui monte), `YearRoll`
+  (année qui roule, colonnes de 1em : garder `line-height: 1`), `InkText`
+  (phrase qui s'encre + ovale à la main autour des mots notés `[[ ]]`),
+  `HistoryHero` (photo qui naît entre « Notre » et « histoire »),
+  `RevesLetters`. Détection commune : `src/lib/use-seen.ts`, qui rejoue aussi
+  l'effet au retour.
+- Règles tenues : le défilement n'est JAMAIS détourné (on lit seulement la
+  position, pas de lissage façon Lenis) ; rendu serveur = état final lisible
+  sans JavaScript ; « Réduire les animations » = état final direct (et le
+  bandeau classique à la place de `HistoryHero`). Écartés volontairement :
+  traînée d'images sous la souris (photos d'enfants), écran de chargement.
+- Chiffres de « Le chemin parcouru » (Notre histoire) : tirés des
+  publications Instagram de l'association et datés (3 garçons en 2016, 21 en
+  2020, 90 un samedi de 2022, « ≈ 100 » par semaine en 2024).
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { HeartIcon } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
+import { RevesLetters } from '@/components/site/effects/RevesLetters';
 import { Brush, CallBanner } from '@/components/site/ui';
 import { currentProject, publishableGallery } from '@/lib/content';
 import { localeHref, type Locale } from '@/lib/i18n';
@@ -79,16 +80,7 @@ export function Reves2Page({ locale }: { locale: Locale }) {
       />
 
       <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
-        <Reveal className="flex flex-wrap gap-2.5">
-          {t.steps.map((step) => (
-            <span
-              key={step}
-              className="rounded-full border-[1.5px] border-copper-600 px-4 py-2 text-[14px] font-bold text-copper-700"
-            >
-              {step}
-            </span>
-          ))}
-        </Reveal>
+        <RevesLetters words={t.steps} />
 
         <div className="mt-10 grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-start gap-8">
           <Reveal delay={60} className="flex flex-col gap-5">

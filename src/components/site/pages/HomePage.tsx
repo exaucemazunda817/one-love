@@ -18,6 +18,8 @@ import { PartnersMarquee } from '@/components/site/PartnersMarquee';
 import { Brush, BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { DonationQuick } from '@/components/site/DonationQuick';
 import { localeHref, type Locale } from '@/lib/i18n';
+import { CountUp } from '@/components/site/effects/CountUp';
+import { YearRoll } from '@/components/site/effects/YearRoll';
 import { currentProject } from '@/lib/content';
 
 const text = {
@@ -190,7 +192,9 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="grid max-w-[720px] grid-cols-2 gap-x-5 gap-y-5 md:gap-x-6">
           {t.stats.map(([n, l]) => (
             <Reveal key={l} className="flex flex-col gap-1">
-              <span className="font-serif text-[clamp(30px,3.4vw,42px)] font-semibold leading-none">{n}</span>
+              <span className="font-serif text-[clamp(30px,3.4vw,42px)] font-semibold leading-none tabular-nums">
+                {/^\d{4}$/.test(n) ? <YearRoll from="2000" to={n} /> : <CountUp value={Number(n)} />}
+              </span>
               <Brush className="h-1.5 w-11" />
               <span className="text-[15px] leading-[1.35] text-ink-body">{l}</span>
             </Reveal>

@@ -5,6 +5,9 @@ import { pageMetadata } from '@/lib/seo';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { YouTubeLite } from '@/components/site/YouTubeLite';
+import { HistoryHero } from '@/components/site/effects/HistoryHero';
+import { CountUp } from '@/components/site/effects/CountUp';
+import { YearRoll } from '@/components/site/effects/YearRoll';
 import { CallBanner } from '@/components/site/ui';
 import { localeHref, type Locale } from '@/lib/i18n';
 
@@ -186,6 +189,16 @@ const text = {
     intro: 'Un couple, trois garçons rencontrés dans la rue, puis un centre qui accueille une centaine d’enfants chaque semaine.',
     heroAlt: 'Des garçons de One Love sur le chemin de l’école.',
     jumpLabel: 'Aller à une période',
+    wordA: 'Notre',
+    wordB: 'histoire',
+    pathTitle: 'Le chemin parcouru',
+    // Chiffres publiés par l'association sur Instagram, chacun daté.
+    path: [
+      { value: 3, prefix: '', label: 'garçons rencontrés dans la rue', when: 'été 2016' },
+      { value: 21, prefix: '', label: 'garçons accueillis à la One Love House', when: 'janvier 2020' },
+      { value: 90, prefix: '', label: 'enfants au centre aéré, un samedi', when: 'mars 2022' },
+      { value: 100, prefix: '≈ ', label: "enfants accueillis chaque semaine", when: '2024' }
+    ],
     play: 'Lire la vidéo',
     bannerTitle: "L'histoire continue.",
     bannerText: 'Chaque don et chaque parrainage écrit le prochain chapitre avec les enfants.',
@@ -201,6 +214,15 @@ const text = {
     intro: 'A couple, three boys met on the street, then a centre that welcomes around a hundred children every week.',
     heroAlt: 'One Love boys on their way to school.',
     jumpLabel: 'Jump to a period',
+    wordA: 'Our',
+    wordB: 'story',
+    pathTitle: 'How far we have come',
+    path: [
+      { value: 3, prefix: '', label: 'boys met on the street', when: 'summer 2016' },
+      { value: 21, prefix: '', label: 'boys living at the One Love House', when: 'January 2020' },
+      { value: 90, prefix: '', label: 'children at the day centre, one Saturday', when: 'March 2022' },
+      { value: 100, prefix: '≈ ', label: 'children welcomed every week', when: '2024' }
+    ],
     play: 'Play the video',
     bannerTitle: 'The story goes on.',
     bannerText: 'Every donation and every sponsorship writes the next chapter with the children.',
@@ -281,16 +303,49 @@ export function HistoryPage({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <InnerHero
-        locale={locale}
+      <HistoryHero
         eyebrow={t.eyebrow}
-        titlePre={t.titlePre}
-        titleWord={t.titleWord}
+        wordA={t.wordA}
+        wordB={t.wordB}
         intro={t.intro}
         image="/histoire/2023-rentree.webp"
         imageAlt={t.heroAlt}
-        objectPosition="50% 45%"
+        fallback={
+        <InnerHero
+          locale={locale}
+          eyebrow={t.eyebrow}
+          titlePre={t.titlePre}
+          titleWord={t.titleWord}
+          intro={t.intro}
+          image="/histoire/2023-rentree.webp"
+          imageAlt={t.heroAlt}
+          objectPosition="50% 45%"
+        />
+        }
       />
+
+      <section aria-labelledby="chemin-titre" className="bg-sand">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">
+          <Reveal>
+            <h2 id="chemin-titre" className="m-0 font-serif text-[clamp(26px,3vw,36px)] font-medium leading-[1.15]">
+              {t.pathTitle}
+            </h2>
+          </Reveal>
+          <div className="grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-4">
+            {t.path.map((item) => (
+              <Reveal key={item.label} className="flex flex-col gap-1.5">
+                <CountUp
+                  value={item.value}
+                  prefix={item.prefix}
+                  className="font-serif text-[clamp(44px,5vw,64px)] font-medium leading-none text-copper-600"
+                />
+                <span className="text-[16px] leading-[1.4] text-ink">{item.label}</span>
+                <span className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-ink-soft">{item.when}</span>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <nav
         aria-label={t.jumpLabel}
@@ -308,7 +363,7 @@ export function HistoryPage({ locale }: { locale: Locale }) {
       </nav>
 
       <div className="mx-auto flex max-w-[1200px] flex-col gap-[clamp(56px,8vw,96px)] px-[clamp(20px,4vw,32px)] py-[clamp(40px,6vw,72px)]">
-        {chapters.map((c) => (
+        {chapters.map((c, ci) => (
           <section
             key={c.id}
             id={c.id}
@@ -316,7 +371,10 @@ export function HistoryPage({ locale }: { locale: Locale }) {
             className="grid scroll-mt-28 gap-8 dk:grid-cols-[300px_minmax(0,1fr)] dk:gap-14"
           >
             <Reveal className="flex flex-col gap-3 dk:sticky dk:top-28 dk:self-start">
-              <span className="whitespace-nowrap font-serif text-[clamp(32px,3.4vw,42px)] font-medium leading-none tabular-nums text-copper-600">{c.years}</span>
+              <span className="whitespace-nowrap font-serif text-[clamp(32px,3.4vw,42px)] font-medium leading-none tabular-nums text-copper-600">
+                <YearRoll from={chapters[ci - 1]?.id ?? '2000'} to={c.id} />
+                {c.years.slice(4)}
+              </span>
               <h2 id={`${c.id}-titre`} className="m-0 text-balance font-serif text-[clamp(24px,2.6vw,30px)] font-medium leading-[1.2]">
                 {c.title[locale]}
               </h2>

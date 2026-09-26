@@ -3,6 +3,7 @@ import { pageMetadata } from '@/lib/seo';
 import { HeartIcon, StarIcon, LeafIcon } from '@phosphor-icons/react/ssr';
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
+import { InkText } from '@/components/site/effects/InkText';
 import { InnerHero } from '@/components/site/InnerHero';
 import { CallBanner, h2Class } from '@/components/site/ui';
 import { PartnersMarquee } from '@/components/site/PartnersMarquee';
@@ -20,7 +21,7 @@ const text = {
     sponsor: 'Parrainer un enfant',
     heroAlt: "Des mains d'enfants colorient des lettres.",
     visionEyebrow: 'Notre vision',
-    vision: "L'amour est un besoin fondamental de l'être humain. Toute personne victime d'exclusion devrait pouvoir satisfaire ce besoin d'être aimée.",
+    vision: "L'amour est un besoin fondamental de l'être humain. Toute personne victime d'exclusion devrait pouvoir satisfaire ce besoin [[d'être aimée]].",
     missionEyebrow: 'Notre mission',
     mission: 'Réaliser des projets en République Démocratique du Congo qui ont pour objet de valoriser les populations marginalisées, en particulier les enfants.',
     goals: [
@@ -56,7 +57,7 @@ const text = {
     sponsor: 'Sponsor a child',
     heroAlt: "Children's hands colouring in letters.",
     visionEyebrow: 'Our vision',
-    vision: 'Love is a fundamental human need. Everyone who suffers exclusion should be able to meet this need to be loved.',
+    vision: 'Love is a fundamental human need. Everyone who suffers exclusion should be able to meet this need [[to be loved]].',
     missionEyebrow: 'Our mission',
     mission: 'To carry out projects in the Democratic Republic of the Congo that empower marginalised people, especially children.',
     goals: [
@@ -108,7 +109,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
       <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-[72px] gap-y-10 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
         <Reveal className="flex flex-col gap-3.5">
           <span className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-copper-700">{t.visionEyebrow}</span>
-          <p className="m-0 font-serif text-[clamp(24px,2.6vw,32px)] leading-[1.35]">{t.vision}</p>
+          <InkText text={t.vision} className="m-0 font-serif text-[clamp(24px,2.6vw,32px)] leading-[1.35]" />
         </Reveal>
         <Reveal delay={90} className="flex flex-col gap-3.5">
           <span className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-copper-700">{t.missionEyebrow}</span>
