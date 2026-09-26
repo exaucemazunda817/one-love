@@ -20,6 +20,10 @@ function donateHref(pathname: string, locale: Locale) {
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  // Lien actuellement en « verre » dans le menu mobile (survolé au doigt/à la
+  // souris) : même principe que Gospel Nation, sans le glissement animé d'un
+  // repère commun aux deux sites — ici un simple état posé par lien.
+  const [glassHref, setGlassHref] = useState<string | null>(null);
   const t = chrome[locale];
   const other = alternateHref(pathname);
   const otherLabel = locale === 'fr' ? 'EN' : 'FR';
@@ -145,18 +149,43 @@ export function Header({ locale }: { locale: Locale }) {
               <XIcon size={24} className="text-cream" aria-hidden />
             </button>
           </div>
-          <nav className="flex flex-1 flex-col px-5 py-2">
-            {t.nav.map((item) => (
-              <Link
-                key={item.href}
-                href={localeHref(item.href, locale)}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-                className="flex min-h-14 items-center justify-between border-b border-dark-line font-serif text-[22px] text-cream no-underline hover:text-gold-hover"
-              >
-                {item.label}
-                <CaretRightIcon size={18} className="text-taupe" aria-hidden />
-              </Link>
-            ))}
+          <nav
+            className="flex flex-1 flex-col gap-1 px-5 py-2"
+            onScroll={() => setGlassHref(null)}
+          >
+            {t.nav.map((item) => {
+              const active = isActive(item.href);
+              const glass = glassHref === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={localeHref(item.href, locale)}
+                  aria-current={active ? 'page' : undefined}
+                  onMouseEnter={() => setGlassHref(item.href)}
+                  onMouseLeave={() => setGlassHref(null)}
+                  onFocus={() => setGlassHref(item.href)}
+                  onBlur={() => setGlassHref(null)}
+                  onTouchStart={() => setGlassHref(item.href)}
+                  onTouchEnd={() => setGlassHref(null)}
+                  onTouchCancel={() => setGlassHref(null)}
+                  className={cx(
+                    'flex min-h-14 items-center justify-between rounded-2xl border px-4 font-serif text-[22px] no-underline transition-colors duration-200',
+                    glass
+                      ? 'border-white/30 bg-white/15 text-gold-hover shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_18px_-6px_rgba(0,0,0,0.5)] backdrop-blur-md'
+                      : active
+                        ? 'border-white/15 bg-white/[0.06] text-gold-hover'
+                        : 'border-transparent text-cream'
+                  )}
+                >
+                  {item.label}
+                  <CaretRightIcon
+                    size={18}
+                    className={cx('transition-colors duration-200', glass || active ? 'text-gold-hover' : 'text-taupe')}
+                    aria-hidden
+                  />
+                </Link>
+              );
+            })}
           </nav>
           <a
             href={FACEBOOK_URL}
@@ -188,7 +217,7 @@ export function Header({ locale }: { locale: Locale }) {
             <a
               href={donate}
               onClick={() => setOpen(false)}
-              className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border border-cream/30 bg-white/10 text-[17px] font-extrabold text-cream no-underline hover:bg-white/20 hover:text-cream"
+              className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-gold text-[17px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night"
             >
               <HeartIcon size="1em" aria-hidden />
               {t.donate}
