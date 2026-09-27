@@ -123,7 +123,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
   return (
     <>
       {/* Comment ça marche */}
-      <section id="comment" className="mx-auto flex max-w-[1200px] scroll-mt-[var(--header-clear)] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
+      <section id="comment" className="mx-auto flex max-w-[1200px] scroll-mt-[var(--header-clear)] flex-col gap-10 px-[clamp(20px,4vw,32px)] pt-[clamp(56px,8vw,104px)] pb-[clamp(32px,5vw,56px)]">
         <Reveal>
           <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.howTitle}</h2>
         </Reveal>
@@ -143,7 +143,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
 
       {/* Formules */}
       <section id="formules" className="scroll-mt-[var(--header-clear)] bg-sand">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-7 px-[clamp(16px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-7 px-[clamp(16px,4vw,32px)] pt-[clamp(56px,8vw,104px)] pb-[clamp(32px,5vw,56px)]">
           <div className="flex flex-wrap items-end justify-between gap-5">
             <Reveal className="flex max-w-[620px] flex-col gap-2.5">
               <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.formulesTitle}</h2>
@@ -218,7 +218,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
       </section>
 
       {/* Ce que vous recevez */}
-      <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
+      <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,32px)] pt-[clamp(32px,5vw,56px)] pb-[clamp(56px,8vw,104px)]">
         <Reveal className="relative aspect-[4/5] max-h-[560px] overflow-hidden rounded-card">
           <Image src="/photos/photo-mains.jpg" alt={t.receiveAlt} fill sizes="(max-width: 1200px) 100vw, 560px" className="photo-tone object-cover" />
         </Reveal>

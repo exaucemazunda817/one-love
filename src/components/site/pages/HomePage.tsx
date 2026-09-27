@@ -272,7 +272,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
 
       {/* Trois façons d'aider */}
-      <section className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(64px,9vw,112px)]">
+      <section className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] pt-[clamp(32px,5vw,56px)] pb-[clamp(64px,9vw,112px)]">
         <Reveal>
           <h2 className={h2Class}>{t.waysTitle}</h2>
         </Reveal>
@@ -310,7 +310,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
 
       {/* Témoignages */}
-      <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pb-[clamp(64px,9vw,112px)]">
+      <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pb-[clamp(40px,6vw,72px)]">
         {t.testimonials.map((f, i) => (
           <Reveal key={f.name} delay={i * 90}>
             <figure className="m-0 flex max-w-[760px] flex-col gap-4 rounded-card bg-white p-8 shadow-ol-sm">

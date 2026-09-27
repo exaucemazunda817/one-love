@@ -21,7 +21,7 @@ const text = {
 export function FacebookBand({ locale }: { locale: Locale }) {
   const t = text[locale];
   return (
-    <section className="mx-auto max-w-[1200px] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
+    <section className="mx-auto max-w-[1200px] px-[clamp(12px,3vw,32px)] pb-[clamp(32px,5vw,56px)]">
       <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-7 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
         <div className="flex flex-col gap-3">
           <FacebookLogoIcon size={40} className="text-gold-hover" aria-hidden />
