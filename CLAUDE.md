@@ -701,6 +701,74 @@ changement touchant `app/layout.tsx` : un mot statique qui devient dynamique
 sur des dizaines de routes doit toujours sauter aux yeux avant de déployer,
 pas après un signalement de lenteur.
 
+## Audit conversions (skill `cro`) et corrections, 27/09/2026
+
+Vérifié dans le code et en production, pas seulement à l'œil. Corrigé à la
+demande de Mazunda (tout sauf le point « don mensuel présélectionné » :
+**le mensuel reste présélectionné, choix explicite de Mazunda**).
+
+Page Dons (`src/components/site/DonationFlow.tsx`) :
+- **Stripe n'est pas configuré en production** (vérifié sans effet de bord :
+  un POST invalide sur `/api/dons/stripe/session` répond 503 avant toute
+  écriture). La carte était pourtant présélectionnée et « Recommandée » : le
+  donateur ne découvrait l'erreur qu'au dernier clic. `DonsPage` passe
+  désormais `cardEnabled={isStripeConfigured()}` — lu **au build** (page
+  statique) : après ajout de la clé Stripe sur Vercel, **un redéploiement
+  est nécessaire** pour que la carte s'active. Carte désactivée = étiquette
+  « Bientôt », note explicative, virement présélectionné, bouton « Choisir
+  un autre moyen » qui bascule vraiment sur le virement.
+- **Prénom, nom, pays et la case « nouvelles du terrain » étaient demandés
+  puis jamais envoyés.** Désormais transmis jusqu'à `Donor` pour les dons
+  uniques (déjà supporté côté serveur) ET mensuels (via les métadonnées de
+  l'abonnement Stripe, relues au webhook `invoice.paid` — `stripe.ts`,
+  `donations.ts`, webhook modifiés). La case newsletter déclenche
+  l'inscription en double opt-in (`/api/newsletter`, nouveau champ `source`
+  → `consentSource: 'site-formulaire-don'` comme preuve RGPD) ; elle est
+  désactivée tant qu'aucun e-mail valide n'est saisi.
+- **Mobile Money « Me prévenir » ne transmettait rien** (le bouton cochait
+  juste un état local). Envoie maintenant une vraie demande via
+  `/api/contact` (`origin: 'mobile-money'`, e-mail requis), visible dans
+  `/gestion/demandes`.
+- Montants en $ / FC : note « convertis à titre indicatif, versés en
+  euros », équivalent en euros dans le récapitulatif, bouton de paiement
+  libellé en euros.
+- « Reçu par e-mail » → « confirmation par e-mail » (ambiguïté avec un reçu
+  fiscal, que l'association ne peut pas délivrer sans rescrit).
+- Récapitulatif : chiffre « ≈ 100 enfants accueillis chaque semaine (2024) »
+  (même source datée que Notre histoire / accueil).
+- Virement : message de remerciement après « J'ai noté les coordonnées »
+  (avant, le bouton renvoyait sans un mot à l'étape 1).
+
+Parrainage / demandes :
+- **Nouvel écran `/gestion/demandes`** (direction uniquement, lien dans le
+  menu, compteurs du tableau de bord cliquables) : messages de contact (dont
+  parrainages et alertes Mobile Money, repérés par le préfixe du sujet que
+  le site génère lui-même), candidatures bénévoles, partenariats — lecture
+  complète, filtre « à traiter », changement de statut via
+  `PATCH /api/gestion/demandes/[type]/[id]` (journalisé, jamais le contenu
+  dans l'audit log). Avant, seuls des compteurs existaient : une demande de
+  parrainage pouvait n'être lue par personne.
+- **Accusé de réception** envoyé à l'auteur de chaque message (`/api/contact`,
+  texte selon `origin` : contact / parrainage / Mobile Money). Texte FIXE,
+  rien de ce que le visiteur a saisi n'y est recopié — sinon le formulaire
+  servirait à faire envoyer un texte arbitraire à l'adresse d'un tiers.
+- **Toujours dépendant de Mazunda** : `RESEND_API_KEY` et `EMAIL_FROM` sur
+  Vercel. Créées avec le projet et jamais modifiées depuis — probablement
+  vides (valeurs illisibles, variables « Sensibles »). Tant qu'elles ne sont
+  pas renseignées, ni la notification à l'association, ni l'accusé de
+  réception, ni la confirmation newsletter ne partent — le code est prêt,
+  silencieux en attendant. Les demandes restent quand même lisibles dans
+  `/gestion/demandes`.
+
+Non testé en conditions réelles (écriture en base évitée volontairement,
+`.env.local` pouvant pointer vers la base de production — piège déjà vécu
+sur d'autres projets) : l'envoi effectif d'une alerte Mobile Money, d'un
+accusé de réception, et l'affichage de `/gestion/demandes` connecté (pas
+d'identifiants de test utilisés). Vérifié : le parcours de don complet côté
+interface (carte « Bientôt », bascule, remerciement virement, conversion €,
+case newsletter), et le refus sans session de la page et de l'API
+(`307` vers la connexion, `401`).
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

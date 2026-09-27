@@ -112,6 +112,9 @@ export async function createDonationCheckoutSession({
   projectSlug,
   description,
   donorEmail,
+  donorFirstName,
+  donorLastName,
+  donorCountry,
   successUrl,
   cancelUrl
 }: {
@@ -121,6 +124,9 @@ export async function createDonationCheckoutSession({
   projectSlug?: string | null;
   description: string;
   donorEmail?: string | null;
+  donorFirstName?: string | null;
+  donorLastName?: string | null;
+  donorCountry?: string | null;
   successUrl: string;
   cancelUrl: string;
 }): Promise<StripeCheckoutSession> {
@@ -143,7 +149,13 @@ export async function createDonationCheckoutSession({
       ? { metadata: { donationId } }
       : {
           subscription_data: {
-            metadata: { projectSlug: projectSlug || '', donorEmail: donorEmail || '' }
+            metadata: {
+              projectSlug: projectSlug || '',
+              donorEmail: donorEmail || '',
+              donorFirstName: donorFirstName || '',
+              donorLastName: donorLastName || '',
+              donorCountry: donorCountry || ''
+            }
           }
         }),
     // Stripe remplace ce littéral par l'identifiant réel de la session.

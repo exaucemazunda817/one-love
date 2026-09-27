@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { getCurrentGestionUser } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -36,16 +37,31 @@ export default async function DashboardPage() {
       {counts && (
         <div className="grid gap-4 sm:grid-cols-4">
           {[
-            { label: 'Messages non lus', value: counts[0] },
-            { label: 'Candidatures bénévoles', value: counts[1] },
-            { label: 'Propositions de partenariat', value: counts[2] },
-            { label: 'Abonnés à la lettre', value: counts[3] }
-          ].map((item) => (
-            <div key={item.label} className="rounded-xl border border-ol-line bg-ol-white p-5">
-              <p className="text-3xl font-black text-ol-charcoal">{item.value}</p>
-              <p className="mt-1 text-sm text-ol-muted">{item.label}</p>
-            </div>
-          ))}
+            { label: 'Messages et parrainages non lus', value: counts[0], href: '/gestion/demandes' },
+            { label: 'Candidatures bénévoles', value: counts[1], href: '/gestion/demandes' },
+            { label: 'Propositions de partenariat', value: counts[2], href: '/gestion/demandes' },
+            { label: 'Abonnés à la lettre', value: counts[3], href: null }
+          ].map((item) => {
+            const inner = (
+              <>
+                <p className="text-3xl font-black text-ol-charcoal">{item.value}</p>
+                <p className="mt-1 text-sm text-ol-muted">{item.label}</p>
+              </>
+            );
+            return item.href ? (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="rounded-xl border border-ol-line bg-ol-white p-5 transition-colors hover:border-ol-ember-ink"
+              >
+                {inner}
+              </Link>
+            ) : (
+              <div key={item.label} className="rounded-xl border border-ol-line bg-ol-white p-5">
+                {inner}
+              </div>
+            );
+          })}
         </div>
       )}
 

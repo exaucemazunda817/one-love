@@ -8,6 +8,7 @@ import { BrushWord, Eyebrow } from '@/components/site/ui';
 import { DonationFlow } from '@/components/site/DonationFlow';
 import { CancelNotice } from '@/app/(site)/dons/CancelNotice';
 import { localeHref, type Locale } from '@/lib/i18n';
+import { isStripeConfigured } from '@/lib/stripe';
 
 export const text = {
   fr: {
@@ -90,7 +91,9 @@ export function DonsPage({ locale }: { locale: Locale }) {
         <CancelBanner locale={locale} />
       </Suspense>
 
-      <DonationFlow locale={locale} />
+      {/* Lu au build (page statique) : après avoir ajouté la clé Stripe sur
+          Vercel, un redéploiement suffit pour que la carte s'active. */}
+      <DonationFlow locale={locale} cardEnabled={isStripeConfigured()} />
 
       <section className="bg-sand">
         <Reveal className="mx-auto flex max-w-[1200px] flex-col gap-3 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">

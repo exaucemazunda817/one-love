@@ -15,7 +15,12 @@ export const contactSchema = z.object({
   email,
   phone,
   subject: z.string().trim().min(1, 'Champ requis.').max(140),
-  message: longText(10, 4000)
+  message: longText(10, 4000),
+  // D'où vient le message : le formulaire de contact lui-même, une demande de
+  // parrainage (/parrainer) ou une demande d'alerte Mobile Money (/dons). Ne
+  // sert qu'à choisir le texte de l'accusé de réception — jamais à décider de
+  // droits ni d'un destinataire.
+  origin: z.enum(['contact', 'parrainage', 'mobile-money']).optional()
 });
 
 export const volunteerSchema = z.object({
@@ -49,7 +54,10 @@ export const partnershipSchema = z.object({
 
 export const newsletterSchema = z.object({
   email,
-  firstName: z.string().trim().max(120).optional().or(z.literal(''))
+  firstName: z.string().trim().max(120).optional().or(z.literal('')),
+  // Où le consentement a été recueilli (pied de page ou case cochée pendant un
+  // don) : conservé comme preuve de consentement RGPD dans consentSource.
+  source: z.enum(['pied-de-page', 'don']).optional()
 });
 
 export const donationSessionSchema = z.object({

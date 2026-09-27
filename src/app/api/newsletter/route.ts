@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         data: {
           email: data.email,
           firstName: data.firstName || null,
-          consentSource: 'site-formulaire-newsletter',
+          consentSource: data.source === 'don' ? 'site-formulaire-don' : 'site-formulaire-newsletter',
           consentIp: clientIp(request)
         }
       });

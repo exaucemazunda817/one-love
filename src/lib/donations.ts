@@ -178,6 +178,9 @@ export async function createConfirmedDonation({
   isRecurring,
   projectSlug,
   donorEmail,
+  donorFirstName,
+  donorLastName,
+  donorCountry,
   providerField,
   providerReference,
   receivedOn
@@ -187,6 +190,9 @@ export async function createConfirmedDonation({
   isRecurring: boolean;
   projectSlug?: string | null;
   donorEmail?: string | null;
+  donorFirstName?: string | null;
+  donorLastName?: string | null;
+  donorCountry?: string | null;
   providerField: 'stripePaymentIntentId' | 'serdipayTransactionId';
   providerReference: string;
   receivedOn: Date;
@@ -200,8 +206,17 @@ export async function createConfirmedDonation({
   const donor = donorEmail
     ? await prisma.donor.upsert({
         where: { email: donorEmail },
-        update: {},
-        create: { email: donorEmail }
+        update: {
+          ...(donorFirstName ? { firstName: donorFirstName } : {}),
+          ...(donorLastName ? { lastName: donorLastName } : {}),
+          ...(donorCountry ? { country: donorCountry } : {})
+        },
+        create: {
+          email: donorEmail,
+          firstName: donorFirstName || null,
+          lastName: donorLastName || null,
+          country: donorCountry || 'FR'
+        }
       })
     : null;
 

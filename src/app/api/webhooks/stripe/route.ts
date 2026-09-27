@@ -93,6 +93,9 @@ export async function POST(request: NextRequest) {
         isRecurring: true,
         projectSlug: subscription.metadata?.projectSlug || null,
         donorEmail: subscription.metadata?.donorEmail || null,
+        donorFirstName: subscription.metadata?.donorFirstName || null,
+        donorLastName: subscription.metadata?.donorLastName || null,
+        donorCountry: subscription.metadata?.donorCountry || null,
         providerField: 'stripePaymentIntentId',
         // Pas littéralement un PaymentIntent : identifiant Stripe de la
         // FACTURE, réutilisé comme clé d'idempotence (garanti présent et

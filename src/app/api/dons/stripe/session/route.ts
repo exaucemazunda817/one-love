@@ -72,6 +72,9 @@ export async function POST(request: NextRequest) {
       projectSlug: data.projectSlug || null,
       description: `${description} (don mensuel)`,
       donorEmail: data.donorEmail || null,
+      donorFirstName: data.donorFirstName || null,
+      donorLastName: data.donorLastName || null,
+      donorCountry: data.donorCountry || null,
       successUrl: `${siteUrl}/dons/merci`,
       cancelUrl: `${siteUrl}/dons?statut=annule`
     });

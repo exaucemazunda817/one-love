@@ -66,6 +66,9 @@ export async function startStripeCheckout(params: {
   frequency: 'once' | 'monthly';
   projectSlug?: string;
   donorEmail?: string;
+  donorFirstName?: string;
+  donorLastName?: string;
+  donorCountry?: string;
   locale: Locale;
 }): Promise<string> {
   const fallback =
@@ -80,7 +83,10 @@ export async function startStripeCheckout(params: {
         amountEur: params.amountEur,
         frequency: params.frequency,
         projectSlug: params.projectSlug || undefined,
-        donorEmail: params.donorEmail || undefined
+        donorEmail: params.donorEmail || undefined,
+        donorFirstName: params.donorFirstName || undefined,
+        donorLastName: params.donorLastName || undefined,
+        donorCountry: params.donorCountry || undefined
       })
     });
     if (response.status === 201) {

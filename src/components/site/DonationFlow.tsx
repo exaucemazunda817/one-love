@@ -11,7 +11,8 @@ import {
   LockSimpleIcon,
   CopyIcon,
   ShieldCheckIcon,
-  ArrowsClockwiseIcon
+  ArrowsClockwiseIcon,
+  UsersThreeIcon
 } from '@phosphor-icons/react';
 import { localeHref, type Locale } from '@/lib/i18n';
 import {
@@ -53,7 +54,7 @@ const T = {
     firstName: 'Prénom',
     lastName: 'Nom',
     email: 'E-mail',
-    emailNote: '(facultatif, pour un reçu de confirmation)',
+    emailNote: '(facultatif, pour recevoir une confirmation)',
     country: 'Pays',
     countries: [
       ['FR', 'France'],
@@ -62,6 +63,22 @@ const T = {
       ['', 'Autre']
     ],
     newsletterOptIn: 'Je souhaite recevoir des nouvelles du terrain, quelques fois par an.',
+    newsletterNeedsEmail: '(indiquez votre e-mail ci-dessus)',
+    newsletterSent: "Un e-mail vient de vous être envoyé pour confirmer votre inscription aux nouvelles du terrain.",
+    convertedNote: 'Montants convertis à titre indicatif : le don est versé en euros.',
+    chargedEur: (eur: string) => `Soit environ ${eur}, versés en euros`,
+    cardSoonTag: 'Bientôt',
+    cardSoonNote: 'Le paiement par carte sera bientôt disponible. En attendant, le virement bancaire est ouvert.',
+    thanksTransfer:
+      "Merci ! Pensez à indiquer votre nom dans le libellé du virement, pour que l'association puisse vous remercier.",
+    momoEmail: 'Votre e-mail',
+    momoSent: "C'est noté : nous vous préviendrons.",
+    momoFallbackName: 'Donateur (Mobile Money)',
+    momoSubject: 'Mobile Money — me prévenir',
+    momoMessage: (phone: string) =>
+      `Merci de me prévenir quand le don par Mobile Money sera disponible. Téléphone : ${phone}`,
+    impact: '≈ 100 enfants accueillis chaque semaine au centre (2024)',
+    transferTrust: "Virement direct sur le compte de l'association",
     payMethod: 'Moyen de paiement',
     methods: {
       card: { t: 'Carte bancaire ou prélèvement SEPA', d: 'Via Stripe, en quelques instants', tag: 'Recommandé' },
@@ -74,7 +91,7 @@ const T = {
     copy: "Copier l'IBAN",
     copied: 'IBAN copié',
     virementNote: `Pour soutenir un programme en particulier, comme ${currentProject.name}, indiquez-le dans le libellé du virement.`,
-    momoNote: 'Orange Money, Airtel Money et M-Pesa seront bientôt disponibles pour les donateurs en RDC. Laissez votre numéro pour être prévenu.',
+    momoNote: 'Orange Money, Airtel Money et M-Pesa seront bientôt disponibles pour les donateurs en RDC. Laissez votre numéro et votre e-mail pour être prévenu.',
     phonePlaceholder: '+243 …',
     notifyMe: 'Me prévenir',
     stripeNote: 'Paiement sécurisé par Stripe. Vous serez redirigé vers une page de paiement chiffrée.',
@@ -89,7 +106,7 @@ const T = {
     eqConfirm: (eq: string) => `${eq} (équivalence indicative)`,
     genericThanks: 'Merci : chaque euro rejoint directement les programmes de terrain.',
     allocation: 'Affectation :',
-    encrypted: 'Paiement chiffré, reçu par e-mail',
+    encrypted: 'Paiement chiffré par Stripe, confirmation par e-mail',
     editable: 'Don mensuel modifiable à tout moment',
     badge: 'Association loi 1901 · RNA W951001528',
     question: 'Une question ? Écrivez-nous',
@@ -119,7 +136,7 @@ const T = {
     firstName: 'First name',
     lastName: 'Last name',
     email: 'Email',
-    emailNote: '(optional, for a confirmation receipt)',
+    emailNote: '(optional, to receive a confirmation)',
     country: 'Country',
     countries: [
       ['FR', 'France'],
@@ -128,6 +145,22 @@ const T = {
       ['', 'Other']
     ],
     newsletterOptIn: 'I would like to receive news from the field, a few times a year.',
+    newsletterNeedsEmail: '(enter your email above)',
+    newsletterSent: 'We have just sent you an email to confirm your subscription to news from the field.',
+    convertedNote: 'Amounts converted for guidance only: your gift is paid in euros.',
+    chargedEur: (eur: string) => `That is about ${eur}, paid in euros`,
+    cardSoonTag: 'Coming soon',
+    cardSoonNote: 'Card payment will be available soon. In the meantime, bank transfer is open.',
+    thanksTransfer:
+      'Thank you! Please put your name in the transfer reference so the association can thank you.',
+    momoEmail: 'Your email',
+    momoSent: "Noted: we'll let you know.",
+    momoFallbackName: 'Donor (Mobile Money)',
+    momoSubject: 'Mobile Money — notify me',
+    momoMessage: (phone: string) =>
+      `Please let me know when giving by Mobile Money is available. Phone: ${phone}`,
+    impact: '≈ 100 children welcomed at the centre every week (2024)',
+    transferTrust: "Direct transfer to the association's account",
     payMethod: 'Payment method',
     methods: {
       card: { t: 'Card or SEPA direct debit', d: 'Via Stripe, in a few moments', tag: 'Recommended' },
@@ -140,7 +173,7 @@ const T = {
     copy: 'Copy IBAN',
     copied: 'IBAN copied',
     virementNote: `To support a specific programme, such as ${currentProject.name}, mention it in the transfer reference.`,
-    momoNote: 'Orange Money, Airtel Money and M-Pesa will soon be available for donors in the DRC. Leave your number to be notified.',
+    momoNote: 'Orange Money, Airtel Money and M-Pesa will soon be available for donors in the DRC. Leave your number and email to be notified.',
     phonePlaceholder: '+243 …',
     notifyMe: 'Notify me',
     stripeNote: 'Secure payment via Stripe. You will be redirected to an encrypted payment page.',
@@ -155,7 +188,7 @@ const T = {
     eqConfirm: (eq: string) => `${eq} (indicative equivalent)`,
     genericThanks: 'Thank you: every euro goes directly to our field programmes.',
     allocation: 'Allocation:',
-    encrypted: 'Encrypted payment, receipt by email',
+    encrypted: 'Encrypted payment via Stripe, confirmation by email',
     editable: 'Monthly gift, editable at any time',
     badge: 'Registered non-profit (France) · RNA W951001528',
     question: 'A question? Write to us',
@@ -163,7 +196,16 @@ const T = {
   }
 };
 
-export function DonationFlow({ locale }: { locale: Locale }) {
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * `cardEnabled` vient du serveur (clé Stripe présente ou non). Tant que Stripe
+ * n'est pas branché, la carte reste visible mais marquée « Bientôt » et le
+ * virement est présélectionné — avant, la carte était présélectionnée et
+ * « Recommandée », et le donateur ne découvrait qu'au dernier clic, après
+ * trois étapes, que le paiement n'était pas activé (audit du 27/09/2026).
+ */
+export function DonationFlow({ locale, cardEnabled }: { locale: Locale; cardEnabled: boolean }) {
   const id = useId();
   const t = T[locale];
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -177,12 +219,17 @@ export function DonationFlow({ locale }: { locale: Locale }) {
   const [donorEmail, setDonorEmail] = useState('');
   const [country, setCountry] = useState('FR');
   const [newsletter, setNewsletter] = useState(false);
-  const [method, setMethod] = useState<Method>('card');
+  const [method, setMethod] = useState<Method>(cardEnabled ? 'card' : 'virement');
   const [copied, setCopied] = useState(false);
   const [phone, setPhone] = useState('');
   const [phoneSent, setPhoneSent] = useState(false);
+  const [momoPending, setMomoPending] = useState(false);
+  const [momoError, setMomoError] = useState('');
+  const [transferDone, setTransferDone] = useState(false);
+  const [newsletterSent, setNewsletterSent] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  const emailOk = EMAIL_RE.test(donorEmail.trim());
 
   const isCustom = amt === -1;
   const cVal = parseFloat(custom.replace(',', '.'));
@@ -193,7 +240,64 @@ export function DonationFlow({ locale }: { locale: Locale }) {
       : '—'
     : formatFromEur(t.amounts[amt][0], cur, locale);
   const amountEur = isCustom ? (cVal > 0 ? toEur(cVal, cur) : 0) : t.amounts[amt][0];
+  // Montant réellement versé : toujours en euros, quelle que soit la devise
+  // d'affichage choisie ($ ou FC ne sont que des conversions indicatives).
+  const eurLabel = formatCustom(amountEur, 'EUR', locale);
+  const payLabel = cur === 'EUR' ? amountStr : eurLabel;
   const projectSlug = dest === 'reves' ? currentProject.slug : undefined;
+  const cardUsable = method === 'card' && cardEnabled;
+
+  function chooseMethod(next: Method) {
+    setMethod(next);
+    setTransferDone(false);
+    setError('');
+  }
+
+  /** Inscription aux nouvelles du terrain si la case a été cochée — en double
+   * opt-in comme depuis le pied de page. Avant, la case était affichée mais
+   * rien n'était jamais envoyé (audit du 27/09/2026). */
+  async function subscribeNewsletter(): Promise<boolean> {
+    if (!newsletter || !emailOk) return false;
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: donorEmail.trim(), firstName: firstName.trim() || undefined, source: 'don' })
+      });
+      return response.status === 201;
+    } catch {
+      return false;
+    }
+  }
+
+  async function notifyMobileMoney() {
+    setMomoPending(true);
+    setMomoError('');
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: `${firstName} ${lastName}`.trim() || t.momoFallbackName,
+          email: donorEmail.trim(),
+          phone: phone.trim(),
+          subject: t.momoSubject,
+          message: t.momoMessage(phone.trim()),
+          origin: 'mobile-money'
+        })
+      });
+      if (response.status === 201) {
+        setPhoneSent(true);
+      } else {
+        const data = await response.json().catch(() => ({}));
+        setMomoError(data.error || t.error);
+      }
+    } catch {
+      setMomoError(t.error);
+    } finally {
+      setMomoPending(false);
+    }
+  }
 
   function copyIban() {
     try {
@@ -211,27 +315,38 @@ export function DonationFlow({ locale }: { locale: Locale }) {
       return;
     }
     if (method === 'virement') {
-      setStep(1);
+      setPending(true);
+      setNewsletterSent(await subscribeNewsletter());
+      setTransferDone(true);
+      setPending(false);
       return;
     }
-    if (method === 'card') {
-      setPending(true);
-      setError('');
-      const message = await startStripeCheckout({
-        amountEur,
-        frequency: freq === 'month' ? 'monthly' : 'once',
-        projectSlug,
-        donorEmail: donorEmail || undefined,
-        locale
-      });
-      if (message) {
-        setError(message);
-        setPending(false);
-      }
+    if (!cardUsable) {
+      // Carte pas encore activée, ou Mobile Money : le bouton propose de
+      // passer au virement plutôt que de ne rien faire.
+      chooseMethod('virement');
+      return;
+    }
+    setPending(true);
+    setError('');
+    await subscribeNewsletter();
+    const message = await startStripeCheckout({
+      amountEur,
+      frequency: freq === 'month' ? 'monthly' : 'once',
+      projectSlug,
+      donorEmail: emailOk ? donorEmail.trim() : undefined,
+      donorFirstName: firstName.trim() || undefined,
+      donorLastName: lastName.trim() || undefined,
+      donorCountry: country || undefined,
+      locale
+    });
+    if (message) {
+      setError(message);
+      setPending(false);
     }
   }
 
-  const noNext = !valid || (step === 3 && method === 'momo' && !phoneSent);
+  const noNext = !valid;
 
   return (
     <div className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">
@@ -326,6 +441,7 @@ export function DonationFlow({ locale }: { locale: Locale }) {
                   </button>
                 ))}
               </div>
+              {cur !== 'EUR' && <p className="-mt-3 m-0 text-[13px] text-ink-soft">{t.convertedNote}</p>}
               <label className="flex flex-col gap-2">
                 <span className="text-[15px] font-bold">{t.customLabel}</span>
                 <div
@@ -427,14 +543,18 @@ export function DonationFlow({ locale }: { locale: Locale }) {
                   ))}
                 </select>
               </label>
-              <label className="flex min-h-0 cursor-pointer items-start gap-2.5">
+              <label className={`flex min-h-0 items-start gap-2.5 ${emailOk ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}`}>
                 <input
                   type="checkbox"
-                  checked={newsletter}
+                  checked={newsletter && emailOk}
+                  disabled={!emailOk}
                   onChange={(e) => setNewsletter(e.target.checked)}
                   className="mt-0.5 h-[22px] min-h-0 w-[22px] flex-none accent-copper-600"
                 />
-                <span className="text-[15px] leading-[1.4]">{t.newsletterOptIn}</span>
+                <span className="text-[15px] leading-[1.4]">
+                  {t.newsletterOptIn}
+                  {!emailOk && <span className="ml-1 text-ink-soft">{t.newsletterNeedsEmail}</span>}
+                </span>
               </label>
             </div>
           )}
@@ -446,6 +566,8 @@ export function DonationFlow({ locale }: { locale: Locale }) {
               <div className="flex flex-col gap-2.5">
                 {(Object.keys(t.methods) as Method[]).map((k) => {
                   const m = t.methods[k];
+                  const recommended = k === 'card' && cardEnabled;
+                  const tag = k === 'card' && !cardEnabled ? t.cardSoonTag : m.tag;
                   const Icon = k === 'card' ? CreditCardIcon : k === 'momo' ? DeviceMobileIcon : BankIcon;
                   return (
                     <label
@@ -458,7 +580,7 @@ export function DonationFlow({ locale }: { locale: Locale }) {
                         type="radio"
                         name={`${id}-method`}
                         checked={method === k}
-                        onChange={() => setMethod(k)}
+                        onChange={() => chooseMethod(k)}
                         className="min-h-0 accent-copper-600"
                       />
                       <Icon size={22} className="text-ink-soft" aria-hidden />
@@ -468,17 +590,19 @@ export function DonationFlow({ locale }: { locale: Locale }) {
                       </span>
                       <span
                         className={`rounded-full px-2.5 py-1 text-[12px] font-bold ${
-                          k === 'card' ? 'bg-sage-100 text-sage-700' : 'bg-sand text-copper-700'
+                          recommended ? 'bg-sage-100 text-sage-700' : 'bg-sand text-copper-700'
                         }`}
                       >
-                        {m.tag}
+                        {tag}
                       </span>
                     </label>
                   );
                 })}
               </div>
 
-              {method === 'card' && <p className="m-0 text-[13px] text-ink-soft">{t.stripeNote}</p>}
+              {method === 'card' && (
+                <p className="m-0 text-[13px] text-ink-soft">{cardEnabled ? t.stripeNote : t.cardSoonNote}</p>
+              )}
 
               {method === 'virement' && (
                 <div className="flex flex-col gap-4 rounded-xl bg-sand p-6">
@@ -505,29 +629,65 @@ export function DonationFlow({ locale }: { locale: Locale }) {
                     {copied ? t.copied : t.copy}
                   </button>
                   <p className="m-0 text-[13px] text-ink-soft">{t.virementNote}</p>
+                  {transferDone && (
+                    <div role="status" className="flex flex-col gap-1.5 rounded-lg bg-white p-4 text-[14px] leading-[1.5] text-ink">
+                      <span className="flex items-start gap-2 font-bold">
+                        <CheckIcon size={18} className="mt-0.5 flex-none text-sage-700" aria-hidden />
+                        {t.thanksTransfer}
+                      </span>
+                      {newsletterSent && <span className="pl-[26px] text-ink-soft">{t.newsletterSent}</span>}
+                    </div>
+                  )}
                 </div>
               )}
 
               {method === 'momo' && (
                 <div className="flex flex-col gap-4 rounded-xl bg-sand p-6">
                   <p className="m-0 text-[14px] leading-[1.6] text-ink-body">{t.momoNote}</p>
-                  <div className="flex flex-wrap gap-2.5">
-                    <input
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder={t.phonePlaceholder}
-                      className="min-h-12 min-w-0 flex-1 rounded-lg border-[1.5px] border-field-line bg-white px-3.5 text-[15px] focus:border-copper-600 focus:outline-none"
-                    />
-                    <button
-                      type="button"
-                      disabled={!phone.trim() || phoneSent}
-                      onClick={() => setPhoneSent(true)}
-                      className="min-h-12 cursor-pointer rounded-full border-0 bg-copper-600 px-5 text-[14px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                      {phoneSent ? <CheckIcon size={16} aria-hidden /> : t.notifyMe}
-                    </button>
-                  </div>
+                  {phoneSent ? (
+                    <p role="status" className="m-0 flex items-center gap-2 text-[14px] font-bold text-ink">
+                      <CheckIcon size={18} className="text-sage-700" aria-hidden />
+                      {t.momoSent}
+                    </p>
+                  ) : (
+                    <div className="flex flex-col gap-2.5">
+                      <div className="flex flex-wrap gap-2.5">
+                        <input
+                          type="tel"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          maxLength={40}
+                          autoComplete="tel"
+                          aria-label={t.phonePlaceholder}
+                          placeholder={t.phonePlaceholder}
+                          className="min-h-12 min-w-0 flex-1 rounded-lg border-[1.5px] border-field-line bg-white px-3.5 text-[15px] focus:border-copper-600 focus:outline-none"
+                        />
+                        <input
+                          type="email"
+                          value={donorEmail}
+                          onChange={(e) => setDonorEmail(e.target.value)}
+                          maxLength={180}
+                          autoComplete="email"
+                          aria-label={t.momoEmail}
+                          placeholder={t.momoEmail}
+                          className="min-h-12 min-w-0 flex-1 rounded-lg border-[1.5px] border-field-line bg-white px-3.5 text-[15px] focus:border-copper-600 focus:outline-none"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        disabled={!phone.trim() || !emailOk || momoPending}
+                        onClick={notifyMobileMoney}
+                        className="min-h-12 w-fit cursor-pointer rounded-full border-0 bg-copper-600 px-5 text-[14px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {momoPending ? '…' : t.notifyMe}
+                      </button>
+                      {momoError && (
+                        <p role="alert" className="m-0 text-[14px] font-bold text-error">
+                          {momoError}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -552,34 +712,36 @@ export function DonationFlow({ locale }: { locale: Locale }) {
             >
               {t.back}
             </button>
-            <button
-              type="button"
-              disabled={noNext || pending}
-              onClick={goNext}
-              className="inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border-0 bg-copper-600 px-6 text-[15px] font-bold text-white disabled:cursor-not-allowed disabled:bg-disabled"
-            >
-              {step < 3 ? (
-                <>
-                  {t.next}
-                  <ArrowRightIcon aria-hidden />
-                </>
-              ) : method === 'card' ? (
-                <>
-                  <LockSimpleIcon aria-hidden />
-                  {pending ? '…' : t.pay(amountStr, freq === 'month')}
-                </>
-              ) : method === 'virement' ? (
-                <>
-                  <CheckIcon aria-hidden />
-                  {t.notedCoords}
-                </>
-              ) : (
-                <>
-                  <ArrowsClockwiseIcon aria-hidden />
-                  {t.chooseOther}
-                </>
-              )}
-            </button>
+            {!(step === 3 && method === 'virement' && transferDone) && (
+              <button
+                type="button"
+                disabled={noNext || pending}
+                onClick={goNext}
+                className="inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border-0 bg-copper-600 px-6 text-[15px] font-bold text-white disabled:cursor-not-allowed disabled:bg-disabled"
+              >
+                {step < 3 ? (
+                  <>
+                    {t.next}
+                    <ArrowRightIcon aria-hidden />
+                  </>
+                ) : cardUsable ? (
+                  <>
+                    <LockSimpleIcon aria-hidden />
+                    {pending ? '…' : t.pay(payLabel, freq === 'month')}
+                  </>
+                ) : method === 'virement' ? (
+                  <>
+                    <CheckIcon aria-hidden />
+                    {pending ? '…' : t.notedCoords}
+                  </>
+                ) : (
+                  <>
+                    <ArrowsClockwiseIcon aria-hidden />
+                    {t.chooseOther}
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </div>
 
@@ -589,6 +751,9 @@ export function DonationFlow({ locale }: { locale: Locale }) {
           <div>
             <span className="block font-serif text-[36px] font-semibold leading-none">{amountStr}</span>
             <span className="text-[14px] text-on-dark-2">{freq === 'month' ? t.perMonth : t.once}</span>
+            {cur !== 'EUR' && amountEur > 0 && (
+              <span className="mt-1 block text-[13px] text-on-dark-2">{t.chargedEur(eurLabel)}</span>
+            )}
           </div>
           <p className="m-0 text-[14px] leading-[1.5] text-on-dark-1">
             {isCustom ? t.genericThanks : t.eqConfirm(t.amounts[amt][1])}
@@ -598,8 +763,12 @@ export function DonationFlow({ locale }: { locale: Locale }) {
           </div>
           <div className="flex flex-col gap-2 border-t border-dark-line pt-4 text-[13px] text-on-dark-2">
             <span className="flex items-center gap-2">
+              <UsersThreeIcon size={16} aria-hidden />
+              {t.impact}
+            </span>
+            <span className="flex items-center gap-2">
               <ShieldCheckIcon size={16} aria-hidden />
-              {t.encrypted}
+              {cardUsable ? t.encrypted : t.transferTrust}
             </span>
             {freq === 'month' && (
               <span className="flex items-center gap-2">

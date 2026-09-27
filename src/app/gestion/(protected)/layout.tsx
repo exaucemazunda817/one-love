@@ -82,6 +82,9 @@ export default async function ProtectedLayout({ children }: { children: React.Re
               )}
               {isDirection && (
                 <>
+                  <Link href="/gestion/demandes" className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink">
+                    Demandes
+                  </Link>
                   <Link href="/gestion/comptes" className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink">
                     Comptes
                   </Link>

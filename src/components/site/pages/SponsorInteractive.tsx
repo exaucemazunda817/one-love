@@ -96,7 +96,8 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
       email: String(formData.get('email') || ''),
       phone: String(formData.get('phone') || ''),
       subject: `${t.modes[mode]} — ${chosen.name} — ${chosenPrice}/${t.perMonth}`,
-      message: `${t.yourChoice}: ${chosen.name} · ${chosenPrice} / ${t.perMonth}`
+      message: `${t.yourChoice}: ${chosen.name} · ${chosenPrice} / ${t.perMonth}`,
+      origin: 'parrainage'
     };
     try {
       const response = await fetch('/api/contact', {
