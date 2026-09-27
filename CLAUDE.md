@@ -787,6 +787,27 @@ case newsletter), et le refus sans session de la page et de l'API
   (`scrollBy`/`scrollTo` sur `wheel`) sur ce site — `scroll-behavior: smooth`
   transforme chaque événement en animation concurrente. Même règle que
   gospel-nation après le retrait de Lenis.
+- **Le calage persistait quand le pointeur restait POSÉ sur une photo**
+  (signalé à nouveau par Mazunda le même soir ; un défilement rapide passait).
+  Vraie cause : les photos portent un filtre (`photo-tone` = `saturate` +
+  `sepia`) et s'agrandissent au survol (`scale(1.06)`, 700 ms) dans un cadre
+  incliné et arrondi. Filtre + transformation sans calque dédié = la photo
+  entière redessinée à chaque image de l'animation, et le défilement attend.
+  Deux corrections (`globals.css`, `RootHtml.tsx`) :
+  1. `will-change: transform` sur `[data-reveal-variant='zoom'] img` : le
+     filtre est calculé une fois, le zoom passe par la carte graphique.
+  2. Classe `is-scrolling` posée sur `<html>` par le script du `<head>`
+     pendant un défilement (écouteur passif, posée au début et retirée
+     150 ms après la fin du geste — pas à chaque image) ; les cartes photo
+     (`.ol-gallery-frame`, `.ol-news-card`, zoom) passent en
+     `pointer-events: none` pendant ce temps, donc aucune animation de
+     survol ne démarre quand une photo glisse sous la souris.
+  Vérifié en local : 3 crans de molette avec le pointeur sur une photo =
+  300 px, la classe se pose puis se retire une seule fois par geste, le
+  survol revient après l'arrêt. **Limite** : la fluidité perçue ne se mesure
+  pas depuis le navigateur intégré (il ralentit les animations quand son
+  panneau n'est pas au premier plan — pauses d'1 s artificielles) ; c'est à
+  confirmer à la vraie souris.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

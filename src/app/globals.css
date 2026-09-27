@@ -318,8 +318,25 @@ html.js [data-reveal-variant='zoom'][data-reveal='waiting'] img {
   transform: scale(1.15);
 }
 
+/* will-change : l'image porte un filtre (photo-tone) et s'agrandit au survol.
+   Sans calque GPU dédié, filtre + transformation obligent le navigateur à
+   redessiner toute la photo à chaque image de l'animation, dans un cadre
+   incliné et arrondi — le défilement « calait » tant que le pointeur restait
+   posé sur une photo (signalé par Mazunda le 27/09/2026). Avec ce calque, le
+   filtre est calculé une fois et le zoom se fait sur la carte graphique. */
 [data-reveal-variant='zoom'] img {
   transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+  will-change: transform;
+}
+
+/* Pendant un défilement (classe posée par le script du <head>, voir
+   RootHtml.tsx), les cartes photo ignorent le pointeur : aucune animation de
+   survol ne peut démarrer au moment où une photo glisse sous la souris. Le
+   survol revient 150 ms après l'arrêt du défilement. */
+html.is-scrolling .ol-gallery-frame,
+html.is-scrolling .ol-news-card,
+html.is-scrolling [data-reveal-variant='zoom'] {
+  pointer-events: none;
 }
 
 [data-reveal-variant='zoom'][data-reveal='shown'] {

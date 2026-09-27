@@ -40,13 +40,22 @@ const nunito = Nunito_Sans({
  * /gestion. Coût réel minime : ce sont des changements de section rares,
  * jamais la navigation courante à l'intérieur d'une même langue.
  */
+const SCRIPT =
+  "(function(){var h=document.documentElement,t=0;h.classList.add('js');" +
+  "addEventListener('scroll',function(){if(!t)h.classList.add('is-scrolling');clearTimeout(t);" +
+  "t=setTimeout(function(){h.classList.remove('is-scrolling');t=0},150)},{passive:true})})()";
+
 export function RootHtml({ lang, children }: { lang: 'fr' | 'en'; children: React.ReactNode }) {
   return (
     <html lang={lang} className={`${lora.variable} ${nunito.variable}`} suppressHydrationWarning>
       <head>
         {/* Pose `js` avant le premier affichage : c'est ce qui autorise le
-            masquage des blocs d'apparition (voir globals.css). */}
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+            masquage des blocs d'apparition (voir globals.css). Pose aussi
+            `is-scrolling` le temps d'un défilement : les cartes photo
+            ignorent alors le pointeur (voir globals.css). Écouteur passif, la
+            classe n'est posée qu'au début et retirée à la fin d'un geste — pas
+            à chaque image. */}
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT }} />
       </head>
       <body className="flex min-h-screen flex-col">{children}</body>
     </html>
