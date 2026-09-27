@@ -873,6 +873,8 @@ bougent) :
 - **Titre** centré au-dessus de la mosaïque, « One Love » souligné au pinceau
   (`BrushWord`, comme « amour » dans le hero), sous-titre juste en dessous
   (avant : titre à gauche, sous-titre isolé à droite — refusé par Mazunda).
+  Même traitement, à sa demande, sur « Trois façons d'aider » : titre centré,
+  « aider » (« help » en anglais) souligné au pinceau.
 - **Tablette (768–1023 px)** : grille 2 × 2, photos au format 4:5.
 - **Téléphone** : première photo en grand, les trois suivantes en lignes
   compactes (vignette + texte) — **plus aucune rangée glissante** dans cette

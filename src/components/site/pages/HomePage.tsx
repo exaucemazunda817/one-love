@@ -54,7 +54,8 @@ const text = {
     projectSupport: 'Soutenir RÊVES 2',
     projectLink: 'Le projet',
     projectImgAlt: 'Une jeune fille écrit dans son cahier pendant un atelier.',
-    waysTitle: 'Trois façons d’aider',
+    waysTitlePre: 'Trois façons d’',
+    waysTitleWord: 'aider',
     ways: [
       { icon: HeartIcon, t: 'Donner', d: 'Un don ponctuel ou mensuel finance les ateliers, le matériel et le suivi des enfants.', cta: 'Faire un don', bg: 'bg-night', fg: 'text-cream', fg2: 'text-on-dark-1', ic: 'text-gold-hover', href: '/dons' },
       { icon: HandHeartIcon, t: 'Parrainer', d: 'Un engagement mensuel pour la continuité de l’accompagnement, avec des nouvelles régulières.', cta: 'Devenir parrain', bg: 'bg-sand', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-copper-700', href: '/parrainer' },
@@ -99,7 +100,8 @@ const text = {
     projectSupport: 'Support RÊVES 2',
     projectLink: 'The project',
     projectImgAlt: 'A girl writes in her notebook during a workshop.',
-    waysTitle: 'Three ways to help',
+    waysTitlePre: 'Three ways to ',
+    waysTitleWord: 'help',
     ways: [
       { icon: HeartIcon, t: 'Give', d: 'A one-off or monthly gift funds workshops, materials and the children’s follow-up.', cta: 'Donate', bg: 'bg-night', fg: 'text-cream', fg2: 'text-on-dark-1', ic: 'text-gold-hover', href: '/dons' },
       { icon: HandHeartIcon, t: 'Sponsor', d: 'A monthly commitment for continuous support, with regular updates.', cta: 'Become a sponsor', bg: 'bg-sand', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-copper-700', href: '/parrainer' },
@@ -327,8 +329,11 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       {/* Trois façons d'aider */}
       <section className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] pt-[clamp(32px,5vw,56px)] pb-[clamp(64px,9vw,112px)]">
-        <Reveal>
-          <h2 className={h2Class}>{t.waysTitle}</h2>
+        <Reveal className="text-center">
+          <h2 className={h2Class}>
+            {t.waysTitlePre}
+            <BrushWord>{t.waysTitleWord}</BrushWord>
+          </h2>
         </Reveal>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
           {t.ways.map((w, i) => {
