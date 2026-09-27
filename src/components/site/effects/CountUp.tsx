@@ -11,13 +11,15 @@ export function CountUp({
   prefix = '',
   suffix = '',
   duration = 1400,
-  className
+  className,
+  style
 }: {
   value: number;
   prefix?: string;
   suffix?: string;
   duration?: number;
   className?: string;
+  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const seen = useSeen(ref);
@@ -39,7 +41,7 @@ export function CountUp({
   }, [seen, value, duration]);
 
   return (
-    <span ref={ref} className={className} aria-label={`${prefix}${value}${suffix}`}>
+    <span ref={ref} className={className} style={style} aria-label={`${prefix}${value}${suffix}`}>
       <span aria-hidden className="tabular-nums">
         {prefix}
         {shown}

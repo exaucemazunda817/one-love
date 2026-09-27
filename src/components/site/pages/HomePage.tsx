@@ -8,7 +8,7 @@ import { FacebookBand } from '@/components/site/FacebookBand';
 import { PartnersMarquee } from '@/components/site/PartnersMarquee';
 import { Brush, BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { localeHref, type Locale } from '@/lib/i18n';
-import { CountUp } from '@/components/site/effects/CountUp';
+import { PathTimeline } from '@/components/site/effects/PathTimeline';
 import { currentProject } from '@/lib/content';
 
 const text = {
@@ -24,6 +24,9 @@ const text = {
     badge: 'Association loi 1901 · RNA W951001528',
     heroImgAlt: 'Deux garçons dessinent à une table en plein air, au centre One Love.',
     pathTitle: 'Le chemin parcouru',
+    pathIntro:
+      'Un couple, trois garçons rencontrés dans la rue, puis un centre qui accueille une centaine d’enfants chaque semaine.',
+    pathLink: 'Découvrir notre histoire',
     // Mêmes chiffres, mêmes sources datées que la page Notre histoire —
     // ne pas laisser diverger si l'un des deux est corrigé un jour.
     path: [
@@ -67,6 +70,9 @@ const text = {
     badge: 'Registered non-profit (France) · RNA W951001528',
     heroImgAlt: 'Two boys drawing at an outdoor table at the One Love centre.',
     pathTitle: 'How far we have come',
+    pathIntro:
+      'A couple, three boys met on the street, then a centre that welcomes around a hundred children every week.',
+    pathLink: 'Discover our story',
     path: [
       { value: 3, prefix: '', label: 'boys met on the street', when: 'summer 2016' },
       { value: 21, prefix: '', label: 'boys living at the One Love House', when: 'January 2020' },
@@ -169,25 +175,28 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       <PartnersMarquee locale={locale} />
 
-      {/* Le chemin parcouru — mêmes chiffres que la page Notre histoire */}
-      <section aria-labelledby="chemin-titre-accueil" className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(36px,5vw,56px)]">
-        <Reveal>
-          <h2 id="chemin-titre-accueil" className="m-0 mb-7 font-serif text-[clamp(24px,2.8vw,32px)] font-medium leading-[1.15]">
-            {t.pathTitle}
-          </h2>
-        </Reveal>
-        <div className="grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-4">
-          {t.path.map((item) => (
-            <Reveal key={item.label} className="flex flex-col gap-1.5">
-              <CountUp
-                value={item.value}
-                prefix={item.prefix}
-                className="font-serif text-[clamp(36px,4vw,52px)] font-medium leading-none text-copper-600"
-              />
-              <span className="text-[15px] leading-[1.35] text-ink-body">{item.label}</span>
-              <span className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-ink-soft">{item.when}</span>
-            </Reveal>
-          ))}
+      {/* Le chemin parcouru — mêmes chiffres que la page Notre histoire, en
+          frise plutôt qu'à plat : ce sont quatre étapes d'une progression
+          dans le temps, pas quatre chiffres indépendants (revu le
+          27/09/2026, l'ancienne grille 2×2/4×1 laissait beaucoup de vide). */}
+      <section aria-labelledby="chemin-titre-accueil" className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(40px,5vw,64px)]">
+        <div className="flex flex-col gap-8 dk:flex-row dk:items-center dk:gap-14">
+          <Reveal className="flex max-w-[300px] flex-none flex-col gap-3">
+            <h2 id="chemin-titre-accueil" className="m-0 font-serif text-[clamp(24px,2.8vw,32px)] font-medium leading-[1.15]">
+              {t.pathTitle}
+            </h2>
+            <p className="m-0 text-[15px] leading-[1.55] text-ink-body">{t.pathIntro}</p>
+            <Link
+              href={href('/histoire')}
+              className="inline-flex min-h-11 w-fit items-center gap-1.5 text-[14px] font-bold text-copper-700 no-underline"
+            >
+              {t.pathLink}
+              <ArrowRightIcon aria-hidden />
+            </Link>
+          </Reveal>
+          <div className="flex-1">
+            <PathTimeline steps={t.path.map((s) => ({ ...s }))} />
+          </div>
         </div>
       </section>
 

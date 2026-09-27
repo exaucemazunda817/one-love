@@ -826,6 +826,35 @@ case newsletter), et le refus sans session de la page et de l'API
   débordement de quelques pixels qui capture les gestes. Mesurer
   `scrollWidth` vs `clientWidth` aux largeurs Mac avant de conclure.
 
+## Accueil : « Le chemin parcouru » en frise plutôt qu'à plat (27/09/2026)
+
+Mazunda a demandé de repenser le design de cette section : trop d'espace vide
+(mesuré : 112 px de marges vides sur une section de 281 px, chaque colonne de
+chiffre n'utilisant que la moitié de sa largeur), et un rendu jugé peu
+intéressant visuellement. Réflexion partagée puis validée avant construction
+(demande explicite : « réfléchis d'abord »), puis un aperçu isolé publié en
+Artifact (reproduction fidèle des tokens du site, hors du dépôt) avant de
+toucher le code réel — validé par Mazunda avant mise en ligne.
+
+**Nouveau composant** `src/components/site/effects/PathTimeline.tsx` : les
+quatre chiffres ne sont plus posés à plat, ils forment une frise qui se trace
+au fil du temps — cohérent avec le fait que ce sont quatre étapes datées
+(2016 → 2020 → 2022 → 2024), pas quatre mesures indépendantes (une grille de
+barres aurait été trompeuse, écarté volontairement à la réflexion).
+- **Desktop** : ligne horizontale (dégradé cuivre → or) qui se dessine de
+  gauche à droite, un point par étape espacé également (pas à l'échelle
+  réelle des années — avec 4 étapes seulement, une échelle réelle aurait tassé
+  les trois dernières à droite), chiffres qui grandissent avec le temps (28 à
+  46 px). Texte + lien « Découvrir notre histoire » à gauche, frise à droite
+  (`dk:flex-row`) — la section passe de 281 px à une hauteur qui tient au
+  contenu, marges resserrées à `clamp(40px,5vw,64px)`.
+- **Téléphone/tablette** : même principe, ligne verticale à gauche.
+- Réutilise `useSeen` (déjà dans `CountUp`) : l'effet se rejoue à chaque
+  retour dans l'écran, comme le reste du site depuis le 26/09/2026 ; « Réduire
+  les animations » affiche l'état final directement.
+- `CountUp` a reçu un prop `style` optionnel (pour faire varier la taille de
+  police par étape sans dupliquer le composant).
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
