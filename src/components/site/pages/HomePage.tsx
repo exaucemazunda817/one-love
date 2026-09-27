@@ -14,6 +14,7 @@ import { PartnersMarquee } from '@/components/site/PartnersMarquee';
 import { BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { PathTimeline } from '@/components/site/effects/PathTimeline';
+import { ScrollFan } from '@/components/site/effects/ScrollFan';
 import { currentProject } from '@/lib/content';
 
 const text = {
@@ -327,21 +328,23 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* Trois façons d'aider */}
-      <section className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] pt-[clamp(32px,5vw,56px)] pb-[clamp(64px,9vw,112px)]">
-        <Reveal className="text-center">
-          <h2 className={h2Class}>
-            {t.waysTitlePre}
-            <BrushWord>{t.waysTitleWord}</BrushWord>
-          </h2>
-        </Reveal>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
-          {t.ways.map((w, i) => {
-            const Icon = w.icon;
-            const cls = `flex min-h-[280px] flex-col gap-3.5 rounded-card ${w.bg} ${w.fg} px-7 py-8 no-underline transition-transform hover:-translate-y-[3px] hover:${w.fg}`;
-            return (
-              <Reveal key={w.t} delay={i * 90}>
-                <Link href={href(w.href)} className={cls}>
+      {/* Trois façons d'aider — overflow-x-clip (pas hidden) : les cartes
+          partent de l'extérieur pendant l'éventail sans créer de zone de
+          défilement horizontal ni de débordement de page. */}
+      <section className="overflow-x-clip">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] pt-[clamp(32px,5vw,56px)] pb-[clamp(64px,9vw,112px)]">
+          <Reveal className="text-center">
+            <h2 className={h2Class}>
+              {t.waysTitlePre}
+              <BrushWord>{t.waysTitleWord}</BrushWord>
+            </h2>
+          </Reveal>
+          <ScrollFan className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
+            {t.ways.map((w) => {
+              const Icon = w.icon;
+              const cls = `flex h-full min-h-[280px] flex-col gap-3.5 rounded-card ${w.bg} ${w.fg} px-7 py-8 no-underline transition-transform hover:-translate-y-[3px] hover:${w.fg}`;
+              return (
+                <Link key={w.t} href={href(w.href)} className={cls}>
                   <Icon size={36} className={w.ic} aria-hidden />
                   <h3 className="m-0 font-serif text-[32px] font-medium">{w.t}</h3>
                   <p className={`m-0 flex-1 text-[16px] leading-[1.6] ${w.fg2}`}>{w.d}</p>
@@ -350,9 +353,9 @@ export function HomePage({ locale }: { locale: Locale }) {
                     <ArrowRightIcon aria-hidden />
                   </span>
                 </Link>
-              </Reveal>
-            );
-          })}
+              );
+            })}
+          </ScrollFan>
         </div>
       </section>
 
@@ -360,7 +363,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pb-[clamp(40px,6vw,72px)]">
         {t.testimonials.map((f, i) => (
           <Reveal key={f.name} delay={i * 90}>
-            <figure className="m-0 flex max-w-[760px] flex-col gap-4 rounded-card bg-white p-8 shadow-ol-sm">
+            <figure className="mx-auto my-0 flex max-w-[760px] flex-col items-center gap-4 rounded-card bg-white p-8 text-center shadow-ol-sm dk:px-14 dk:py-12">
               <blockquote className="m-0 font-serif text-[22px] italic leading-[1.45]">{f.q}</blockquote>
               <figcaption className="text-[15px]">
                 <b>{f.name}</b> · {f.role}

@@ -875,6 +875,29 @@ bougent) :
   (avant : titre à gauche, sous-titre isolé à droite — refusé par Mazunda).
   Même traitement, à sa demande, sur « Trois façons d'aider » : titre centré,
   « aider » (« help » en anglais) souligné au pinceau.
+
+## Accueil : éventail au défilement sur « Trois façons d'aider », citation centrée (27/09/2026)
+
+- **Nouveau composant** `src/components/site/effects/ScrollFan.tsx` (demande de
+  Mazunda : « un effet visuel de défilement » sur Donner / Parrainer /
+  S'engager). Lié à la position de défilement, **lue seulement** : chaque carte
+  part décalée vers l'extérieur selon sa place par rapport au centre de la
+  rangée (gauche vers la gauche, droite vers la droite, milieu en dessous),
+  70 px plus bas, pivotée de 6°, réduite à 92 %, à 35 % d'opacité, et se pose
+  quand son haut atteint 55 % de la hauteur de l'écran. Sur téléphone (une
+  colonne), chaque carte monte et s'éclaircit à son tour.
+- Mesure faite sur l'enveloppe (jamais transformée), transformation sur
+  l'intérieur : sinon la transformation fausse la mesure suivante. Styles
+  écrits directement (une frame max par défilement), pas de rendu React.
+- Rendu serveur et « Réduire les animations » = cartes à leur place (vérifié :
+  aucune transformation posée). Les cartes ne sont plus dans `Reveal` (deux
+  effets se seraient superposés).
+- Section en `overflow-x-clip` (pas `hidden`) : les cartes partent de
+  l'extérieur sans débordement de page ni zone de défilement. Vérifié à 1440
+  et 375 px : aucun débordement à 4 positions de défilement, molette posée
+  sur une carte = 100 px par cran.
+- **Citation de Kanda Kabangu centrée** (carte centrée, texte centré, marges
+  plus larges sur grand écran).
 - **Tablette (768–1023 px)** : grille 2 × 2, photos au format 4:5.
 - **Téléphone** : première photo en grand, les trois suivantes en lignes
   compactes (vignette + texte) — **plus aucune rangée glissante** dans cette
