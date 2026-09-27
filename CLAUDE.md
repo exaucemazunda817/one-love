@@ -475,6 +475,57 @@ conservation, consentements photo).
   publications Instagram de l'association et datés (3 garçons en 2016, 21 en
   2020, 90 un samedi de 2022, « ≈ 100 » par semaine en 2024).
 
+## Corrections du 27/09/2026
+
+- **Favicon** : remplacé le cœur généré à la volée (`icon.tsx`/`apple-icon.tsx`)
+  par le vrai logo rond (`public/brand/logo-one-love-rond.png`), exporté en
+  fichiers statiques `src/app/icon.png` (128×128) et `src/app/apple-icon.png`
+  (180×180) — même logo que le header/footer.
+- **Accueil — « Le chemin parcouru »** : les 4 chiffres de la page Notre
+  histoire (3 en 2016, 21 en 2020, 90 en 2022, ≈ 100/semaine en 2024) sont
+  repris juste sous le hero, à la place de l'ancien bloc à 2 chiffres
+  (année de fondation + « 3 axes »). Dupliqués dans le `text` de `HomePage`
+  (même source que `HistoryPage`) — à garder synchronisés si l'un des deux
+  est corrigé.
+- **Deux boutons « Faire un don » sur l'accueil** : le menu flottant desktop
+  affichait son propre bouton en plus de celui, plus visible, du hero — les
+  deux apparaissaient ensemble au premier écran. Le bouton du menu est
+  maintenant masqué sur l'accueil (`Header.tsx`, `isHome`), et reste affiché
+  partout ailleurs où il n'y a pas de hero avec CTA.
+- **Molette bloquée au survol des photos « Une journée »** : bug confirmé
+  (reproduit avec des ticks de molette mesurés en JS) — un premier cran de
+  molette sur les photos ne faisait rien défiler, il fallait recommencer.
+  Passer `scroll-snap-type` de `mandatory` à `proximity` seul ne suffisait
+  pas. Corrigé avec un vrai composant client, `HorizontalGallery.tsx`
+  (`src/components/site/`), qui intercepte le `wheel` et redirige tout
+  geste à dominante verticale (`|deltaY| > |deltaX|`) vers le défilement de
+  la page via `window.scrollBy`, en laissant les gestes horizontaux
+  (glissé tactile, molette inclinée) faire défiler la galerie normalement.
+  `scroll-snap-type:x_mandatory` restauré, protégé par ce garde-fou JS. À
+  réutiliser si une autre galerie horizontale du site pose le même problème.
+- **Page Parrainer** : retiré le badge « Le plus choisi » sur la formule à
+  35 €/mois (`tag` vidé comme les autres formules).
+- **Pages légales redesignées** (`mentions-legales`, `confidentialite`) :
+  elles étaient les deux seules pages du site à ne pas avoir de composant
+  dédié dans `components/site/pages/` (texte brut empilé, sans icône ni
+  rythme de fond). Extraites dans `MentionsLegalesPage.tsx` et
+  `ConfidentialitePage.tsx`, avec le même langage visuel que le reste du
+  site (`TextHero` avec eyebrow + intro, cartes `rounded-card bg-white
+  shadow-ol-sm` avec icône Phosphor par section, fonds alternés
+  cream/sand, carte finale sombre pour « Images des enfants » comme sur
+  Transparence). **Contenu textuel inchangé mot pour mot** — seule la mise
+  en page a changé.
+  **Point signalé, pas corrigé** : la page confidentialité affirme
+  toujours « ce site ne collecte aucune donnée personnelle : il ne
+  comporte ni formulaire, ni compte... » — c'était vrai au jalon 2 mais ne
+  l'est plus (contact, bénévolat, partenariat, newsletter, dons, parrainage
+  collectent tous des données depuis). À corriger avec Mazunda avant mise
+  en ligne définitive, ce n'est pas qu'un problème de forme.
+- Sitemap et robots vérifiés en production (`one-love-nu.vercel.app`) :
+  `/sitemap.xml` et `/robots.txt` répondent déjà 200 et couvrent toutes les
+  pages publiques — rien à faire de ce côté, contrairement à ce qui avait
+  été demandé.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

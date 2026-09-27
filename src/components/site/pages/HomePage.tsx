@@ -12,6 +12,7 @@ import {
 } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
+import { HorizontalGallery } from '@/components/site/HorizontalGallery';
 import { HeroBackground } from '@/components/site/HeroBackground';
 import { FacebookBand } from '@/components/site/FacebookBand';
 import { PartnersMarquee } from '@/components/site/PartnersMarquee';
@@ -19,7 +20,6 @@ import { Brush, BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { DonationQuick } from '@/components/site/DonationQuick';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { CountUp } from '@/components/site/effects/CountUp';
-import { YearRoll } from '@/components/site/effects/YearRoll';
 import { currentProject } from '@/lib/content';
 
 const text = {
@@ -34,9 +34,14 @@ const text = {
     sponsor: 'Parrainer un enfant',
     badge: 'Association loi 1901 · RNA W951001528',
     heroImgAlt: 'Deux garçons dessinent à une table en plein air, au centre One Love.',
-    stats: [
-      ['2013', 'année de fondation'],
-      ['3', 'axes : éducation, soin, insertion']
+    pathTitle: 'Le chemin parcouru',
+    // Mêmes chiffres, mêmes sources datées que la page Notre histoire —
+    // ne pas laisser diverger si l'un des deux est corrigé un jour.
+    path: [
+      { value: 3, prefix: '', label: 'garçons rencontrés dans la rue', when: 'été 2016' },
+      { value: 21, prefix: '', label: 'garçons accueillis à la One Love House', when: 'janvier 2020' },
+      { value: 90, prefix: '', label: 'enfants au centre aéré, un samedi', when: 'mars 2022' },
+      { value: 100, prefix: '≈ ', label: 'enfants accueillis chaque semaine', when: '2024' }
     ] as const,
     dayEyebrow: 'RÊVES 2 · carnet de bord',
     dayTitle: 'Une journée à One Love',
@@ -82,9 +87,12 @@ const text = {
     sponsor: 'Sponsor a child',
     badge: 'Registered non-profit (France) · RNA W951001528',
     heroImgAlt: 'Two boys drawing at an outdoor table at the One Love centre.',
-    stats: [
-      ['2013', 'year founded'],
-      ['3', 'focus areas: education, care, integration']
+    pathTitle: 'How far we have come',
+    path: [
+      { value: 3, prefix: '', label: 'boys met on the street', when: 'summer 2016' },
+      { value: 21, prefix: '', label: 'boys living at the One Love House', when: 'January 2020' },
+      { value: 90, prefix: '', label: 'children at the day centre, one Saturday', when: 'March 2022' },
+      { value: 100, prefix: '≈ ', label: 'children welcomed every week', when: '2024' }
     ] as const,
     dayEyebrow: 'RÊVES 2 · logbook',
     dayTitle: 'A day at One Love',
@@ -187,16 +195,23 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* Chiffres */}
-      <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(28px,4vw,44px)]">
-        <div className="grid max-w-[720px] grid-cols-2 gap-x-5 gap-y-5 md:gap-x-6">
-          {t.stats.map(([n, l]) => (
-            <Reveal key={l} className="flex flex-col gap-1">
-              <span className="font-serif text-[clamp(30px,3.4vw,42px)] font-semibold leading-none tabular-nums">
-                {/^\d{4}$/.test(n) ? <YearRoll from="2000" to={n} /> : <CountUp value={Number(n)} />}
-              </span>
-              <Brush className="h-1.5 w-11" />
-              <span className="text-[15px] leading-[1.35] text-ink-body">{l}</span>
+      {/* Le chemin parcouru — mêmes chiffres que la page Notre histoire */}
+      <section aria-labelledby="chemin-titre-accueil" className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(36px,5vw,56px)]">
+        <Reveal>
+          <h2 id="chemin-titre-accueil" className="m-0 mb-7 font-serif text-[clamp(24px,2.8vw,32px)] font-medium leading-[1.15]">
+            {t.pathTitle}
+          </h2>
+        </Reveal>
+        <div className="grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-4">
+          {t.path.map((item) => (
+            <Reveal key={item.label} className="flex flex-col gap-1.5">
+              <CountUp
+                value={item.value}
+                prefix={item.prefix}
+                className="font-serif text-[clamp(36px,4vw,52px)] font-medium leading-none text-copper-600"
+              />
+              <span className="text-[15px] leading-[1.35] text-ink-body">{item.label}</span>
+              <span className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-ink-soft">{item.when}</span>
             </Reveal>
           ))}
         </div>
@@ -212,7 +227,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             <h2 className={h2Class}>{t.dayTitle}</h2>
             <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.daySubtitle}</p>
           </Reveal>
-          <div className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 md:auto-cols-[minmax(240px,1fr)] md:gap-6 overflow-x-auto pb-3 [scroll-snap-type:x_mandatory]">
+          <HorizontalGallery className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 md:auto-cols-[minmax(240px,1fr)] md:gap-6 overflow-x-auto pb-3 [overscroll-behavior-x:contain] [scroll-snap-type:x_mandatory]">
             {t.day.map(([dt, d, img, alt, rot], i) => (
               <div key={dt} className="[scroll-snap-align:start]">
               <div className="md:hidden">
@@ -245,7 +260,7 @@ export function HomePage({ locale }: { locale: Locale }) {
               </Reveal>
               </div>
             ))}
-          </div>
+          </HorizontalGallery>
         </div>
       </section>
 

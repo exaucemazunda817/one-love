@@ -42,6 +42,10 @@ export function Header({ locale }: { locale: Locale }) {
   }, [open]);
 
   const donate = donateHref(pathname, locale);
+  // Sur l'accueil, le hero affiche déjà un « Faire un don » bien plus visible
+  // juste en dessous : le répéter dans le menu flottant créait deux boutons
+  // identiques au premier écran. Ailleurs, le menu reste le seul rappel.
+  const isHome = pathname === (locale === 'fr' ? '/' : '/en');
   const isActive = (href: string) => {
     const full = localeHref(href, locale);
     return pathname === full || pathname.startsWith(`${full}/`);
@@ -91,13 +95,15 @@ export function Header({ locale }: { locale: Locale }) {
                 </>
               )}
             </div>
-            <a
-              href={donate}
-              className="inline-flex min-h-12 items-center gap-2 whitespace-nowrap rounded-full bg-gold px-[22px] text-[16px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night"
-            >
-              <HeartIcon size="1em" aria-hidden />
-              {t.donate}
-            </a>
+            {!isHome && (
+              <a
+                href={donate}
+                className="inline-flex min-h-12 items-center gap-2 whitespace-nowrap rounded-full bg-gold px-[22px] text-[16px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night"
+              >
+                <HeartIcon size="1em" aria-hidden />
+                {t.donate}
+              </a>
+            )}
           </div>
         </div>
       </header>

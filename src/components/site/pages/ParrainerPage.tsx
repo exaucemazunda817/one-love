@@ -30,7 +30,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     modes: { child: 'Parrainer un enfant', prog: 'Soutenir un programme' },
     plansChild: [
       { name: 'Éducation', price: 20, tag: '', items: ['Scolarité et fournitures', "Ateliers d'alphabétisation et de français", 'Nouvelles chaque trimestre'] },
-      { name: 'Éducation et santé', price: 35, tag: 'Le plus choisi', items: ['Tout le parrainage Éducation', 'Suivi médical régulier', 'Accompagnement psychosocial'] },
+      { name: 'Éducation et santé', price: 35, tag: '', items: ['Tout le parrainage Éducation', 'Suivi médical régulier', 'Accompagnement psychosocial'] },
       { name: 'Accompagnement complet', price: 50, tag: '', items: ['Éducation, santé et écoute', 'Activités culturelles et sportives', 'Préparation à la (ré)insertion'] }
     ],
     plansProg: [
@@ -106,7 +106,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     modes: { child: 'Sponsor a child', prog: 'Support a programme' },
     plansChild: [
       { name: 'Education', price: 20, tag: '', items: ['Schooling and supplies', 'Literacy and French workshops', 'Updates every quarter'] },
-      { name: 'Education and health', price: 35, tag: 'Most popular', items: ['Everything in Education', 'Regular medical care', 'Psychosocial support'] },
+      { name: 'Education and health', price: 35, tag: '', items: ['Everything in Education', 'Regular medical care', 'Psychosocial support'] },
       { name: 'Full support', price: 50, tag: '', items: ['Education, health and listening', 'Cultural and sports activities', 'Preparation for (re)integration'] }
     ],
     plansProg: [
