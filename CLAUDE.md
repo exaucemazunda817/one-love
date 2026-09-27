@@ -577,6 +577,75 @@ conservation, consentements photo).
   n'être qu'une confusion d'onglet. **Toujours passer `tabId` explicitement
   dès qu'un deuxième onglet existe dans la session.**
 
+## Audit sécurité + SEO du 27/09/2026, et corrections
+
+Deux skills globaux testés sur ce projet (`owasp-security`, `seo-technical` —
+voir `~/.claude/skills/`, installés le même jour depuis une vidéo listant des
+dépôts de skills Claude). Points d'entrée tracés : `src/proxy.ts`,
+`src/lib/session.ts`, `src/lib/auth.ts`, le webhook Stripe, les schémas zod,
+le module Bénéficiaires. Verdict : code déjà solide (signature webhook en
+temps constant + fenêtre anti-rejeu, cookies `httpOnly`/`secure`/`sameSite`,
+rôle relu frais en base, jamais de prénom d'enfant en audit log, HTML échappé
+dans les e-mails). Deux trouvailles réelles, corrigées :
+
+- **Fuite de timing à la connexion `/gestion`** (`src/app/api/gestion/connexion/route.ts`) :
+  le retour anticipé pour un compte inexistant/suspendu sautait
+  `bcrypt.compare`, alors qu'un mot de passe faux l'exécutait — le temps de
+  réponse trahissait donc si l'e-mail correspond à un compte actif. Corrigé
+  avec un hash bcrypt factice (`DUMMY_PASSWORD_HASH`, sans utilisateur
+  associé) comparé dans les deux branches pour égaliser le temps.
+- **`allowRequest` (`src/lib/rate-limit.ts`) ne faisait pas ce que son propre
+  commentaire promettait** : le commentaire disait que la connexion gestion
+  devait refuser (fail closed) si la base de limitation devient indisponible,
+  mais le code laissait toujours passer (fail open), pour tous les
+  compartiments. Ajout d'un paramètre `options.failClosed`, activé
+  uniquement pour `gestion-connexion`.
+
+Côté SEO technique, les scripts automatisés de `seo-technical`/`claude-seo`
+(PageSpeed, sitemap_discovery...) font partie du plugin complet, absent de
+l'installation en simple dossier de skill — audit fait manuellement en
+suivant la même grille (curl + navigateur). Trois trouvailles réelles,
+corrigées, et une fausse alerte assumée :
+
+- **`<html lang="fr">` figé dans le HTML servi par le serveur, même sous
+  `/en`** — corrigé seulement après coup par un script côté client
+  (invisible pour un crawler ou un lecteur d'écran qui ne l'exécute pas).
+  Corrigé en posant un en-tête `x-locale` dans `src/proxy.ts` (désormais
+  élargi à tout le site, pas seulement `/gestion` — matcher `/((?!_next/static|_next/image|favicon\.ico|.*\..*).*)`)
+  et en le relisant via `headers()` dans `src/app/layout.tsx`, qui devient
+  `async`. **Effet de bord assumé** : `headers()` dans le layout racine rend
+  dynamique (server-rendered à la demande, plus de prérendu statique) TOUTES
+  les pages publiques du site (elles étaient en `○ Static`, elles sont
+  passées en `ƒ Dynamic` au build) — aucune ne dépend de la base, le coût
+  réel mesuré en local reste ~30-40 ms par page. C'est le compromis standard
+  de Next.js App Router pour un `<html lang>` correct sans dupliquer le
+  layout racine par langue (route `[locale]` non utilisée sur ce projet).
+- **Deux `<h1>` sur l'accueil** (`src/components/site/pages/HomePage.tsx`) :
+  le hero desktop ET le hero mobile rendaient chacun leur propre `<h1>`
+  (même texte, juste basculés par CSS `hidden`/`dk:hidden`, donc tous les
+  deux présents dans le DOM). Corrigé en gardant le `<h1>` du hero MOBILE
+  (cohérent avec l'indexation mobile-first de Google) et en passant celui du
+  hero desktop en `<p>`, sans aucun changement visuel.
+- **Content-Security-Policy ajoutée** (`next.config.ts`) — repoussée jusque-là
+  en attendant Stripe Checkout (jalon 4, fait depuis). Aucune exception
+  `stripe.com` nécessaire : le paiement est une redirection de page complète
+  (`window.location.href`, voir `src/lib/donation-ui.ts`), jamais un
+  formulaire/iframe Stripe intégré — une CSP ne régit pas une navigation
+  complète vers un autre site. `unsafe-inline` gardé pour l'hydratation
+  Next.js et nos deux scripts inline ; `frame-src` autorise seulement
+  `youtube-nocookie.com` (lecteur vidéo de Notre histoire). Vérifié sans
+  aucune violation dans la console sur accueil, Notre histoire (vidéo
+  cliquée), Faire un don et la connexion gestion.
+- **Fausse alerte assumée sur les données structurées** : l'audit SEO initial
+  avait signalé « aucun JSON-LD sur le site » — faux, un schéma `NGO` complet
+  existait déjà dans `src/components/site/SiteShell.tsx` (partagé FR/EN),
+  simplement pas cherché au bon endroit (dans le `<body>`, pas le `<head>`,
+  ce qui est pourtant valide). Une deuxième copie ajoutée par erreur dans
+  `layout.tsx` avant de m'en apercevoir (build affichait deux fois le même
+  `<script type="application/ld+json">`) a été retirée. **Leçon retenue** :
+  chercher `application/ld+json` dans toute la page avant de conclure à son
+  absence, pas seulement dans `<head>`.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

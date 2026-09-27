@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Lora, Nunito_Sans } from 'next/font/google';
+import { headers } from 'next/headers';
 import './globals.css';
 import { org, identity } from '@/lib/content';
 
@@ -45,20 +46,21 @@ export const metadata: Metadata = {
 // métadonnées, html/body. L'en-tête et le pied de page publics vivent dans
 // (site)/layout.tsx, pas ici — /gestion a sa propre coquille indépendante
 // (voir gestion/connexion/page.tsx et gestion/(protected)/layout.tsx).
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Posé par src/proxy.ts sur chaque requête (en-tête x-locale) : la racine
+  // est commune à (site) et (site-en) et n'a pas accès au pathname
+  // autrement. Corrigé le 27/09/2026 (audit SEO) : `lang` était auparavant
+  // toujours "fr" dans le HTML servi par le serveur, y compris sous /en,
+  // et n'était rectifié qu'après coup par un script — invisible pour un
+  // robot ou un lecteur d'écran qui ne l'exécute pas.
+  const locale = (await headers()).get('x-locale') === 'en' ? 'en' : 'fr';
+
   return (
-    <html lang="fr" className={`${lora.variable} ${nunito.variable}`} suppressHydrationWarning>
+    <html lang={locale} className={`${lora.variable} ${nunito.variable}`} suppressHydrationWarning>
       <head>
         {/* Pose `js` avant le premier affichage : c'est ce qui autorise le
             masquage des blocs d'apparition (voir globals.css). */}
-        {/* Pose aussi lang="en" sous /en avant le premier affichage : la
-            racine est commune aux deux langues. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "document.documentElement.classList.add('js');if(/^\\/en(\\/|$)/.test(location.pathname))document.documentElement.lang='en'"
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>
       <body className="flex min-h-screen flex-col">{children}</body>
     </html>

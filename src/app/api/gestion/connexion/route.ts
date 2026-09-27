@@ -16,8 +16,16 @@ const schema = z.object({
 // principe qu'un formulaire de connexion classique.
 const GENERIC_ERROR = 'Identifiants invalides.';
 
+// Hash factice, sans utilisateur associé, comparé quand le compte n'existe
+// pas ou est suspendu — pour que ce chemin prenne le même temps que la
+// vérification d'un vrai mot de passe (bcrypt). Sans ça, l'absence d'appel à
+// verifyPassword() est mesurable et permet de deviner qu'une adresse
+// correspond à un compte actif, avant même de connaître le mot de passe
+// (audit de sécurité du 27/09/2026).
+const DUMMY_PASSWORD_HASH = '$2b$12$mRGG04m76G6QCSUno9ZHYOAgEy/kB04EJw7IRTd1CPqMxgzeGYOaO';
+
 export async function POST(request: NextRequest) {
-  if (!(await allowRequest('gestion-connexion', request, 5, 15 * 60 * 1000))) {
+  if (!(await allowRequest('gestion-connexion', request, 5, 15 * 60 * 1000, { failClosed: true }))) {
     return NextResponse.json({ error: TOO_MANY_REQUESTS_MESSAGE }, { status: 429 });
   }
 
@@ -31,6 +39,7 @@ export async function POST(request: NextRequest) {
   const user = await prisma.appUser.findUnique({ where: { email } });
 
   if (!user || user.status !== 'ACTIVE') {
+    await verifyPassword(password, DUMMY_PASSWORD_HASH);
     await logLoginAttempt({ action: 'LOGIN_FAILED', actorId: user?.id, email, request });
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 401 });
   }

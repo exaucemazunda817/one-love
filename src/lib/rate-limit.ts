@@ -17,16 +17,22 @@ const CLEANUP_AFTER_MS = 24 * 60 * 60 * 1000;
 /**
  * Renvoie true si la requête peut passer, false si la limite est atteinte.
  *
- * En cas de panne de la base (Neon endormie, table absente), on laisse passer :
- * un frein anti-abus ne doit jamais mettre tout le site hors service. Ce choix
- * est délibéré — il ne convient PAS pour la connexion au logiciel de gestion,
- * où l'on préférera refuser (voir le jalon 5).
+ * En cas de panne de la base (Neon endormie, table absente), on laisse passer
+ * par défaut : un frein anti-abus ne doit jamais mettre tout le site hors
+ * service. Ce choix ne convient PAS pour la connexion au logiciel de
+ * gestion — `failClosed: true` y refuse la requête à la place, pour ne
+ * jamais perdre le frein anti-brute-force sur ce seul point d'entrée qui en
+ * a le plus besoin, même si la table de limitation spécifiquement devient
+ * indisponible alors que le reste de la base répond encore (audit du
+ * 27/09/2026 : jusqu'ici le commentaire promettait ce comportement sans que
+ * le code le fasse).
  */
 export async function allowRequest(
   bucket: string,
   request: NextRequest,
   max: number,
-  windowMs: number
+  windowMs: number,
+  options?: { failClosed?: boolean }
 ): Promise<boolean> {
   const key = `${bucket}:${clientIp(request)}`;
   try {
@@ -42,8 +48,8 @@ export async function allowRequest(
     }
     return true;
   } catch (error) {
-    console.error('Limitation de débit indisponible, requête autorisée', error);
-    return true;
+    console.error('Limitation de débit indisponible', error);
+    return !options?.failClosed;
   }
 }
 

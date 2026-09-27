@@ -112,11 +112,14 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="relative mx-auto w-full max-w-[1280px] px-12 py-24">
           <div className="flex max-w-[600px] flex-col gap-7">
             <Eyebrow dark>{t.eyebrow}</Eyebrow>
-            <h1 className="m-0 text-balance font-serif text-[clamp(48px,5.4vw,72px)] font-medium leading-[1.06] tracking-[-0.01em]">
+            {/* p, pas h1 : le vrai h1 de la page est celui du hero mobile
+                juste après (même texte) — un seul par page, cohérent avec
+                l'indexation mobile-first (audit SEO du 27/09/2026). */}
+            <p className="m-0 text-balance font-serif text-[clamp(48px,5.4vw,72px)] font-medium leading-[1.06] tracking-[-0.01em]">
               {t.titlePre}
               <BrushWord>{t.titleWord}</BrushWord>
               {t.titlePost}
-            </h1>
+            </p>
             <p className="m-0 max-w-[520px] text-pretty text-[20px] leading-[1.6] text-on-dark-1">{t.intro}</p>
             <div className="flex flex-wrap gap-3">
               <Link href={href('/dons')} className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90">
