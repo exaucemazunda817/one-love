@@ -867,7 +867,12 @@ bougent) :
   jeu » dessous. Texte posé sur la photo (dégradé sombre dès 18 % de la
   hauteur : sur les petites tuiles le texte commence à mi-hauteur, et le
   « 04 » doré était illisible sur la photo noir et blanc avec un dégradé plus
-  court). Numéro 01–04 + icône Phosphor par moment. **Plus d'inclinaison**.
+  court ; la grande photo garde un dégradé plus léger, son texte étant tout
+  en bas). Numéro 01–04 seul — **icônes retirées à la demande de Mazunda**.
+  **Plus d'inclinaison**.
+- **Titre** centré au-dessus de la mosaïque, « One Love » souligné au pinceau
+  (`BrushWord`, comme « amour » dans le hero), sous-titre juste en dessous
+  (avant : titre à gauche, sous-titre isolé à droite — refusé par Mazunda).
 - **Tablette (768–1023 px)** : grille 2 × 2, photos au format 4:5.
 - **Téléphone** : première photo en grand, les trois suivantes en lignes
   compactes (vignette + texte) — **plus aucune rangée glissante** dans cette

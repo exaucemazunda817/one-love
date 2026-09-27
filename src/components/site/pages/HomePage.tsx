@@ -5,11 +5,7 @@ import {
   HandHeartIcon,
   UsersThreeIcon,
   ArrowRightIcon,
-  SealCheckIcon,
-  SunHorizonIcon,
-  PencilSimpleLineIcon,
-  BookOpenTextIcon,
-  PaletteIcon
+  SealCheckIcon
 } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { HeroBackground } from '@/components/site/HeroBackground';
@@ -45,7 +41,8 @@ const text = {
       { value: 100, prefix: '≈ ', label: 'enfants accueillis chaque semaine', when: '2024' }
     ] as const,
     dayEyebrow: 'RÊVES 2 · carnet de bord',
-    dayTitle: 'Une journée à One Love',
+    dayTitlePre: 'Une journée à ',
+    dayTitleWord: 'One Love',
     daySubtitle: 'Ce que votre soutien rend possible, au fil de la journée.',
     day: [
       ["L'arrivée", 'Les enfants arrivent au centre, prêts à découvrir et apprendre.', 'Un garçon rit en arrivant au centre.'],
@@ -89,7 +86,8 @@ const text = {
       { value: 100, prefix: '≈ ', label: 'children welcomed every week', when: '2024' }
     ] as const,
     dayEyebrow: 'RÊVES 2 · logbook',
-    dayTitle: 'A day at One Love',
+    dayTitlePre: 'A day at ',
+    dayTitleWord: 'One Love',
     daySubtitle: 'What your support makes possible, through the day.',
     day: [
       ['Arrival', 'The children arrive at the centre, ready to discover and learn.', 'A boy laughs as he arrives at the centre.'],
@@ -113,12 +111,12 @@ const text = {
   }
 };
 
-// Photos, cadrage et icône de chaque moment de « Une journée » (communs FR/EN).
+// Photos et cadrage de chaque moment de « Une journée » (communs FR/EN).
 const dayMedia = [
-  { img: '/photos/photo-joie.jpg', pos: '30% 40%', Icon: SunHorizonIcon },
-  { img: '/photos/photo-ecriture.jpg', pos: '50% 42%', Icon: PencilSimpleLineIcon },
-  { img: '/photos/photo-cahier.jpg', pos: '45% 35%', Icon: BookOpenTextIcon },
-  { img: '/photos/photo-mains.jpg', pos: '50% 55%', Icon: PaletteIcon }
+  { img: '/photos/photo-joie.jpg', pos: '30% 40%' },
+  { img: '/photos/photo-ecriture.jpg', pos: '50% 42%' },
+  { img: '/photos/photo-cahier.jpg', pos: '45% 35%' },
+  { img: '/photos/photo-mains.jpg', pos: '50% 55%' }
 ];
 
 // Mosaïque sur ordinateur (12 colonnes, 2 rangées) : grande photo à gauche,
@@ -249,19 +247,18 @@ export function HomePage({ locale }: { locale: Locale }) {
           trackpad (voir CLAUDE.md, 27/09/2026). */}
       <section aria-labelledby="journee-titre" className="bg-sand">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)] md:gap-10">
-          <Reveal className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between md:gap-10">
-            <div className="flex max-w-[560px] flex-col gap-3">
-              <Eyebrow>{t.dayEyebrow}</Eyebrow>
-              <h2 id="journee-titre" className={h2Class}>
-                {t.dayTitle}
-              </h2>
-            </div>
-            <p className="m-0 max-w-[360px] text-[17px] leading-[1.6] text-ink-body md:pb-1.5">{t.daySubtitle}</p>
+          <Reveal className="mx-auto flex max-w-[640px] flex-col items-center gap-3 text-center">
+            <Eyebrow>{t.dayEyebrow}</Eyebrow>
+            <h2 id="journee-titre" className={h2Class}>
+              {t.dayTitlePre}
+              <BrushWord>{t.dayTitleWord}</BrushWord>
+            </h2>
+            <p className="m-0 mt-1 text-pretty text-[17px] leading-[1.6] text-ink-body">{t.daySubtitle}</p>
           </Reveal>
 
           <ol className="m-0 grid list-none grid-cols-1 gap-3 p-0 md:grid-cols-2 md:gap-4 lg:h-[clamp(560px,50vw,620px)] lg:grid-cols-12 lg:grid-rows-2">
             {t.day.map(([dt, d, alt], i) => {
-              const { img, pos, Icon } = dayMedia[i];
+              const { img, pos } = dayMedia[i];
               const step = String(i + 1).padStart(2, '0');
               const isLead = i === 0;
               return (
@@ -282,12 +279,17 @@ export function HomePage({ locale }: { locale: Locale }) {
                           style={{ objectPosition: pos }}
                         />
                       </Reveal>
-                      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,0)_18%,rgba(10,10,10,.72)_50%,rgba(10,10,10,.94)_100%)]" />
+                      {/* Petites tuiles : texte dès mi-hauteur, dégradé plus haut
+                          (sinon le numéro doré se perd sur la photo noir et blanc). */}
+                      <div
+                        className={`pointer-events-none absolute inset-0 ${
+                          isLead
+                            ? 'bg-[linear-gradient(180deg,rgba(10,10,10,0)_45%,rgba(10,10,10,.6)_70%,rgba(10,10,10,.92)_100%)]'
+                            : 'bg-[linear-gradient(180deg,rgba(10,10,10,0)_18%,rgba(10,10,10,.72)_50%,rgba(10,10,10,.94)_100%)]'
+                        }`}
+                      />
                       <figcaption className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-[clamp(20px,2.2vw,32px)] text-cream">
-                        <span className="flex items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.12em] text-gold">
-                          <Icon size={20} aria-hidden />
-                          {step}
-                        </span>
+                        <span className="text-[13px] font-extrabold tracking-[0.12em] text-gold">{step}</span>
                         <h3
                           className={`m-0 text-balance font-serif font-semibold leading-[1.15] ${
                             isLead ? 'text-[clamp(26px,2.6vw,36px)]' : 'text-[22px]'
@@ -309,10 +311,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                           <Image src={img} alt={alt} fill sizes="84px" loading="lazy" className="photo-tone object-cover" style={{ objectPosition: pos }} />
                         </div>
                         <div className="flex flex-col gap-1">
-                          <span className="flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-[0.12em] text-copper-700">
-                            <Icon size={16} aria-hidden />
-                            {step}
-                          </span>
+                          <span className="text-[12px] font-extrabold tracking-[0.12em] text-copper-700">{step}</span>
                           <h3 className="m-0 font-serif text-[19px] font-semibold leading-[1.2] text-ink">{dt}</h3>
                           <p className="m-0 text-[14px] leading-[1.45] text-ink-body">{d}</p>
                         </div>
