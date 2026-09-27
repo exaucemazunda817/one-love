@@ -769,6 +769,25 @@ interface (carte « Bientôt », bascule, remerciement virement, conversion €,
 case newsletter), et le refus sans session de la page et de l'API
 (`307` vers la connexion, `401`).
 
+## Accueil : ordre des sections et saccades au survol de « Une journée » (27/09/2026)
+
+- **Ordre** (demande de Mazunda) : « Projet en cours » (RÊVES 2) vient
+  désormais AVANT « Une journée à One Love ».
+- **Saccades au survol des photos « Une journée »** : causées par
+  `HorizontalGallery.tsx`, l'intercepteur de molette ajouté plus tôt le même
+  jour. Il appelait `window.scrollBy()` à chaque événement `wheel` ; avec
+  `html { scroll-behavior: smooth }`, chaque cran de trackpad (des dizaines
+  par seconde) relançait une animation de défilement fluide qui annulait la
+  précédente — d'où les à-coups, uniquement la souris au-dessus de cette
+  galerie. Composant **supprimé** : depuis le retrait de `scroll-snap-type`
+  (la vraie cause du « il faut défiler deux fois »), le navigateur transmet
+  seul la molette verticale à la page. Vérifié : premier cran au-dessus
+  d'une photo = 100 px, 5 crans = 500 px, survol (liseré + zoom) sans
+  sursaut. **Leçon** : ne jamais piloter le défilement de la page en JS
+  (`scrollBy`/`scrollTo` sur `wheel`) sur ce site — `scroll-behavior: smooth`
+  transforme chaque événement en animation concurrente. Même règle que
+  gospel-nation après le retrait de Lenis.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

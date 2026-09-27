@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { HeartIcon, HandHeartIcon, UsersThreeIcon, ArrowRightIcon, SealCheckIcon } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
-import { HorizontalGallery } from '@/components/site/HorizontalGallery';
 import { HeroBackground } from '@/components/site/HeroBackground';
 import { FacebookBand } from '@/components/site/FacebookBand';
 import { PartnersMarquee } from '@/components/site/PartnersMarquee';
@@ -192,6 +191,28 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
+      {/* Projet en cours */}
+      <section className="relative overflow-hidden bg-night text-cream">
+        <Image src="/photos/photo-ecriture.jpg" alt={t.projectImgAlt} fill sizes="100vw" className="photo-tone object-cover object-[60%_30%]" />
+        <div className="relative mx-auto max-w-[1280px] px-[clamp(12px,4vw,48px)] py-[clamp(40px,8vw,120px)]">
+          <Reveal className="flex max-w-[520px] flex-col gap-[18px] rounded-card bg-[rgba(10,10,10,.9)] p-[clamp(28px,4vw,48px)]">
+            <Eyebrow dark>{t.projectEyebrow}</Eyebrow>
+            <h2 className="m-0 font-serif text-[clamp(40px,5vw,64px)] font-medium leading-none">{currentProject.name}</h2>
+            <p className="m-0 text-[15px] font-bold tracking-[0.04em] text-gold-hover">{currentProject.acronymMeaning}</p>
+            <p className="m-0 text-[17px] leading-[1.65] text-on-dark-1">{currentProject.intro}</p>
+            <div className="flex flex-wrap gap-3 pt-1">
+              <Link href={href('/dons')} className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full bg-gold px-6 text-[16px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night">
+                {t.projectSupport}
+              </Link>
+              <Link href={href('/projets/reves-2')} className="inline-flex min-h-[52px] items-center gap-1.5 whitespace-nowrap px-2 font-bold text-gold-hover no-underline">
+                {t.projectLink}
+                <ArrowRightIcon aria-hidden />
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* Une journée */}
       <section className="overflow-hidden bg-sand">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(64px,9vw,112px)]">
@@ -200,7 +221,12 @@ export function HomePage({ locale }: { locale: Locale }) {
             <h2 className={h2Class}>{t.dayTitle}</h2>
             <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.daySubtitle}</p>
           </Reveal>
-          <HorizontalGallery className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 md:auto-cols-[minmax(240px,1fr)] md:gap-6 overflow-x-auto pb-3 [overscroll-behavior-x:contain]">
+          {/* Défilement horizontal natif, sans script : l'ancien intercepteur de
+              molette (HorizontalGallery) relançait une animation de défilement
+              fluide à chaque cran de trackpad — saccades au survol, signalées
+              par Mazunda le 27/09/2026. Sans scroll-snap, le navigateur
+              transmet déjà seul la molette verticale à la page. */}
+          <div className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 md:auto-cols-[minmax(240px,1fr)] md:gap-6 overflow-x-auto pb-3 [overscroll-behavior-x:contain]">
             {t.day.map(([dt, d, img, alt, rot], i) => (
               <div key={dt}>
               <div className="md:hidden">
@@ -233,29 +259,7 @@ export function HomePage({ locale }: { locale: Locale }) {
               </Reveal>
               </div>
             ))}
-          </HorizontalGallery>
-        </div>
-      </section>
-
-      {/* Projet en cours */}
-      <section className="relative overflow-hidden bg-night text-cream">
-        <Image src="/photos/photo-ecriture.jpg" alt={t.projectImgAlt} fill sizes="100vw" className="photo-tone object-cover object-[60%_30%]" />
-        <div className="relative mx-auto max-w-[1280px] px-[clamp(12px,4vw,48px)] py-[clamp(40px,8vw,120px)]">
-          <Reveal className="flex max-w-[520px] flex-col gap-[18px] rounded-card bg-[rgba(10,10,10,.9)] p-[clamp(28px,4vw,48px)]">
-            <Eyebrow dark>{t.projectEyebrow}</Eyebrow>
-            <h2 className="m-0 font-serif text-[clamp(40px,5vw,64px)] font-medium leading-none">{currentProject.name}</h2>
-            <p className="m-0 text-[15px] font-bold tracking-[0.04em] text-gold-hover">{currentProject.acronymMeaning}</p>
-            <p className="m-0 text-[17px] leading-[1.65] text-on-dark-1">{currentProject.intro}</p>
-            <div className="flex flex-wrap gap-3 pt-1">
-              <Link href={href('/dons')} className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full bg-gold px-6 text-[16px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night">
-                {t.projectSupport}
-              </Link>
-              <Link href={href('/projets/reves-2')} className="inline-flex min-h-[52px] items-center gap-1.5 whitespace-nowrap px-2 font-bold text-gold-hover no-underline">
-                {t.projectLink}
-                <ArrowRightIcon aria-hidden />
-              </Link>
-            </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
