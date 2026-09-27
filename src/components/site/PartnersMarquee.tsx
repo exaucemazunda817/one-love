@@ -6,79 +6,51 @@ import type { Locale } from '@/lib/i18n';
 const text = {
   fr: {
     title: 'Nos partenaires',
-    subtitle: 'Entreprises et fondations qui soutiennent One Love, notamment lors de notre Dîner caritatif.',
     label: 'Logos de nos partenaires'
   },
   en: {
     title: 'Our partners',
-    subtitle: 'Companies and foundations that support One Love, notably at our Charity Dinner.',
     label: 'Logos of our partners'
   }
 };
 
-// Bandes de logos façon n8n : deux rangées qui défilent en continu, à des
-// vitesses différentes et en sens opposés. Chaque logo est posé dans une tuile
-// arrondie à bordure fine, qui grossit au survol ; les bords de la bande
-// s'estompent. Chaque rangée montre les 33 logos, dans un ordre décalé pour
-// qu'au départ les deux rangées n'affichent pas les mêmes logos. La liste est
-// doublée : l'animation déplace la piste de la moitié de sa largeur, puis
-// recommence sans à-coup. Sans animation (mouvement réduit), chaque rangée se
-// fait défiler à la main.
-const ROWS = [
-  { offset: 0, speed: '110s', reverse: false },
-  // Une rangée inversée démarre en montrant la fin de sa liste : son décalage
-  // est choisi pour qu'elle n'affiche pas les mêmes logos que la première.
-  { offset: 25, speed: '130s', reverse: true }
-];
+// Bande filante à UNE seule rangée, qui défile dans un seul sens — sur le
+// modèle d'une bannière de logos clients simple (titre centré, logos à même
+// le bandeau, sans tuile ni carte individuelle autour de chaque logo, sans
+// espace vide en haut ou en bas de la bande). La liste est doublée :
+// l'animation déplace la piste de la moitié de sa largeur, puis recommence
+// sans à-coup. Sans animation (mouvement réduit), la rangée se fait défiler
+// à la main.
+const SPEED = '120s';
 
 export function PartnersMarquee({ locale }: { locale: Locale }) {
   const t = text[locale];
-  const renderItem = (p: (typeof PARTNERS)[number], key: string, hidden: boolean) => (
-    <li key={key} className="flex-none" aria-hidden={hidden || undefined}>
-      <div className="ol-logo-tile flex h-[76px] w-[104px] items-center justify-center p-3 sm:h-[96px] sm:w-[132px] sm:p-4">
-        <Image
-          src={`/partenaires/${p.slug}.webp`}
-          alt={hidden ? '' : p.name}
-          width={132}
-          height={96}
-          unoptimized
-          loading="lazy"
-          className="h-full w-full object-contain"
-        />
-      </div>
-    </li>
-  );
+  const list = [...PARTNERS, ...PARTNERS];
 
   return (
-    <section className="overflow-hidden pb-[clamp(28px,4vw,48px)] pt-[clamp(12px,2vw,24px)]" aria-label={t.label}>
-      <div className="mx-auto flex max-w-[1200px] flex-col items-center px-[clamp(20px,4vw,32px)] text-center">
-        <Reveal variant="scale" className="flex max-w-[640px] flex-col items-center gap-2">
-          <h2 className="m-0 font-serif text-[clamp(26px,3vw,36px)] font-medium leading-[1.15]">{t.title}</h2>
-          <p className="m-0 text-pretty text-[15px] leading-[1.55] text-ink-body">{t.subtitle}</p>
-        </Reveal>
-      </div>
-      <div className="mt-5 flex flex-col">
-        {ROWS.map((row, r) => {
-          // La première rangée porte les noms (lecteurs d'écran) ; la seconde
-          // est décorative.
-          const list = [...PARTNERS.slice(row.offset), ...PARTNERS.slice(0, row.offset)];
-          return (
-            <div key={r} className="ol-marquee" aria-hidden={r > 0 || undefined}>
-              <ul
-                className="ol-marquee-track m-0 list-none p-0"
-                style={
-                  {
-                    '--ol-marquee-speed': row.speed,
-                    '--ol-marquee-direction': row.reverse ? 'reverse' : 'normal'
-                  } as React.CSSProperties
-                }
-              >
-                {list.map((p) => renderItem(p, `${r}-a-${p.slug}`, r > 0))}
-                {list.map((p) => renderItem(p, `${r}-b-${p.slug}`, true))}
-              </ul>
-            </div>
-          );
-        })}
+    <section className="overflow-hidden bg-sand py-3" aria-label={t.label}>
+      <Reveal variant="scale" className="mx-auto mb-3 max-w-[640px] px-[clamp(20px,4vw,32px)] text-center">
+        <h2 className="m-0 font-serif text-[clamp(18px,2vw,24px)] font-semibold leading-[1.15]">{t.title}</h2>
+      </Reveal>
+      <div className="ol-marquee" aria-hidden="false">
+        <ul
+          className="ol-marquee-track m-0 flex list-none items-center gap-8 p-0 sm:gap-12"
+          style={{ '--ol-marquee-speed': SPEED, '--ol-marquee-direction': 'normal' } as React.CSSProperties}
+        >
+          {list.map((p, i) => (
+            <li key={`${i}-${p.slug}`} className="flex h-9 w-20 flex-none items-center justify-center sm:h-11 sm:w-24" aria-hidden={i >= PARTNERS.length || undefined}>
+              <Image
+                src={`/partenaires/${p.slug}.webp`}
+                alt={i < PARTNERS.length ? p.name : ''}
+                width={96}
+                height={44}
+                unoptimized
+                loading="lazy"
+                className="h-full w-full object-contain"
+              />
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

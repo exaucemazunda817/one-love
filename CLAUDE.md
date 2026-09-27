@@ -526,6 +526,57 @@ conservation, consentements photo).
   pages publiques — rien à faire de ce côté, contrairement à ce qui avait
   été demandé.
 
+## Corrections du 27/09/2026 (suite) — molette persistante, retrait du don en page d'accueil, bande partenaires
+
+- **Molette bloquée sur les photos (bug #4), toujours présent après le premier
+  correctif** : passer `scroll-snap-type` de `mandatory` à `proximity` (avec
+  le garde-fou JS `HorizontalGallery`) ne suffisait pas — reproduit une
+  première fois sur un tick « frais » de molette (confirmé par mesure
+  `window.scrollY` avant/après), mais Mazunda l'a signalé encore présent en
+  usage réel, très probablement sur écran tactile (le geste tactile diagonal
+  se fait « verrouiller » sur l'axe horizontal par `scroll-snap-type`, un
+  comportement documenté sur iOS/Android, distinct du cas molette déjà
+  corrigé). **`scroll-snap-type`/`scroll-snap-align` retirés entièrement** de
+  la galerie « Une journée » — seul `overflow-x-auto` + le garde-fou wheel de
+  `HorizontalGallery.tsx` subsistent. Perte du magnétisme d'alignement des
+  cartes (jamais demandé explicitement), gain : plus aucun mécanisme du
+  navigateur ne peut « avaler » un geste de défilement vertical. À suivre si
+  Mazunda confirme que ça règle enfin le problème en usage réel (tactile).
+- **Bouton « Faire un don » retiré de l'accueil, sur demande de Mazunda** :
+  contrairement à la décision du 27/09 (masquer le bouton du menu sur
+  l'accueil pour éviter un doublon avec le hero), Mazunda a préféré l'inverse
+  — **garder le bouton du menu partout, y compris sur l'accueil**, mais le
+  faire pointer vers une vraie page dédiée plutôt qu'une ancre en page. La
+  section `<section id="don">` (bandeau de confiance + `DonationQuick`) a été
+  **supprimée de l'accueil** ; `DonationQuick.tsx` supprimé (devenu
+  orphelin). Tous les boutons « Faire un don » de l'accueil (hero desktop et
+  mobile, bandeau RÊVES 2, carte « Donner ») et le bouton du menu
+  (`Header.tsx`, avant conditionné par `isHome`) pointent maintenant vers
+  `/dons`, la page déjà complète (hero, `DonationFlow`, confidentialité,
+  parrainage, contact) — rien à y dupliquer, elle couvrait déjà les mêmes
+  garanties (Stripe, IBAN, données non revendues).
+- **Bande « Nos partenaires » repensée en 3 étapes successives, sur retours
+  de Mazunda en cours de route** (référence donnée : une bannière de logos
+  clients à une seule rangée, titre centré, bandeau plat, sans espace vide en
+  haut/bas — puis la bande défilante de gospel-nation pour la taille) :
+  (1) passage de deux rangées à vitesses/sens opposés à **une seule rangée,
+  un seul sens** ; (2) titre repassé à « Nos partenaires » après un essai
+  « Ils nous font confiance » refusé par Mazunda (garder l'original) ; tuiles
+  réduites (~52 px de haut, contre 96 px avant) ; (3) **tuiles à cadre
+  retirées entièrement** — les logos sont posés à même le bandeau, sans
+  carte/bordure/ombre individuelle, avec un padding vertical de section
+  strictement symétrique (12 px haut/bas, mesuré). Classe CSS `.ol-logo-tile`
+  supprimée (plus aucun usage). Déplacée en tête d'accueil, juste après le
+  hero et avant « Le chemin parcouru » (elle était auparavant après, entre
+  les statistiques et « Une journée »).
+- **Piège d'outil rencontré pendant les tests** : un deuxième onglet du
+  navigateur intégré (`seed`, resté sur une page de référence externe) a pris
+  le focus après une interaction de l'utilisateur, et plusieurs appels
+  `computer`/`navigate` sans `tabId` explicite ont fini par cibler ce mauvais
+  onglet au lieu du site en local — un écran visiblement cassé s'est révélé
+  n'être qu'une confusion d'onglet. **Toujours passer `tabId` explicitement
+  dès qu'un deuxième onglet existe dans la session.**
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

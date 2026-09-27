@@ -1,15 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  HeartIcon,
-  HandHeartIcon,
-  UsersThreeIcon,
-  ArrowRightIcon,
-  SealCheckIcon,
-  ShieldCheckIcon,
-  BankIcon,
-  LockKeyIcon
-} from '@phosphor-icons/react/ssr';
+import { HeartIcon, HandHeartIcon, UsersThreeIcon, ArrowRightIcon, SealCheckIcon } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
 import { HorizontalGallery } from '@/components/site/HorizontalGallery';
@@ -17,7 +8,6 @@ import { HeroBackground } from '@/components/site/HeroBackground';
 import { FacebookBand } from '@/components/site/FacebookBand';
 import { PartnersMarquee } from '@/components/site/PartnersMarquee';
 import { Brush, BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
-import { DonationQuick } from '@/components/site/DonationQuick';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { CountUp } from '@/components/site/effects/CountUp';
 import { currentProject } from '@/lib/content';
@@ -58,23 +48,13 @@ const text = {
     projectImgAlt: 'Une jeune fille écrit dans son cahier pendant un atelier.',
     waysTitle: 'Trois façons d’aider',
     ways: [
-      { icon: HeartIcon, t: 'Donner', d: 'Un don ponctuel ou mensuel finance les ateliers, le matériel et le suivi des enfants.', cta: 'Faire un don', bg: 'bg-night', fg: 'text-cream', fg2: 'text-on-dark-1', ic: 'text-gold-hover', href: '#don' },
+      { icon: HeartIcon, t: 'Donner', d: 'Un don ponctuel ou mensuel finance les ateliers, le matériel et le suivi des enfants.', cta: 'Faire un don', bg: 'bg-night', fg: 'text-cream', fg2: 'text-on-dark-1', ic: 'text-gold-hover', href: '/dons' },
       { icon: HandHeartIcon, t: 'Parrainer', d: 'Un engagement mensuel pour la continuité de l’accompagnement, avec des nouvelles régulières.', cta: 'Devenir parrain', bg: 'bg-sand', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-copper-700', href: '/parrainer' },
       { icon: UsersThreeIcon, t: 'S’engager', d: 'Bénévolat, dons en nature, collectes, partenariats avec des entreprises ou des églises.', cta: 'S’impliquer', bg: 'bg-sage-100', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-sage-700', href: '/s-impliquer' }
     ],
     testimonials: [
       { q: '« Depuis que nous nous sommes rencontrés en 2010, ma femme et moi avons eu à cœur de vivre un rêve commun : aimer et aider ceux qui en ont besoin. »', name: 'Kanda Kabangu', role: 'cofondateur' },
-    ],
-    donTitlePre: 'Chaque don prolonge un accompagnement qui a déjà ',
-    donTitleWord: 'commencé',
-    donTitlePost: '.',
-    donText:
-      'Votre don finance directement les programmes de terrain : ateliers, matériel pédagogique, suivi médical et psychosocial des enfants.',
-    trust: [
-      [ShieldCheckIcon, 'Paiement sécurisé par Stripe, reçu par e-mail'],
-      [BankIcon, 'Aussi par virement : IBAN sur la page Faire un don'],
-      [LockKeyIcon, 'Vos données ne sont jamais revendues']
-    ] as const
+    ]
   },
   en: {
     eyebrow: 'Kinshasa, DRC · since 2013',
@@ -109,23 +89,13 @@ const text = {
     projectImgAlt: 'A girl writes in her notebook during a workshop.',
     waysTitle: 'Three ways to help',
     ways: [
-      { icon: HeartIcon, t: 'Give', d: 'A one-off or monthly gift funds workshops, materials and the children’s follow-up.', cta: 'Donate', bg: 'bg-night', fg: 'text-cream', fg2: 'text-on-dark-1', ic: 'text-gold-hover', href: '#don' },
+      { icon: HeartIcon, t: 'Give', d: 'A one-off or monthly gift funds workshops, materials and the children’s follow-up.', cta: 'Donate', bg: 'bg-night', fg: 'text-cream', fg2: 'text-on-dark-1', ic: 'text-gold-hover', href: '/dons' },
       { icon: HandHeartIcon, t: 'Sponsor', d: 'A monthly commitment for continuous support, with regular updates.', cta: 'Become a sponsor', bg: 'bg-sand', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-copper-700', href: '/parrainer' },
       { icon: UsersThreeIcon, t: 'Take part', d: 'Volunteering, in-kind gifts, fundraising, partnerships with companies or churches.', cta: 'Get involved', bg: 'bg-sage-100', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-sage-700', href: '/s-impliquer' }
     ],
     testimonials: [
       { q: '“Since we met in 2010, my wife and I have shared one dream: to love and help those in need.”', name: 'Kanda Kabangu', role: 'co-founder' },
-    ],
-    donTitlePre: 'Every gift extends support that has already ',
-    donTitleWord: 'begun',
-    donTitlePost: '.',
-    donText:
-      "Your gift directly funds our field programmes: workshops, teaching materials, and the children's medical and psychosocial care.",
-    trust: [
-      [ShieldCheckIcon, 'Secure payment via Stripe, receipt by email'],
-      [BankIcon, 'Also by bank transfer: IBAN on the Donate page'],
-      [LockKeyIcon, 'Your data is never sold']
-    ] as const
+    ]
   }
 };
 
@@ -149,10 +119,10 @@ export function HomePage({ locale }: { locale: Locale }) {
             </h1>
             <p className="m-0 max-w-[520px] text-pretty text-[20px] leading-[1.6] text-on-dark-1">{t.intro}</p>
             <div className="flex flex-wrap gap-3">
-              <a href="#don" className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90">
+              <Link href={href('/dons')} className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90">
                 <HeartIcon size="1em" aria-hidden />
                 {t.donate}
-              </a>
+              </Link>
               <Link href={href('/parrainer')} className="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-full border border-cream/35 px-[26px] text-[13px] font-semibold uppercase tracking-wide text-cream no-underline transition-colors hover:border-gold hover:text-gold-hover">
                 {t.sponsor}
               </Link>
@@ -180,10 +150,10 @@ export function HomePage({ locale }: { locale: Locale }) {
           </h1>
           <p className="-mt-1 m-0 text-[15px] leading-[1.5] text-on-dark-1">{t.intro}</p>
           <div className="flex w-full flex-col gap-2.5">
-            <a href="#don" className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90">
+            <Link href={href('/dons')} className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90">
               <HeartIcon size="1em" aria-hidden />
               {t.donate}
-            </a>
+            </Link>
             <Link href={href('/parrainer')} className="inline-flex min-h-[48px] items-center justify-center whitespace-nowrap rounded-full border border-cream/35 px-[26px] text-[13px] font-semibold uppercase tracking-wide text-cream no-underline transition-colors hover:border-gold hover:text-gold-hover">
               {t.sponsor}
             </Link>
@@ -194,6 +164,8 @@ export function HomePage({ locale }: { locale: Locale }) {
           </span>
         </div>
       </section>
+
+      <PartnersMarquee locale={locale} />
 
       {/* Le chemin parcouru — mêmes chiffres que la page Notre histoire */}
       <section aria-labelledby="chemin-titre-accueil" className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(36px,5vw,56px)]">
@@ -217,8 +189,6 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <PartnersMarquee locale={locale} />
-
       {/* Une journée */}
       <section className="overflow-hidden bg-sand">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(64px,9vw,112px)]">
@@ -227,9 +197,9 @@ export function HomePage({ locale }: { locale: Locale }) {
             <h2 className={h2Class}>{t.dayTitle}</h2>
             <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.daySubtitle}</p>
           </Reveal>
-          <HorizontalGallery className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 md:auto-cols-[minmax(240px,1fr)] md:gap-6 overflow-x-auto pb-3 [overscroll-behavior-x:contain] [scroll-snap-type:x_mandatory]">
+          <HorizontalGallery className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 md:auto-cols-[minmax(240px,1fr)] md:gap-6 overflow-x-auto pb-3 [overscroll-behavior-x:contain]">
             {t.day.map(([dt, d, img, alt, rot], i) => (
-              <div key={dt} className="[scroll-snap-align:start]">
+              <div key={dt}>
               <div className="md:hidden">
                 <MobilePhotoCard
                   src={img}
@@ -274,9 +244,9 @@ export function HomePage({ locale }: { locale: Locale }) {
             <p className="m-0 text-[15px] font-bold tracking-[0.04em] text-gold-hover">{currentProject.acronymMeaning}</p>
             <p className="m-0 text-[17px] leading-[1.65] text-on-dark-1">{currentProject.intro}</p>
             <div className="flex flex-wrap gap-3 pt-1">
-              <a href="#don" className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full bg-gold px-6 text-[16px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night">
+              <Link href={href('/dons')} className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full bg-gold px-6 text-[16px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night">
                 {t.projectSupport}
-              </a>
+              </Link>
               <Link href={href('/projets/reves-2')} className="inline-flex min-h-[52px] items-center gap-1.5 whitespace-nowrap px-2 font-bold text-gold-hover no-underline">
                 {t.projectLink}
                 <ArrowRightIcon aria-hidden />
@@ -294,30 +264,18 @@ export function HomePage({ locale }: { locale: Locale }) {
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
           {t.ways.map((w, i) => {
             const Icon = w.icon;
-            const isAnchor = w.href.startsWith('#');
             const cls = `flex min-h-[280px] flex-col gap-3.5 rounded-card ${w.bg} ${w.fg} px-7 py-8 no-underline transition-transform hover:-translate-y-[3px] hover:${w.fg}`;
-            const inner = (
-              <>
-                <Icon size={36} className={w.ic} aria-hidden />
-                <h3 className="m-0 font-serif text-[32px] font-medium">{w.t}</h3>
-                <p className={`m-0 flex-1 text-[16px] leading-[1.6] ${w.fg2}`}>{w.d}</p>
-                <span className={`inline-flex items-center gap-1.5 font-extrabold ${w.ic}`}>
-                  {w.cta}
-                  <ArrowRightIcon aria-hidden />
-                </span>
-              </>
-            );
             return (
               <Reveal key={w.t} delay={i * 90}>
-                {isAnchor ? (
-                  <a href={w.href} className={cls}>
-                    {inner}
-                  </a>
-                ) : (
-                  <Link href={href(w.href)} className={cls}>
-                    {inner}
-                  </Link>
-                )}
+                <Link href={href(w.href)} className={cls}>
+                  <Icon size={36} className={w.ic} aria-hidden />
+                  <h3 className="m-0 font-serif text-[32px] font-medium">{w.t}</h3>
+                  <p className={`m-0 flex-1 text-[16px] leading-[1.6] ${w.fg2}`}>{w.d}</p>
+                  <span className={`inline-flex items-center gap-1.5 font-extrabold ${w.ic}`}>
+                    {w.cta}
+                    <ArrowRightIcon aria-hidden />
+                  </span>
+                </Link>
               </Reveal>
             );
           })}
@@ -341,29 +299,6 @@ export function HomePage({ locale }: { locale: Locale }) {
       <div className="pt-[clamp(8px,2vw,24px)]">
         <FacebookBand locale={locale} />
       </div>
-
-      {/* Don */}
-      <section id="don" className="mx-auto grid max-w-[1200px] scroll-mt-[var(--header-clear)] grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,32px)] py-[clamp(64px,9vw,112px)]">
-        <Reveal className="flex flex-col gap-[18px]">
-          <h2 className={`${h2Class} text-balance`}>
-            {t.donTitlePre}
-            <BrushWord>{t.donTitleWord}</BrushWord>
-            {t.donTitlePost}
-          </h2>
-          <p className="m-0 text-[18px] leading-[1.6] text-ink-body">{t.donText}</p>
-          <div className="flex flex-col gap-2.5 pt-1.5">
-            {t.trust.map(([Icon, label]) => (
-              <span key={label} className="flex items-center gap-2.5 text-[15px]">
-                <Icon size={22} className="text-sage-700" aria-hidden />
-                {label}
-              </span>
-            ))}
-          </div>
-        </Reveal>
-        <Reveal delay={90}>
-          <DonationQuick locale={locale} />
-        </Reveal>
-      </section>
     </>
   );
 }

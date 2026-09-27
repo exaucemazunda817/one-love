@@ -10,13 +10,6 @@ import { cx } from '@/components/site/ui';
 
 const LOGO = '/brand/logo-one-love-rond.png';
 
-/** Sur l'accueil, « Faire un don » mène au module de don de la page (#don) ;
- * ailleurs, à la page Faire un don. */
-function donateHref(pathname: string, locale: Locale) {
-  const home = locale === 'fr' ? '/' : '/en';
-  return pathname === home ? '#don' : localeHref('/dons', locale);
-}
-
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -41,11 +34,9 @@ export function Header({ locale }: { locale: Locale }) {
     };
   }, [open]);
 
-  const donate = donateHref(pathname, locale);
-  // Sur l'accueil, le hero affiche déjà un « Faire un don » bien plus visible
-  // juste en dessous : le répéter dans le menu flottant créait deux boutons
-  // identiques au premier écran. Ailleurs, le menu reste le seul rappel.
-  const isHome = pathname === (locale === 'fr' ? '/' : '/en');
+  // Toujours vers la page Faire un don dédiée — jamais une ancre sur
+  // l'accueil, qui n'a plus de module de don en page.
+  const donate = localeHref('/dons', locale);
   const isActive = (href: string) => {
     const full = localeHref(href, locale);
     return pathname === full || pathname.startsWith(`${full}/`);
@@ -95,15 +86,13 @@ export function Header({ locale }: { locale: Locale }) {
                 </>
               )}
             </div>
-            {!isHome && (
-              <a
-                href={donate}
-                className="inline-flex min-h-12 items-center gap-2 whitespace-nowrap rounded-full bg-gold px-[22px] text-[16px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night"
-              >
-                <HeartIcon size="1em" aria-hidden />
-                {t.donate}
-              </a>
-            )}
+            <Link
+              href={donate}
+              className="inline-flex min-h-12 items-center gap-2 whitespace-nowrap rounded-full bg-gold px-[22px] text-[16px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night"
+            >
+              <HeartIcon size="1em" aria-hidden />
+              {t.donate}
+            </Link>
           </div>
         </div>
       </header>
@@ -220,14 +209,14 @@ export function Header({ locale }: { locale: Locale }) {
                 </>
               )}
             </div>
-            <a
+            <Link
               href={donate}
               onClick={() => setOpen(false)}
               className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full bg-gold text-[17px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night"
             >
               <HeartIcon size="1em" aria-hidden />
               {t.donate}
-            </a>
+            </Link>
           </div>
         </div>
       )}
