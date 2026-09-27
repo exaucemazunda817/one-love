@@ -646,6 +646,61 @@ corrigées, et une fausse alerte assumée :
   chercher `application/ld+json` dans toute la page avant de conclure à son
   absence, pas seulement dans `<head>`.
 
+## Régression de performance du correctif `lang`, et vrai correctif (27/09/2026, même soir)
+
+Le correctif `<html lang>` ci-dessus (middleware + `headers()` dans un layout
+racine unique) a rendu TOUT le site public dynamique — mesuré et confirmé
+par Mazunda en production : 1 à 2,5 s par page (site perçu comme « lent »
+au clic sur le menu) contre un rendu statique quasi instantané avant. Cause :
+`headers()` dans un layout racine partagé force Next.js à rendre à la
+demande absolument tout ce qu'il enveloppe, sans exception possible page par
+page.
+
+**Vrai correctif : plusieurs layouts racines, un par section**, le mécanisme
+que Next.js prévoit précisément pour ce cas (routes qui ont besoin d'un
+`<html lang>` différent) sans sacrifier le rendu statique :
+- `src/components/RootHtml.tsx` — nouveau composant partagé qui pose
+  `<html lang=…>/<head>/<body>`, les polices et le script `js`. Appelé par
+  chacun des trois layouts racines ci-dessous plutôt que dupliqué.
+- `src/app/(site)/layout.tsx` — racine du site FR (`lang="fr"`), reprend les
+  métadonnées qui vivaient avant dans l'ancien `app/layout.tsx`.
+- `src/app/(site-en)/layout.tsx` — **nouvelle** racine du groupe `/en`
+  (n'existait pas : seul `(site-en)/en/layout.tsx`, un layout imbriqué non
+  racine, existait). Ce dernier a été supprimé, son rôle absorbé par la
+  racine du groupe.
+- `src/app/gestion/layout.tsx` — **nouvelle** racine du logiciel de gestion
+  (`lang="fr"`), qui enveloppe `/gestion/connexion`,
+  `/gestion/changer-mot-de-passe` ET `gestion/(protected)/*` — ce dernier
+  reste un layout imbriqué inchangé, juste un niveau plus haut qu'avant.
+- `src/app/layout.tsx` (l'ancien layout racine unique) **supprimé**.
+- `src/proxy.ts` : retour au matcher d'origine (`/gestion/:path*`,
+  `/api/gestion/:path*`) — plus besoin de l'en-tête `x-locale` ni du matcher
+  élargi à tout le site.
+- `src/components/HtmlLang.tsx` **supprimé** : ce composant client corrigeait
+  `lang` après une navigation React entre FR et EN ; avec plusieurs layouts
+  racines, cette navigation n'est plus une transition React — Next.js impose
+  un **rechargement complet de page** dès qu'on traverse deux layouts
+  racines différents (documenté), donc `lang` est déjà correct dans le
+  nouveau HTML servi, sans script correctif.
+
+**Conséquence acceptée, mineure** : cliquer sur FR/EN, ou naviguer entre le
+site public et `/gestion`, déclenche désormais un rechargement complet de
+page plutôt qu'une transition instantanée — seulement pour ces changements
+de section, jamais pour la navigation courante à l'intérieur d'une même
+langue. Contrepartie : `next build` confirme que toutes les pages publiques
+(accueil, `/en`, `/dons`, `/histoire`, etc.) sont revenues en `○ Static`,
+`/gestion/connexion` y compris — mesuré à nouveau ~3-5 ms en local contre 1
+à 2,5 s juste avant.
+**Leçon retenue pour ce projet et tout autre avec plusieurs langues sous
+route groups (pas `[locale]` dynamique)** : ne jamais résoudre un besoin de
+`<html lang>` par section via `headers()` dans un layout racine unique — ça
+rend tout le sous-arbre dynamique sans distinction. Utiliser plusieurs
+layouts racines dès que plusieurs langues/sections ont besoin d'un `<html>`
+différent, et vérifier le tableau `○`/`ƒ` de `next build` après tout
+changement touchant `app/layout.tsx` : un mot statique qui devient dynamique
+sur des dizaines de routes doit toujours sauter aux yeux avant de déployer,
+pas après un signalement de lenteur.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
