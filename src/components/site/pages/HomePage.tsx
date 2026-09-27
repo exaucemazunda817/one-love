@@ -1,12 +1,21 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { HeartIcon, HandHeartIcon, UsersThreeIcon, ArrowRightIcon, SealCheckIcon } from '@phosphor-icons/react/ssr';
+import {
+  HeartIcon,
+  HandHeartIcon,
+  UsersThreeIcon,
+  ArrowRightIcon,
+  SealCheckIcon,
+  SunHorizonIcon,
+  PencilSimpleLineIcon,
+  BookOpenTextIcon,
+  PaletteIcon
+} from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
-import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
 import { HeroBackground } from '@/components/site/HeroBackground';
 import { FacebookBand } from '@/components/site/FacebookBand';
 import { PartnersMarquee } from '@/components/site/PartnersMarquee';
-import { Brush, BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
+import { BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { PathTimeline } from '@/components/site/effects/PathTimeline';
 import { currentProject } from '@/lib/content';
@@ -39,10 +48,10 @@ const text = {
     dayTitle: 'Une journée à One Love',
     daySubtitle: 'Ce que votre soutien rend possible, au fil de la journée.',
     day: [
-      ["L'arrivée", 'Les enfants arrivent au centre, prêts à découvrir et apprendre.', '/photos/photo-joie.jpg', 'Un garçon rit en arrivant au centre.', '-1.5deg'],
-      ["Atelier d'écriture", "Lire et écrire en petits groupes : le premier levier d'autonomie.", '/photos/photo-ecriture.jpg', 'Une jeune fille écrit dans son cahier.', '1deg'],
-      ['Français', "Maîtriser la langue de l'école pour ouvrir l'accès à la scolarité.", '/photos/photo-cahier.jpg', 'Un garçon écrit, concentré.', '-1deg'],
-      ['Création et jeu', 'Dessin, sport, musique : retrouver la confiance et la vie en groupe.', '/photos/photo-mains.jpg', 'Des mains colorient des lettres.', '1.5deg']
+      ["L'arrivée", 'Les enfants arrivent au centre, prêts à découvrir et apprendre.', 'Un garçon rit en arrivant au centre.'],
+      ["Atelier d'écriture", "Lire et écrire en petits groupes : le premier levier d'autonomie.", 'Une jeune fille écrit dans son cahier.'],
+      ['Français', "Maîtriser la langue de l'école pour ouvrir l'accès à la scolarité.", 'Un garçon écrit, concentré.'],
+      ['Création et jeu', 'Dessin, sport, musique : retrouver la confiance et la vie en groupe.', 'Des mains colorient des lettres.']
     ] as const,
     projectEyebrow: 'Projet en cours · sept. à déc. 2026',
     projectSupport: 'Soutenir RÊVES 2',
@@ -83,10 +92,10 @@ const text = {
     dayTitle: 'A day at One Love',
     daySubtitle: 'What your support makes possible, through the day.',
     day: [
-      ['Arrival', 'The children arrive at the centre, ready to discover and learn.', '/photos/photo-joie.jpg', 'A boy laughs as he arrives at the centre.', '-1.5deg'],
-      ['Writing workshop', 'Reading and writing in small groups: the first step towards independence.', '/photos/photo-ecriture.jpg', 'A girl writes in her notebook.', '1deg'],
-      ['French', 'Mastering the language of school opens the door to education.', '/photos/photo-cahier.jpg', 'A boy writes, focused.', '-1deg'],
-      ['Creativity and play', 'Drawing, sport, music: regaining confidence and group life.', '/photos/photo-mains.jpg', 'Hands colouring in letters.', '1.5deg']
+      ['Arrival', 'The children arrive at the centre, ready to discover and learn.', 'A boy laughs as he arrives at the centre.'],
+      ['Writing workshop', 'Reading and writing in small groups: the first step towards independence.', 'A girl writes in her notebook.'],
+      ['French', 'Mastering the language of school opens the door to education.', 'A boy writes, focused.'],
+      ['Creativity and play', 'Drawing, sport, music: regaining confidence and group life.', 'Hands colouring in letters.']
     ] as const,
     projectEyebrow: 'Current project · Sept. to Dec. 2026',
     projectSupport: 'Support RÊVES 2',
@@ -103,6 +112,18 @@ const text = {
     ]
   }
 };
+
+// Photos, cadrage et icône de chaque moment de « Une journée » (communs FR/EN).
+const dayMedia = [
+  { img: '/photos/photo-joie.jpg', pos: '30% 40%', Icon: SunHorizonIcon },
+  { img: '/photos/photo-ecriture.jpg', pos: '50% 42%', Icon: PencilSimpleLineIcon },
+  { img: '/photos/photo-cahier.jpg', pos: '45% 35%', Icon: BookOpenTextIcon },
+  { img: '/photos/photo-mains.jpg', pos: '50% 55%', Icon: PaletteIcon }
+];
+
+// Mosaïque sur ordinateur (12 colonnes, 2 rangées) : grande photo à gauche,
+// une large en haut à droite, deux plus petites dessous.
+const dayTile = ['lg:col-span-5 lg:row-span-2', 'lg:col-span-7', 'lg:col-span-4', 'lg:col-span-3'];
 
 export function HomePage({ locale }: { locale: Locale }) {
   const t = text[locale];
@@ -223,55 +244,85 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
 
       {/* Une journée */}
-      <section className="overflow-hidden bg-sand">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(64px,9vw,112px)]">
-          <Reveal className="flex max-w-[640px] flex-col gap-3">
-            <Eyebrow>{t.dayEyebrow}</Eyebrow>
-            <h2 className={h2Class}>{t.dayTitle}</h2>
-            <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.daySubtitle}</p>
+      {/* Mosaïque sans aucune zone de défilement horizontal, ni inclinaison :
+          les cartes penchées débordaient de 4 px et accrochaient le geste du
+          trackpad (voir CLAUDE.md, 27/09/2026). */}
+      <section aria-labelledby="journee-titre" className="bg-sand">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)] md:gap-10">
+          <Reveal className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between md:gap-10">
+            <div className="flex max-w-[560px] flex-col gap-3">
+              <Eyebrow>{t.dayEyebrow}</Eyebrow>
+              <h2 id="journee-titre" className={h2Class}>
+                {t.dayTitle}
+              </h2>
+            </div>
+            <p className="m-0 max-w-[360px] text-[17px] leading-[1.6] text-ink-body md:pb-1.5">{t.daySubtitle}</p>
           </Reveal>
-          {/* Rangée glissante sur téléphone SEULEMENT ; grille fixe dès 768 px.
-              Sur ordinateur, les cartes inclinées faisaient déborder la rangée
-              de 4 px (mesuré à 1280 et 1440 px) : elle devenait, sans que ça
-              se voie, une zone de défilement horizontal, et un geste de
-              trackpad commencé au-dessus d'une photo s'y accrochait au lieu de
-              faire descendre la page — le « ça cale une ou deux fois » signalé
-              par Mazunda le 27/09/2026. Plus aucune zone de défilement sur
-              ordinateur = plus rien pour accrocher le geste. */}
-          <div className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 overflow-x-auto pb-3 [overscroll-behavior-x:contain] md:grid-flow-row md:grid-cols-2 md:gap-6 md:overflow-visible lg:grid-cols-4">
-            {t.day.map(([dt, d, img, alt, rot], i) => (
-              <div key={dt}>
-              <div className="md:hidden">
-                <MobilePhotoCard
-                  src={img}
-                  alt={alt}
-                  heightClass="h-[420px]"
-                  title={dt}
-                  text={d}
-                />
-              </div>
-              <Reveal delay={i * 90} className="hidden flex-col gap-3.5 md:flex">
-                <div
-                  className="ol-news-frame ol-gallery-frame relative aspect-[4/5] overflow-hidden rounded-xl shadow-ol-card"
-                  style={{ transform: `rotate(${rot})` }}
-                >
-                  <Reveal variant="zoom" className="absolute inset-0">
-                    <Image src={img} alt={alt} fill sizes="(max-width: 768px) 60vw, 280px" loading="lazy" className="photo-tone object-cover object-[50%_35%]" />
+
+          <ol className="m-0 grid list-none grid-cols-1 gap-3 p-0 md:grid-cols-2 md:gap-4 lg:h-[clamp(560px,50vw,620px)] lg:grid-cols-12 lg:grid-rows-2">
+            {t.day.map(([dt, d, alt], i) => {
+              const { img, pos, Icon } = dayMedia[i];
+              const step = String(i + 1).padStart(2, '0');
+              const isLead = i === 0;
+              return (
+                <li key={dt} className={dayTile[i]}>
+                  {/* Photo plein cadre, texte posé sur un dégradé. Sur téléphone,
+                      seule la première garde ce format ; les suivantes passent en
+                      ligne compacte (vignette + texte) juste en dessous. */}
+                  <Reveal delay={i * 90} className={`h-full ${isLead ? '' : 'hidden md:block'}`}>
+                    <figure className="ol-news-frame ol-gallery-frame relative m-0 aspect-[4/5] h-full overflow-hidden rounded-card bg-night shadow-ol-photo lg:aspect-auto">
+                      <Reveal variant="zoom" className="absolute inset-0">
+                        <Image
+                          src={img}
+                          alt={alt}
+                          fill
+                          sizes={isLead ? '(max-width: 1024px) 92vw, 480px' : '(max-width: 1024px) 46vw, 680px'}
+                          loading="lazy"
+                          className="photo-tone object-cover"
+                          style={{ objectPosition: pos }}
+                        />
+                      </Reveal>
+                      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,0)_18%,rgba(10,10,10,.72)_50%,rgba(10,10,10,.94)_100%)]" />
+                      <figcaption className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-[clamp(20px,2.2vw,32px)] text-cream">
+                        <span className="flex items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.12em] text-gold">
+                          <Icon size={20} aria-hidden />
+                          {step}
+                        </span>
+                        <h3
+                          className={`m-0 text-balance font-serif font-semibold leading-[1.15] ${
+                            isLead ? 'text-[clamp(26px,2.6vw,36px)]' : 'text-[22px]'
+                          }`}
+                        >
+                          {dt}
+                        </h3>
+                        <p className={`m-0 text-pretty text-on-dark-1 ${isLead ? 'max-w-[360px] text-[16px] leading-[1.55]' : 'text-[15px] leading-[1.5]'}`}>
+                          {d}
+                        </p>
+                      </figcaption>
+                    </figure>
                   </Reveal>
-                </div>
-                <Reveal variant="soft" delay={180 + i * 90}>
-                  <Brush fill="var(--clay)" className="h-2 w-full" stretch />
-                </Reveal>
-                <Reveal variant="soft" delay={280 + i * 90}>
-                  <h3 className="m-0 font-serif text-[22px] font-semibold">{dt}</h3>
-                </Reveal>
-                <Reveal variant="soft" delay={380 + i * 90}>
-                  <p className="m-0 text-[16px] leading-[1.55] text-ink-body">{d}</p>
-                </Reveal>
-              </Reveal>
-              </div>
-            ))}
-          </div>
+
+                  {!isLead && (
+                    <Reveal delay={i * 90} className="md:hidden">
+                      <div className="flex items-center gap-4 rounded-card bg-cream p-3 pr-4 shadow-ol-sm">
+                        <div className="relative h-[104px] w-[84px] shrink-0 overflow-hidden rounded-xl bg-night">
+                          <Image src={img} alt={alt} fill sizes="84px" loading="lazy" className="photo-tone object-cover" style={{ objectPosition: pos }} />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <span className="flex items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-[0.12em] text-copper-700">
+                            <Icon size={16} aria-hidden />
+                            {step}
+                          </span>
+                          <h3 className="m-0 font-serif text-[19px] font-semibold leading-[1.2] text-ink">{dt}</h3>
+                          <p className="m-0 text-[14px] leading-[1.45] text-ink-body">{d}</p>
+                        </div>
+                      </div>
+                    </Reveal>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </section>
 

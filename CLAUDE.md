@@ -855,6 +855,29 @@ barres aurait été trompeuse, écarté volontairement à la réflexion).
 - `CountUp` a reçu un prop `style` optionnel (pour faire varier la taille de
   police par étape sans dupliquer le composant).
 
+## Accueil : « Une journée à One Love » en mosaïque (27/09/2026)
+
+Mazunda n'aimait pas le design de la section (quatre cartes penchées de même
+taille, trait de pinceau sous chaque photo, rangée glissante sur téléphone).
+Refaite, **textes et photos inchangés** (seuls le cadrage et la mise en page
+bougent) :
+- **Ordinateur (≥ 1024 px)** : mosaïque 12 colonnes × 2 rangées (hauteur fixe
+  `clamp(560px,50vw,620px)`) — « L'arrivée » en grande photo à gauche,
+  « Atelier d'écriture » en large à droite, « Français » et « Création et
+  jeu » dessous. Texte posé sur la photo (dégradé sombre dès 18 % de la
+  hauteur : sur les petites tuiles le texte commence à mi-hauteur, et le
+  « 04 » doré était illisible sur la photo noir et blanc avec un dégradé plus
+  court). Numéro 01–04 + icône Phosphor par moment. **Plus d'inclinaison**.
+- **Tablette (768–1023 px)** : grille 2 × 2, photos au format 4:5.
+- **Téléphone** : première photo en grand, les trois suivantes en lignes
+  compactes (vignette + texte) — **plus aucune rangée glissante** dans cette
+  section, à aucune taille.
+- Cadrage par photo (`dayMedia.pos`), commun FR/EN ; les textes restent dans
+  `text.fr/en.day` (titre, texte, alt).
+- Vérifié à 375 / 820 / 1024 / 1440 px : aucun débordement de page, aucune
+  zone de défilement horizontal dans la section, molette posée sur une photo
+  = 100 px par cran dès le premier. `/en` rendu avec les textes anglais.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
