@@ -808,6 +808,23 @@ case newsletter), et le refus sans session de la page et de l'API
   pas depuis le navigateur intégré (il ralentit les animations quand son
   panneau n'est pas au premier plan — pauses d'1 s artificielles) ; c'est à
   confirmer à la vraie souris.
+- **Le calage persistait encore (3e signalement)** — Mazunda a rappelé que le
+  même problème avait été réglé sur gospel-nation (rangée des départements,
+  simple défilement natif). Vraie cause, mesurée : sur ordinateur (1280 et
+  1440 px), les cartes inclinées faisaient déborder la rangée « Une journée »
+  de **4 px** — la rangée (`overflow-x-auto`) devenait une zone de
+  défilement horizontal invisible. Sur Mac, un geste de trackpad n'est
+  jamais parfaitement vertical : commencé au-dessus d'une photo, il
+  s'accrochait à cette zone au lieu de faire descendre la page. Correctif :
+  rangée glissante **sur téléphone seulement** ; dès 768 px, grille fixe
+  (2 colonnes, 4 dès 1024 px) en `overflow-visible` — plus aucune zone de
+  défilement sur ordinateur. Vérifié : aucune zone de défilement ni
+  débordement de page à 820 / 1024 / 1280 / 1440 px, glissement conservé à
+  375 px, rendu visuel inchangé. **Leçon** : sur ce site, ne jamais laisser
+  un conteneur `overflow-x-auto` sur ordinateur quand son contenu tient à
+  l'écran — une inclinaison, une ombre ou un arrondi suffit à créer un
+  débordement de quelques pixels qui capture les gestes. Mesurer
+  `scrollWidth` vs `clientWidth` aux largeurs Mac avant de conclure.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

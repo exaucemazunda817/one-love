@@ -221,12 +221,15 @@ export function HomePage({ locale }: { locale: Locale }) {
             <h2 className={h2Class}>{t.dayTitle}</h2>
             <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.daySubtitle}</p>
           </Reveal>
-          {/* Défilement horizontal natif, sans script : l'ancien intercepteur de
-              molette (HorizontalGallery) relançait une animation de défilement
-              fluide à chaque cran de trackpad — saccades au survol, signalées
-              par Mazunda le 27/09/2026. Sans scroll-snap, le navigateur
-              transmet déjà seul la molette verticale à la page. */}
-          <div className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 md:auto-cols-[minmax(240px,1fr)] md:gap-6 overflow-x-auto pb-3 [overscroll-behavior-x:contain]">
+          {/* Rangée glissante sur téléphone SEULEMENT ; grille fixe dès 768 px.
+              Sur ordinateur, les cartes inclinées faisaient déborder la rangée
+              de 4 px (mesuré à 1280 et 1440 px) : elle devenait, sans que ça
+              se voie, une zone de défilement horizontal, et un geste de
+              trackpad commencé au-dessus d'une photo s'y accrochait au lieu de
+              faire descendre la page — le « ça cale une ou deux fois » signalé
+              par Mazunda le 27/09/2026. Plus aucune zone de défilement sur
+              ordinateur = plus rien pour accrocher le geste. */}
+          <div className="no-scrollbar grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 overflow-x-auto pb-3 [overscroll-behavior-x:contain] md:grid-flow-row md:grid-cols-2 md:gap-6 md:overflow-visible lg:grid-cols-4">
             {t.day.map(([dt, d, img, alt, rot], i) => (
               <div key={dt}>
               <div className="md:hidden">
