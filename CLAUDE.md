@@ -6,10 +6,6 @@ pilote le projet comme prestataire externe, sans écrire le code.
 
 Plan complet approuvé : `~/.claude/plans/deep-noodling-zephyr.md`.
 
-Journal des changements visibles, séance par séance : `HISTORY.md` (demande
-de Mazunda du 27/09/2026) — y ajouter une entrée après chaque série de
-modifications mises en ligne.
-
 ## Architecture
 
 Un seul projet Next.js, deux zones : **site public** sur le domaine,
