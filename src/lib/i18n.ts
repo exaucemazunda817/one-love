@@ -22,6 +22,9 @@ export function alternateHref(pathname: string): { locale: Locale; href: string 
 // numéro de la maquette était fictif.
 export const CONTACT_EMAIL = 'contact@associationonelove.org';
 export const FACEBOOK_URL = 'https://www.facebook.com/associationonelove';
+// Adresses relevées sur les liens que l'association publiait sur son ancien site.
+export const INSTAGRAM_URL = 'https://www.instagram.com/associationonelove/';
+export const YOUTUBE_URL = 'https://www.youtube.com/channel/UCC3TmpanbTEEr5nRhdz2Bgw';
 export const FACEBOOK_REELS_URL = 'https://www.facebook.com/associationonelove/reels';
 
 export const chrome = {

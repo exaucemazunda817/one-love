@@ -97,7 +97,7 @@ export const currentProject = {
   intro:
     "Lancé une première fois l'année dernière, le projet RÊVES revient avec une deuxième phase, davantage axée sur l'éducation, en partenariat avec Angel Foundation.",
   description:
-    "Sur une période de 4 mois (septembre à décembre), RÊVES 2 propose aux enfants de One Love un accompagnement structuré combinant alphabétisation, apprentissage du français, activités culturelles, sportives et artistiques. Le projet comprend également la formation des animateurs, le renforcement des ressources pédagogiques et la mise à disposition de matériel informatique. Il intègre aussi un suivi médical et psychosocial régulier pour les enfants.",
+    "Sur une période de 4 mois (septembre à décembre), RÊVES 2 propose aux enfants que nous accueillons un accompagnement structuré combinant alphabétisation, apprentissage du français, activités culturelles, sportives et artistiques. Le projet comprend également la formation des animateurs, le renforcement des ressources pédagogiques et la mise à disposition de matériel informatique. Il intègre aussi un suivi médical et psychosocial régulier pour les enfants.",
   objectif: "Renforcer les compétences, la confiance et l'autonomie des enfants.",
   firstMilestone: {
     label: "Premiers pas dans l'alphabétisation",
@@ -239,7 +239,7 @@ export const donationNotice = {
   allocation:
     "Sauf mention spéciale, l'affectation de vos dons se fait en fonction des besoins des programmes de terrain. Si vous souhaitez soutenir un programme en particulier, précisez-le lors de votre virement.",
   privacy:
-    "One Love ne commercialise pas ses fichiers de donateurs, de clients ni d'abonnés.",
+    "Nous ne commercialisons pas nos fichiers de donateurs, de clients ni d'abonnés.",
   // Volontairement absent : aucune promesse de reçu fiscal tant que
   // l'habilitation de l'association n'est pas confirmée par un rescrit.
   taxReceiptClaim: null

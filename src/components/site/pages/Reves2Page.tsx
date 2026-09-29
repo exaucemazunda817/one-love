@@ -5,7 +5,7 @@ import { HeartIcon } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { RevesLetters } from '@/components/site/effects/RevesLetters';
-import { Brush, CallBanner } from '@/components/site/ui';
+import { Brush, CallBanner, BrushLast } from '@/components/site/ui';
 import { currentProject, publishableGallery } from '@/lib/content';
 import { localeHref, type Locale } from '@/lib/i18n';
 
@@ -114,9 +114,8 @@ export function Reves2Page({ locale }: { locale: Locale }) {
 
       <section className="bg-sand">
         <div className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
-          <Reveal className="mb-8 flex items-center gap-3.5">
-            <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.galleryTitle}</h2>
-            <Brush className="h-2 w-20" />
+          <Reveal className="mb-8">
+            <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.galleryTitle} /></h2>
           </Reveal>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-6">
             {publishableGallery.map((photo, index) => (

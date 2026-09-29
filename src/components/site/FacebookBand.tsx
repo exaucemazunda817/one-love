@@ -5,13 +5,13 @@ import { FACEBOOK_URL, FACEBOOK_REELS_URL, type Locale } from '@/lib/i18n';
 const text = {
   fr: {
     title: "Le quotidien des enfants, en photos et en vidéos",
-    body: "L'équipe publie régulièrement des nouvelles du terrain sur sa page Facebook, suivie par plus de 2 000 personnes.",
+    body: "Notre équipe publie régulièrement des nouvelles du terrain sur notre page Facebook, suivie par plus de 2 000 personnes.",
     page: 'Voir la page Facebook',
     reels: 'Voir les vidéos'
   },
   en: {
     title: "The children's daily life, in photos and videos",
-    body: "The team regularly shares news from the field on its Facebook page, followed by more than 2,000 people.",
+    body: "Our team regularly shares news from the field on our Facebook page, followed by more than 2,000 people.",
     page: 'Visit our Facebook page',
     reels: 'Watch the videos'
   }

@@ -6,9 +6,9 @@ import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { HistoryHero } from '@/components/site/effects/HistoryHero';
 import { YouTubeLite } from '@/components/site/YouTubeLite';
-import { CountUp } from '@/components/site/effects/CountUp';
+import { PathTimeline } from '@/components/site/effects/PathTimeline';
 import { YearRoll } from '@/components/site/effects/YearRoll';
-import { CallBanner } from '@/components/site/ui';
+import { Brush, BrushWord, CallBanner, Eyebrow, h2Class } from '@/components/site/ui';
 import { localeHref, type Locale } from '@/lib/i18n';
 
 // Page « Notre histoire » : le parcours de l'association de 2013 à aujourd'hui,
@@ -53,8 +53,8 @@ const chapters: Chapter[] = [
     years: '2013 – 2014',
     title: { fr: 'Une idée, un couple', en: 'An idea, a couple' },
     text: {
-      fr: "One Love naît en septembre 2013, à l'initiative d'un couple franco-congolais, Kanda Kabangu et son épouse. Dès la première vidéo, la ligne est posée : agir par amour, aider en priorité les enfants, et construire dans la durée plutôt que faire de l'assistanat. En décembre 2014, l'équipe part pour la première fois en RDC.",
-      en: 'One Love was founded in September 2013 by a Franco-Congolese couple, Kanda Kabangu and his wife. From the very first video, the approach was clear: act out of love, help children first, and build for the long term rather than hand out aid. In December 2014, the team made its first trip to the DRC.'
+      fr: "Notre association naît en septembre 2013, à l'initiative d'un couple franco-congolais, Kanda Kabangu et son épouse. Dès la première vidéo, la ligne est posée : agir par amour, aider en priorité les enfants, et construire dans la durée plutôt que faire de l'assistanat. En décembre 2014, notre équipe part pour la première fois en RDC.",
+      en: 'Our association was founded in September 2013 by a Franco-Congolese couple, Kanda Kabangu and his wife. From the very first video, the approach was clear: act out of love, help children first, and build for the long term rather than hand out aid. In December 2014, our team made its first trip to the DRC.'
     },
     media: [{ kind: 'youtube', id: 'nmIvZoujNlg', title: { fr: 'One Love, la présentation (2014)', en: 'One Love, our introduction (2014)' } }]
   },
@@ -63,8 +63,8 @@ const chapters: Chapter[] = [
     years: '2015 – 2016',
     title: { fr: 'Mobiliser à Paris, poser les bases à Kinshasa', en: 'Rallying support in Paris, laying the groundwork in Kinshasa' },
     text: {
-      fr: "Le but de départ est concret : construire une école au Congo. À Paris, « One Love plays for Help » réunit près de 300 personnes le 7 juin 2015 autour d'un tournoi de basket et d'un concert. En août, l'équipe s'installe quelques semaines à Kinshasa : enregistrement de l'association au Congo, rencontre au ministère de l'Éducation, puis repérage et bornage du terrain de Kasangulu.",
-      en: 'The starting goal was concrete: build a school in Congo. In Paris, "One Love plays for Help" brought nearly 300 people together on 7 June 2015 for a basketball tournament and a concert. In August, the team spent a few weeks in Kinshasa: registering the association in Congo, meeting the Ministry of Education, then surveying and marking out the land in Kasangulu.'
+      fr: "Le but de départ est concret : construire une école au Congo. À Paris, « One Love plays for Help » réunit près de 300 personnes le 7 juin 2015 autour d'un tournoi de basket et d'un concert. En août, notre équipe s'installe quelques semaines à Kinshasa : enregistrement de notre association au Congo, rencontre au ministère de l'Éducation, puis repérage et bornage du terrain de Kasangulu.",
+      en: 'The starting goal was concrete: build a school in Congo. In Paris, "One Love plays for Help" brought nearly 300 people together on 7 June 2015 for a basketball tournament and a concert. In August, our team spent a few weeks in Kinshasa: registering our association in Congo, meeting the Ministry of Education, then surveying and marking out the land in Kasangulu.'
     },
     media: [
       photo('2015-plays-for-help', 'square', "L'affiche de One Love plays for Help, le 7 juin 2015 à Paris.", 'The poster for One Love plays for Help, 7 June 2015 in Paris.'),
@@ -78,8 +78,8 @@ const chapters: Chapter[] = [
     years: '2016 – 2017',
     title: { fr: 'Trois garçons, puis une maison', en: 'Three boys, then a home' },
     text: {
-      fr: "C'est le tournant de l'histoire. À l'été 2016, l'équipe raconte que sa plus belle rencontre a été celle de trois garçons rencontrés dans la rue. En octobre, un programme d'alphabétisation pour mineurs démarre. En 2017 apparaît la One Love House, la maison des enfants : les garçons y vivent, vont à l'école, partent en vacances et préparent leur premier spectacle de Noël.",
-      en: "This is the turning point. In summer 2016, the team said its most precious encounter had been with three boys met on the street. In October, a literacy programme for minors began. In 2017 came the One Love House, the children's home: the boys lived there, went to school, went on holiday and prepared their first Christmas show."
+      fr: "C'est le tournant de l'histoire. À l'été 2016, nous racontons que notre plus belle rencontre a été celle de trois garçons rencontrés dans la rue. En octobre, un programme d'alphabétisation pour mineurs démarre. En 2017 apparaît la One Love House, la maison des enfants : les garçons y vivent, vont à l'école, partent en vacances et préparent leur premier spectacle de Noël.",
+      en: "This is the turning point. In summer 2016, we said our most precious encounter had been with three boys we met on the street. In October, a literacy programme for minors began. In 2017 came the One Love House, the children's home: the boys lived there, went to school, went on holiday and prepared their first Christmas show."
     },
     media: [
       photo('2016-premiere-rencontre', 'square', "Les premiers garçons accueillis, avec l'équipe One Love.", 'The first boys welcomed, with the One Love team.'),
@@ -93,8 +93,8 @@ const chapters: Chapter[] = [
     years: '2018 – 2020',
     title: { fr: 'Une vraie famille', en: 'A real family' },
     text: {
-      fr: "L'association se structure : bilans de santé, scolarité payée grâce aux parrainages, une cagnotte qui dépasse 7 000 € en 2018, et un premier débroussaillage du terrain de Kasangulu. Le rythme devient celui d'une famille, avec ses anniversaires et ses sorties. En janvier 2020, One Love accueille 21 garçons de 6 à 17 ans qui vivaient dans les rues de Kinshasa, et traverse le confinement avec eux. Certains réalisent même leur propre court métrage.",
-      en: 'The association took shape: health check-ups, school fees paid through sponsorships, a fundraiser that passed €7,000 in 2018, and the first clearing of the Kasangulu land. Life took on the rhythm of a family, with birthdays and outings. In January 2020, One Love was caring for 21 boys aged 6 to 17 who had lived on the streets of Kinshasa, and went through lockdown with them. Some of them even made their own short film.'
+      fr: "Notre association se structure : bilans de santé, scolarité payée grâce aux parrainages, une cagnotte qui dépasse 7 000 € en 2018, et un premier débroussaillage du terrain de Kasangulu. Le rythme devient celui d'une famille, avec ses anniversaires et ses sorties. En janvier 2020, nous accueillons 21 garçons de 6 à 17 ans qui vivaient dans les rues de Kinshasa, et nous traversons le confinement avec eux. Certains réalisent même leur propre court métrage.",
+      en: 'Our association took shape: health check-ups, school fees paid through sponsorships, a fundraiser that passed €7,000 in 2018, and the first clearing of the Kasangulu land. Life took on the rhythm of a family, with birthdays and outings. In January 2020, we were caring for 21 boys aged 6 to 17 who had lived on the streets of Kinshasa, and went through lockdown with them. Some of them even made their own short film.'
     },
     media: [
       photo('2018-anniversaire', 'square', "Un cadeau d'anniversaire rendu possible par les parrainages, en 2018.", 'A birthday present made possible by sponsors, in 2018.'),
@@ -117,8 +117,8 @@ const chapters: Chapter[] = [
     years: '2021 – 2022',
     title: { fr: 'Ouvrir les portes', en: 'Opening the doors' },
     text: {
-      fr: "En juin 2021, One Love lance un nouveau programme : un centre aéré ouvert aux enfants du quartier, le mercredi et le samedi. Bibliothèque, informatique, alphabétisation, football : un samedi de mars 2022, 90 enfants sont accueillis. Il y a aussi les grandes sorties, comme ce jour de janvier 2022 au parc de la N'sele avec 54 enfants, et l'été 2022, le voyage « Congo je t'aime » mené avec l'église Gospel Nation.",
-      en: "In June 2021, One Love launched a new programme: a day centre open to the neighbourhood's children on Wednesdays and Saturdays. Library, computers, literacy, football: one Saturday in March 2022, 90 children came. There were big outings too, like that January 2022 day at the N'sele park with 54 children, and in summer 2022, the \"Congo je t'aime\" trip organised with the Gospel Nation church."
+      fr: "En juin 2021, nous lançons un nouveau programme : un centre aéré ouvert aux enfants du quartier, le mercredi et le samedi. Bibliothèque, informatique, alphabétisation, football : un samedi de mars 2022, 90 enfants sont accueillis. Il y a aussi les grandes sorties, comme ce jour de janvier 2022 au parc de la N'sele avec 54 enfants, et l'été 2022, le voyage « Congo je t'aime » mené avec l'église Gospel Nation.",
+      en: "In June 2021, we launched a new programme: a day centre open to the neighbourhood's children on Wednesdays and Saturdays. Library, computers, literacy, football: one Saturday in March 2022, 90 children came. There were big outings too, like that January 2022 day at the N'sele park with 54 children, and in summer 2022, the \"Congo je t'aime\" trip organised with the Gospel Nation church."
     },
     media: [
       photo('2021-bibliotheque', 'square', 'Lecture et jeux à la bibliothèque du centre.', "Reading and games in the centre's library."),
@@ -137,8 +137,8 @@ const chapters: Chapter[] = [
     years: '2023 – 2024',
     title: { fr: "Changer d'échelle", en: 'Scaling up' },
     text: {
-      fr: "Les premiers garçons accueillis sont maintenant au secondaire. Le centre sert jusqu'à 136 repas en une journée et reçoit une centaine d'enfants chaque semaine. Pour financer le One Love Village de Kasangulu, l'association organise un dîner caritatif à l'hôtel Pullman de Kinshasa : près de 260 invités le 8 décembre 2023, puis une deuxième édition le 13 décembre 2024, avec de grands partenaires comme la Fondation Vodacom.",
-      en: "The first boys welcomed are now in secondary school. The centre has served up to 136 meals in a single day and welcomes around a hundred children every week. To fund the One Love Village in Kasangulu, the association holds a charity dinner at the Pullman hotel in Kinshasa: nearly 260 guests on 8 December 2023, then a second edition on 13 December 2024, with major partners such as the Vodacom Foundation."
+      fr: "Les premiers garçons accueillis sont maintenant au secondaire. Le centre sert jusqu'à 136 repas en une journée et reçoit une centaine d'enfants chaque semaine. Pour financer le One Love Village de Kasangulu, nous organisons un dîner caritatif à l'hôtel Pullman de Kinshasa : près de 260 invités le 8 décembre 2023, puis une deuxième édition le 13 décembre 2024, avec de grands partenaires comme la Fondation Vodacom.",
+      en: "The first boys welcomed are now in secondary school. The centre has served up to 136 meals in a single day and welcomes around a hundred children every week. To fund the One Love Village in Kasangulu, we hold a charity dinner at the Pullman hotel in Kinshasa: nearly 260 guests on 8 December 2023, then a second edition on 13 December 2024, with major partners such as the Vodacom Foundation."
     },
     media: [
       photo('2023-rentree', 'landscape', 'Le chemin de l’école, rentrée 2023.', 'On the way to school, back to school 2023.'),
@@ -191,7 +191,11 @@ const text = {
     intro: 'Un couple, trois garçons rencontrés dans la rue, puis un centre qui accueille une centaine d’enfants chaque semaine.',
     heroAlt: 'Des garçons de One Love sur le chemin de l’école.',
     jumpLabel: 'Aller à une période',
-    pathTitle: 'Le chemin parcouru',
+    pathEyebrow: 'En quelques chiffres',
+    pathTitlePre: 'Le chemin ',
+    pathTitleWord: 'parcouru',
+    chapter: 'Chapitre',
+    chaptersEyebrow: 'Année après année',
     // Chiffres publiés par l'association sur Instagram, chacun daté.
     path: [
       { value: 3, prefix: '', label: 'garçons rencontrés dans la rue', when: 'été 2016' },
@@ -216,7 +220,11 @@ const text = {
     intro: 'A couple, three boys met on the street, then a centre that welcomes around a hundred children every week.',
     heroAlt: 'One Love boys on their way to school.',
     jumpLabel: 'Jump to a period',
-    pathTitle: 'How far we have come',
+    pathEyebrow: 'In a few figures',
+    pathTitlePre: 'How far we ',
+    pathTitleWord: 'have come',
+    chapter: 'Chapter',
+    chaptersEyebrow: 'Year after year',
     path: [
       { value: 3, prefix: '', label: 'boys met on the street', when: 'summer 2016' },
       { value: 21, prefix: '', label: 'boys living at the One Love House', when: 'January 2020' },
@@ -325,32 +333,23 @@ export function HistoryPage({ locale }: { locale: Locale }) {
       />
 
       <section aria-labelledby="chemin-titre" className="bg-sand">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">
-          <Reveal>
-            <h2 id="chemin-titre" className="m-0 font-serif text-[clamp(26px,3vw,36px)] font-medium leading-[1.15]">
-              {t.pathTitle}
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
+          <Reveal className="flex max-w-[680px] flex-col gap-3">
+            <Eyebrow>{t.pathEyebrow}</Eyebrow>
+            <h2 id="chemin-titre" className={h2Class}>
+              {t.pathTitlePre}
+              <BrushWord>{t.pathTitleWord}</BrushWord>
             </h2>
           </Reveal>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-4">
-            {t.path.map((item) => (
-              <Reveal key={item.label} className="flex flex-col gap-1.5">
-                <CountUp
-                  value={item.value}
-                  prefix={item.prefix}
-                  className="font-serif text-[clamp(44px,5vw,64px)] font-medium leading-none text-copper-600"
-                />
-                <span className="text-[16px] leading-[1.4] text-ink">{item.label}</span>
-                <span className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-ink-soft">{item.when}</span>
-              </Reveal>
-            ))}
-          </div>
+          <PathTimeline steps={t.path.map((x) => ({ ...x }))} />
         </div>
       </section>
 
       <nav
         aria-label={t.jumpLabel}
-        className="mx-auto flex max-w-[1200px] flex-wrap gap-2 px-[clamp(20px,4vw,32px)] pt-[clamp(32px,5vw,56px)]"
+        className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-2 px-[clamp(20px,4vw,32px)] pt-[clamp(40px,6vw,72px)]"
       >
+        <Eyebrow className="mr-3">{t.chaptersEyebrow}</Eyebrow>
         {chapters.map((c) => (
           <a
             key={c.id}
@@ -362,33 +361,37 @@ export function HistoryPage({ locale }: { locale: Locale }) {
         ))}
       </nav>
 
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-[clamp(56px,8vw,96px)] px-[clamp(20px,4vw,32px)] py-[clamp(40px,6vw,72px)]">
-        {chapters.map((c, ci) => (
-          <section
-            key={c.id}
-            id={c.id}
-            aria-labelledby={`${c.id}-titre`}
-            className="grid scroll-mt-[var(--header-clear-lg)] gap-8 dk:grid-cols-[300px_minmax(0,1fr)] dk:gap-14"
-          >
+      {chapters.map((c, ci) => (
+        <section
+          key={c.id}
+          id={c.id}
+          aria-labelledby={`${c.id}-titre`}
+          className={`scroll-mt-[var(--header-clear-lg)] ${ci % 2 === 1 ? 'bg-sand' : ''}`}
+        >
+          <div className="mx-auto grid max-w-[1200px] gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)] dk:grid-cols-[300px_minmax(0,1fr)] dk:gap-14">
             <Reveal className="flex flex-col gap-3 dk:sticky dk:top-28 dk:self-start">
+              <Eyebrow>
+                {t.chapter} {ci + 1}
+              </Eyebrow>
               <span className="whitespace-nowrap font-serif text-[clamp(32px,3.4vw,42px)] font-medium leading-none tabular-nums text-copper-600">
                 <YearRoll from={chapters[ci - 1]?.id ?? '2000'} to={c.id} />
                 {c.years.slice(4)}
               </span>
+              <Brush fill="var(--clay)" className="h-2 w-full max-w-[220px]" stretch />
               <h2 id={`${c.id}-titre`} className="m-0 text-balance font-serif text-[clamp(24px,2.6vw,30px)] font-medium leading-[1.2]">
                 {c.title[locale]}
               </h2>
               <p className="m-0 max-w-measure text-pretty text-[16px] leading-[1.65] text-ink-body">{c.text[locale]}</p>
             </Reveal>
 
-            <div className="grid grid-flow-dense grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+            <div className={`grid grid-flow-dense grid-cols-2 gap-3 sm:gap-4 ${c.media.length === 1 ? '' : 'lg:grid-cols-3'}`}>
               {c.media.map((m, i) => (
                 <MediaItem key={m.kind === 'youtube' ? m.id : m.src} m={m} locale={locale} playLabel={t.play} index={i} />
               ))}
             </div>
-          </section>
-        ))}
-      </div>
+          </div>
+        </section>
+      ))}
 
       <CallBanner
         title={t.bannerTitle}
@@ -398,6 +401,7 @@ export function HistoryPage({ locale }: { locale: Locale }) {
         donateHref={href('/dons')}
         sponsorHref={href('/parrainer')}
         Icon={HeartIcon}
+        spaced={false}
       />
     </>
   );

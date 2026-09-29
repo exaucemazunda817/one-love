@@ -70,7 +70,7 @@ const T = {
     cardSoonTag: 'Bientôt',
     cardSoonNote: 'Le paiement par carte sera bientôt disponible. En attendant, le virement bancaire est ouvert.',
     thanksTransfer:
-      "Merci ! Pensez à indiquer votre nom dans le libellé du virement, pour que l'association puisse vous remercier.",
+      "Merci ! Pensez à indiquer votre nom dans le libellé du virement, pour que nous puissions vous remercier.",
     momoEmail: 'Votre e-mail',
     momoSent: "C'est noté : nous vous préviendrons.",
     momoFallbackName: 'Donateur (Mobile Money)',
@@ -78,7 +78,7 @@ const T = {
     momoMessage: (phone: string) =>
       `Merci de me prévenir quand le don par Mobile Money sera disponible. Téléphone : ${phone}`,
     impact: '≈ 100 enfants accueillis chaque semaine au centre (2024)',
-    transferTrust: "Virement direct sur le compte de l'association",
+    transferTrust: "Virement direct sur le compte de notre association",
     payMethod: 'Moyen de paiement',
     methods: {
       card: { t: 'Carte bancaire ou prélèvement SEPA', d: 'Via Stripe, en quelques instants', tag: 'Recommandé' },
@@ -152,7 +152,7 @@ const T = {
     cardSoonTag: 'Coming soon',
     cardSoonNote: 'Card payment will be available soon. In the meantime, bank transfer is open.',
     thanksTransfer:
-      'Thank you! Please put your name in the transfer reference so the association can thank you.',
+      'Thank you! Please put your name in the transfer reference so that we can thank you.',
     momoEmail: 'Your email',
     momoSent: "Noted: we'll let you know.",
     momoFallbackName: 'Donor (Mobile Money)',
@@ -160,7 +160,7 @@ const T = {
     momoMessage: (phone: string) =>
       `Please let me know when giving by Mobile Money is available. Phone: ${phone}`,
     impact: '≈ 100 children welcomed at the centre every week (2024)',
-    transferTrust: "Direct transfer to the association's account",
+    transferTrust: "Direct transfer to our association's account",
     payMethod: 'Payment method',
     methods: {
       card: { t: 'Card or SEPA direct debit', d: 'Via Stripe, in a few moments', tag: 'Recommended' },

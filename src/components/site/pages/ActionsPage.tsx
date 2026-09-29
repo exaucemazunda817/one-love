@@ -13,7 +13,7 @@ import {
 } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
-import { Eyebrow, CallBanner } from '@/components/site/ui';
+import { Eyebrow, CallBanner, BrushLast, BrushWord } from '@/components/site/ui';
 import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { currentProject } from '@/lib/content';
@@ -38,10 +38,10 @@ const text = {
     ],
     revesEyebrow: 'Projet en cours · septembre à décembre 2026',
     revesText:
-      "Sur une période de 4 mois, RÊVES 2 propose aux enfants de One Love un accompagnement structuré combinant alphabétisation, apprentissage du français, activités culturelles, sportives et artistiques. Le projet comprend également la formation des animateurs, le renforcement des ressources pédagogiques et la mise à disposition de matériel informatique.",
+      "Sur une période de 4 mois, RÊVES 2 propose aux enfants que nous accueillons un accompagnement structuré combinant alphabétisation, apprentissage du français, activités culturelles, sportives et artistiques. Le projet comprend également la formation des animateurs, le renforcement des ressources pédagogiques et la mise à disposition de matériel informatique.",
     revesLink: 'Découvrir le projet',
     bannerTitle: 'Chaque programme tient grâce à des soutiens réguliers.',
-    bannerText: 'Choisissez un programme à soutenir, ou laissez l’équipe affecter votre don là où il est le plus utile.'
+    bannerText: 'Choisissez un programme à soutenir, ou laissez notre équipe affecter votre don là où il est le plus utile.'
   },
   en: {
     title: 'Our work',
@@ -62,10 +62,10 @@ const text = {
     ],
     revesEyebrow: 'Current project · September to December 2026',
     revesText:
-      "Over 4 months, RÊVES 2 offers One Love's children structured support combining literacy, French lessons, and cultural, sports and art activities. It also includes facilitator training, stronger teaching resources and computer equipment.",
+      "Over 4 months, RÊVES 2 offers the children we look after structured support combining literacy, French lessons, and cultural, sports and art activities. It also includes facilitator training, stronger teaching resources and computer equipment.",
     revesLink: 'Discover the project',
     bannerTitle: 'Every programme relies on regular support.',
-    bannerText: 'Choose a programme to support, or let the team allocate your gift where it helps most.'
+    bannerText: 'Choose a programme to support, or let our team allocate your gift where it helps most.'
   }
 };
 
@@ -144,7 +144,7 @@ export function ActionsPage({ locale }: { locale: Locale }) {
         <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-x-16 gap-y-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
           <Reveal className="flex flex-col gap-3.5">
             <Eyebrow>{t.revesEyebrow}</Eyebrow>
-            <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{currentProject.name}</h2>
+            <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushWord>{currentProject.name}</BrushWord></h2>
             <p className="m-0 text-[15px] font-extrabold tracking-[0.04em] text-copper-700">{currentProject.acronymMeaning}</p>
           </Reveal>
           <Reveal delay={90} className="flex flex-col gap-4">

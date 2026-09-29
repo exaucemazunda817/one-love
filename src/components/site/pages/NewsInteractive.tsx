@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { XIcon } from '@phosphor-icons/react';
+import { BrushLast } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
 import { publishableGallery } from '@/lib/content';
@@ -115,7 +116,7 @@ export function NewsInteractive({ t }: { t: NewsText }) {
       <section className="bg-sand">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
           <Reveal className="flex max-w-[640px] flex-col gap-3">
-            <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.galleryTitle}</h2>
+            <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.galleryTitle} /></h2>
             <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.galleryIntro}</p>
           </Reveal>
 

@@ -25,7 +25,7 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
       { tag: 'RÊVES 2', date: '5 sept. 2026', t: "Premiers pas dans l'alphabétisation", url: 'https://www.instagram.com/p/DdHIhhejfqo/', d: "Samedi 5 septembre, les enfants ont ouvert leurs cahiers pour le lancement de RÊVES 2.", img: '/photos/photo-ecriture.jpg', alt: 'Une jeune fille écrit.' },
       { tag: 'Éducation', date: 'Sept. 2026', t: "Le français, langue de l'école", url: 'https://www.instagram.com/p/DdBdhKqjeDY/', d: "Pourquoi l'apprentissage du français est au cœur de la deuxième phase.", img: '/photos/photo-cahier.jpg', alt: 'Un garçon écrit dans son cahier.' },
       { tag: 'Culture', date: 'Sept. 2026', t: 'Jeu, sport et création', url: 'https://www.instagram.com/reel/DdUgL_Hg32u/', d: 'Dessin, musique et football : réapprendre la vie en groupe.', img: '/photos/photo-dessin.jpg', alt: 'Deux garçons dessinent.' },
-      { tag: 'RÊVES 2', date: 'Sept. 2026', t: 'Nos formateurs mobilisés', url: 'https://www.instagram.com/reel/DdEItmagznY/', d: "L'équipe d'animateurs formée pour encadrer les ateliers.", img: '/photos/photo-mains.jpg', alt: 'Des mains colorient des lettres.' },
+      { tag: 'RÊVES 2', date: 'Sept. 2026', t: 'Nos formateurs mobilisés', url: 'https://www.instagram.com/reel/DdEItmagznY/', d: "Notre équipe d'animateurs formée pour encadrer les ateliers.", img: '/photos/photo-mains.jpg', alt: 'Des mains colorient des lettres.' },
       { tag: 'Partenariat', date: '2026', t: 'Angel Foundation à nos côtés', url: 'https://www.instagram.com/angelfoundationrdc/p/DR_rTe4jRSt/', d: 'Un partenaire engagé à nos côtés pour la deuxième phase du projet RÊVES.', img: '/photos/coeur-degrade.jpg', alt: '' }
     ],
     galleryTitle: 'Galerie',
@@ -49,7 +49,7 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
       { tag: 'RÊVES 2', date: '5 Sept. 2026', t: 'First steps in literacy', url: 'https://www.instagram.com/p/DdHIhhejfqo/', d: 'On Saturday 5 September, the children opened their notebooks for the launch of RÊVES 2.', img: '/photos/photo-ecriture.jpg', alt: 'A girl writing.' },
       { tag: 'Education', date: 'Sept. 2026', t: 'French, the language of school', url: 'https://www.instagram.com/p/DdBdhKqjeDY/', d: 'Why learning French is at the heart of the second phase.', img: '/photos/photo-cahier.jpg', alt: 'A boy writes in his notebook.' },
       { tag: 'Culture', date: 'Sept. 2026', t: 'Play, sport and creativity', url: 'https://www.instagram.com/reel/DdUgL_Hg32u/', d: 'Drawing, music and football: learning to live together again.', img: '/photos/photo-dessin.jpg', alt: 'Two boys drawing.' },
-      { tag: 'RÊVES 2', date: 'Sept. 2026', t: 'Our trainers at work', url: 'https://www.instagram.com/reel/DdEItmagznY/', d: 'The team of facilitators trained to run the workshops.', img: '/photos/photo-mains.jpg', alt: 'Hands colouring in letters.' },
+      { tag: 'RÊVES 2', date: 'Sept. 2026', t: 'Our trainers at work', url: 'https://www.instagram.com/reel/DdEItmagznY/', d: 'Our team of facilitators trained to run the workshops.', img: '/photos/photo-mains.jpg', alt: 'Hands colouring in letters.' },
       { tag: 'Partnership', date: '2026', t: 'Angel Foundation by our side', url: 'https://www.instagram.com/angelfoundationrdc/p/DR_rTe4jRSt/', d: 'A committed partner at our side for the second phase of the RÊVES project.', img: '/photos/coeur-degrade.jpg', alt: '' }
     ],
     galleryTitle: 'Gallery',

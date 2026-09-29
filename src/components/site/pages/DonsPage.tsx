@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
 import { HeroBackground } from '@/components/site/HeroBackground';
-import { BrushWord, Eyebrow } from '@/components/site/ui';
+import { BrushWord, Eyebrow, BrushLast } from '@/components/site/ui';
 import { DonationFlow } from '@/components/site/DonationFlow';
 import { CancelNotice } from '@/app/(site)/dons/CancelNotice';
 import { localeHref, type Locale } from '@/lib/i18n';
@@ -23,13 +23,13 @@ export const text = {
     fundsIntro:
       "Sauf mention spéciale, l'affectation de vos dons se fait en fonction des besoins des programmes de terrain. Si vous souhaitez soutenir un programme en particulier, précisez-le lors de votre virement.",
     privacyTitle: 'Respect de votre vie privée',
-    privacyText: "One Love ne commercialise pas ses fichiers de donateurs, de clients ni d'abonnés. Voir notre",
+    privacyText: "Nous ne commercialisons pas nos fichiers de donateurs, de clients ni d'abonnés. Voir notre",
     privacyLink: 'politique de confidentialité',
     sponsorTitle: 'Parrainer plutôt ?',
     sponsorText: "Un engagement mensuel qui assure la continuité de l'accompagnement d'un enfant.",
     sponsorCta: 'Découvrir le parrainage',
     otherTitle: "Autrement qu'un don",
-    otherText: "Vous pouvez aussi rejoindre l'équipe comme bénévole ou construire un partenariat avec l'association.",
+    otherText: "Vous pouvez aussi rejoindre notre équipe comme bénévole ou construire un partenariat avec notre association.",
     otherCta: 'Prendre contact',
     cancelled: 'Le paiement a été annulé. Aucun montant n’a été prélevé.'
   },
@@ -45,13 +45,13 @@ export const text = {
     fundsIntro:
       'Unless otherwise specified, your gift is allocated according to the needs of our field programmes. If you would like to support a specific programme, please mention it in your transfer.',
     privacyTitle: 'Respecting your privacy',
-    privacyText: 'One Love does not sell its donor, customer or subscriber lists. See our',
+    privacyText: 'We do not sell our donor, customer or subscriber lists. See our',
     privacyLink: 'privacy policy',
     sponsorTitle: 'Sponsor instead?',
     sponsorText: 'A monthly commitment that ensures continuous support for a child.',
     sponsorCta: 'Discover sponsorship',
     otherTitle: 'Other ways to help',
-    otherText: 'You can also join the team as a volunteer or build a partnership with the association.',
+    otherText: 'You can also join our team as a volunteer or build a partnership with our association.',
     otherCta: 'Get in touch',
     cancelled: 'The payment was cancelled. No amount was charged.'
   }
@@ -97,7 +97,7 @@ export function DonsPage({ locale }: { locale: Locale }) {
 
       <section className="bg-sand">
         <Reveal className="mx-auto flex max-w-[1200px] flex-col gap-3 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
-          <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.fundsTitle}</h2>
+          <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.fundsTitle} /></h2>
           <p className="m-0 max-w-measure text-[16px] leading-[1.6] text-ink-body">{t.fundsIntro}</p>
         </Reveal>
       </section>

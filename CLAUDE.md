@@ -917,3 +917,35 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Parrainage = paiement (décision de Mazunda, 29/09/2026)
+
+Sans paiement, personne ne devient parrain ; dès qu'un paiement est confirmé,
+quel que soit le montant de la formule, la personne est inscrite
+automatiquement dans la liste des parrains et reçoit les informations du
+parrainage.
+
+- **Flux** : formulaire de `/parrainer` → `POST /api/parrainer/session`
+  (montant lu dans `SPONSOR_PLANS`, `src/lib/sponsorship.ts`, jamais dans la
+  requête) → Stripe Checkout en abonnement mensuel → webhook
+  `invoice.paid` → `recordSponsorFromInvoice()` crée la ligne `Sponsor`
+  (idempotent : `stripeSubscriptionId` unique) + courriel de bienvenue
+  (`sendSponsorWelcome`, silencieux sans Resend). `customer.subscription.deleted`
+  passe le parrain à « Terminé ».
+- **Aucune ligne `Sponsor` ne doit être créée ailleurs que dans le webhook.**
+- **Liste interne** : `/gestion/parrains` (DIRECTION). Aucun nom publié sur le
+  site (RGPD, appartenance à un programme d'aide à l'enfance).
+- **Tant que Stripe n'est pas configuré**, le bouton affiche « Bientôt
+  disponible » (`paymentEnabled={isStripeConfigured()}`, lu au build : redéployer
+  après ajout de la clé). L'ancien circuit « demande par e-mail, rappel sous
+  7 jours » n'existe plus sur la page.
+- **Schéma** : table `sponsors` (+ enums `SponsorMode`, `SponsorStatus`)
+  appliquée à la base de production le 29/09/2026 (ajout seul, par SQL).
+- **Stripe, événements à cocher sur le endpoint webhook** : `checkout.session.completed`,
+  `invoice.paid`, `customer.subscription.deleted`.
+- **Testé le 29/09/2026** sur une branche Neon jetable avec un faux Stripe :
+  21 vérifications (parrain créé au paiement, jamais avant, rejeu sans doublon,
+  2e mois, montant libre, facture à 0 €, résiliation, signature invalide,
+  formule inconnue, session de paiement). **Jamais testé avec un vrai Stripe** :
+  à faire en mode test dès que le compte existe.
+- **Montant libre** : 1 à 5 000 €/mois (`sponsorSessionSchema`), en plus des formules.

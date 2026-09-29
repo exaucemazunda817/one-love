@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo';
-import { EnvelopeSimpleIcon, FacebookLogoIcon } from '@phosphor-icons/react/ssr';
+import { EnvelopeSimpleIcon, FacebookLogoIcon, InstagramLogoIcon, YoutubeLogoIcon } from '@phosphor-icons/react/ssr';
+import { BrushLast } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { ContactFormCard } from '@/components/site/pages/ContactFormCard';
-import { CONTACT_EMAIL, FACEBOOK_URL, type Locale } from '@/lib/i18n';
+import { CONTACT_EMAIL, FACEBOOK_URL, INSTAGRAM_URL, YOUTUBE_URL, type Locale } from '@/lib/i18n';
 
 const text = {
   fr: {
@@ -13,10 +14,13 @@ const text = {
     eyebrow: 'Contact',
     titlePre: 'Écrivez-nous, nous ',
     titleWord: 'répondons',
-    intro: 'Une question sur un don, un parrainage, une visite ou un partenariat : écrivez-nous par le formulaire, par e-mail ou sur Facebook.',
+    intro: 'Une question sur un don, un parrainage, une visite ou un partenariat : écrivez-nous par le formulaire, par e-mail ou sur nos réseaux sociaux.',
     heroAlt: "Des mains d'enfants colorient des lettres.",
     email: 'E-mail',
     facebook: 'Facebook',
+    instagram: 'Instagram',
+    youtube: 'YouTube',
+    youtubeName: '@AssociationOneLove',
     formTitle: 'Formulaire de contact',
     name: 'Prénom et nom',
     subject: 'Sujet',
@@ -30,7 +34,7 @@ const text = {
     sendAnother: 'Envoyer un autre message',
     error: 'Une erreur est survenue. Merci de réessayer.',
     visitTitle: 'Visiter le centre',
-    visitText: "Les visites se font sur rendez-vous, accompagnées d'un membre de l'équipe, pour respecter le rythme des enfants.",
+    visitText: "Les visites se font sur rendez-vous, accompagnées d'un membre de notre équipe, pour respecter le rythme des enfants.",
   },
   en: {
     title: 'Contact',
@@ -38,10 +42,13 @@ const text = {
     eyebrow: 'Contact',
     titlePre: 'Write to us, we ',
     titleWord: 'reply',
-    intro: 'A question about a gift, sponsorship, a visit or a partnership? Write to us using the form, by email or on Facebook.',
+    intro: 'A question about a gift, sponsorship, a visit or a partnership? Write to us using the form, by email or on our social networks.',
     heroAlt: "Children's hands colouring in letters.",
     email: 'Email',
     facebook: 'Facebook',
+    instagram: 'Instagram',
+    youtube: 'YouTube',
+    youtubeName: '@AssociationOneLove',
     formTitle: 'Contact form',
     name: 'Full name',
     subject: 'Subject',
@@ -79,7 +86,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
         imageAlt={t.heroAlt}
       />
 
-      <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4 px-[clamp(20px,4vw,32px)] pt-[clamp(56px,8vw,104px)]">
+      <section className="mx-auto grid max-w-[1200px] grid-cols-1 gap-4 px-[clamp(20px,4vw,32px)] pt-[clamp(56px,8vw,104px)] sm:grid-cols-2">
         <Reveal>
           <a href={`mailto:${CONTACT_EMAIL}`} className="flex flex-col gap-3 rounded-card bg-white p-7 text-ink no-underline shadow-ol-sm hover:text-ink">
             <EnvelopeSimpleIcon size={36} className="text-copper-600" aria-hidden />
@@ -94,6 +101,20 @@ export function ContactPage({ locale }: { locale: Locale }) {
             <span className="text-[16px] text-ink-body">associationonelove</span>
           </a>
         </Reveal>
+        <Reveal delay={180}>
+          <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="flex flex-col gap-3 rounded-card bg-white p-7 text-ink no-underline shadow-ol-sm hover:text-ink">
+            <InstagramLogoIcon size={36} className="text-copper-600" aria-hidden />
+            <b className="font-serif text-[24px] font-medium">{t.instagram}</b>
+            <span className="text-[16px] text-ink-body">@associationonelove</span>
+          </a>
+        </Reveal>
+        <Reveal delay={270}>
+          <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="flex flex-col gap-3 rounded-card bg-white p-7 text-ink no-underline shadow-ol-sm hover:text-ink">
+            <YoutubeLogoIcon size={36} className="text-copper-600" aria-hidden />
+            <b className="font-serif text-[24px] font-medium">{t.youtube}</b>
+            <span className="text-[16px] text-ink-body">{t.youtubeName}</span>
+          </a>
+        </Reveal>
       </section>
 
       <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start gap-[clamp(32px,5vw,64px)] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
@@ -102,7 +123,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
         </Reveal>
 
         <Reveal delay={90} className="flex flex-col gap-5">
-          <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.visitTitle}</h2>
+          <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.visitTitle} /></h2>
           <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.visitText}</p>
         </Reveal>
       </section>

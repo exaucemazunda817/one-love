@@ -11,7 +11,7 @@ import {
   CheckIcon
 } from '@phosphor-icons/react';
 import { Reveal } from '@/components/Reveal';
-import { BrushWord } from '@/components/site/ui';
+import { BrushWord, BrushLast } from '@/components/site/ui';
 import { localeHref, type Locale } from '@/lib/i18n';
 
 export type Interest = 'benevolat' | 'nature' | 'collecte' | 'partenariat';
@@ -98,7 +98,7 @@ export function InvolvedInteractive({
     <>
       <section className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
         <Reveal>
-          <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.waysTitle}</h2>
+          <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.waysTitle} /></h2>
         </Reveal>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4">
           {t.ways.map((w, i) => {

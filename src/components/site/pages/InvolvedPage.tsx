@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRightIcon } from '@phosphor-icons/react/ssr';
 import { pageMetadata } from '@/lib/seo';
+import { BrushLast } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { InvolvedInteractive } from '@/components/site/pages/InvolvedInteractive';
@@ -13,9 +14,10 @@ const text = {
     desc: 'Bénévolat, dons en nature, collectes et partenariats pour soutenir les programmes de terrain de One Love à Kinshasa.',
     eyebrow: "S'impliquer",
     titlePre: 'Donner de son ',
-    titleWord: 'temps',
-    titlePost: ', de ses talents',
-    intro: "Vous pouvez soutenir nos programmes de terrain, rejoindre l'équipe comme bénévole, ou construire un partenariat avec l'association.",
+    // La virgule est dans le mot souligné : seule, elle passait à la ligne sur mobile.
+    titleWord: 'temps,',
+    titlePost: ' de ses talents',
+    intro: "Vous pouvez soutenir nos programmes de terrain, rejoindre notre équipe comme bénévole, ou construire un partenariat avec notre association.",
     heroAlt: 'Deux garçons dessinent à une table en plein air.',
     waysTitle: "Quatre façons de s'impliquer",
     ways: [
@@ -57,7 +59,7 @@ const text = {
     titlePre: 'Give your ',
     titleWord: 'time',
     titlePost: ' and your talents',
-    intro: 'You can support our field programmes, join the team as a volunteer, or build a partnership with the association.',
+    intro: 'You can support our field programmes, join our team as a volunteer, or build a partnership with our association.',
     heroAlt: 'Two boys drawing at an outdoor table.',
     waysTitle: 'Four ways to get involved',
     ways: [
@@ -122,7 +124,7 @@ export function InvolvedPage({ locale }: { locale: Locale }) {
           <section className="bg-sand">
             <div className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
               <Reveal className="flex max-w-[640px] flex-col gap-3">
-                <h2 className="m-0 font-serif text-[clamp(28px,3vw,38px)] font-medium leading-[1.2]">{t.needsTitle}</h2>
+                <h2 className="m-0 font-serif text-[clamp(28px,3vw,38px)] font-medium leading-[1.2]"><BrushLast text={t.needsTitle} /></h2>
                 <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.needsIntro}</p>
               </Reveal>
               <Reveal delay={90} className="mt-5">

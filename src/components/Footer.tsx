@@ -2,7 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   EnvelopeSimpleIcon,
-  FacebookLogoIcon
+  FacebookLogoIcon,
+  InstagramLogoIcon,
+  YoutubeLogoIcon
 } from '@phosphor-icons/react/ssr';
 import { NewsletterForm } from '@/components/forms/NewsletterForm';
 import { Reveal } from '@/components/Reveal';
@@ -11,6 +13,8 @@ import {
   localeHref,
   CONTACT_EMAIL,
   FACEBOOK_URL,
+  INSTAGRAM_URL,
+  YOUTUBE_URL,
   type Locale
 } from '@/lib/i18n';
 
@@ -50,6 +54,14 @@ export function Footer({ locale }: { locale: Locale }) {
             <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" className={`${linkClass} gap-2`}>
               <Reveal variant="pop" delay={380} className="flex"><FacebookLogoIcon size={20} aria-hidden /></Reveal>
               Facebook
+            </a>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className={`${linkClass} gap-2`}>
+              <Reveal variant="pop" delay={440} className="flex"><InstagramLogoIcon size={20} aria-hidden /></Reveal>
+              Instagram
+            </a>
+            <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className={`${linkClass} gap-2`}>
+              <Reveal variant="pop" delay={500} className="flex"><YoutubeLogoIcon size={20} aria-hidden /></Reveal>
+              YouTube
             </a>
           </Reveal>
 

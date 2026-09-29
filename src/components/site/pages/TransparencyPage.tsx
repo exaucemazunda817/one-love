@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { ShieldCheckIcon, LockKeyIcon, ArrowRightIcon } from '@phosphor-icons/react/ssr';
+import { BrushLast } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { localeHref, type Locale } from '@/lib/i18n';
@@ -17,7 +18,7 @@ const text = {
     intro: 'Statut, emploi des fonds et protection des enfants : ce que vous êtes en droit de savoir.',
     heroAlt: 'Une jeune fille écrit dans son cahier.',
     statusTitle: 'Statut juridique',
-    statusText: 'One Love est une association loi 1901 à but non lucratif, qui mène ses projets en République démocratique du Congo.',
+    statusText: 'Nous sommes une association loi 1901 à but non lucratif et nous menons nos projets en République démocratique du Congo.',
     fields: [
       ['Forme', 'Association loi 1901'],
       ['N° RNA', org.rna],
@@ -28,9 +29,9 @@ const text = {
     fundsTitle: "L'emploi des fonds",
     fundsIntro: "Sauf mention spéciale, l'affectation de vos dons se fait en fonction des besoins des programmes de terrain.",
     childTitle: 'Protection des enfants',
-    childText: "Aucun nom complet, lieu précis ou récit personnel identifiable n'est associé à un visage sur nos supports. Les liens avec les parrains passent toujours par l'équipe.",
+    childText: "Aucun nom complet, lieu précis ou récit personnel identifiable n'est associé à un visage sur nos supports. Les liens avec les parrains passent toujours par notre équipe.",
     dataTitle: 'Protection des données',
-    dataText: 'One Love ne commercialise pas ses fichiers de donateurs, de clients ni d’abonnés.',
+    dataText: 'Nous ne commercialisons pas nos fichiers de donateurs, de clients ni d’abonnés.',
     dataLink: 'Politique de confidentialité'
   },
   en: {
@@ -42,7 +43,7 @@ const text = {
     intro: 'Legal status, use of funds and child protection: what you have a right to know.',
     heroAlt: 'A girl writes in her notebook.',
     statusTitle: 'Legal status',
-    statusText: 'One Love is a French non-profit association (loi 1901) carrying out projects in the Democratic Republic of the Congo.',
+    statusText: 'We are a French non-profit association (loi 1901) carrying out our projects in the Democratic Republic of the Congo.',
     fields: [
       ['Type', 'Non-profit association (loi 1901)'],
       ['RNA no.', org.rna],
@@ -53,9 +54,9 @@ const text = {
     fundsTitle: 'Use of funds',
     fundsIntro: 'Unless you specify otherwise, gifts are allocated according to the needs of our field programmes.',
     childTitle: 'Child protection',
-    childText: 'No full name, precise location or identifiable personal story is ever linked to a face in our materials. Contact with sponsors always goes through the team.',
+    childText: 'No full name, precise location or identifiable personal story is ever linked to a face in our materials. Contact with sponsors always goes through our team.',
     dataTitle: 'Data protection',
-    dataText: 'One Love never sells its donor, customer or subscriber lists.',
+    dataText: 'We never sell our donor, customer or subscriber lists.',
     dataLink: 'Privacy policy'
   }
 };
@@ -82,7 +83,7 @@ export function TransparencyPage({ locale }: { locale: Locale }) {
 
       <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-16 gap-y-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
         <Reveal className="flex flex-col gap-3">
-          <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.statusTitle}</h2>
+          <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.statusTitle} /></h2>
           <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.statusText}</p>
         </Reveal>
         <Reveal delay={90}>
@@ -102,7 +103,7 @@ export function TransparencyPage({ locale }: { locale: Locale }) {
 
       <section className="bg-sand">
         <Reveal className="mx-auto flex max-w-[1200px] flex-col gap-3.5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
-          <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.fundsTitle}</h2>
+          <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.fundsTitle} /></h2>
           <p className="m-0 max-w-measure text-pretty text-[17px] leading-[1.65] text-ink-body">{t.fundsIntro}</p>
         </Reveal>
       </section>

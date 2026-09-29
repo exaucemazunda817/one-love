@@ -67,6 +67,19 @@ export function BrushWord({ children }: { children: ReactNode }) {
   );
 }
 
+/** Titre dont le dernier mot est souligné au pinceau (comme l'accueil). */
+export function BrushLast({ text }: { text: string }) {
+  const t = text.trim();
+  const i = t.lastIndexOf(' ');
+  if (i < 0) return <BrushWord>{t}</BrushWord>;
+  return (
+    <>
+      {t.slice(0, i + 1)}
+      <BrushWord>{t.slice(i + 1)}</BrushWord>
+    </>
+  );
+}
+
 /** Surtitre : Nunito 800, 13 px, capitales espacées. */
 export function Eyebrow({
   children,
@@ -121,7 +134,8 @@ export function CallBanner({
   sponsorLabel,
   donateHref,
   sponsorHref,
-  Icon
+  Icon,
+  spaced = true
 }: {
   title: ReactNode;
   text: ReactNode;
@@ -130,9 +144,11 @@ export function CallBanner({
   donateHref: string;
   sponsorHref: string;
   Icon: React.ComponentType<{ size?: number | string; 'aria-hidden'?: boolean }>;
+  /** Espace au-dessus du bandeau (faux si la section précédente a déjà sa marge basse). */
+  spaced?: boolean;
 }) {
   return (
-    <section className="mx-auto max-w-[1200px] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
+    <section className={`mx-auto max-w-[1200px] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)] ${spaced ? 'pt-[clamp(40px,6vw,72px)]' : ''}`}>
       <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-7 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
         <div className="flex flex-col gap-3">
           <h2 className="m-0 text-balance font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.2]">{title}</h2>
