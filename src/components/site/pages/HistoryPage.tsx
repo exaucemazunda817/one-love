@@ -20,7 +20,7 @@ import { localeHref, type Locale } from '@/lib/i18n';
 
 type L = { fr: string; en: string };
 
-type Media =
+export type Media =
   | { kind: 'photo'; src: string; alt: L; shape: 'square' | 'portrait' | 'landscape' }
   | {
       kind: 'video';
@@ -34,13 +34,13 @@ type Media =
 
 type Chapter = { id: string; years: string; title: L; text: L; media: Media[] };
 
-const photo = (src: string, shape: 'square' | 'portrait' | 'landscape', fr: string, en: string): Media => ({
+export const photo = (src: string, shape: 'square' | 'portrait' | 'landscape', fr: string, en: string): Media => ({
   kind: 'photo',
   src: `/histoire/${src}.webp`,
   alt: { fr, en },
   shape
 });
-const video = (src: string, shape: 'portrait' | 'square' | 'landscape' | 'wide', fr: string, en: string): Media => ({
+export const video = (src: string, shape: 'portrait' | 'square' | 'landscape' | 'wide', fr: string, en: string): Media => ({
   kind: 'video',
   src,
   caption: { fr, en },
@@ -252,7 +252,7 @@ const photoFrame = { square: 'aspect-square', portrait: 'aspect-[4/5]', landscap
 const videoFrame = { portrait: 'aspect-[9/16]', square: 'aspect-square', landscape: 'aspect-video', wide: 'aspect-[2.35/1]' } as const;
 const videoSpan = { portrait: 'col-span-2 sm:col-span-1', square: 'col-span-2 sm:col-span-1', landscape: 'col-span-2', wide: 'col-span-2' } as const;
 
-function MediaItem({ m, locale, playLabel, index }: { m: Media; locale: Locale; playLabel: string; index: number }) {
+export function MediaItem({ m, locale, playLabel, index }: { m: Media; locale: Locale; playLabel: string; index: number }) {
   const delay = (index % 3) * 80;
 
   if (m.kind === 'youtube') {

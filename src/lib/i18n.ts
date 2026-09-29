@@ -35,6 +35,7 @@ export const chrome = {
       { label: "L’association", href: '/association' },
       { label: 'Notre histoire', href: '/histoire' },
       { label: 'Nos actions', href: '/actions' },
+      { label: 'Le village', href: '/projets/village' },
       { label: 'Actualités', href: '/galerie' },
       { label: 'Parrainer', href: '/parrainer' },
       { label: "S’impliquer", href: '/s-impliquer' },
@@ -52,6 +53,7 @@ export const chrome = {
         { label: 'Notre histoire', href: '/histoire' },
         { label: 'Nos actions', href: '/actions' },
         { label: 'Le projet RÊVES 2', href: '/projets/reves-2' },
+        { label: 'Le One Love Village', href: '/projets/village' },
         { label: 'Parrainer un enfant', href: '/parrainer' },
         { label: 'Faire un don', href: '/dons' }
       ],
@@ -76,6 +78,7 @@ export const chrome = {
       { label: 'About us', href: '/association' },
       { label: 'Our story', href: '/histoire' },
       { label: 'Our work', href: '/actions' },
+      { label: 'The village', href: '/projets/village' },
       { label: 'News', href: '/galerie' },
       { label: 'Sponsor', href: '/parrainer' },
       { label: 'Get involved', href: '/s-impliquer' },
@@ -93,6 +96,7 @@ export const chrome = {
         { label: 'Our story', href: '/histoire' },
         { label: 'Our work', href: '/actions' },
         { label: 'The RÊVES 2 project', href: '/projets/reves-2' },
+        { label: 'The One Love Village', href: '/projets/village' },
         { label: 'Sponsor a child', href: '/parrainer' },
         { label: 'Donate', href: '/dons' }
       ],

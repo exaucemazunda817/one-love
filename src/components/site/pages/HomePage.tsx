@@ -55,6 +55,11 @@ const text = {
     projectSupport: 'Soutenir RÊVES 2',
     projectLink: 'Le projet',
     projectImgAlt: 'Une jeune fille écrit dans son cahier pendant un atelier.',
+    villageEyebrow: 'Grand projet en construction',
+    villageTitle: 'One Love Village',
+    villageText: 'Sur notre terrain de Kasangulu, les travaux ont commencé. Découvrez l’histoire du projet, en photos et en vidéos.',
+    villageLink: 'Découvrir le village',
+    villageImgAlt: 'Des engins au travail sur le terrain de Kasangulu, au coucher du soleil.',
     waysTitlePre: 'Trois façons d’',
     waysTitleWord: 'aider',
     ways: [
@@ -101,6 +106,11 @@ const text = {
     projectSupport: 'Support RÊVES 2',
     projectLink: 'The project',
     projectImgAlt: 'A girl writes in her notebook during a workshop.',
+    villageEyebrow: 'Large project under construction',
+    villageTitle: 'One Love Village',
+    villageText: 'On our land in Kasangulu, work has begun. Discover the story of the project, in photos and videos.',
+    villageLink: 'Discover the village',
+    villageImgAlt: 'Machines at work on the Kasangulu land, at sunset.',
     waysTitlePre: 'Three ways to ',
     waysTitleWord: 'help',
     ways: [
@@ -237,6 +247,24 @@ export function HomePage({ locale }: { locale: Locale }) {
               </Link>
               <Link href={href('/projets/reves-2')} className="inline-flex min-h-[52px] items-center gap-1.5 whitespace-nowrap px-2 font-bold text-gold-hover no-underline">
                 {t.projectLink}
+                <ArrowRightIcon aria-hidden />
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Grand projet : le One Love Village */}
+      <section className="relative overflow-hidden bg-night text-cream">
+        <Image src="/histoire/village-hero.webp" alt={t.villageImgAlt} fill sizes="100vw" className="photo-tone object-cover object-[50%_55%]" />
+        <div className="relative mx-auto max-w-[1280px] px-[clamp(12px,4vw,48px)] py-[clamp(40px,8vw,120px)]">
+          <Reveal className="flex max-w-[520px] flex-col gap-[18px] rounded-card bg-[color:var(--scrim-5)] p-[clamp(28px,4vw,48px)]">
+            <Eyebrow dark>{t.villageEyebrow}</Eyebrow>
+            <h2 className="m-0 font-serif text-[clamp(40px,5vw,64px)] font-medium leading-none">{t.villageTitle}</h2>
+            <p className="m-0 text-[17px] leading-[1.65] text-on-dark-1">{t.villageText}</p>
+            <div className="pt-1">
+              <Link href={href('/projets/village')} className="inline-flex min-h-[52px] items-center gap-1.5 whitespace-nowrap rounded-full bg-gold px-6 text-[16px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night">
+                {t.villageLink}
                 <ArrowRightIcon aria-hidden />
               </Link>
             </div>

@@ -30,11 +30,14 @@ const FADE_MS = 1400;
 export function HeroBackground({
   src,
   alt,
-  position = '50% 35%'
+  position = '50% 35%',
+  pool: poolProp
 }: {
   src: string;
   alt: string;
   position?: string;
+  // Photos à faire défiler à la place de celles des enfants (page du village).
+  pool?: Photo[];
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [photos, setPhotos] = useState<[Photo, Photo | null]>([{ src, position }, null]);
@@ -73,7 +76,7 @@ export function HeroBackground({
     const nextPhoto = (): Photo => {
       const shownSrc = photosRef.current[frontRef.current]?.src;
       if (bag.current.length === 0) {
-        const pool = HERO_PHOTOS.filter((p) => p.src !== shownSrc).map((p) => ({ ...p }));
+        const pool = (poolProp ?? HERO_PHOTOS).filter((p) => p.src !== shownSrc).map((p) => ({ ...p }));
         for (let i = pool.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [pool[i], pool[j]] = [pool[j], pool[i]];

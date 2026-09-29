@@ -9,6 +9,7 @@ const paths = [
   '/histoire',
   '/actions',
   '/projets/reves-2',
+  '/projets/village',
   '/parrainer',
   '/s-impliquer',
   '/transparence',
