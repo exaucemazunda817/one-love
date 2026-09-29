@@ -7,6 +7,7 @@ import {
   type StripeInvoiceObject
 } from '@/lib/stripe';
 import { confirmDonation, createConfirmedDonation } from '@/lib/donations';
+import { recordSponsorFromInvoice, endSponsorBySubscription, sendSponsorWelcome, sponsorPlanFor } from '@/lib/sponsorship';
 
 // Le corps DOIT être lu en texte brut, AVANT tout JSON.parse : la vérification
 // de signature Stripe porte sur les octets exacts envoyés, pas sur une
@@ -87,6 +88,11 @@ export async function POST(request: NextRequest) {
       // même identifiant d'abonnement, donc la même métadonnée à chaque fois.
       const subscription = await getStripeSubscription(invoice.subscription);
 
+      const isSponsorship = Boolean(subscription.metadata?.sponsorMode);
+      const sponsorPlan = isSponsorship
+        ? sponsorPlanFor(subscription.metadata.sponsorMode === 'prog' ? 'prog' : 'child', Number(subscription.metadata.sponsorPlan))
+        : null;
+
       await createConfirmedDonation({
         amountEur: invoice.amount_paid / 100,
         method: 'STRIPE',
@@ -102,8 +108,34 @@ export async function POST(request: NextRequest) {
         // stable, contrairement à payment_intent qui peut être absent selon
         // le moyen de paiement).
         providerReference: invoice.id,
-        receivedOn: new Date()
+        receivedOn: new Date(),
+        label: isSponsorship ? `Parrainage mensuel — ${sponsorPlan?.name ?? ''}`.trim() : undefined
       });
+
+      // Parrainage : la facture est PAYÉE (événement invoice.paid vérifié par
+      // signature), c'est donc maintenant, et seulement maintenant, que la
+      // personne devient parrain. Idempotent en cas de webhook rejoué.
+      if (isSponsorship) {
+        const { created } = await recordSponsorFromInvoice({
+          subscriptionId: invoice.subscription,
+          metadata: subscription.metadata,
+          amountPaidEur: invoice.amount_paid / 100
+        });
+        if (created) {
+          await sendSponsorWelcome({
+            email: subscription.metadata.donorEmail,
+            firstName: subscription.metadata.donorFirstName || null,
+            planName: sponsorPlan?.name ?? '',
+            amountEur: invoice.amount_paid / 100,
+            locale: subscription.metadata.sponsorLocale === 'en' ? 'en' : 'fr'
+          });
+        }
+      }
+    }
+
+    if (event.type === 'customer.subscription.deleted') {
+      const subscriptionId = (event.data.object as { id?: string }).id;
+      if (subscriptionId) await endSponsorBySubscription(subscriptionId);
     }
 
     return NextResponse.json({ received: true });

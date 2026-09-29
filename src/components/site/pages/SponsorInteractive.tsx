@@ -12,9 +12,9 @@ import {
   FileTextIcon
 } from '@phosphor-icons/react';
 import { Reveal } from '@/components/Reveal';
-import { Brush } from '@/components/site/ui';
+import { Brush, BrushLast } from '@/components/site/ui';
 import type { Currency } from '@/lib/donation-ui';
-import { SYMBOL } from '@/lib/donation-ui';
+import { SYMBOL, sanitizeAmount, toEur, formatCustom } from '@/lib/donation-ui';
 import type { Locale } from '@/lib/i18n';
 
 type Mode = 'child' | 'prog';
@@ -43,8 +43,6 @@ export interface SponsorText {
   inscriptionTitleWord: string;
   inscriptionTitlePost: string;
   inscriptionIntro: string;
-  yourChoice: string;
-  change: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -54,10 +52,10 @@ export interface SponsorText {
   charterAgreeLink: string;
   charterAgreePost: string;
   submitLabelPrefix: string;
-  noCharge: string;
-  thanksTitle: string;
-  thanksText: string;
-  backToForm: string;
+  payNote: string;
+  customLabel: string;
+  customHint: string;
+  eurNote: string;
   error: string;
 }
 
@@ -72,51 +70,57 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
   const [mode, setMode] = useState<Mode>('child');
   const [plan, setPlan] = useState(1);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
-  const [sent, setSent] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  const [custom, setCustom] = useState('');
 
   const plans = mode === 'child' ? t.plansChild : t.plansProg;
   const chosen = plans[plan];
-  const chosenPrice = fmt(chosen.price, cur, locale);
+  // Montant libre (facultatif) : s'il est saisi, il remplace le prix de la formule.
+  const customValue = Number(custom.replace(',', '.'));
+  const hasCustom = custom !== '' && Number.isFinite(customValue) && customValue > 0;
+  const customEur = hasCustom ? toEur(customValue, cur) : null;
+  const chosenPrice = hasCustom ? formatCustom(customValue, cur, locale) : fmt(chosen.price, cur, locale);
 
   function pickMode(m: Mode) {
     setMode(m);
     setPlan(m === 'child' ? 1 : 0);
   }
 
+  // Devenir parrain = payer. Le formulaire n'enregistre personne : il ouvre
+  // une session de paiement, et c'est le paiement confirmé (webhook Stripe) qui
+  // inscrit la personne dans la liste des parrains.
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPending(true);
     setError('');
-    const formEl = event.currentTarget;
-    const formData = new FormData(formEl);
+    const formData = new FormData(event.currentTarget);
     const payload = {
-      fullName: `${formData.get('firstName') || ''} ${formData.get('lastName') || ''}`.trim(),
-      email: String(formData.get('email') || ''),
-      phone: String(formData.get('phone') || ''),
-      subject: `${t.modes[mode]} — ${chosen.name} — ${chosenPrice}/${t.perMonth}`,
-      message: `${t.yourChoice}: ${chosen.name} · ${chosenPrice} / ${t.perMonth}`,
-      origin: 'parrainage'
+      firstName: String(formData.get('firstName') || '').trim(),
+      lastName: String(formData.get('lastName') || '').trim(),
+      email: String(formData.get('email') || '').trim(),
+      phone: String(formData.get('phone') || '').trim(),
+      mode,
+      plan,
+      locale,
+      ...(customEur !== null ? { amountEur: customEur } : {})
     };
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch('/api/parrainer/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (response.status === 201) {
-        setSent(true);
-        formEl.reset();
-      } else {
-        const data = await response.json().catch(() => ({}));
-        setError(data.error || t.error);
+      const data = await response.json().catch(() => ({}));
+      if (response.status === 201 && typeof data.url === 'string') {
+        window.location.href = data.url;
+        return;
       }
+      setError(data.error || t.error);
     } catch {
       setError(t.error);
-    } finally {
-      setPending(false);
     }
+    setPending(false);
   }
 
   const currencies = useMemo(() => ['EUR', 'USD', 'CDF'] as Currency[], []);
@@ -126,7 +130,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
       {/* Comment ça marche */}
       <section id="comment" className="mx-auto flex max-w-[1200px] scroll-mt-[var(--header-clear)] flex-col gap-10 px-[clamp(20px,4vw,32px)] pt-[clamp(56px,8vw,104px)] pb-[clamp(32px,5vw,56px)]">
         <Reveal>
-          <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.howTitle}</h2>
+          <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.howTitle} /></h2>
         </Reveal>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-x-10 gap-y-8">
           {t.how.map((h, i) => (
@@ -147,7 +151,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
         <div className="mx-auto flex max-w-[1200px] flex-col gap-7 px-[clamp(16px,4vw,32px)] pt-[clamp(56px,8vw,104px)] pb-[clamp(32px,5vw,56px)]">
           <div className="flex flex-wrap items-end justify-between gap-5">
             <Reveal className="flex max-w-[620px] flex-col gap-2.5">
-              <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.formulesTitle}</h2>
+              <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.formulesTitle} /></h2>
               <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.formulesSubtitle}</p>
             </Reveal>
             <div className="flex gap-1">
@@ -224,7 +228,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
           <Image src="/photos/photo-mains.jpg" alt={t.receiveAlt} fill sizes="(max-width: 1200px) 100vw, 560px" className="photo-tone object-cover" />
         </Reveal>
         <Reveal delay={90} className="flex flex-col gap-6">
-          <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">{t.receiveTitle}</h2>
+          <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.receiveTitle} /></h2>
           {t.receive.map((r, i) => {
             const Icon = RECEIVE_ICONS[i];
             return (
@@ -244,7 +248,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
 
       {/* Charte de protection */}
       <section id="charte" className="mx-auto scroll-mt-[var(--header-clear)] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
-        <Reveal className="grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-8 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
+        <Reveal className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-8 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
           <div className="flex flex-col gap-3.5">
             <ShieldCheckIcon size={40} className="text-sage-300" aria-hidden />
             <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.2]">{t.charterTitle}</h2>
@@ -265,7 +269,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
       <div className="overflow-x-clip">
       <section id="faq" className="mx-auto max-w-[1000px] scroll-mt-[var(--header-clear)] px-[clamp(20px,4vw,32px)] pb-[clamp(56px,8vw,104px)]">
         <Reveal variant="scale" repeat className="mb-8 text-center">
-          <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.15]">{t.faqTitle}</h2>
+          <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.15]"><BrushLast text={t.faqTitle} /></h2>
         </Reveal>
         <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
           {t.faq.map((f, i) => {
@@ -327,31 +331,10 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
               {t.inscriptionTitlePost}
             </h2>
             <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.inscriptionIntro}</p>
-            <div className="flex flex-col gap-2 rounded-xl bg-cream px-5 py-5">
-              <span className="text-[13px] font-extrabold tracking-[0.08em] text-ink-soft">{t.yourChoice}</span>
-              <b className="font-serif text-[26px] font-medium">
-                {chosen.name} · {chosenPrice} / {t.monthUnit}
-              </b>
-              <a href="#formules" className="inline-flex min-h-11 items-center self-start text-[15px] font-bold">
-                {t.change}
-              </a>
-            </div>
           </Reveal>
 
           <Reveal delay={90}>
-            {sent ? (
-              <div className="flex flex-col items-start gap-3.5 rounded-card bg-white p-[clamp(20px,3vw,32px)] py-3 shadow-ol-lg">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-sage-100">
-                  <CheckIcon size={28} className="text-sage-700" aria-hidden />
-                </span>
-                <h3 className="m-0 font-serif text-[26px] font-semibold">{t.thanksTitle}</h3>
-                <p className="m-0 text-[16px] leading-[1.6] text-ink-body">{t.thanksText}</p>
-                <button type="button" onClick={() => setSent(false)} className="min-h-11 cursor-pointer border-0 bg-transparent p-0 text-[15px] font-bold text-copper-600">
-                  {t.backToForm}
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-lg">
+            <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-lg">
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-3.5">
                   <label className="flex flex-col gap-2">
                     <span className="text-[15px] font-bold">{t.firstName}</span>
@@ -397,6 +380,27 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                     className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600"
                   />
                 </label>
+                <label className="flex flex-col gap-2">
+                  <span className="text-[15px] font-bold">
+                    {t.customLabel} <span className="font-normal text-ink-soft">{t.optional}</span>
+                  </span>
+                  <div className="flex items-center rounded-lg border-[1.5px] border-field-line bg-white focus-within:border-copper-600">
+                    <input
+                      name="amount"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      value={custom}
+                      onChange={(e) => setCustom(sanitizeAmount(e.target.value))}
+                      placeholder={String(chosen.price)}
+                      className="min-h-[52px] min-w-0 flex-1 rounded-lg border-0 bg-transparent px-3.5 text-[17px] outline-none"
+                    />
+                    <span className="pr-3.5 text-[17px] font-bold text-ink-soft">{SYMBOL[cur]} / {t.monthUnit}</span>
+                  </div>
+                  <span className="text-[13px] text-ink-soft">
+                    {t.customHint}
+                    {hasCustom && cur !== 'EUR' && customEur !== null ? ` ${t.eurNote} ≈ ${customEur.toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-GB')} €.` : ''}
+                  </span>
+                </label>
                 <label className="flex min-h-12 cursor-pointer items-start gap-3">
                   <input required type="checkbox" className="mt-0.5 h-[22px] w-[22px] flex-none accent-copper-600" />
                   <span className="text-[15px] leading-[1.5]">
@@ -415,14 +419,13 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                 <button
                   type="submit"
                   disabled={pending}
-                  className="inline-flex min-h-[54px] cursor-pointer items-center justify-center gap-2 rounded-full border-0 bg-copper-600 text-[17px] font-bold text-white hover:bg-copper-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex min-h-[54px] cursor-pointer items-center justify-center gap-2 rounded-full border-0 bg-copper-600 text-[17px] font-bold text-white hover:bg-copper-700 disabled:cursor-wait disabled:bg-disabled disabled:text-ink-soft"
                 >
                   {pending ? '…' : `${t.submitLabelPrefix} · ${chosenPrice} / ${t.monthUnit}`}
                 </button>
-                <span className="text-[13px] text-ink-soft">{t.noCharge}</span>
+                <span className="text-[13px] leading-[1.5] text-ink-soft">{t.payNote}</span>
                 <input type="hidden" name={`${id}-locale`} value={locale} />
               </form>
-            )}
           </Reveal>
         </div>
       </section>

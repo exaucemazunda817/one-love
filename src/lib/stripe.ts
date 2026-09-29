@@ -115,6 +115,7 @@ export async function createDonationCheckoutSession({
   donorFirstName,
   donorLastName,
   donorCountry,
+  extraMetadata,
   successUrl,
   cancelUrl
 }: {
@@ -127,6 +128,8 @@ export async function createDonationCheckoutSession({
   donorFirstName?: string | null;
   donorLastName?: string | null;
   donorCountry?: string | null;
+  /** Métadonnées supplémentaires posées sur l'abonnement (ex. parrainage). */
+  extraMetadata?: Record<string, string>;
   successUrl: string;
   cancelUrl: string;
 }): Promise<StripeCheckoutSession> {
@@ -154,7 +157,8 @@ export async function createDonationCheckoutSession({
               donorEmail: donorEmail || '',
               donorFirstName: donorFirstName || '',
               donorLastName: donorLastName || '',
-              donorCountry: donorCountry || ''
+              donorCountry: donorCountry || '',
+              ...(extraMetadata ?? {})
             }
           }
         }),

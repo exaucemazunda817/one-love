@@ -183,7 +183,8 @@ export async function createConfirmedDonation({
   donorCountry,
   providerField,
   providerReference,
-  receivedOn
+  receivedOn,
+  label
 }: {
   amountEur: number;
   method: DonationMethod;
@@ -196,6 +197,8 @@ export async function createConfirmedDonation({
   providerField: 'stripePaymentIntentId' | 'serdipayTransactionId';
   providerReference: string;
   receivedOn: Date;
+  /** Libellé de l'écriture de trésorerie ; par défaut « Don mensuel — … ». */
+  label?: string;
 }): Promise<{ created: boolean }> {
   const existing = await prisma.donation.findFirst({ where: { [providerField]: providerReference } });
   if (existing) return { created: false };
@@ -244,9 +247,9 @@ export async function createConfirmedDonation({
           kind: 'INCOME',
           status: 'DRAFT',
           occurredOn: receivedOn,
-          label: project
-            ? `Don mensuel — ${project.name}`
-            : 'Don mensuel — fonds général',
+          label:
+            label ??
+            (project ? `Don mensuel — ${project.name}` : 'Don mensuel — fonds général'),
           amount: amountEur,
           currency: 'EUR',
           fxRate: 1,

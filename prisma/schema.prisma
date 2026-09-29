@@ -297,6 +297,7 @@ model Donor {
 
   donations Donation[]
   receipts  TaxReceipt[]
+  sponsorships Sponsor[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1085,4 +1086,44 @@ model NewsletterSubscriber {
 
   @@index([confirmedAt])
   @@map("newsletter_subscribers")
+}
+
+
+enum SponsorMode {
+  CHILD
+  PROGRAMME
+}
+
+enum SponsorStatus {
+  ACTIVE
+  ENDED
+}
+
+/// Parrain ou marraine. Une ligne n'est créée QUE par le webhook Stripe, à la
+/// réception d'une facture d'abonnement PAYÉE (`invoice.paid`) : sans paiement
+/// confirmé côté serveur, personne ne devient parrain (décision de Mazunda,
+/// 29/09/2026). `stripeSubscriptionId` est UNIQUE : c'est la clé d'idempotence
+/// qui empêche un webhook rejoué de créer un doublon. La liste des parrains
+/// est interne (/gestion/parrains) : aucun nom n'est publié sur le site.
+model Sponsor {
+  id      String @id @default(cuid())
+  donorId String
+  donor   Donor  @relation(fields: [donorId], references: [id], onDelete: Restrict)
+
+  mode      SponsorMode
+  planIndex Int
+  planName  String
+  monthlyAmountEur Decimal @db.Decimal(14, 2)
+
+  stripeSubscriptionId String @unique
+
+  status       SponsorStatus @default(ACTIVE)
+  sponsorSince DateTime      @default(now())
+  endedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, sponsorSince])
+  @@map("sponsors")
 }

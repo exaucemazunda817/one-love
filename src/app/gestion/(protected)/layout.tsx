@@ -85,6 +85,9 @@ export default async function ProtectedLayout({ children }: { children: React.Re
                   <Link href="/gestion/demandes" className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink">
                     Demandes
                   </Link>
+                  <Link href="/gestion/parrains" className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink">
+                    Parrains
+                  </Link>
                   <Link href="/gestion/comptes" className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink">
                     Comptes
                   </Link>
