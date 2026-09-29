@@ -38,7 +38,6 @@ export const chrome = {
       { label: 'Actualités', href: '/galerie' },
       { label: 'Parrainer', href: '/parrainer' },
       { label: "S'impliquer", href: '/s-impliquer' },
-      { label: 'Transparence', href: '/transparence' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Faire un don',
@@ -54,7 +53,6 @@ export const chrome = {
         { label: 'Nos actions', href: '/actions' },
         { label: 'Le projet RÊVES 2', href: '/projets/reves-2' },
         { label: 'Parrainer un enfant', href: '/parrainer' },
-        { label: 'Transparence', href: '/transparence' },
         { label: 'Faire un don', href: '/dons' }
       ],
       reach: 'NOUS JOINDRE',
@@ -64,6 +62,7 @@ export const chrome = {
       subscribe: "S'inscrire",
       legalLine: '© 2026 Association One Love · association loi 1901, RNA W951001528',
       legal: [
+        { label: 'Transparence', href: '/transparence' },
         { label: 'Mentions légales', href: '/mentions-legales' },
         { label: 'Confidentialité', href: '/confidentialite' },
         { label: "Protection de l'enfance", href: '/parrainer#charte' }
@@ -80,7 +79,6 @@ export const chrome = {
       { label: 'News', href: '/galerie' },
       { label: 'Sponsor', href: '/parrainer' },
       { label: 'Get involved', href: '/s-impliquer' },
-      { label: 'Transparency', href: '/transparence' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Donate',
@@ -96,7 +94,6 @@ export const chrome = {
         { label: 'Our work', href: '/actions' },
         { label: 'The RÊVES 2 project', href: '/projets/reves-2' },
         { label: 'Sponsor a child', href: '/parrainer' },
-        { label: 'Transparency', href: '/transparence' },
         { label: 'Donate', href: '/dons' }
       ],
       reach: 'CONTACT US',
@@ -107,6 +104,7 @@ export const chrome = {
       legalLine: '© 2026 One Love · French non-profit association (loi 1901), RNA W951001528',
       // Les pages légales n'existent qu'en français : liens vers la version FR.
       legal: [
+        { label: 'Transparency', href: '/transparence' },
         { label: 'Legal notice', href: '/mentions-legales', frOnly: true },
         { label: 'Privacy', href: '/confidentialite', frOnly: true },
         { label: 'Child protection', href: '/parrainer#charte' }

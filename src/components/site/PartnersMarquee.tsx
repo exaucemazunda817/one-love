@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { Reveal } from '@/components/Reveal';
+import { Brush, Eyebrow } from '@/components/site/ui';
 import { PARTNERS } from '@/lib/partners';
 import type { Locale } from '@/lib/i18n';
 
@@ -28,9 +29,15 @@ export function PartnersMarquee({ locale }: { locale: Locale }) {
   const list = [...PARTNERS, ...PARTNERS];
 
   return (
-    <section className="overflow-hidden bg-sand py-3" aria-label={t.label}>
-      <Reveal variant="scale" className="mx-auto mb-3 max-w-[640px] px-[clamp(20px,4vw,32px)] text-center">
-        <h2 className="m-0 font-serif text-[clamp(18px,2vw,24px)] font-semibold leading-[1.15]">{t.title}</h2>
+    <section className="overflow-hidden bg-sand py-4" aria-label={t.label}>
+      {/* Même langage que les autres surtitres du site : capitales espacées, un
+          trait de pinceau dessous. Avant, un titre serif en gras jurait avec
+          le reste (retour de Mazunda, 29/09/2026). */}
+      <Reveal variant="scale" className="mx-auto mb-3 flex max-w-[640px] flex-col items-center gap-1 px-[clamp(20px,4vw,32px)] text-center">
+        <h2 className="m-0">
+          <Eyebrow>{t.title}</Eyebrow>
+        </h2>
+        <Brush fill="var(--clay)" className="h-2 w-16" />
       </Reveal>
       <div className="ol-marquee" aria-hidden="false">
         <ul
