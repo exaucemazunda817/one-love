@@ -23,7 +23,7 @@ import {
 // l'audit design, espaçaient trop les lignes (48 px de pas). 24 px reste la
 // taille minimale de cible tactile recommandée (WCAG 2.5.8).
 const linkClass =
-  'flex min-h-6 items-center text-[15px] leading-[1.6] text-on-dark-1 no-underline hover:text-gold-hover';
+  'flex min-h-8 items-center text-[15px] leading-[1.6] text-on-dark-1 no-underline hover:text-gold-hover sm:min-h-6';
 
 export function Footer({ locale }: { locale: Locale }) {
   const t = chrome[locale].footer;
@@ -79,7 +79,7 @@ export function Footer({ locale }: { locale: Locale }) {
               <Link
                 key={l.href}
                 href={'frOnly' in l ? l.href : localeHref(l.href, locale)}
-                className="inline-flex min-h-6 items-center text-on-dark-3 underline hover:text-gold-hover"
+                className="inline-flex min-h-8 items-center text-on-dark-3 underline hover:text-gold-hover sm:min-h-6"
               >
                 {l.label}
               </Link>

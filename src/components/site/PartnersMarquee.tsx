@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Reveal } from '@/components/Reveal';
 import { Brush, Eyebrow } from '@/components/site/ui';
+import { MarqueePause } from '@/components/site/MarqueePause';
 import { PARTNERS } from '@/lib/partners';
 import type { Locale } from '@/lib/i18n';
 
@@ -29,7 +30,8 @@ export function PartnersMarquee({ locale }: { locale: Locale }) {
   const list = [...PARTNERS, ...PARTNERS];
 
   return (
-    <section className="overflow-hidden bg-sand py-4" aria-label={t.label}>
+    <section className="relative overflow-hidden bg-sand py-4" aria-label={t.label}>
+      <MarqueePause locale={locale} />
       {/* Même langage que les autres surtitres du site : capitales espacées, un
           trait de pinceau dessous. Avant, un titre serif en gras jurait avec
           le reste (retour de Mazunda, 29/09/2026). */}

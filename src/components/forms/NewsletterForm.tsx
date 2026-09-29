@@ -1,16 +1,17 @@
 'use client';
 
 import { useId, useState } from 'react';
+import { validateFields } from '@/lib/form-validation';
 import type { Locale } from '@/lib/i18n';
 
 const text = {
   fr: {
     label: 'Adresse e-mail',
-    submit: "S'inscrire",
+    submit: "S’inscrire",
     pending: 'Envoi…',
     sent: 'Vérifiez votre boîte de réception : un lien de confirmation vient de vous être envoyé.',
-    already: "Cette adresse est déjà inscrite à notre lettre d'information.",
-    unconfigured: "Votre inscription est enregistrée. L'envoi des confirmations sera activé prochainement.",
+    already: "Cette adresse est déjà inscrite à notre lettre d’information.",
+    unconfigured: "Votre inscription est enregistrée. L’envoi des confirmations sera activé prochainement.",
     error: 'Une erreur est survenue. Merci de réessayer.'
   },
   en: {
@@ -28,12 +29,19 @@ export function NewsletterForm({ locale = 'fr' }: { locale?: Locale }) {
   const id = useId();
   const t = text[locale];
   const [pending, setPending] = useState(false);
+  const [invalid, setInvalid] = useState('');
   const [status, setStatus] = useState<'idle' | 'sent' | 'already' | 'unconfigured' | 'error'>('idle');
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setPending(true);
     setStatus('idle');
+    const checked = validateFields(event.currentTarget, { email: { required: true, email: true } }, locale);
+    setInvalid(checked.email ?? '');
+    if (checked.email) {
+      event.currentTarget.querySelector<HTMLInputElement>('input[name="email"]')?.focus();
+      return;
+    }
+    setPending(true);
 
     // Capturée AVANT le premier `await` : event.currentTarget redevient null
     // une fois le gestionnaire d'événement terminé.
@@ -85,8 +93,10 @@ export function NewsletterForm({ locale = 'fr' }: { locale?: Locale }) {
         required
         maxLength={180}
         autoComplete="email"
+        aria-invalid={invalid ? true : undefined}
+        aria-describedby={invalid ? `${id}-err` : undefined}
         placeholder={t.label}
-        className="min-h-12 min-w-0 flex-1 rounded-lg border-[1.5px] border-dark-border bg-dark-surface px-3.5 text-[15px] text-cream placeholder:text-on-dark-3"
+        className="min-h-12 min-w-0 flex-1 rounded-lg border-[1.5px] border-dark-border aria-invalid:border-gold-hover bg-dark-surface px-3.5 text-[15px] text-cream placeholder:text-on-dark-3"
       />
       <button
         type="submit"
@@ -95,6 +105,11 @@ export function NewsletterForm({ locale = 'fr' }: { locale?: Locale }) {
       >
         {pending ? t.pending : t.submit}
       </button>
+      {invalid && (
+        <p id={`${id}-err`} className="m-0 w-full text-[13px] font-bold text-gold-hover">
+          {invalid}
+        </p>
+      )}
       {status === 'error' && (
         <p role="alert" className="m-0 w-full text-[13px] font-bold text-gold-hover">
           {t.error}

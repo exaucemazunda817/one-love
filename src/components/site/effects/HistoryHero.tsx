@@ -110,10 +110,10 @@ export function HistoryHero({
         {/* Bandeau final : même dégradé et même bloc de texte que les autres
             pages (InnerHero), qui se pose une fois la photo en plein écran.
             Eyebrow + titre sont un écho purement visuel du vrai <h1> déjà lu
-            plus haut dans le défilement — masqués aux lecteurs d'écran ;
-            l'intro, elle, n'existe qu'ici et reste accessible. */}
+            plus haut dans le défilement — masqués aux lecteurs d’écran ;
+            l’intro, elle, n’existe qu’ici et reste accessible. */}
         <div className="pointer-events-none absolute inset-0 flex items-end overflow-hidden dk:items-center" style={{ opacity: settle }}>
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.1)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)] dk:bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)] dk:bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
           <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
             <div className="mx-auto flex max-w-[620px] flex-col items-center gap-4 text-center dk:mx-0 dk:items-start dk:gap-6 dk:text-left">
               <div aria-hidden="true" className="flex flex-col items-center gap-4 dk:items-start dk:gap-6">

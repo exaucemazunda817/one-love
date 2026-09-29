@@ -10,13 +10,13 @@ import { SPONSOR_PLANS } from '@/lib/sponsorship';
 
 const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow: string; heroPre: string; heroWord: string; heroPost: string; heroIntro: string; heroAlt: string; heroCta: string; heroScroll: string }> = {
   fr: {
-    title: 'Parrainer un enfant',
+    title: 'Parrainer un enfant à Kinshasa, chaque mois',
     desc: "Parrainage mensuel à One Love : accompagner un enfant ou soutenir un programme, avec des nouvelles régulières et le respect de sa vie privée.",
     eyebrow: 'Parrainage',
     heroPre: 'Accompagner un enfant, ',
     heroWord: 'mois après mois',
     heroPost: '.',
-    heroIntro: "Le parrainage assure la continuité : l'école, le suivi médical, l'écoute. Vous recevez des nouvelles régulières, dans le respect de la vie privée de l'enfant.",
+    heroIntro: "Le parrainage assure la continuité : l’école, le suivi médical, l’écoute. Vous recevez des nouvelles régulières, dans le respect de la vie privée de l’enfant.",
     heroAlt: 'Un garçon rit et fait le signe de la paix, assis sur un muret du jardin.',
     heroCta: 'Devenir parrain',
     heroScroll: 'Comment ça marche',
@@ -30,38 +30,38 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     formulesSubtitle: 'Mensuel, modifiable ou résiliable à tout moment.',
     modes: { child: 'Parrainer un enfant', prog: 'Soutenir un programme' },
     plansChild: [
-      { name: 'Éducation', price: SPONSOR_PLANS.child[0].eur, tag: '', items: ['Scolarité et fournitures', "Ateliers d'alphabétisation et de français", 'Nouvelles chaque trimestre'] },
+      { name: 'Éducation', price: SPONSOR_PLANS.child[0].eur, tag: '', items: ['Scolarité et fournitures', "Ateliers d’alphabétisation et de français", 'Nouvelles chaque trimestre'] },
       { name: 'Éducation et santé', price: SPONSOR_PLANS.child[1].eur, tag: '', items: ['Tout le parrainage Éducation', 'Suivi médical régulier', 'Accompagnement psychosocial'] },
       { name: 'Accompagnement complet', price: SPONSOR_PLANS.child[2].eur, tag: '', items: ['Éducation, santé et écoute', 'Activités culturelles et sportives', 'Préparation à la (ré)insertion'] }
     ],
     plansProg: [
       { name: 'RÊVES 2', price: SPONSOR_PLANS.prog[0].eur, tag: 'En cours', items: ['Ateliers et matériel pédagogique', 'Formation des animateurs', 'Bilan à la fin du programme'] },
       { name: 'Santé et écoute', price: SPONSOR_PLANS.prog[1].eur, tag: '', items: ['Suivi médical des enfants', 'Accompagnement psychosocial', 'Rapport semestriel'] },
-      { name: "Là où c'est utile", price: SPONSOR_PLANS.prog[2].eur, tag: '', items: ['Affectation selon les besoins', "Souplesse pour notre équipe", 'Rapport annuel'] }
+      { name: "Là où c’est utile", price: SPONSOR_PLANS.prog[2].eur, tag: '', items: ['Affectation selon les besoins', "Souplesse pour notre équipe", 'Rapport annuel'] }
     ],
     perMonth: 'par mois',
     monthUnit: 'mois',
     receiveTitle: 'Ce que vous recevez',
-    receiveAlt: "Des mains d'enfants colorient des lettres.",
+    receiveAlt: "Des mains d’enfants colorient des lettres.",
     receive: [
-      { t: 'Des nouvelles chaque trimestre', d: "Un message de notre équipe sur les progrès, à l'école et au quotidien." },
-      { t: 'Des photos respectueuses', d: "Des images d'activités, jamais d'information permettant d'identifier l'enfant ou son lieu de vie." },
-      { t: 'Un dessin ou une lettre', d: "Une fois par an, un mot ou un dessin de l'enfant, s'il le souhaite." },
-      { t: 'Un bilan annuel', d: "L'essentiel de l'année et l'emploi des fonds du programme." }
+      { t: 'Des nouvelles chaque trimestre', d: "Un message de notre équipe sur les progrès, à l’école et au quotidien." },
+      { t: 'Des photos respectueuses', d: "Des images d’activités, jamais d’information permettant d’identifier l’enfant ou son lieu de vie." },
+      { t: 'Un dessin ou une lettre', d: "Une fois par an, un mot ou un dessin de l’enfant, s’il le souhaite." },
+      { t: 'Un bilan annuel', d: "L’essentiel de l’année et l’emploi des fonds du programme." }
     ],
-    charterTitle: "Notre charte de protection de l'enfant",
-    charterIntro: "Le lien avec votre filleul passe toujours par notre équipe. C'est ce qui protège l'enfant et le sens de votre engagement.",
+    charterTitle: "Notre charte de protection de l’enfant",
+    charterIntro: "Le lien avec votre filleul passe toujours par notre équipe. C’est ce qui protège l’enfant et le sens de votre engagement.",
     charter: [
-      "Aucune coordonnée personnelle n'est échangée entre parrain et enfant.",
+      "Aucune coordonnée personnelle n’est échangée entre parrain et enfant.",
       "Les photos que vous recevez ne doivent pas être publiées en ligne.",
       "Les cadeaux passent par notre équipe, pour rester équitables entre les enfants.",
-      "Les visites se font sur rendez-vous, accompagnées d'un membre de notre équipe."
+      "Les visites se font sur rendez-vous, accompagnées d’un membre de notre équipe."
     ],
     faqTitle: 'Questions fréquentes',
     faq: [
       { q: 'Puis-je arrêter ou modifier mon parrainage ?', a: 'Oui, à tout moment, par simple e-mail. Aucun engagement de durée.' },
-      { q: 'Mon don va-t-il à un seul enfant ?', a: "Votre parrainage est lié à un enfant, dont vous recevez le prénom, l'âge et les envies après votre paiement, sans information qui permettrait de l'identifier en ligne. Les moyens sont mutualisés au sein du programme pour qu'aucun enfant ne soit laissé de côté." },
-      { q: 'Puis-je écrire à mon filleul ou lui rendre visite ?', a: "Oui, par l'intermédiaire de notre équipe. Les visites se font sur rendez-vous, accompagnées d'un membre de notre équipe." },
+      { q: 'Mon don va-t-il à un seul enfant ?', a: 'Il est lié à un enfant : après votre paiement, vous recevez son prénom, son âge et ses envies, sans rien qui permette de l’identifier en ligne. Les moyens sont mutualisés dans le programme, pour qu’aucun enfant ne soit laissé de côté.' },
+      { q: 'Puis-je écrire à mon filleul ou lui rendre visite ?', a: "Oui, par l’intermédiaire de notre équipe. Les visites se font sur rendez-vous, accompagnées d’un membre de notre équipe." },
       { q: 'Quelles nouvelles vais-je recevoir ?', a: "Un message chaque trimestre avec une photo respectueuse ou un dessin, et un bilan annuel." }
     ],
     inscriptionTitlePre: 'Devenir ',
@@ -73,24 +73,24 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     email: 'E-mail',
     phone: 'Téléphone ou WhatsApp',
     optional: '(facultatif)',
-    charterAgreePre: "J'ai lu la ",
-    charterAgreeLink: "charte de protection de l'enfant",
+    charterAgreePre: "J’ai lu la ",
+    charterAgreeLink: "charte de protection de l’enfant",
     charterAgreePost: ' et je m’engage à la respecter.',
     submitLabelPrefix: 'Payer et devenir parrain',
-    payNote: 'Paiement sécurisé par carte ou prélèvement. Dès la confirmation du paiement, nous vous écrivons automatiquement avec toutes les informations. Vous pouvez arrêter à tout moment.',
+    payNote: 'Paiement sécurisé par carte ou prélèvement. Vous pouvez arrêter à tout moment. Dès la confirmation, nous vous écrivons avec toutes les informations.',
     customLabel: 'Ou choisissez votre montant mensuel',
     customHint: 'Laissez vide pour garder la formule choisie.',
     eurNote: 'Le paiement se fait en euros.',
     error: 'Une erreur est survenue. Merci de réessayer.'
   },
   en: {
-    title: 'Sponsor a child',
+    title: 'Sponsor a child in Kinshasa, every month',
     desc: 'Monthly sponsorship at One Love: support a child or a programme, with regular updates and full respect for their privacy.',
     eyebrow: 'Sponsorship',
     heroPre: 'Stand by a child, ',
     heroWord: 'month after month',
     heroPost: '.',
-    heroIntro: "Sponsorship provides continuity: school, medical care, someone to listen. You receive regular updates, always respecting the child's privacy.",
+    heroIntro: "Sponsorship provides continuity: school, medical care, someone to listen. You receive regular updates, always respecting the child’s privacy.",
     heroAlt: 'A boy laughs and makes a peace sign, sitting on a garden wall.',
     heroCta: 'Become a sponsor',
     heroScroll: 'How it works',
@@ -116,12 +116,12 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     perMonth: 'per month',
     monthUnit: 'month',
     receiveTitle: 'What you receive',
-    receiveAlt: "Children's hands colouring in letters.",
+    receiveAlt: "Children’s hands colouring in letters.",
     receive: [
       { t: 'Updates every quarter', d: 'A message from our team about progress, at school and day to day.' },
       { t: 'Respectful photos', d: 'Photos of activities, never anything that could identify the child or where they live.' },
       { t: 'A drawing or a letter', d: 'Once a year, a note or drawing from the child, if they wish.' },
-      { t: 'A yearly review', d: "The year's highlights and how the programme's funds were used." }
+      { t: 'A yearly review', d: "The year’s highlights and how the programme’s funds were used." }
     ],
     charterTitle: 'Our child protection charter',
     charterIntro: "Contact with your sponsored child always goes through our team. This protects the child and the meaning of your commitment.",
@@ -134,7 +134,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     faqTitle: 'Frequently asked questions',
     faq: [
       { q: 'Can I stop or change my sponsorship?', a: 'Yes, at any time, with a simple email. No minimum term.' },
-      { q: 'Does my gift go to one child only?', a: 'Your sponsorship is linked to a child: after your payment you receive their first name, age and interests, with nothing that could identify them online. Funds are pooled within the programme so that no child is left out.' },
+      { q: 'Does my gift go to one child only?', a: 'It is linked to one child: after your payment you receive their first name, age and interests, with nothing that could identify them online. Funds are pooled within the programme so that no child is left out.' },
       { q: 'Can I write to or visit my sponsored child?', a: 'Yes, through our team. Visits are by appointment, accompanied by a member of our team.' },
       { q: 'What updates will I receive?', a: 'A message every quarter with a respectful photo or a drawing, and a yearly review.' }
     ],
@@ -151,7 +151,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     charterAgreeLink: 'child protection charter',
     charterAgreePost: ' and agree to follow it.',
     submitLabelPrefix: 'Pay and become a sponsor',
-    payNote: 'Secure payment by card or direct debit. As soon as your payment is confirmed, we write to you automatically with all the information. You can stop at any time.',
+    payNote: 'Secure payment by card or direct debit. You can stop at any time. As soon as your payment is confirmed, we write to you with all the information.',
     customLabel: 'Or choose your monthly amount',
     customHint: 'Leave empty to keep the chosen plan.',
     eurNote: 'Payment is made in euros.',
@@ -175,9 +175,9 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
       >
         <div className="relative flex min-h-svh w-full items-end dk:min-h-0 dk:items-center">
           <HeroBackground src="/photos/photo-joie.jpg" alt={t.heroAlt} position="45% 30%" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.1)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)] dk:bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)] dk:bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
           <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
-            <Reveal className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:mx-0 dk:items-start dk:text-left dk:gap-6">
+            <Reveal eager className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:mx-0 dk:items-start dk:text-left dk:gap-6">
               <Eyebrow dark>{t.eyebrow}</Eyebrow>
               <h1 className="m-0 text-balance font-serif text-[32px] font-medium leading-[1.08] tracking-[-0.01em] dk:text-[clamp(38px,5vw,64px)]">
                 {t.heroPre}
@@ -202,6 +202,23 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
+      {/* Données structurées de la FAQ visible : générées depuis le même texte,
+          donc toujours identiques à ce que voit le visiteur. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            inLanguage: locale,
+            mainEntity: t.faq.map((f) => ({
+              '@type': 'Question',
+              name: f.q,
+              acceptedAnswer: { '@type': 'Answer', text: f.a }
+            }))
+          }).replace(/</g, '\\u003c')
+        }}
+      />
       <SponsorInteractive locale={locale} t={t} />
     </>
   );

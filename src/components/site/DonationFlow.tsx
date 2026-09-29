@@ -38,7 +38,7 @@ const T = {
     amount: 'Montant',
     amounts: [
       [10, 'Un cahier et des crayons pour un enfant, pour un trimestre.'],
-      [25, "Un mois de matériel pour un groupe d'atelier."],
+      [25, "Un mois de matériel pour un groupe d’atelier."],
       [50, 'Une consultation médicale et son suivi.'],
       [100, "Un mois de formation pour un animateur."]
     ] as const,
@@ -72,7 +72,7 @@ const T = {
     thanksTransfer:
       "Merci ! Pensez à indiquer votre nom dans le libellé du virement, pour que nous puissions vous remercier.",
     momoEmail: 'Votre e-mail',
-    momoSent: "C'est noté : nous vous préviendrons.",
+    momoSent: "C’est noté : nous vous préviendrons.",
     momoFallbackName: 'Donateur (Mobile Money)',
     momoSubject: 'Mobile Money — me prévenir',
     momoMessage: (phone: string) =>
@@ -88,7 +88,7 @@ const T = {
     holder: 'Titulaire',
     iban: 'IBAN',
     bic: 'BIC',
-    copy: "Copier l'IBAN",
+    copy: "Copier l’IBAN",
     copied: 'IBAN copié',
     virementNote: `Pour soutenir un programme en particulier, comme ${currentProject.name}, indiquez-le dans le libellé du virement.`,
     momoNote: 'Orange Money, Airtel Money et M-Pesa seront bientôt disponibles pour les donateurs en RDC. Laissez votre numéro et votre e-mail pour être prévenu.',
@@ -98,7 +98,7 @@ const T = {
     back: 'Retour',
     next: 'Continuer',
     pay: (label: string, monthly: boolean) => `Payer ${label}${monthly ? ' / mois' : ''}`,
-    notedCoords: "J'ai noté les coordonnées",
+    notedCoords: "J’ai noté les coordonnées",
     chooseOther: 'Choisir un autre moyen',
     summary: 'Récapitulatif',
     perMonth: 'par mois',
@@ -154,13 +154,13 @@ const T = {
     thanksTransfer:
       'Thank you! Please put your name in the transfer reference so that we can thank you.',
     momoEmail: 'Your email',
-    momoSent: "Noted: we'll let you know.",
+    momoSent: "Noted: we’ll let you know.",
     momoFallbackName: 'Donor (Mobile Money)',
     momoSubject: 'Mobile Money — notify me',
     momoMessage: (phone: string) =>
       `Please let me know when giving by Mobile Money is available. Phone: ${phone}`,
     impact: '≈ 100 children welcomed at the centre every week (2024)',
-    transferTrust: "Direct transfer to our association's account",
+    transferTrust: "Direct transfer to our association’s account",
     payMethod: 'Payment method',
     methods: {
       card: { t: 'Card or SEPA direct debit', d: 'Via Stripe, in a few moments', tag: 'Recommended' },
@@ -180,7 +180,7 @@ const T = {
     back: 'Back',
     next: 'Continue',
     pay: (label: string, monthly: boolean) => `Pay ${label}${monthly ? ' / month' : ''}`,
-    notedCoords: "I've noted the details",
+    notedCoords: "I’ve noted the details",
     chooseOther: 'Choose another method',
     summary: 'Summary',
     perMonth: 'per month',

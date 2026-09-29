@@ -949,3 +949,16 @@ parrainage.
   formule inconnue, session de paiement). **Jamais testé avec un vrai Stripe** :
   à faire en mode test dès que le compte existe.
 - **Montant libre** : 1 à 5 000 €/mois (`sponsorSessionSchema`), en plus des formules.
+
+## Corrections d'audit du 29/09/2026 (à connaître avant de modifier)
+
+- **Statut `PAYMENT_FAILED`** (parrains) : valeur ajoutée à la base de production le 29/09/2026 par `ALTER TYPE "SponsorStatus" ADD VALUE`. Posé par `invoice.payment_failed`, retiré à la première facture payée suivante. **Cocher aussi `invoice.payment_failed` sur le webhook Stripe.** Les fonctions `markSponsorPaymentFailed`/`Recovered` journalisent au lieu de casser le webhook si la base ne connaît pas la valeur.
+- **Fiche donateur** : `upsertDonorFillEmpty` (`src/lib/donations.ts`) ne remplit que les champs vides ; ne jamais réintroduire un `update` qui écrase le nom d'une fiche existante (l'e-mail saisi n'est pas vérifié).
+- **`getSiteUrl()`** (`src/lib/site-url.ts`) : échoue en production si `NEXT_PUBLIC_SITE_URL` manque ; `next.config.ts` refuse aussi la construction de production sans elle.
+- **Formulaires** : validation côté page dans `src/lib/form-validation.ts` + `FieldError` (message sous chaque champ, `aria-invalid`, focus sur le premier champ fautif). Le serveur reste juge. La charte du parrainage est vérifiée à la main (le formulaire est en `noValidate`).
+- **Bandeaux** : `<Reveal eager>` joue l'entrée en CSS pur, sans attendre l'hydratation (le titre du bandeau de `/parrainer` fixait un LCP de 7,4 s). À mettre sur tout nouveau bandeau de haut de page.
+- **Voiles sur photo** : six jetons `--scrim-0` à `--scrim-5` dans `globals.css` ; ne plus écrire de `rgba(10,10,10,x)` en dur.
+- **Menu** : fond `night/85` (contraste mesuré 10,5:1) ; le menu mobile gère le focus (Échap, piège, retour au bouton).
+- **Pauses** : bouton sur la bande des partenaires (`MarqueePause`) et sur les photos qui changent (`HeroBackground`), WCAG 2.2.2.
+- **Redirections de l'ancien WordPress** dans `next.config.ts` (utiles au branchement de `associationonelove.org`).
+- Rapport complet des audits : `~/Documents/Mazunda/08-Divers/One-Love/audits-2026-09-29.md`.

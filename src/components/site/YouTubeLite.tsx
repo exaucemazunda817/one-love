@@ -37,7 +37,7 @@ export function YouTubeLite({ id, title, playLabel }: { id: string; title: strin
         sizes="(max-width: 768px) 100vw, 600px"
         className="object-cover opacity-90 transition-opacity duration-300 group-hover:opacity-100"
       />
-      <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,0)_40%,rgba(10,10,10,.75)_100%)]" />
+      <span className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-0)_40%,var(--scrim-4)_100%)]" />
       <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gold text-night shadow-ol-md transition-transform duration-300 group-hover:scale-110">
         <PlayIcon size={26} weight="fill" aria-hidden />
       </span>

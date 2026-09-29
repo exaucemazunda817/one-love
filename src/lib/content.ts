@@ -13,11 +13,11 @@
 export const org = {
   name: 'One Love',
   legalName: 'Association One Love',
-  tagline: "L'amour et la foi, notre carburant.",
+  tagline: "L’amour et la foi, notre carburant.",
   /// Numéro au Répertoire National des Associations.
   rna: 'W951001528',
   foundedYear: 2013,
-  founders: 'Kanda Kabangu et son épouse',
+  founders: 'Kanda et Maïté Kabangu',
 
   // ATTENTION — contradiction non résolue, à trancher AVANT de publier les
   // mentions légales : le site actuel annonce le 44 rue de la Roquette à
@@ -39,25 +39,25 @@ export const org = {
 // ni « ancien site ». C'est un site neuf, il se présente comme tel.
 
 export const quotes = {
-  hero: "Notre désir est de communiquer l'amour que nous avons reçu.",
+  hero: "Notre désir est de communiquer l’amour que nous avons reçu.",
   need: 'Chaque être humain a besoin de se sentir aimé et désiré.',
   actions:
-    "L'amour que nous souhaitons transmettre est une prolongation de nos valeurs : ce n'est pas pour détruire mais pour construire, non pour imposer mais pour démontrer par nos actes d'amour que l'Homme est aimé au-delà des frontières, des cultures ou des religions."
+    "L’amour que nous souhaitons transmettre est une prolongation de nos valeurs : ce n’est pas pour détruire mais pour construire, non pour imposer mais pour démontrer par nos actes d’amour que l’Homme est aimé au-delà des frontières, des cultures ou des religions."
 } as const;
 
 export const identity = {
   vision:
-    "L'amour est un besoin fondamental de l'être humain. Toute personne victime d'exclusion devrait pouvoir satisfaire ce besoin d'être aimée.",
+    "L’amour est un besoin fondamental de l’être humain. Toute personne victime d’exclusion devrait pouvoir satisfaire ce besoin d’être aimée.",
   mission:
     'Réaliser des projets en République Démocratique du Congo qui ont pour objet de valoriser les populations marginalisées, en particulier les enfants.',
   objectifs: [
-    "Permettre l'accès à un mode de vie décent par l'éducation et des actions sociales et sanitaires.",
+    "Permettre l’accès à un mode de vie décent par l’éducation et des actions sociales et sanitaires.",
     'Co-construire des programmes de (ré)insertion professionnelle.',
     'Accompagner les bénéficiaires dans leur accomplissement professionnel et/ou personnel.'
   ],
   valeurs: [
-    "Aimer l'autre comme soi-même.",
-    "Croire à l'impossible.",
+    "Aimer l’autre comme soi-même.",
+    "Croire à l’impossible.",
     'Conduire nos actions dans le respect de l’environnement.'
   ]
 } as const;
@@ -65,8 +65,8 @@ export const identity = {
 /// Les trois piliers affichés sous « Qu'est-ce que One Love ? ».
 export const pillars = [
   {
-    title: "L'amour avant tout",
-    body: "C'est notre carburant, ce qui nous anime et nous pousse à agir. Nous sommes aimés et nous souhaitons aimer en retour."
+    title: "L’amour avant tout",
+    body: "C’est notre carburant, ce qui nous anime et nous pousse à agir. Nous sommes aimés et nous souhaitons aimer en retour."
   },
   {
     title: 'Des personnes engagées',
@@ -85,7 +85,7 @@ export const foundersWord = {
 } as const;
 
 export const teamWord =
-  "Nous sommes une équipe dynamique et pleine d'enthousiasme, passionnée par le défi de rendre le monde meilleur. Et nous ne ménageons pas nos efforts pour y arriver.";
+  "Nous sommes une équipe dynamique et pleine d’enthousiasme, passionnée par le défi de rendre le monde meilleur. Et nous ne ménageons pas nos efforts pour y arriver.";
 
 /// Projet en cours. Alimentera la table Project au jalon 1.
 export const currentProject = {
@@ -95,12 +95,12 @@ export const currentProject = {
   partnerName: 'Angel Foundation',
   period: 'Septembre à décembre 2026 (4 mois)',
   intro:
-    "Lancé une première fois l'année dernière, le projet RÊVES revient avec une deuxième phase, davantage axée sur l'éducation, en partenariat avec Angel Foundation.",
+    "Lancé une première fois l’année dernière, le projet RÊVES revient avec une deuxième phase, davantage axée sur l’éducation, en partenariat avec Angel Foundation.",
   description:
     "Sur une période de 4 mois (septembre à décembre), RÊVES 2 propose aux enfants que nous accueillons un accompagnement structuré combinant alphabétisation, apprentissage du français, activités culturelles, sportives et artistiques. Le projet comprend également la formation des animateurs, le renforcement des ressources pédagogiques et la mise à disposition de matériel informatique. Il intègre aussi un suivi médical et psychosocial régulier pour les enfants.",
-  objectif: "Renforcer les compétences, la confiance et l'autonomie des enfants.",
+  objectif: "Renforcer les compétences, la confiance et l’autonomie des enfants.",
   firstMilestone: {
-    label: "Premiers pas dans l'alphabétisation",
+    label: "Premiers pas dans l’alphabétisation",
     date: 'Samedi 5 septembre 2026'
   },
   // [À COMPLÉTER] Budget et calendrier détaillés, convention Angel Foundation.
@@ -112,11 +112,11 @@ export const currentProject = {
 export const actions = [
   {
     title: 'Alphabétisation',
-    body: "Apprendre à lire et à écrire est le premier levier d'autonomie. C'est par là qu'a commencé RÊVES 2, le 5 septembre 2026."
+    body: "Apprendre à lire et à écrire est le premier levier d’autonomie. C’est par là qu’a commencé RÊVES 2, le 5 septembre 2026."
   },
   {
     title: 'Apprentissage du français',
-    body: "Maîtriser la langue de scolarisation conditionne l'accès à l'école et, plus tard, à une formation professionnelle."
+    body: "Maîtriser la langue de scolarisation conditionne l’accès à l’école et, plus tard, à une formation professionnelle."
   },
   {
     title: 'Activités culturelles, sportives et artistiques',
@@ -167,7 +167,7 @@ export const actions = [
 export const gallery = [
   {
     src: '/projets/reves-2/reves2-atelier-1.jpg',
-    caption: "Atelier d'écriture en petits groupes, pendant le programme d'alphabétisation.",
+    caption: "Atelier d’écriture en petits groupes, pendant le programme d’alphabétisation.",
     publishable: true,
     consentNote: 'Non identifiante : noir et blanc, visages non visibles.'
   },
@@ -175,14 +175,14 @@ export const gallery = [
     src: '/projets/reves-2/reves2-formateurs.jpg',
     caption: 'Les formateurs du programme RÊVES 2, mobilisés pour encadrer les enfants.',
     publishable: true,
-    consentNote: "Support déjà diffusé par l'association ; majoritairement des adultes."
+    consentNote: "Support déjà diffusé par l’association ; majoritairement des adultes."
   },
   {
     src: '/projets/reves-2/reves2-annonce.jpg',
-    caption: "Premiers pas dans l'alphabétisation — samedi 5 septembre 2026, lancement de RÊVES 2.",
+    caption: 'Premiers pas dans l’alphabétisation, samedi 5 septembre 2026 : lancement de RÊVES 2.',
     publishable: true,
     consentNote:
-      "Visuel de campagne publié par l'association elle-même, logos One Love et Angel Foundation intégrés."
+      "Visuel de campagne publié par l’association elle-même, logos One Love et Angel Foundation intégrés."
   },
   {
     src: '/projets/reves-2/reves2-arrivee.jpg',
@@ -204,13 +204,13 @@ export const gallery = [
   },
   {
     src: '/projets/reves-2/reves2-enfant-2.jpg',
-    caption: "Atelier d'écriture en fin de journée.",
+    caption: "Atelier d’écriture en fin de journée.",
     publishable: false,
     consentNote: 'Portrait brut, enfant identifiable.'
   },
   {
     src: '/projets/reves-2/reves2-enfant-3.jpg',
-    caption: "Une enfant concentrée sur son cahier pendant l'atelier.",
+    caption: "Une enfant concentrée sur son cahier pendant l’atelier.",
     publishable: false,
     consentNote: 'Portrait brut, enfant identifiable.'
   }
@@ -237,9 +237,9 @@ export const bankTransfer = {
 
 export const donationNotice = {
   allocation:
-    "Sauf mention spéciale, l'affectation de vos dons se fait en fonction des besoins des programmes de terrain. Si vous souhaitez soutenir un programme en particulier, précisez-le lors de votre virement.",
+    "Sauf mention spéciale, l’affectation de vos dons se fait en fonction des besoins des programmes de terrain. Si vous souhaitez soutenir un programme en particulier, précisez-le lors de votre virement.",
   privacy:
-    "Nous ne commercialisons pas nos fichiers de donateurs, de clients ni d'abonnés.",
+    "Nous ne cédons ni ne vendons nos fichiers de donateurs, de parrains ni d’abonnés à la lettre.",
   // Volontairement absent : aucune promesse de reçu fiscal tant que
   // l'habilitation de l'association n'est pas confirmée par un rescrit.
   taxReceiptClaim: null

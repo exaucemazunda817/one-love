@@ -20,21 +20,21 @@ import { currentProject } from '@/lib/content';
 
 const text = {
   fr: {
-    title: 'Nos actions',
+    title: 'Nos actions : éducation, santé, insertion',
     desc: "Alphabétisation, apprentissage du français, activités culturelles et sportives, suivi médical et psychosocial, formation des animateurs et (ré)insertion professionnelle à Kinshasa.",
     eyebrow: 'Nos actions',
     titlePre: 'Éduquer, soigner, ',
     titleWord: 'écouter',
-    intro: "Nos programmes à Kinshasa permettent l'accès à un mode de vie décent par l'éducation et des actions sociales et sanitaires.",
+    intro: "Nos programmes à Kinshasa permettent l’accès à un mode de vie décent par l’éducation et des actions sociales et sanitaires.",
     donate: 'Faire un don',
     sponsor: 'Parrainer un enfant',
     heroAlt: 'Un garçon écrit dans son cahier pendant un atelier.',
     areas: [
-      { icon: BookOpenIcon, k: 'Éducation', t: 'Alphabétisation et apprentissage du français', d: "Apprendre à lire et à écrire est le premier levier d'autonomie. Maîtriser la langue de scolarisation conditionne l'accès à l'école et, plus tard, à une formation professionnelle.", img: '/photos/photo-ecriture.jpg', alt: 'Une jeune fille écrit dans son cahier.' },
-      { icon: FirstAidIcon, k: 'Santé', t: 'Un suivi médical régulier', d: "Chaque enfant du programme bénéficie d'un suivi médical, pour que la santé ne soit jamais un frein à l'apprentissage.", img: '/photos/photo-joie.jpg', alt: 'Un garçon rit, assis sur un muret.' },
+      { icon: BookOpenIcon, k: 'Éducation', t: 'Alphabétisation et apprentissage du français', d: 'Apprendre à lire et à écrire est le premier pas vers l’autonomie. Sans le français, langue de l’école, il est difficile d’entrer en classe, puis d’apprendre un métier.', img: '/photos/photo-ecriture.jpg', alt: 'Une jeune fille écrit dans son cahier.' },
+      { icon: FirstAidIcon, k: 'Santé', t: 'Un suivi médical régulier', d: "Chaque enfant du programme bénéficie d’un suivi médical, pour que la santé ne freine pas l’apprentissage.", img: '/photos/photo-joie.jpg', alt: 'Un garçon rit, assis sur un muret.' },
       { icon: ChatCircleDotsIcon, k: 'Écoute', t: 'Accompagnement psychosocial et spirituel', d: 'Un espace pour parler, être entendu et reprendre confiance, avec des encadrants formés.', img: '/photos/photo-mains.jpg', alt: 'Des mains colorient des lettres.' },
-      { icon: SoccerBallIcon, k: 'Culture et sport', t: 'Activités culturelles, sportives et artistiques', d: 'Le jeu, le sport et la création ne sont pas des à-côtés : ils rendent la confiance et réapprennent la vie en groupe.', img: '/photos/photo-dessin.jpg', alt: 'Deux garçons dessinent ensemble.' },
-      { icon: BriefcaseIcon, k: 'Insertion', t: '(Ré)insertion professionnelle', d: 'Co-construire des programmes de (ré)insertion professionnelle et accompagner chacun dans son accomplissement professionnel et personnel.', img: '/photos/photo-cahier.jpg', alt: 'Un garçon écrit, concentré.' }
+      { icon: SoccerBallIcon, k: 'Culture et sport', t: 'Activités culturelles, sportives et artistiques', d: 'Jouer, faire du sport et créer redonnent confiance aux enfants et leur réapprennent la vie en groupe.', img: '/photos/photo-dessin.jpg', alt: 'Deux garçons dessinent ensemble.' },
+      { icon: BriefcaseIcon, k: 'Insertion', t: '(Ré)insertion professionnelle', d: 'Construire avec eux des parcours d’insertion professionnelle et accompagner chacun dans son projet de vie.', img: '/photos/photo-cahier.jpg', alt: 'Un garçon écrit, concentré.' }
     ],
     revesEyebrow: 'Projet en cours · septembre à décembre 2026',
     revesText:
@@ -44,7 +44,7 @@ const text = {
     bannerText: 'Choisissez un programme à soutenir, ou laissez notre équipe affecter votre don là où il est le plus utile.'
   },
   en: {
-    title: 'Our work',
+    title: 'Our work: education, health, inclusion',
     desc: 'Literacy, French lessons, cultural and sports activities, medical and psychosocial care, facilitator training and professional (re)integration in Kinshasa.',
     eyebrow: 'Our work',
     titlePre: 'Educate, care, ',
@@ -55,7 +55,7 @@ const text = {
     heroAlt: 'A boy writes in his notebook during a workshop.',
     areas: [
       { icon: BookOpenIcon, k: 'Education', t: 'Literacy and French lessons', d: 'Learning to read and write is the first step towards independence. Mastering the language of school opens the door to education and, later, to vocational training.', img: '/photos/photo-ecriture.jpg', alt: 'A girl writes in her notebook.' },
-      { icon: FirstAidIcon, k: 'Health', t: 'Regular medical care', d: 'Every child in the programme receives medical follow-up, so that health never gets in the way of learning.', img: '/photos/photo-joie.jpg', alt: 'A boy laughs, sitting on a low wall.' },
+      { icon: FirstAidIcon, k: 'Health', t: 'Regular medical care', d: 'Every child in the programme receives medical follow-up, so that health does not hold back learning.', img: '/photos/photo-joie.jpg', alt: 'A boy laughs, sitting on a low wall.' },
       { icon: ChatCircleDotsIcon, k: 'Listening', t: 'Psychosocial and spiritual support', d: 'A space to talk, be heard and regain confidence, with trained staff.', img: '/photos/photo-mains.jpg', alt: 'Hands colouring in letters.' },
       { icon: SoccerBallIcon, k: 'Culture and sport', t: 'Cultural, sports and art activities', d: 'Play, sport and creativity are not extras: they restore confidence and teach children to live together again.', img: '/photos/photo-dessin.jpg', alt: 'Two boys drawing together.' },
       { icon: BriefcaseIcon, k: 'Integration', t: 'Professional (re)integration', d: 'Co-designing professional (re)integration programmes and supporting each person in their professional and personal fulfilment.', img: '/photos/photo-cahier.jpg', alt: 'A boy writes, focused.' }
@@ -131,7 +131,7 @@ export function ActionsPage({ locale }: { locale: Locale }) {
                   <h2 className="m-0 font-serif text-[clamp(28px,3vw,38px)] font-medium leading-[1.2]">{a.t}</h2>
                 </Reveal>
                 <Reveal variant="soft" delay={440}>
-                  <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{a.d}</p>
+                  <p className="max-w-measure m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{a.d}</p>
                 </Reveal>
               </div>
             </Reveal>

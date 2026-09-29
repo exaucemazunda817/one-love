@@ -50,10 +50,10 @@ export function RootHtml({ lang, children }: { lang: 'fr' | 'en'; children: Reac
     <html lang={lang} className={`${lora.variable} ${nunito.variable}`} suppressHydrationWarning>
       <head>
         {/* Pose `js` avant le premier affichage : c'est ce qui autorise le
-            masquage des blocs d'apparition (voir globals.css). Pose aussi
-            `is-scrolling` le temps d'un défilement : les cartes photo
+            masquage des blocs d’apparition (voir globals.css). Pose aussi
+            `is-scrolling` le temps d’un défilement : les cartes photo
             ignorent alors le pointeur (voir globals.css). Écouteur passif, la
-            classe n'est posée qu'au début et retirée à la fin d'un geste — pas
+            classe n’est posée qu’au début et retirée à la fin d’un geste — pas
             à chaque image. */}
         <script dangerouslySetInnerHTML={{ __html: SCRIPT }} />
       </head>

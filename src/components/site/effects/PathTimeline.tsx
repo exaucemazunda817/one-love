@@ -112,7 +112,7 @@ export function PathTimeline({ steps }: { steps: PathStep[] }) {
               />
               <span className="flex flex-col gap-0.5">
                 <span className="text-[14px] leading-[1.3] text-ink-body">{step.label}</span>
-                <span className="text-[11px] font-extrabold uppercase tracking-[0.1em] text-ink-soft">
+                <span className="text-[12px] font-extrabold uppercase tracking-[0.1em] text-ink-soft">
                   {step.when}
                 </span>
               </span>

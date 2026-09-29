@@ -30,7 +30,8 @@ export function Reveal({
   delay = 0,
   className = '',
   variant = 'up',
-  repeat = true
+  repeat = true,
+  eager = false
 }: {
   children: React.ReactNode;
   delay?: number;
@@ -43,6 +44,11 @@ export function Reveal({
   // quand on revenait sur la page sans la recharger. `repeat={false}` rétablit
   // l'ancien comportement (une seule fois) pour un bloc précis.
   repeat?: boolean;
+  // Bloc de haut de page (bandeau) : son entrée est jouée par le CSS seul, sans
+  // attendre l'hydratation. Avant, le titre du bandeau restait invisible tant
+  // que le JavaScript n'avait pas fini de démarrer, et sur mobile lent c'était
+  // lui qui fixait le LCP (7 à 8 s mesurés sur /parrainer, 29/09/2026).
+  eager?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<State>('pending');
@@ -149,6 +155,7 @@ export function Reveal({
     <div
       ref={ref}
       data-reveal={state}
+      data-reveal-eager={eager ? '' : undefined}
       data-reveal-variant={variant === 'up' ? undefined : variant}
       className={className}
       style={delay ? ({ '--reveal-delay': `${delay}ms` } as React.CSSProperties) : undefined}

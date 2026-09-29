@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { HeartIcon, ListIcon, XIcon, CaretRightIcon, FacebookLogoIcon } from '@phosphor-icons/react';
 import { chrome, localeHref, alternateHref, FACEBOOK_URL, type Locale } from '@/lib/i18n';
 import { cx } from '@/components/site/ui';
@@ -13,6 +13,8 @@ const LOGO = '/brand/logo-one-love-rond.png';
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   // Lien actuellement en « verre » dans le menu mobile (survolé au doigt/à la
   // souris) : même principe que Gospel Nation, sans le glissement animé d'un
   // repère commun aux deux sites — ici un simple état posé par lien.
@@ -25,6 +27,42 @@ export function Header({ locale }: { locale: Locale }) {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  // Menu mobile modal : focus dans le menu à l'ouverture, Échap pour fermer,
+  // Tab qui reste dans le menu, focus rendu au bouton à la fermeture
+  // (WCAG 2.1.1 et 2.4.3 ; audit du 29/09/2026).
+  useEffect(() => {
+    if (!open) return;
+    const items = () =>
+      menuRef.current
+        ? [...menuRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')]
+        : [];
+    items()[0]?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setOpen(false);
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const list = items();
+      if (list.length === 0) return;
+      const first = list[0];
+      const last = list[list.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      triggerRef.current?.focus();
+    };
+  }, [open]);
 
   // Bloque le défilement de la page derrière le menu plein écran.
   useEffect(() => {
@@ -46,7 +84,7 @@ export function Header({ locale }: { locale: Locale }) {
     <>
       {/* Desktop (≥ 1200 px) */}
       <header className="fixed inset-x-0 top-[max(1rem,env(safe-area-inset-top))] z-40 hidden px-8 dk:block">
-        <div className="mx-auto flex max-w-[1280px] items-center gap-4 rounded-full border border-gold/25 bg-night/60 py-2 pl-3 pr-3 shadow-ol-float backdrop-blur-md">
+        <div className="mx-auto flex max-w-[1280px] items-center gap-4 rounded-full border border-gold/25 bg-night/85 py-2 pl-3 pr-3 shadow-ol-float backdrop-blur-md">
           <Link href={localeHref('/', locale)} aria-label={t.home} className="flex flex-none">
             <Image src={LOGO} alt="One Love" width={48} height={48} priority className="h-12 w-12" />
           </Link>
@@ -73,13 +111,13 @@ export function Header({ locale }: { locale: Locale }) {
               {locale === 'fr' ? (
                 <>
                   <span className="rounded-md bg-cream px-2 py-[5px] text-night">FR</span>
-                  <Link href={other.href} hrefLang="en" className="px-2 py-[5px] text-on-dark-2 no-underline hover:text-gold-hover">
+                  <Link href={other.href} hrefLang="en" lang="en" aria-label="English" className="px-2 py-[5px] text-on-dark-2 no-underline hover:text-gold-hover">
                     EN
                   </Link>
                 </>
               ) : (
                 <>
-                  <Link href={other.href} hrefLang="fr" className="px-2 py-[5px] text-on-dark-2 no-underline hover:text-gold-hover">
+                  <Link href={other.href} hrefLang="fr" lang="fr" aria-label="Français" className="px-2 py-[5px] text-on-dark-2 no-underline hover:text-gold-hover">
                     FR
                   </Link>
                   <span className="rounded-md bg-cream px-2 py-[5px] text-night">EN</span>
@@ -99,7 +137,7 @@ export function Header({ locale }: { locale: Locale }) {
 
       {/* Mobile (< 1200 px) */}
       <header className="fixed inset-x-0 top-[max(1rem,env(safe-area-inset-top))] z-40 px-4 dk:hidden">
-        <div className="mx-auto flex max-w-[1280px] items-center justify-between rounded-full border border-gold/25 bg-night/60 py-1.5 pl-2.5 pr-1.5 shadow-ol-float backdrop-blur-md">
+        <div className="mx-auto flex max-w-[1280px] items-center justify-between rounded-full border border-gold/25 bg-night/85 py-1.5 pl-2.5 pr-1.5 shadow-ol-float backdrop-blur-md">
         <Link href={localeHref('/', locale)} aria-label={t.home} className="flex">
           <Image src={LOGO} alt="One Love" width={44} height={44} priority className="h-11 w-11" />
         </Link>
@@ -107,12 +145,15 @@ export function Header({ locale }: { locale: Locale }) {
           <Link
             href={other.href}
             hrefLang={locale === 'fr' ? 'en' : 'fr'}
+            lang={locale === 'fr' ? 'en' : 'fr'}
+            aria-label={locale === 'fr' ? 'English' : 'Français'}
             className="inline-flex min-h-11 items-center px-2.5 text-[14px] font-extrabold text-cream no-underline hover:text-gold-hover"
           >
             {otherLabel}
           </Link>
           <button
             type="button"
+            ref={triggerRef}
             onClick={() => setOpen(true)}
             aria-label={t.openMenu}
             aria-expanded={open}
@@ -128,6 +169,7 @@ export function Header({ locale }: { locale: Locale }) {
       {open && (
         <div
           id="menu-mobile"
+          ref={menuRef}
           role="dialog"
           aria-modal="true"
           aria-label={locale === 'fr' ? 'Menu' : 'Menu'}

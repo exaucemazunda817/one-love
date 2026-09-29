@@ -10,12 +10,12 @@ import { org } from '@/lib/content';
 
 const text = {
   fr: {
-    title: 'Transparence',
-    desc: "Statut juridique, emploi des fonds et protection des enfants de l'association One Love.",
+    title: 'Transparence : statut, fonds, protection des enfants',
+    desc: "Statut juridique, emploi des fonds et protection des enfants de l’association One Love.",
     eyebrow: 'Transparence',
     titlePre: 'Rendre compte de chaque ',
     titleWord: 'euro',
-    intro: 'Statut, emploi des fonds et protection des enfants : ce que vous êtes en droit de savoir.',
+    intro: 'Statut, emploi des fonds et protection des enfants : ce que vous avez le droit de savoir de notre part.',
     heroAlt: 'Une jeune fille écrit dans son cahier.',
     statusTitle: 'Statut juridique',
     statusText: 'Nous sommes une association loi 1901 à but non lucratif et nous menons nos projets en République démocratique du Congo.',
@@ -26,16 +26,16 @@ const text = {
       ['Fondateurs', org.founders],
       ['Terrain', 'Kinshasa, RDC']
     ] as const,
-    fundsTitle: "L'emploi des fonds",
-    fundsIntro: "Sauf mention spéciale, l'affectation de vos dons se fait en fonction des besoins des programmes de terrain.",
+    fundsTitle: "L’emploi des fonds",
+    fundsIntro: "Sauf mention spéciale, l’affectation de vos dons se fait en fonction des besoins des programmes de terrain.",
     childTitle: 'Protection des enfants',
-    childText: "Aucun nom complet, lieu précis ou récit personnel identifiable n'est associé à un visage sur nos supports. Les liens avec les parrains passent toujours par notre équipe.",
+    childText: "Aucun nom complet, lieu précis ou récit personnel identifiable n’est associé à un visage sur nos supports. Les liens avec les parrains passent toujours par notre équipe.",
     dataTitle: 'Protection des données',
-    dataText: 'Nous ne commercialisons pas nos fichiers de donateurs, de clients ni d’abonnés.',
+    dataText: 'Nous ne cédons ni ne vendons nos fichiers de donateurs, de parrains ni d’abonnés à la lettre.',
     dataLink: 'Politique de confidentialité'
   },
   en: {
-    title: 'Transparency',
+    title: 'Transparency: status, funds, child protection',
     desc: 'Legal status, use of funds and child protection at the One Love association.',
     eyebrow: 'Transparency',
     titlePre: 'Accounting for every ',
@@ -48,7 +48,7 @@ const text = {
       ['Type', 'Non-profit association (loi 1901)'],
       ['RNA no.', org.rna],
       ['Founded', String(org.foundedYear)],
-      ['Founders', 'Kanda Kabangu and his wife'],
+      ['Founders', 'Kanda and Maïté Kabangu'],
       ['Field', 'Kinshasa, DRC']
     ] as const,
     fundsTitle: 'Use of funds',
@@ -56,7 +56,7 @@ const text = {
     childTitle: 'Child protection',
     childText: 'No full name, precise location or identifiable personal story is ever linked to a face in our materials. Contact with sponsors always goes through our team.',
     dataTitle: 'Data protection',
-    dataText: 'We never sell our donor, customer or subscriber lists.',
+    dataText: 'We never sell or pass on our donor, sponsor or newsletter lists.',
     dataLink: 'Privacy policy'
   }
 };
@@ -84,7 +84,7 @@ export function TransparencyPage({ locale }: { locale: Locale }) {
       <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-16 gap-y-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
         <Reveal className="flex flex-col gap-3">
           <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.statusTitle} /></h2>
-          <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.statusText}</p>
+          <p className="max-w-measure m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.statusText}</p>
         </Reveal>
         <Reveal delay={90}>
           {/* Sur téléphone, libellé au-dessus de la valeur : en deux colonnes,

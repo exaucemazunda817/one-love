@@ -10,7 +10,7 @@ const text = {
     reels: 'Voir les vidéos'
   },
   en: {
-    title: "The children's daily life, in photos and videos",
+    title: "The children’s daily life, in photos and videos",
     body: "Our team regularly shares news from the field on our Facebook page, followed by more than 2,000 people.",
     page: 'Visit our Facebook page',
     reels: 'Watch the videos'

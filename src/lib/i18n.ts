@@ -32,12 +32,12 @@ export const chrome = {
     home: 'One Love, accueil',
     nav: [
       { label: 'Accueil', href: '/' },
-      { label: "L'association", href: '/association' },
+      { label: "L’association", href: '/association' },
       { label: 'Notre histoire', href: '/histoire' },
       { label: 'Nos actions', href: '/actions' },
       { label: 'Actualités', href: '/galerie' },
       { label: 'Parrainer', href: '/parrainer' },
-      { label: "S'impliquer", href: '/s-impliquer' },
+      { label: "S’impliquer", href: '/s-impliquer' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Faire un don',
@@ -45,10 +45,10 @@ export const chrome = {
     closeMenu: 'Fermer le menu',
     whatsapp: 'Écrire sur WhatsApp',
     footer: {
-      motto: "L'amour et la foi, notre carburant.",
+      motto: "L’amour et la foi, notre carburant.",
       explore: 'DÉCOUVRIR',
       links: [
-        { label: "L'association", href: '/association' },
+        { label: "L’association", href: '/association' },
         { label: 'Notre histoire', href: '/histoire' },
         { label: 'Nos actions', href: '/actions' },
         { label: 'Le projet RÊVES 2', href: '/projets/reves-2' },
@@ -56,16 +56,16 @@ export const chrome = {
         { label: 'Faire un don', href: '/dons' }
       ],
       reach: 'NOUS JOINDRE',
-      newsletter: "LETTRE D'INFORMATION",
+      newsletter: "LETTRE D’INFORMATION",
       newsletterText: 'Recevez nos actualités de terrain, quelques fois par an.',
       emailLabel: 'Adresse e-mail',
-      subscribe: "S'inscrire",
+      subscribe: "S’inscrire",
       legalLine: '© 2026 Association One Love · association loi 1901, RNA W951001528',
       legal: [
         { label: 'Transparence', href: '/transparence' },
         { label: 'Mentions légales', href: '/mentions-legales' },
         { label: 'Confidentialité', href: '/confidentialite' },
-        { label: "Protection de l'enfance", href: '/parrainer#charte' }
+        { label: "Protection de l’enfance", href: '/parrainer#charte' }
       ]
     }
   },

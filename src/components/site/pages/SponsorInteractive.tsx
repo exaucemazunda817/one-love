@@ -1,6 +1,8 @@
 'use client';
 
-import { useId, useMemo, useState } from 'react';
+import { useId, useMemo, useRef, useState } from 'react';
+import { FieldError, errorProps } from '@/components/forms/FieldError';
+import { focusFirstError, formMessages, serverIssuesToErrors, validateFields, type FieldErrors } from '@/lib/form-validation';
 import Image from 'next/image';
 import {
   CheckIcon,
@@ -73,6 +75,8 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [custom, setCustom] = useState('');
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const formRef = useRef<HTMLFormElement>(null);
 
   const plans = mode === 'child' ? t.plansChild : t.plansProg;
   const chosen = plans[plan];
@@ -92,9 +96,24 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
   // inscrit la personne dans la liste des parrains.
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setPending(true);
     setError('');
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const checked = validateFields(
+      form,
+      { firstName: { required: true }, lastName: { required: true }, email: { required: true, email: true } },
+      locale
+    );
+    const msg = formMessages(locale);
+    // La charte doit être cochée : sans validation native (noValidate), rien ne l'imposait.
+    if (!form.querySelector<HTMLInputElement>('input[name="charter"]')?.checked) checked.charter = msg.check;
+    if (customEur !== null && customEur < 1) checked.amount = msg.amount;
+    setErrors(checked);
+    if (Object.keys(checked).length > 0) {
+      focusFirstError(form, checked);
+      return;
+    }
+    setPending(true);
+    const formData = new FormData(form);
     const payload = {
       firstName: String(formData.get('firstName') || '').trim(),
       lastName: String(formData.get('lastName') || '').trim(),
@@ -116,7 +135,17 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
         window.location.href = data.url;
         return;
       }
-      setError(data.error || t.error);
+      const fromServer = serverIssuesToErrors(
+        data.issues,
+        { firstName: 'firstName', lastName: 'lastName', email: 'email', amountEur: 'amount' },
+        locale
+      );
+      if (Object.keys(fromServer).length > 0) {
+        setErrors(fromServer);
+        focusFirstError(formRef.current, fromServer);
+      } else {
+        setError(data.error || t.error);
+      }
     } catch {
       setError(t.error);
     }
@@ -330,44 +359,45 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
               </span>
               {t.inscriptionTitlePost}
             </h2>
-            <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.inscriptionIntro}</p>
+            <p className="max-w-measure m-0 text-[17px] leading-[1.6] text-ink-body">{t.inscriptionIntro}</p>
           </Reveal>
 
           <Reveal delay={90}>
-            <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-lg">
+            <form ref={formRef} onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-lg">
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-3.5">
-                  <label className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
                     <span className="text-[15px] font-bold">{t.firstName}</span>
-                    <input
+                    <input {...errorProps(`${id}-firstName-err`, errors.firstName)}
                       name="firstName"
                       required
                       autoComplete="given-name"
                       maxLength={120}
-                      className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600"
+                      className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600 aria-invalid:border-error"
                     />
                   </label>
-                  <label className="flex flex-col gap-2">
+                <FieldError id={`${id}-charter-err`} message={errors.charter} /><FieldError id={`${id}-firstName-err`} message={errors.firstName} /></div>
+                  <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
                     <span className="text-[15px] font-bold">{t.lastName}</span>
-                    <input
+                    <input {...errorProps(`${id}-lastName-err`, errors.lastName)}
                       name="lastName"
                       required
                       autoComplete="family-name"
                       maxLength={120}
-                      className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600"
+                      className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600 aria-invalid:border-error"
                     />
-                  </label>
+                  </label><FieldError id={`${id}-lastName-err`} message={errors.lastName} /></div>
                 </div>
-                <label className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
                   <span className="text-[15px] font-bold">{t.email}</span>
-                  <input
+                  <input {...errorProps(`${id}-email-err`, errors.email)}
                     name="email"
                     type="email"
                     required
                     autoComplete="email"
                     maxLength={180}
-                    className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600"
+                    className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600 aria-invalid:border-error"
                   />
-                </label>
+                </label><FieldError id={`${id}-email-err`} message={errors.email} /></div>
                 <label className="flex flex-col gap-2">
                   <span className="text-[15px] font-bold">
                     {t.phone} <span className="font-normal text-ink-soft">{t.optional}</span>
@@ -380,12 +410,12 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                     className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600"
                   />
                 </label>
-                <label className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
                   <span className="text-[15px] font-bold">
                     {t.customLabel} <span className="font-normal text-ink-soft">{t.optional}</span>
                   </span>
-                  <div className="flex items-center rounded-lg border-[1.5px] border-field-line bg-white focus-within:border-copper-600">
-                    <input
+                  <div className="flex items-center rounded-lg border-[1.5px] border-field-line bg-white focus-within:border-copper-600 has-[[aria-invalid=true]]:border-error">
+                    <input {...errorProps(`${id}-amount-err`, errors.amount)}
                       name="amount"
                       inputMode="decimal"
                       autoComplete="off"
@@ -400,9 +430,9 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                     {t.customHint}
                     {hasCustom && cur !== 'EUR' && customEur !== null ? ` ${t.eurNote} ≈ ${customEur.toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-GB')} €.` : ''}
                   </span>
-                </label>
+                </label><FieldError id={`${id}-amount-err`} message={errors.amount} /></div>
                 <label className="flex min-h-12 cursor-pointer items-start gap-3">
-                  <input required type="checkbox" className="mt-0.5 h-[22px] w-[22px] flex-none accent-copper-600" />
+                  <input name="charter" required type="checkbox" {...errorProps(`${id}-charter-err`, errors.charter)} className="mt-0.5 h-[22px] w-[22px] flex-none accent-copper-600" />
                   <span className="text-[15px] leading-[1.5]">
                     {t.charterAgreePre}
                     <a href="#" className="font-bold">

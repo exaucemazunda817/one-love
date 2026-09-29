@@ -10,6 +10,7 @@ import { publishableGallery } from '@/lib/content';
 
 export interface NewsText {
   categoriesLabel: string;
+  listTitle: string;
   categories: string[];
   readLabel: string;
   posts: { tag: string; date: string; t: string; url: string; d: string; img: string; alt: string }[];
@@ -30,6 +31,7 @@ export function NewsInteractive({ t }: { t: NewsText }) {
   return (
     <>
       <section className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
+        <h2 className="sr-only">{t.listTitle}</h2>
         <Reveal variant="soft">
           <div role="group" aria-label={t.categoriesLabel} className="flex flex-wrap gap-2">
             {t.categories.map((c) => (
@@ -154,7 +156,7 @@ export function NewsInteractive({ t }: { t: NewsText }) {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-[rgba(10,10,10,.92)] p-5"
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-[color:var(--scrim-5)] p-5"
           onClick={() => setLb(null)}
         >
           <button

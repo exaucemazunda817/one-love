@@ -37,7 +37,9 @@ export function pageMetadata({
   const fullTitle = absoluteTitle ? title : `${title} — ${SITE_NAME}`;
   const image = locale === 'en' ? '/og/partage-en.jpg' : '/og/partage-fr.jpg';
   return {
-    title: absoluteTitle ? { absolute: title } : title,
+    // Titre complet posé explicitement : le gabarit « %s — One Love » n'existe
+    // que dans le layout français, les titres anglais perdaient la marque.
+    title: { absolute: fullTitle },
     description,
     alternates: {
       canonical: localeHref(path, locale),

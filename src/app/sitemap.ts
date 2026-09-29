@@ -18,12 +18,11 @@ const paths = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
   return paths.flatMap((path) => {
     const fr = `${siteUrl}${path}`;
     const en = path === '' ? `${siteUrl}/en` : `${siteUrl}/en${path}`;
+    // Pas de lastmod : la date de construction serait la même pour toutes les pages, Google l'ignore quand elle n'est pas fiable.
     const base = {
-      lastModified,
       changeFrequency: path === '' ? ('weekly' as const) : ('monthly' as const),
       priority: path === '' ? 1 : 0.7,
       alternates: { languages: { fr, en } }

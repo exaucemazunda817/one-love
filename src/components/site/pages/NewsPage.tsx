@@ -7,7 +7,7 @@ import type { Locale } from '@/lib/i18n';
 
 const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: string; titlePre: string; titleWord: string; intro: string; heroAlt: string }> = {
   fr: {
-    title: 'Actualités et galerie',
+    title: 'Nouvelles du terrain : actualités et galerie',
     desc: 'Nouvelles du terrain et galerie photo du programme RÊVES 2, au centre One Love à Kinshasa.',
     eyebrow: 'Actualités et galerie',
     titlePre: 'Nouvelles du ',
@@ -15,6 +15,7 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
     intro: 'Suivez RÊVES 2 et la vie du centre, semaine après semaine.',
     heroAlt: 'Un garçon rit et fait le signe de la paix.',
     categoriesLabel: 'Catégories',
+    listTitle: 'Dernières nouvelles',
     readLabel: 'Voir sur Instagram',
     categories: ['Tout', 'RÊVES 2', 'Éducation', 'Culture', 'Partenariat'],
     // Articles de la maquette, limités à ce qui est vérifié (visuels Facebook
@@ -22,20 +23,20 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
     // (repérage du 25/09/2026) : une carte qui a l'air cliquable doit l'être. L'article « Premier bilan médical » (oct. 2026) a été
     // écarté : il annonçait comme passé un événement pas encore arrivé.
     posts: [
-      { tag: 'RÊVES 2', date: '5 sept. 2026', t: "Premiers pas dans l'alphabétisation", url: 'https://www.instagram.com/p/DdHIhhejfqo/', d: "Samedi 5 septembre, les enfants ont ouvert leurs cahiers pour le lancement de RÊVES 2.", img: '/photos/photo-ecriture.jpg', alt: 'Une jeune fille écrit.' },
-      { tag: 'Éducation', date: 'Sept. 2026', t: "Le français, langue de l'école", url: 'https://www.instagram.com/p/DdBdhKqjeDY/', d: "Pourquoi l'apprentissage du français est au cœur de la deuxième phase.", img: '/photos/photo-cahier.jpg', alt: 'Un garçon écrit dans son cahier.' },
+      { tag: 'RÊVES 2', date: '5 sept. 2026', t: "Premiers pas dans l’alphabétisation", url: 'https://www.instagram.com/p/DdHIhhejfqo/', d: "Samedi 5 septembre, les enfants ont ouvert leurs cahiers pour le lancement de RÊVES 2.", img: '/photos/photo-ecriture.jpg', alt: 'Une jeune fille écrit.' },
+      { tag: 'Éducation', date: 'Sept. 2026', t: "Le français, langue de l’école", url: 'https://www.instagram.com/p/DdBdhKqjeDY/', d: "Pourquoi l’apprentissage du français est au cœur de la deuxième phase.", img: '/photos/photo-cahier.jpg', alt: 'Un garçon écrit dans son cahier.' },
       { tag: 'Culture', date: 'Sept. 2026', t: 'Jeu, sport et création', url: 'https://www.instagram.com/reel/DdUgL_Hg32u/', d: 'Dessin, musique et football : réapprendre la vie en groupe.', img: '/photos/photo-dessin.jpg', alt: 'Deux garçons dessinent.' },
-      { tag: 'RÊVES 2', date: 'Sept. 2026', t: 'Nos formateurs mobilisés', url: 'https://www.instagram.com/reel/DdEItmagznY/', d: "Notre équipe d'animateurs formée pour encadrer les ateliers.", img: '/photos/photo-mains.jpg', alt: 'Des mains colorient des lettres.' },
+      { tag: 'RÊVES 2', date: 'Sept. 2026', t: 'Nos formateurs mobilisés', url: 'https://www.instagram.com/reel/DdEItmagznY/', d: "Notre équipe d’animateurs formée pour encadrer les ateliers.", img: '/photos/photo-mains.jpg', alt: 'Des mains colorient des lettres.' },
       { tag: 'Partenariat', date: '2026', t: 'Angel Foundation à nos côtés', url: 'https://www.instagram.com/angelfoundationrdc/p/DR_rTe4jRSt/', d: 'Un partenaire engagé à nos côtés pour la deuxième phase du projet RÊVES.', img: '/photos/coeur-degrade.jpg', alt: '' }
     ],
     galleryTitle: 'Galerie',
-    galleryIntro: "Des moments de vie au centre. Touchez une photo pour l'agrandir.",
+    galleryIntro: "Des moments de vie au centre. Touchez une photo pour l’agrandir.",
     galleryEmpty: 'Aucune photo publiable pour le moment.',
     lightboxClose: 'Fermer',
     lightboxOpenPrefix: 'Agrandir :'
   },
   en: {
-    title: 'News and gallery',
+    title: 'News from the field: updates and gallery',
     desc: 'News from the field and photo gallery of the RÊVES 2 programme, at the One Love centre in Kinshasa.',
     eyebrow: 'News and gallery',
     titlePre: 'News from the ',
@@ -43,6 +44,7 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
     intro: 'Follow RÊVES 2 and life at the centre, week by week.',
     heroAlt: 'A boy laughs and makes a peace sign.',
     categoriesLabel: 'Categories',
+    listTitle: 'Latest news',
     readLabel: 'View on Instagram',
     categories: ['All', 'RÊVES 2', 'Education', 'Culture', 'Partnership'],
     posts: [

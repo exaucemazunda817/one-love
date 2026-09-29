@@ -11,7 +11,7 @@ import { localeHref, type Locale } from '@/lib/i18n';
 
 const text = {
   fr: {
-    title: `${currentProject.name} — ${currentProject.acronymMeaning}`,
+    title: `${currentProject.name} : ${currentProject.acronymMeaning}`,
     desc: currentProject.intro,
     eyebrow: 'Projet en cours',
     titleWord: currentProject.name,
@@ -34,7 +34,7 @@ const text = {
     sponsor: 'Parrainer un enfant'
   },
   en: {
-    title: `${currentProject.name} — Reorganise · Educate · Empower · Listen · Care`,
+    title: `${currentProject.name}: Reorganise, Educate, Empower, Listen, Care`,
     desc: "Launched a first time last year, the RÊVES project returns for a second phase, more focused on education, in partnership with Angel Foundation.",
     eyebrow: 'Ongoing project',
     titleWord: currentProject.name,
@@ -42,7 +42,7 @@ const text = {
     heroAlt: currentProject.firstMilestone.label,
     steps: ['Reorganise', 'Educate', 'Empower', 'Listen', 'Care'],
     objectifLabel: 'Objective',
-    objectif: "Build the children's skills, confidence and independence.",
+    objectif: "Build the children’s skills, confidence and independence.",
     periodLabel: 'Period',
     period: 'September to December 2026 (4 months)',
     partnerLabel: 'Partner',

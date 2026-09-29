@@ -9,7 +9,10 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       // Le logiciel de gestion contient des données de personnes : il ne doit
       // jamais être exploré ni indexé.
-      disallow: ['/gestion', '/api/', '/mentions-legales', '/confidentialite']
+      // Les pages légales ne sont plus bloquées ici : elles portent déjà
+      // `noindex`, et Google ne peut lire un noindex que sur une page qu'il a
+      // le droit de visiter.
+      disallow: ['/gestion', '/api/']
     },
     sitemap: `${siteUrl}/sitemap.xml`
   };

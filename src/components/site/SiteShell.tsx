@@ -2,24 +2,44 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { BrushDefs } from '@/components/site/ui';
 import { org, identity } from '@/lib/content';
-import { FACEBOOK_URL, CONTACT_EMAIL, type Locale } from '@/lib/i18n';
+import { FACEBOOK_URL, INSTAGRAM_URL, YOUTUBE_URL, CONTACT_EMAIL, type Locale } from '@/lib/i18n';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 // Données structurées : aident les moteurs de recherche à relier le site à la
 // page Facebook de l'association et à la présenter comme une ONG.
+//
+// Pas d'adresse (le siège reste à trancher), pas de reçu fiscal (pas de
+// rescrit), pas d'avis : rien qui ne soit vrai et visible sur le site.
 const organizationJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'NGO',
-  name: org.name,
-  legalName: org.legalName,
-  url: siteUrl,
-  logo: `${siteUrl}/brand/logo-one-love-rond.png`,
-  slogan: org.tagline,
-  description: identity.mission,
-  foundingDate: String(org.foundedYear),
-  email: CONTACT_EMAIL,
-  sameAs: [FACEBOOK_URL]
+  '@graph': [
+    {
+      '@type': 'NGO',
+      '@id': `${siteUrl}/#organisation`,
+      name: org.name,
+      legalName: org.legalName,
+      url: siteUrl,
+      logo: `${siteUrl}/brand/logo-one-love-rond.png`,
+      slogan: org.tagline,
+      description: identity.mission,
+      foundingDate: String(org.foundedYear),
+      email: CONTACT_EMAIL,
+      identifier: { '@type': 'PropertyValue', propertyID: 'RNA', value: org.rna },
+      areaServed: { '@type': 'City', name: 'Kinshasa' },
+      knowsLanguage: ['fr', 'en'],
+      sameAs: [FACEBOOK_URL, INSTAGRAM_URL, YOUTUBE_URL],
+      potentialAction: { '@type': 'DonateAction', target: `${siteUrl}/dons` }
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#site`,
+      url: siteUrl,
+      name: org.name,
+      inLanguage: ['fr', 'en'],
+      publisher: { '@id': `${siteUrl}/#organisation` }
+    }
+  ]
 };
 
 // Habillage commun aux deux langues du site PUBLIC. Le logiciel de gestion

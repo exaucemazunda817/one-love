@@ -1,6 +1,8 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
+import { FieldError, errorProps } from '@/components/forms/FieldError';
+import { focusFirstError, serverIssuesToErrors, validateFields, type FieldErrors } from '@/lib/form-validation';
 import Link from 'next/link';
 import {
   UsersThreeIcon,
@@ -51,6 +53,8 @@ export function InvolvedInteractive({
   const href = (p: string) => localeHref(p, locale);
   const [interest, setInterest] = useState<Interest>('benevolat');
   const [sent, setSent] = useState(false);
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const formRef = useRef<HTMLFormElement>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
 
@@ -61,8 +65,18 @@ export function InvolvedInteractive({
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setPending(true);
     setError('');
+    const checked = validateFields(
+      event.currentTarget,
+      { name: { required: true }, email: { required: true, email: true }, message: { required: true, min: 10 } },
+      locale
+    );
+    setErrors(checked);
+    if (Object.keys(checked).length > 0) {
+      focusFirstError(event.currentTarget, checked);
+      return;
+    }
+    setPending(true);
     const formEl = event.currentTarget;
     const formData = new FormData(formEl);
     const org = String(formData.get('org') || '');
@@ -85,7 +99,13 @@ export function InvolvedInteractive({
         formEl.reset();
       } else {
         const data = await response.json().catch(() => ({}));
-        setError(data.error || t.error);
+        const fromServer = serverIssuesToErrors(data.issues, { fullName: 'name', email: 'email', message: 'message' }, locale);
+        if (Object.keys(fromServer).length > 0) {
+          setErrors(fromServer);
+          focusFirstError(formRef.current, fromServer);
+        } else {
+          setError(t.error);
+        }
       }
     } catch {
       setError(t.error);
@@ -140,7 +160,7 @@ export function InvolvedInteractive({
 
         <Reveal delay={90}>
           {sent ? (
-            <div className="flex flex-col items-start gap-3 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+            <div role="status" className="flex flex-col items-start gap-3 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
               <span className="flex h-14 w-14 items-center justify-center rounded-full bg-sage-100">
                 <CheckIcon size={28} className="text-sage-700" aria-hidden />
               </span>
@@ -151,7 +171,16 @@ export function InvolvedInteractive({
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+            <form ref={formRef} onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+              <p className="m-0 text-[14px] text-ink-soft">
+                {locale === 'fr'
+                  ? interest === 'partenariat'
+                    ? 'Tous les champs sont obligatoires, sauf l’organisation.'
+                    : 'Tous les champs sont obligatoires.'
+                  : interest === 'partenariat'
+                    ? 'All fields are required, except the organisation.'
+                    : 'All fields are required.'}
+              </p>
               <label className="flex flex-col gap-2">
                 <span className="text-[15px] font-bold">{t.interestLabel}</span>
                 <select
@@ -167,27 +196,27 @@ export function InvolvedInteractive({
                 </select>
               </label>
               <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-3.5">
-                <label className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
                   <span className="text-[15px] font-bold">{t.name}</span>
-                  <input
+                  <input {...errorProps(`${id}-name-err`, errors.name)}
                     name="name"
                     autoComplete="name"
                     required
                     maxLength={120}
-                    className="min-h-[52px] rounded-lg border-[1.5px] border-field-line bg-white px-3.5 text-[17px] text-ink outline-none focus:border-copper-600"
+                    className="min-h-[52px] rounded-lg border-[1.5px] border-field-line bg-white px-3.5 text-[17px] text-ink outline-none focus:border-copper-600 aria-invalid:border-error"
                   />
-                </label>
-                <label className="flex flex-col gap-2">
+                </label><FieldError id={`${id}-name-err`} message={errors.name} /></div>
+                <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
                   <span className="text-[15px] font-bold">{t.email}</span>
-                  <input
+                  <input {...errorProps(`${id}-email-err`, errors.email)}
                     name="email"
                     type="email"
                     autoComplete="email"
                     required
                     maxLength={180}
-                    className="min-h-[52px] rounded-lg border-[1.5px] border-field-line bg-white px-3.5 text-[17px] text-ink outline-none focus:border-copper-600"
+                    className="min-h-[52px] rounded-lg border-[1.5px] border-field-line bg-white px-3.5 text-[17px] text-ink outline-none focus:border-copper-600 aria-invalid:border-error"
                   />
-                </label>
+                </label><FieldError id={`${id}-email-err`} message={errors.email} /></div>
               </div>
               {interest === 'partenariat' && (
                 <label className="flex flex-col gap-2">
@@ -201,17 +230,17 @@ export function InvolvedInteractive({
                   />
                 </label>
               )}
-              <label className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
                 <span className="text-[15px] font-bold">{t.message}</span>
-                <textarea
+                <textarea {...errorProps(`${id}-message-err`, errors.message)}
                   name="message"
                   required
                   minLength={10}
                   maxLength={4000}
                   rows={4}
-                  className="resize-y rounded-lg border-[1.5px] border-field-line p-3.5 text-[17px] leading-[1.5] outline-none focus:border-copper-600"
+                  className="resize-y rounded-lg border-[1.5px] border-field-line p-3.5 text-[17px] leading-[1.5] outline-none focus:border-copper-600 aria-invalid:border-error"
                 />
-              </label>
+              </label><FieldError id={`${id}-message-err`} message={errors.message} /></div>
               {error && (
                 <p role="alert" className="m-0 text-[14px] font-bold text-error">
                   {error}

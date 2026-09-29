@@ -12,58 +12,58 @@ import { localeHref, type Locale } from '@/lib/i18n';
 
 const text = {
   fr: {
-    title: 'Qui sommes-nous',
-    desc: "L'histoire, la vision, la mission et l'équipe de l'association One Love à Kinshasa.",
+    title: 'Qui sommes-nous : vision, mission, équipe',
+    desc: "L’histoire, la vision, la mission et l’équipe de l’association One Love à Kinshasa.",
     eyebrow: 'Qui nous sommes',
     titlePre: 'Une équipe, une ',
     titleWord: 'conviction',
     intro: 'Chaque être humain a besoin de se sentir aimé et désiré.',
     donate: 'Faire un don',
     sponsor: 'Parrainer un enfant',
-    heroAlt: "Des mains d'enfants colorient des lettres.",
+    heroAlt: "Des mains d’enfants colorient des lettres.",
     visionEyebrow: 'Notre vision',
-    vision: "L'amour est un besoin fondamental de l'être humain. Toute personne victime d'exclusion devrait pouvoir satisfaire ce besoin [[d'être aimée]].",
+    vision: "L’amour est un besoin fondamental de l’être humain. Toute personne victime d’exclusion devrait pouvoir satisfaire ce besoin [[d’être aimée]].",
     missionEyebrow: 'Notre mission',
     mission: 'Réaliser des projets en République Démocratique du Congo qui ont pour objet de valoriser les populations marginalisées, en particulier les enfants.',
     goals: [
-      "Permettre l'accès à un mode de vie décent par l'éducation et des actions sociales et sanitaires.",
+      "Permettre l’accès à un mode de vie décent par l’éducation et des actions sociales et sanitaires.",
       'Co-construire des programmes de (ré)insertion professionnelle.',
       'Accompagner les bénéficiaires dans leur accomplissement professionnel et/ou personnel.'
     ],
     foundersEyebrow: 'Les fondateurs',
     foundersQuote: '« Depuis que nous nous sommes rencontrés en 2010, ma femme et moi avons eu à cœur de vivre un rêve commun : aimer et aider ceux qui en ont besoin. »',
     foundersName: 'Kanda Kabangu',
-    foundersText: "Nous sommes une équipe dynamique et pleine d'enthousiasme, passionnée par le défi de rendre le monde meilleur. Et nous ne ménageons pas nos efforts pour y arriver. L'association a été fondée en 2013 par Kanda Kabangu et son épouse.",
+    foundersText: 'Nous sommes une équipe en France et une équipe à Kinshasa, réunies autour d’une même vision. L’association a été fondée en 2013 par Kanda et Maïté Kabangu.',
     storyLink: 'Découvrir notre histoire',
     valuesTitle: 'Nos valeurs',
     values: [
-      { icon: HeartIcon, t: "Aimer l'autre comme soi-même.", bg: 'bg-night', fg: 'text-cream', ic: 'text-gold-hover' },
-      { icon: StarIcon, t: "Croire à l'impossible.", bg: 'bg-white', fg: 'text-ink', ic: 'text-copper-600' },
-      { icon: LeafIcon, t: "Conduire nos actions dans le respect de l'environnement.", bg: 'bg-sage-100', fg: 'text-ink', ic: 'text-sage-700' }
+      { icon: HeartIcon, t: "Aimer l’autre comme soi-même.", bg: 'bg-night', fg: 'text-cream', ic: 'text-gold-hover' },
+      { icon: StarIcon, t: "Croire à l’impossible.", bg: 'bg-white', fg: 'text-ink', ic: 'text-copper-600' },
+      { icon: LeafIcon, t: "Conduire nos actions dans le respect de l’environnement.", bg: 'bg-sage-100', fg: 'text-ink', ic: 'text-sage-700' }
     ],
-    pageQuote: "« One Love, une équipe qui pense que l'Amour est divin et qu'il peut agir en nous qui sommes ordinaires par des actes extraordinaires ! »",
+    pageQuote: "« One Love, une équipe qui pense que l’Amour est divin et qu’il peut agir en nous qui sommes ordinaires par des actes extraordinaires ! »",
     pageQuoteCite: 'Présentation de la page Facebook de One Love',
-    valuesQuote: "« L'amour que nous souhaitons transmettre est une prolongation de nos valeurs : ce n'est pas pour détruire mais pour construire, non pour imposer mais pour démontrer par nos actes d'amour que l'Homme est aimé au-delà des frontières, des cultures ou des religions. »",
-    whatEyebrow: "Qu'est-ce que One Love ?",
+    valuesQuote: "« L’amour que nous souhaitons transmettre est une prolongation de nos valeurs : ce n’est pas pour détruire mais pour construire, non pour imposer mais pour démontrer par nos actes d’amour que l’Homme est aimé au-delà des frontières, des cultures ou des religions. »",
+    whatEyebrow: "Qu’est-ce que One Love ?",
     whatTitlePre: 'Trois convictions, ',
     whatTitleWord: 'une seule direction',
     pillars: [
-      { icon: HeartIcon, t: "L'amour avant tout", d: "C'est notre carburant, ce qui nous anime et nous pousse à agir. Nous sommes aimés et nous souhaitons aimer en retour." },
-      { icon: UsersThreeIcon, t: 'Des personnes engagées', d: 'Nous sommes une équipe jeune et dynamique, avec le désir de faire une différence dans ce monde.' },
+      { icon: HeartIcon, t: "L’amour avant tout", d: "C’est notre carburant, ce qui nous anime et nous pousse à agir. Nous sommes aimés et nous souhaitons aimer en retour." },
+      { icon: UsersThreeIcon, t: 'Des personnes engagées', d: 'Nous sommes une équipe unie par le désir de faire une différence dans ce monde.' },
       { icon: SparkleIcon, t: 'Des rêves en action', d: 'Chacun a un rêve sur son cœur : nous agissons ensemble pour le rendre réel.' }
     ],
     goalsEyebrow: 'Nos objectifs',
     foundersTitlePre: 'Deux fondateurs, ',
     foundersTitleWord: 'une équipe',
     founderCards: [
-      { q: '« Seul on va vite, ensemble on va loin ! »', d: "One Love aujourd'hui n'est pas mon œuvre, c'est celle de notre équipe : une équipe qui court pour la même vision, poussée par l'amour.", name: 'Kanda Kabangu', role: 'Cofondateur' },
-      { q: '« Voir le sourire d’un visage transformé par l’amour réjouit mon cœur. »', d: "Avec mon mari Kanda, nous avons fondé l'association One Love en 2013. J'apprécie particulièrement discerner les talents des autres et les encourager à les développer.", name: 'Maïté Kabangu', role: 'Cofondatrice' }
+      { q: '« Seul on va vite, ensemble on va loin ! »', d: "One Love aujourd’hui n’est pas mon œuvre, c’est celle de notre équipe : une équipe qui court pour la même vision, poussée par l’amour.", name: 'Kanda Kabangu', role: 'Cofondateur' },
+      { q: '« Voir le sourire d’un visage transformé par l’amour réjouit mon cœur. »', d: "Avec mon mari Kanda, nous avons fondé l’association One Love en 2013. J’apprécie particulièrement discerner les talents des autres et les encourager à les développer.", name: 'Maïté Kabangu', role: 'Cofondatrice' }
     ],
     quoteTitle: 'Ce que nous voulons transmettre',
     structEyebrow: 'Organisation',
     structTitlePre: 'Comment nous ',
     structTitleWord: 'sommes organisés',
-    structIntro: "Une équipe en France et une équipe en RDC, réunies autour d'une même direction.",
+    structIntro: "Une équipe en France et une équipe en RDC, réunies autour d’une même direction.",
     structTop: 'Présidence',
     structGroups: [
       { t: 'Gestion et administration', bg: 'bg-white', roles: ['Secrétariat général', 'Trésorerie', 'Trésorerie adjointe', 'Conseil juridique'] },
@@ -72,21 +72,21 @@ const text = {
     ],
     voicesEyebrow: 'Témoignages de notre équipe',
     voicesTitlePre: 'Ils ont rejoint ',
-    voicesTitleWord: "l'aventure",
-    voicesIntro: "Bénévoles, marraines et parrains, membres de la chorale : chacun a un rêve sur le cœur, et l'a mis au service des enfants.",
+    voicesTitleWord: "l’aventure",
+    voicesIntro: "Bénévoles, marraines et parrains, membres de la chorale : chacun a un rêve sur le cœur, et l’a mis au service des enfants.",
     voices: [
-      { name: 'Céline Barrellon', note: 'Voyage humanitaire en RDC, 2018', q: "Voir tous ces enfants abandonnés, livrés à eux-mêmes, recevoir tous les soins nécessaires, et surtout de l'amour, donne un sens à la vie." },
-      { name: 'Manon Besnier', note: 'Voyage humanitaire, juillet 2019', q: "Ses membres ne se contentent pas d'offrir aux enfants un toit et un couvert : ils les entourent d'attention et d'affection." },
-      { name: 'Marie-Anne Goury', note: 'Éducation, équipe Congo', q: "J'ai appris que le plus important est l'amour : l'amour entre nous, l'amour donné et démontré aux autres." },
+      { name: 'Céline Barrellon', note: 'Voyage humanitaire en RDC, 2018', q: "Voir tous ces enfants abandonnés, livrés à eux-mêmes, recevoir tous les soins nécessaires, et surtout de l’amour, donne un sens à la vie." },
+      { name: 'Manon Besnier', note: 'Voyage humanitaire, juillet 2019', q: "Ses membres ne se contentent pas d’offrir aux enfants un toit et un couvert : ils les entourent d’attention et d’affection." },
+      { name: 'Marie-Anne Goury', note: 'Éducation, équipe Congo', q: "J’ai appris que le plus important est l’amour : l’amour entre nous, l’amour donné et démontré aux autres." },
       { name: 'Gaëlle Gravier', note: '', q: "Les aimer et leur démontrer cet amour est la seule solution. Avec One Love, je peux le faire concrètement." },
-      { name: 'Patricia Méri-Libota', note: 'Chorale One Love', q: "Ce que les personnes marginalisées apprécient, c'est tout simplement qu'on leur offre du temps, de l'attention et de l'amour." },
+      { name: 'Patricia Méri-Libota', note: 'Chorale One Love', q: "Ce que les personnes marginalisées apprécient, c’est tout simplement qu’on leur offre du temps, de l’attention et de l’amour." },
       { name: 'Fanny Hovor', note: 'Chorale One Love', q: 'Les enfants sont des dons et des bénédictions. Nous devons prendre soin d’eux avec bienveillance et leur donner les chances de réussir leurs vies.' }
     ],
     bannerTitle: 'Rejoindre ce qui a commencé en 2013.',
     bannerText: 'Un don, un parrainage ou quelques heures de votre temps.'
   },
   en: {
-    title: 'About us',
+    title: 'About us: vision, mission, team',
     desc: "The history, vision, mission and team of the One Love association in Kinshasa.",
     eyebrow: 'Who we are',
     titlePre: 'One team, one ',
@@ -94,7 +94,7 @@ const text = {
     intro: 'Every human being needs to feel loved and wanted.',
     donate: 'Donate',
     sponsor: 'Sponsor a child',
-    heroAlt: "Children's hands colouring in letters.",
+    heroAlt: "Children’s hands colouring in letters.",
     visionEyebrow: 'Our vision',
     vision: 'Love is a fundamental human need. Everyone who suffers exclusion should be able to meet this need [[to be loved]].',
     missionEyebrow: 'Our mission',
@@ -107,7 +107,7 @@ const text = {
     foundersEyebrow: 'The founders',
     foundersQuote: '“Since we met in 2010, my wife and I have shared one dream: to love and help those in need.”',
     foundersName: 'Kanda Kabangu',
-    foundersText: 'We are a dynamic, enthusiastic team, passionate about the challenge of making the world a better place, and we spare no effort to get there. The association was founded in 2013 by Kanda Kabangu and his wife.',
+    foundersText: 'We are a team in France and a team in Kinshasa, brought together around one vision. The association was founded in 2013 by Kanda and Maïté Kabangu.',
     storyLink: 'Discover our story',
     valuesTitle: 'Our values',
     values: [
@@ -116,14 +116,14 @@ const text = {
       { icon: LeafIcon, t: 'Carry out our actions with respect for the environment.', bg: 'bg-sage-100', fg: 'text-ink', ic: 'text-sage-700' }
     ],
     pageQuote: '“One Love, a team that believes Love is divine and can work through ordinary people like us by means of extraordinary acts!”',
-    pageQuoteCite: "From One Love's Facebook page",
+    pageQuoteCite: "From One Love’s Facebook page",
     valuesQuote: '“The love we wish to pass on is an extension of our values: not to destroy but to build, not to impose but to show through acts of love that every person is loved, beyond borders, cultures or religions.”',
     whatEyebrow: 'What is One Love?',
     whatTitlePre: 'Three convictions, ',
     whatTitleWord: 'one direction',
     pillars: [
       { icon: HeartIcon, t: 'Love above all', d: 'It is our fuel, what drives us to act. We are loved, and we want to love in return.' },
-      { icon: UsersThreeIcon, t: 'Committed people', d: 'We are a young, dynamic team with a desire to make a difference in this world.' },
+      { icon: UsersThreeIcon, t: 'Committed people', d: 'We are a team united by the desire to make a difference in this world.' },
       { icon: SparkleIcon, t: 'Dreams in action', d: 'Everyone has a dream on their heart: together we act to make it real.' }
     ],
     goalsEyebrow: 'Our goals',
@@ -184,7 +184,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
       />
 
       {/* Qu'est-ce que One Love : trois convictions, issues de l'ancien
-          site de l'association (texte repris tel quel). */}
+          site de l’association (texte repris tel quel). */}
       <section className="mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
         <Reveal className="flex max-w-[720px] flex-col gap-3">
           <Eyebrow>{t.whatEyebrow}</Eyebrow>
@@ -225,7 +225,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
           </Reveal>
           <Reveal delay={90} className="flex flex-col gap-3.5">
             <Eyebrow>{t.missionEyebrow}</Eyebrow>
-            <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.mission}</p>
+            <p className="max-w-measure m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.mission}</p>
             <div className="flex flex-col gap-4 pt-3">
               <Eyebrow>{t.goalsEyebrow}</Eyebrow>
               {t.goals.map((g, i) => (
@@ -302,7 +302,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
       <section className="relative overflow-hidden bg-night text-cream">
         <Image src="/photos/photo-joie.jpg" alt="" fill sizes="100vw" className="photo-tone object-cover object-[60%_30%]" />
         <div className="relative mx-auto max-w-[1280px] px-[clamp(12px,4vw,48px)] py-[clamp(40px,8vw,120px)]">
-          <Reveal className="flex max-w-[640px] flex-col gap-[18px] rounded-card bg-[rgba(10,10,10,.9)] p-[clamp(28px,4vw,48px)]">
+          <Reveal className="flex max-w-[640px] flex-col gap-[18px] rounded-card bg-[color:var(--scrim-5)] p-[clamp(28px,4vw,48px)]">
             <Eyebrow dark>{t.quoteTitle}</Eyebrow>
             <p className="m-0 font-serif text-[clamp(22px,2.4vw,30px)] italic leading-[1.45]">{t.valuesQuote}</p>
             <figure className="m-0 flex flex-col gap-1.5 border-l-[3px] border-gold pl-4">
@@ -314,8 +314,8 @@ export function AssociationPage({ locale }: { locale: Locale }) {
       </section>
 
       {/* Structure organisationnelle : fonctions seulement, jamais de noms
-          (décision de Mazunda, 29/09/2026). Rôles relevés sur l'ancien site
-          de l'association (2023) : à faire confirmer avant publication. */}
+          (décision de Mazunda, 29/09/2026). Rôles relevés sur l’ancien site
+          de l’association (2023) : à faire confirmer avant publication. */}
       <section className="bg-sand">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
           <Reveal className="flex max-w-[680px] flex-col gap-3">
@@ -324,7 +324,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
               {t.structTitlePre}
               <BrushWord>{t.structTitleWord}</BrushWord>
             </h2>
-            <p className="m-0 text-pretty text-[17px] leading-[1.6] text-ink-body">{t.structIntro}</p>
+            <p className="m-0 max-w-measure text-pretty text-[17px] leading-[1.6] text-ink-body">{t.structIntro}</p>
           </Reveal>
           {/* Mobile : colonne verticale reliée par un trait à gauche.
               Ordinateur : arbre avec barre horizontale et trois branches. */}
@@ -376,7 +376,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
             {t.voicesTitlePre}
             <BrushWord>{t.voicesTitleWord}</BrushWord>
           </h2>
-          <p className="m-0 text-pretty text-[17px] leading-[1.6] text-ink-body">{t.voicesIntro}</p>
+          <p className="m-0 max-w-measure text-pretty text-[17px] leading-[1.6] text-ink-body">{t.voicesIntro}</p>
         </Reveal>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5">
           {t.voices.map((m, i) => (

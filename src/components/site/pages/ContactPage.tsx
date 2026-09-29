@@ -9,13 +9,13 @@ import { CONTACT_EMAIL, FACEBOOK_URL, INSTAGRAM_URL, YOUTUBE_URL, type Locale } 
 
 const text = {
   fr: {
-    title: 'Contact',
-    desc: "Écrivez à l'association One Love : dons, parrainages, visites du centre, bénévolat ou partenariats.",
+    title: 'Contact : écrire à l’association',
+    desc: "Écrivez à l’association One Love : dons, parrainages, visites du centre, bénévolat ou partenariats.",
     eyebrow: 'Contact',
     titlePre: 'Écrivez-nous, nous ',
     titleWord: 'répondons',
     intro: 'Une question sur un don, un parrainage, une visite ou un partenariat : écrivez-nous par le formulaire, par e-mail ou sur nos réseaux sociaux.',
-    heroAlt: "Des mains d'enfants colorient des lettres.",
+    heroAlt: "Des mains d’enfants colorient des lettres.",
     email: 'E-mail',
     facebook: 'Facebook',
     instagram: 'Instagram',
@@ -34,16 +34,16 @@ const text = {
     sendAnother: 'Envoyer un autre message',
     error: 'Une erreur est survenue. Merci de réessayer.',
     visitTitle: 'Visiter le centre',
-    visitText: "Les visites se font sur rendez-vous, accompagnées d'un membre de notre équipe, pour respecter le rythme des enfants.",
+    visitText: "Les visites se font sur rendez-vous, accompagnées d’un membre de notre équipe, pour respecter le rythme des enfants.",
   },
   en: {
-    title: 'Contact',
+    title: 'Contact: write to the association',
     desc: 'Write to the One Love association: gifts, sponsorships, centre visits, volunteering or partnerships.',
     eyebrow: 'Contact',
     titlePre: 'Write to us, we ',
     titleWord: 'reply',
     intro: 'A question about a gift, sponsorship, a visit or a partnership? Write to us using the form, by email or on our social networks.',
-    heroAlt: "Children's hands colouring in letters.",
+    heroAlt: "Children’s hands colouring in letters.",
     email: 'Email',
     facebook: 'Facebook',
     instagram: 'Instagram',
@@ -58,11 +58,11 @@ const text = {
     sending: 'Sending…',
     note: 'Your details are only used to reply to you.',
     thanksTitle: 'Thank you, message received.',
-    thanksText: "We'll reply within a few days.",
+    thanksText: "We’ll reply within a few days.",
     sendAnother: 'Send another message',
     error: 'Something went wrong. Please try again.',
     visitTitle: 'Visit the centre',
-    visitText: "Visits are by appointment, accompanied by a team member, to respect the children's routine.",
+    visitText: "Visits are by appointment, accompanied by a team member, to respect the children’s routine.",
   }
 };
 
@@ -119,7 +119,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
 
       <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start gap-[clamp(32px,5vw,64px)] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
         <Reveal>
-          <ContactFormCard t={t} />
+          <ContactFormCard t={t} locale={locale} />
         </Reveal>
 
         <Reveal delay={90} className="flex flex-col gap-5">

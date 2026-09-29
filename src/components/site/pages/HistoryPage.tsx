@@ -53,8 +53,8 @@ const chapters: Chapter[] = [
     years: '2013 – 2014',
     title: { fr: 'Une idée, un couple', en: 'An idea, a couple' },
     text: {
-      fr: "Notre association naît en septembre 2013, à l'initiative d'un couple franco-congolais, Kanda Kabangu et son épouse. Dès la première vidéo, la ligne est posée : agir par amour, aider en priorité les enfants, et construire dans la durée plutôt que faire de l'assistanat. En décembre 2014, notre équipe part pour la première fois en RDC.",
-      en: 'Our association was founded in September 2013 by a Franco-Congolese couple, Kanda Kabangu and his wife. From the very first video, the approach was clear: act out of love, help children first, and build for the long term rather than hand out aid. In December 2014, our team made its first trip to the DRC.'
+      fr: "Notre association naît en septembre 2013, à l’initiative d’un couple franco-congolais, Kanda et Maïté Kabangu. Dès la première vidéo, la ligne est posée : agir par amour, aider en priorité les enfants, et construire dans la durée plutôt que d’aider ponctuellement. En décembre 2014, notre équipe part pour la première fois en RDC.",
+      en: 'Our association was founded in September 2013 by a Franco-Congolese couple, Kanda and Maïté Kabangu. From the very first video, the approach was clear: act out of love, help children first, and build for the long term rather than help only now and then. In December 2014, our team made its first trip to the DRC.'
     },
     media: [{ kind: 'youtube', id: 'nmIvZoujNlg', title: { fr: 'One Love, la présentation (2014)', en: 'One Love, our introduction (2014)' } }]
   },
@@ -63,14 +63,14 @@ const chapters: Chapter[] = [
     years: '2015 – 2016',
     title: { fr: 'Mobiliser à Paris, poser les bases à Kinshasa', en: 'Rallying support in Paris, laying the groundwork in Kinshasa' },
     text: {
-      fr: "Le but de départ est concret : construire une école au Congo. À Paris, « One Love plays for Help » réunit près de 300 personnes le 7 juin 2015 autour d'un tournoi de basket et d'un concert. En août, notre équipe s'installe quelques semaines à Kinshasa : enregistrement de notre association au Congo, rencontre au ministère de l'Éducation, puis repérage et bornage du terrain de Kasangulu.",
+      fr: "Le but de départ est concret : construire une école au Congo. À Paris, « One Love plays for Help » réunit près de 300 personnes le 7 juin 2015 autour d’un tournoi de basket et d’un concert. En août, notre équipe s’installe quelques semaines à Kinshasa : enregistrement de notre association au Congo, rencontre au ministère de l’Éducation, puis repérage et bornage du terrain de Kasangulu.",
       en: 'The starting goal was concrete: build a school in Congo. In Paris, "One Love plays for Help" brought nearly 300 people together on 7 June 2015 for a basketball tournament and a concert. In August, our team spent a few weeks in Kinshasa: registering our association in Congo, meeting the Ministry of Education, then surveying and marking out the land in Kasangulu.'
     },
     media: [
-      photo('2015-plays-for-help', 'square', "L'affiche de One Love plays for Help, le 7 juin 2015 à Paris.", 'The poster for One Love plays for Help, 7 June 2015 in Paris.'),
+      photo('2015-plays-for-help', 'square', "L’affiche de One Love plays for Help, le 7 juin 2015 à Paris.", 'The poster for One Love plays for Help, 7 June 2015 in Paris.'),
       { kind: 'youtube', id: '7bIG5iZT-7w', title: { fr: 'One Love plays for Help, le récap (2015)', en: 'One Love plays for Help, the recap (2015)' } },
       { kind: 'youtube', id: 'LVjFUCIx9T8', title: { fr: 'Premier repérage du terrain de Kasangulu (2015)', en: 'First visit to the Kasangulu land (2015)' } },
-      photo('2015-salle-de-classe', 'square', "Des membres de l'équipe dans une salle de classe à Kinshasa.", 'Team members in a classroom in Kinshasa.')
+      photo('2015-salle-de-classe', 'square', "Des membres de l’équipe dans une salle de classe à Kinshasa.", 'Team members in a classroom in Kinshasa.')
     ]
   },
   {
@@ -78,14 +78,14 @@ const chapters: Chapter[] = [
     years: '2016 – 2017',
     title: { fr: 'Trois garçons, puis une maison', en: 'Three boys, then a home' },
     text: {
-      fr: "C'est le tournant de l'histoire. À l'été 2016, nous racontons que notre plus belle rencontre a été celle de trois garçons rencontrés dans la rue. En octobre, un programme d'alphabétisation pour mineurs démarre. En 2017 apparaît la One Love House, la maison des enfants : les garçons y vivent, vont à l'école, partent en vacances et préparent leur premier spectacle de Noël.",
-      en: "This is the turning point. In summer 2016, we said our most precious encounter had been with three boys we met on the street. In October, a literacy programme for minors began. In 2017 came the One Love House, the children's home: the boys lived there, went to school, went on holiday and prepared their first Christmas show."
+      fr: "C’est le tournant de l’histoire. À l’été 2016, notre plus belle rencontre : trois garçons rencontrés dans la rue. En octobre, un programme d’alphabétisation pour mineurs démarre. En 2017 apparaît la One Love House, la maison des enfants : les garçons y vivent, vont à l’école, partent en vacances et préparent leur premier spectacle de Noël.",
+      en: "This is the turning point. In summer 2016, our most precious encounter: three boys we met on the street. In October, a literacy programme for minors began. In 2017 came the One Love House, the children’s home: the boys lived there, went to school, went on holiday and prepared their first Christmas show."
     },
     media: [
-      photo('2016-premiere-rencontre', 'square', "Les premiers garçons accueillis, avec l'équipe One Love.", 'The first boys welcomed, with the One Love team.'),
+      photo('2016-premiere-rencontre', 'square', "Les premiers garçons accueillis, avec l’équipe One Love.", 'The first boys welcomed, with the One Love team.'),
       photo('2017-les-garcons', 'square', 'Quatre garçons de la One Love House.', 'Four boys from the One Love House.'),
       photo('2017-les-garcons-2', 'square', 'Des garçons de la One Love House, tout sourire.', 'Boys from the One Love House, all smiles.'),
-      photo('2017-noel', 'square', "L'annonce du spectacle de Noël des enfants, le 9 décembre 2017.", "The announcement of the children's Christmas show, 9 December 2017.")
+      photo('2017-noel', 'square', "L’annonce du spectacle de Noël des enfants, le 9 décembre 2017.", "The announcement of the children’s Christmas show, 9 December 2017.")
     ]
   },
   {
@@ -93,13 +93,13 @@ const chapters: Chapter[] = [
     years: '2018 – 2020',
     title: { fr: 'Une vraie famille', en: 'A real family' },
     text: {
-      fr: "Notre association se structure : bilans de santé, scolarité payée grâce aux parrainages, une cagnotte qui dépasse 7 000 € en 2018, et un premier débroussaillage du terrain de Kasangulu. Le rythme devient celui d'une famille, avec ses anniversaires et ses sorties. En janvier 2020, nous accueillons 21 garçons de 6 à 17 ans qui vivaient dans les rues de Kinshasa, et nous traversons le confinement avec eux. Certains réalisent même leur propre court métrage.",
+      fr: "Notre association se structure : bilans de santé, scolarité payée grâce aux parrainages, une cagnotte qui dépasse 7 000 € en 2018, et un premier débroussaillage du terrain de Kasangulu. Le rythme devient celui d’une famille, avec ses anniversaires et ses sorties. En janvier 2020, nous accueillons 21 garçons de 6 à 17 ans qui vivaient dans les rues de Kinshasa, et nous traversons le confinement avec eux. Certains réalisent même leur propre court métrage.",
       en: 'Our association took shape: health check-ups, school fees paid through sponsorships, a fundraiser that passed €7,000 in 2018, and the first clearing of the Kasangulu land. Life took on the rhythm of a family, with birthdays and outings. In January 2020, we were caring for 21 boys aged 6 to 17 who had lived on the streets of Kinshasa, and went through lockdown with them. Some of them even made their own short film.'
     },
     media: [
-      photo('2018-anniversaire', 'square', "Un cadeau d'anniversaire rendu possible par les parrainages, en 2018.", 'A birthday present made possible by sponsors, in 2018.'),
+      photo('2018-anniversaire', 'square', "Un cadeau d’anniversaire rendu possible par les parrainages, en 2018.", 'A birthday present made possible by sponsors, in 2018.'),
       photo('2018-kasangulu', 'square', 'Débroussaillage du terrain de Kasangulu, en 2018.', 'Clearing the Kasangulu land, in 2018.'),
-      photo('2018-kasangulu-2', 'square', "L'équipe au travail sur le terrain de Kasangulu.", 'The team at work on the Kasangulu land.'),
+      photo('2018-kasangulu-2', 'square', "L’équipe au travail sur le terrain de Kasangulu.", 'The team at work on the Kasangulu land.'),
       photo('2019-petits-heros', 'square', 'Les « petits héros » de la One Love House, en 2019.', 'The "little heroes" of the One Love House, in 2019.'),
       photo('2019-nonon', 'square', 'Nonon.', 'Nonon.'),
       photo('2019-paulin', 'square', 'Paulin.', 'Paulin.'),
@@ -117,27 +117,27 @@ const chapters: Chapter[] = [
     years: '2021 – 2022',
     title: { fr: 'Ouvrir les portes', en: 'Opening the doors' },
     text: {
-      fr: "En juin 2021, nous lançons un nouveau programme : un centre aéré ouvert aux enfants du quartier, le mercredi et le samedi. Bibliothèque, informatique, alphabétisation, football : un samedi de mars 2022, 90 enfants sont accueillis. Il y a aussi les grandes sorties, comme ce jour de janvier 2022 au parc de la N'sele avec 54 enfants, et l'été 2022, le voyage « Congo je t'aime » mené avec l'église Gospel Nation.",
-      en: "In June 2021, we launched a new programme: a day centre open to the neighbourhood's children on Wednesdays and Saturdays. Library, computers, literacy, football: one Saturday in March 2022, 90 children came. There were big outings too, like that January 2022 day at the N'sele park with 54 children, and in summer 2022, the \"Congo je t'aime\" trip organised with the Gospel Nation church."
+      fr: "En juin 2021, nous lançons un nouveau programme : un centre aéré ouvert aux enfants du quartier, le mercredi et le samedi. Bibliothèque, informatique, alphabétisation, football : un samedi de mars 2022, 90 enfants sont accueillis. Il y a aussi les grandes sorties, comme ce jour de janvier 2022 au parc de la N’sele avec 54 enfants, et l’été 2022, le voyage « Congo je t’aime » mené avec l’église Gospel Nation.",
+      en: "In June 2021, we launched a new programme: a day centre open to the neighbourhood’s children on Wednesdays and Saturdays. Library, computers, literacy, football: one Saturday in March 2022, 90 children came. There were big outings too, like that January 2022 day at the N’sele park with 54 children, and in summer 2022, the \"Congo je t’aime\" trip organised with the Gospel Nation church."
     },
     media: [
-      photo('2021-bibliotheque', 'square', 'Lecture et jeux à la bibliothèque du centre.', "Reading and games in the centre's library."),
+      photo('2021-bibliotheque', 'square', 'Lecture et jeux à la bibliothèque du centre.', "Reading and games in the centre’s library."),
       photo('2021-lecture', 'square', 'Un moment de lecture au centre aéré.', 'Reading time at the day centre.'),
       video('2021-one-love-life', 'wide', '« One Love Life », un aperçu de la vie au centre, filmé par Tim Ntalaja.', '"One Love Life", a glimpse of life at the centre, filmed by Tim Ntalaja.'),
       photo('2022-centre-aere', 'square', 'Les enfants rassemblés au centre aéré.', 'Children gathered at the day centre.'),
-      photo('2022-nsele', 'landscape', "Sortie au parc de la vallée de la N'sele, en janvier 2022.", "Outing to the N'sele valley park, January 2022."),
-      photo('2022-nsele-lions', 'landscape', "Les lions du parc de la N'sele.", "The lions of the N'sele park."),
+      photo('2022-nsele', 'landscape', "Sortie au parc de la vallée de la N’sele, en janvier 2022.", "Outing to the N’sele valley park, January 2022."),
+      photo('2022-nsele-lions', 'landscape', "Les lions du parc de la N’sele.", "The lions of the N’sele park."),
       photo('2022-congo-je-taime', 'landscape', 'Avec les enfants, pendant le voyage « Congo je t’aime ».', 'With the children, during the "Congo je t\'aime" trip.'),
       { kind: 'youtube', id: 'v5-lM2ZciIY', title: { fr: 'Congo je t’aime, le documentaire (2022)', en: 'Congo je t’aime, the documentary (2022)' } },
-      photo('2022-course-lycee', 'square', 'La course du lycée français de Kinshasa : 1 542 $ pour la scolarité des enfants.', "The French high school's charity run in Kinshasa: $1,542 for the children's schooling.")
+      photo('2022-course-lycee', 'square', 'La course du lycée français de Kinshasa : 1 542 $ pour la scolarité des enfants.', "The French high school’s charity run in Kinshasa: $1,542 for the children’s schooling.")
     ]
   },
   {
     id: '2023',
     years: '2023 – 2024',
-    title: { fr: "Changer d'échelle", en: 'Scaling up' },
+    title: { fr: "Changer d’échelle", en: 'Scaling up' },
     text: {
-      fr: "Les premiers garçons accueillis sont maintenant au secondaire. Le centre sert jusqu'à 136 repas en une journée et reçoit une centaine d'enfants chaque semaine. Pour financer le One Love Village de Kasangulu, nous organisons un dîner caritatif à l'hôtel Pullman de Kinshasa : près de 260 invités le 8 décembre 2023, puis une deuxième édition le 13 décembre 2024, avec de grands partenaires comme la Fondation Vodacom.",
+      fr: "Les premiers garçons accueillis sont maintenant au secondaire. Le centre sert jusqu’à 136 repas en une journée et reçoit une centaine d’enfants chaque semaine. Pour financer le One Love Village de Kasangulu, nous organisons un dîner caritatif à l’hôtel Pullman de Kinshasa : près de 260 invités le 8 décembre 2023, puis une deuxième édition le 13 décembre 2024, avec de grands partenaires comme la Fondation Vodacom.",
       en: "The first boys welcomed are now in secondary school. The centre has served up to 136 meals in a single day and welcomes around a hundred children every week. To fund the One Love Village in Kasangulu, we hold a charity dinner at the Pullman hotel in Kinshasa: nearly 260 guests on 8 December 2023, then a second edition on 13 December 2024, with major partners such as the Vodacom Foundation."
     },
     media: [
@@ -157,9 +157,9 @@ const chapters: Chapter[] = [
   {
     id: '2025',
     years: '2025 – 2026',
-    title: { fr: "Aujourd'hui : le projet RÊVES", en: 'Today: the RÊVES project' },
+    title: { fr: "Aujourd’hui : le projet RÊVES", en: 'Today: the RÊVES project' },
     text: {
-      fr: "La One Love House accueille toujours les enfants chaque semaine, avec des animatrices bénévoles. En octobre 2025 naît RÊVES, pour Réaménager, Éduquer, Valoriser, Écouter, Soigner, avec Angel Foundation : le centre est rénové, la bibliothèque renaît, les ateliers se multiplient (danse, poterie, chant, slam, journalisme) et des soignants passent deux fois par mois. En septembre 2026, RÊVES 2 met l'éducation au centre : formation des animateurs, puis premiers pas en alphabétisation.",
+      fr: "La One Love House accueille toujours les enfants chaque semaine, avec des animatrices bénévoles. En octobre 2025 naît RÊVES, pour Réaménager, Éduquer, Valoriser, Écouter, Soigner, avec Angel Foundation : le centre est rénové, la bibliothèque renaît, les ateliers se multiplient (danse, poterie, chant, slam, journalisme) et des soignants passent deux fois par mois. En septembre 2026, RÊVES 2 met l’éducation au centre : formation des animateurs, puis premiers pas en alphabétisation.",
       en: 'The One Love House still welcomes the children every week, with volunteer facilitators. In October 2025 came RÊVES — Reorganise, Educate, Empower, Listen, Care — with Angel Foundation: the centre was renovated, the library reborn, workshops multiplied (dance, pottery, singing, slam, journalism) and health workers now visit twice a month. In September 2026, RÊVES 2 put education first: training the facilitators, then the first steps in literacy.'
     },
     media: [
@@ -168,12 +168,12 @@ const chapters: Chapter[] = [
       photo('2025-atelier-dessin', 'landscape', 'Atelier de dessin.', 'Drawing workshop.'),
       photo('2025-poterie', 'portrait', 'Atelier de poterie.', 'Pottery workshop.'),
       photo('2025-poterie-2', 'portrait', 'Les poteries prennent forme.', 'The pots take shape.'),
-      photo('2025-centre', 'landscape', 'Les enfants rassemblés dans la cour du centre.', "Children gathered in the centre's courtyard."),
+      photo('2025-centre', 'landscape', 'Les enfants rassemblés dans la cour du centre.', "Children gathered in the centre’s courtyard."),
       photo('2025-foot', 'portrait', 'Football dans la cour.', 'Football in the courtyard.'),
       photo('2026-kermesse', 'landscape', 'La kermesse éducative de février 2026 : les enfants présentent leurs créations.', 'The February 2026 learning fair: the children show their work.'),
       photo('2026-kermesse-carnets', 'landscape', 'Des carnets en pagne fabriqués par les enfants.', 'Notebooks covered in wax print, made by the children.'),
       video('2026-reves2-formation', 'portrait', 'RÊVES 2 : la formation des animateurs, présentée par Marie-Anne Kemba.', 'RÊVES 2: training the facilitators, introduced by Marie-Anne Kemba.'),
-      video('2026-reves2-quotidien', 'portrait', 'Le quotidien des enfants pendant RÊVES 2.', "The children's daily life during RÊVES 2."),
+      video('2026-reves2-quotidien', 'portrait', 'Le quotidien des enfants pendant RÊVES 2.', "The children’s daily life during RÊVES 2."),
       photo('2026-reves2', 'portrait', 'RÊVES 2, avec Angel Foundation.', 'RÊVES 2, with Angel Foundation.')
     ]
   }
@@ -181,8 +181,8 @@ const chapters: Chapter[] = [
 
 const text = {
   fr: {
-    title: 'Notre histoire',
-    desc: "De la création de l'association en 2013 au projet RÊVES : le parcours de One Love en photos et en vidéos.",
+    title: 'Notre histoire depuis 2013 à Kinshasa',
+    desc: "De la création de l’association en 2013 au projet RÊVES : le parcours de One Love en photos et en vidéos.",
     eyebrow: 'Depuis 2013',
     titlePre: 'Notre ',
     titleWord: 'histoire',
@@ -204,14 +204,14 @@ const text = {
       { value: 100, prefix: '≈ ', label: "enfants accueillis chaque semaine", when: '2024' }
     ],
     play: 'Lire la vidéo',
-    bannerTitle: "L'histoire continue.",
+    bannerTitle: "L’histoire continue.",
     bannerText: 'Chaque don et chaque parrainage écrit le prochain chapitre avec les enfants.',
     donate: 'Faire un don',
     sponsor: 'Parrainer un enfant'
   },
   en: {
-    title: 'Our story',
-    desc: "From the association's founding in 2013 to the RÊVES project: One Love's journey in photos and videos.",
+    title: 'Our story since 2013 in Kinshasa',
+    desc: "From the association’s founding in 2013 to the RÊVES project: One Love’s journey in photos and videos.",
     eyebrow: 'Since 2013',
     titlePre: 'Our ',
     titleWord: 'story',

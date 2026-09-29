@@ -7,7 +7,7 @@ import { Reveal } from '@/components/Reveal';
 export const metadata: Metadata = {
   title: 'Merci pour votre don',
   description:
-    "Votre don a bien été transmis à l'association One Love. Merci de soutenir nos programmes de terrain à Kinshasa.",
+    "Votre don a bien été transmis à l’association One Love. Merci de soutenir nos programmes de terrain à Kinshasa.",
   robots: { index: false }
 };
 

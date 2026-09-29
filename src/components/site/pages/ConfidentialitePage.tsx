@@ -18,7 +18,7 @@ export const metadata: Metadata = pageMetadata({
   path: '/confidentialite',
   title: 'Politique de confidentialité',
   description:
-    "Quelles données ce site collecte, comment elles sont utilisées et comment exercer vos droits RGPD auprès de l'association One Love.",
+    "Quelles données ce site collecte, comment elles sont utilisées et comment exercer vos droits RGPD auprès de l’association One Love.",
   noindex: true,
   frOnly: true
 });

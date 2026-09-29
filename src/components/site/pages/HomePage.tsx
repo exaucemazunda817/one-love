@@ -24,7 +24,7 @@ const text = {
     titleWord: 'amour',
     titlePost: ' et la foi, notre carburant.',
     intro:
-      "Notre désir est de communiquer l'amour que nous avons reçu. À Kinshasa, nous accompagnons des enfants par l'éducation, le soin et l'écoute.",
+      "Notre désir est de communiquer l’amour que nous avons reçu. À Kinshasa, nous accompagnons des enfants par l’éducation, le soin et l’écoute.",
     donate: 'Faire un don',
     sponsor: 'Parrainer un enfant',
     badge: 'Association loi 1901 · RNA W951001528',
@@ -46,9 +46,9 @@ const text = {
     dayTitleWord: 'One Love',
     daySubtitle: 'Ce que votre soutien rend possible, au fil de la journée.',
     day: [
-      ["L'arrivée", 'Les enfants arrivent au centre, prêts à découvrir et apprendre.', 'Un garçon rit en arrivant au centre.'],
-      ["Atelier d'écriture", "Lire et écrire en petits groupes : le premier levier d'autonomie.", 'Une jeune fille écrit dans son cahier.'],
-      ['Français', "Maîtriser la langue de l'école pour ouvrir l'accès à la scolarité.", 'Un garçon écrit, concentré.'],
+      ["L’arrivée", 'Les enfants arrivent au centre, prêts à découvrir et apprendre.', 'Un garçon rit en arrivant au centre.'],
+      ["Atelier d’écriture", "Lire et écrire en petits groupes : le premier levier d’autonomie.", 'Une jeune fille écrit dans son cahier.'],
+      ['Français', "Maîtriser la langue de l’école pour ouvrir l’accès à la scolarité.", 'Un garçon écrit, concentré.'],
       ['Création et jeu', 'Dessin, sport, musique : retrouver la confiance et la vie en groupe.', 'Des mains colorient des lettres.']
     ] as const,
     projectEyebrow: 'Projet en cours · sept. à déc. 2026',
@@ -135,13 +135,13 @@ export function HomePage({ locale }: { locale: Locale }) {
       {/* Hero — desktop */}
       <section className="relative hidden min-h-[min(88vh,780px)] overflow-hidden bg-night text-cream dk:flex dk:items-center">
         <HeroBackground src="/photos/photo-dessin.jpg" alt={t.heroImgAlt} position="50% 42%" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,.92)_0%,rgba(10,10,10,.78)_34%,rgba(10,10,10,.1)_64%,rgba(10,10,10,0)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
         <div className="relative mx-auto w-full max-w-[1280px] px-12 py-24">
           <div className="flex max-w-[600px] flex-col gap-7">
             <Eyebrow dark>{t.eyebrow}</Eyebrow>
             {/* p, pas h1 : le vrai h1 de la page est celui du hero mobile
                 juste après (même texte) — un seul par page, cohérent avec
-                l'indexation mobile-first (audit SEO du 27/09/2026). */}
+                l’indexation mobile-first (audit SEO du 27/09/2026). */}
             <p className="m-0 text-balance font-serif text-[clamp(48px,5.4vw,72px)] font-medium leading-[1.06] tracking-[-0.01em]">
               {t.titlePre}
               <BrushWord>{t.titleWord}</BrushWord>
@@ -168,7 +168,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       {/* Hero — mobile */}
       <section className="relative flex min-h-svh flex-col justify-end overflow-hidden bg-night text-cream dk:hidden">
         <HeroBackground src="/photos/photo-dessin.jpg" alt={t.heroImgAlt} position="62% 30%" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,.15)_0%,rgba(10,10,10,.35)_30%,rgba(10,10,10,.88)_58%,rgba(10,10,10,.95)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)]" />
         <div className="relative flex flex-col items-center gap-[14px] px-5 pb-10 pt-[120px] text-center">
           <Eyebrow dark className="text-[12px]">
             {t.eyebrow}
@@ -178,7 +178,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             <BrushWord>{t.titleWord}</BrushWord>
             {t.titlePost}
           </h1>
-          <p className="-mt-1 m-0 text-[15px] leading-[1.5] text-on-dark-1">{t.intro}</p>
+          <p className="-mt-1 m-0 max-w-[34rem] text-[15px] leading-[1.5] text-on-dark-1">{t.intro}</p>
           <div className="flex w-full flex-col gap-2.5">
             <Link href={href('/dons')} className="inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-br from-gold-hover to-gold px-7 text-[13px] font-bold uppercase tracking-wide text-night no-underline transition-opacity hover:text-night hover:opacity-90">
               <HeartIcon size="1em" aria-hidden />
@@ -198,9 +198,9 @@ export function HomePage({ locale }: { locale: Locale }) {
       <PartnersMarquee locale={locale} />
 
       {/* Le chemin parcouru — mêmes chiffres que la page Notre histoire, en
-          frise plutôt qu'à plat : ce sont quatre étapes d'une progression
+          frise plutôt qu’à plat : ce sont quatre étapes d’une progression
           dans le temps, pas quatre chiffres indépendants (revu le
-          27/09/2026, l'ancienne grille 2×2/4×1 laissait beaucoup de vide). */}
+          27/09/2026, l’ancienne grille 2×2/4×1 laissait beaucoup de vide). */}
       <section aria-labelledby="chemin-titre-accueil" className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(40px,5vw,64px)]">
         <div className="flex flex-col gap-8 dk:flex-row dk:items-center dk:gap-14">
           <Reveal className="flex max-w-[300px] flex-none flex-col gap-3">
@@ -226,7 +226,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <section className="relative overflow-hidden bg-night text-cream">
         <Image src="/photos/photo-ecriture.jpg" alt={t.projectImgAlt} fill sizes="100vw" className="photo-tone object-cover object-[60%_30%]" />
         <div className="relative mx-auto max-w-[1280px] px-[clamp(12px,4vw,48px)] py-[clamp(40px,8vw,120px)]">
-          <Reveal className="flex max-w-[520px] flex-col gap-[18px] rounded-card bg-[rgba(10,10,10,.9)] p-[clamp(28px,4vw,48px)]">
+          <Reveal className="flex max-w-[520px] flex-col gap-[18px] rounded-card bg-[color:var(--scrim-5)] p-[clamp(28px,4vw,48px)]">
             <Eyebrow dark>{t.projectEyebrow}</Eyebrow>
             <h2 className="m-0 font-serif text-[clamp(40px,5vw,64px)] font-medium leading-none">{currentProject.name}</h2>
             <p className="m-0 text-[15px] font-bold tracking-[0.04em] text-gold-hover">{currentProject.acronymMeaning}</p>
@@ -287,8 +287,8 @@ export function HomePage({ locale }: { locale: Locale }) {
                       <div
                         className={`pointer-events-none absolute inset-0 ${
                           isLead
-                            ? 'bg-[linear-gradient(180deg,rgba(10,10,10,0)_45%,rgba(10,10,10,.6)_70%,rgba(10,10,10,.92)_100%)]'
-                            : 'bg-[linear-gradient(180deg,rgba(10,10,10,0)_18%,rgba(10,10,10,.72)_50%,rgba(10,10,10,.94)_100%)]'
+                            ? 'bg-[linear-gradient(180deg,var(--scrim-0)_45%,var(--scrim-3)_70%,var(--scrim-5)_100%)]'
+                            : 'bg-[linear-gradient(180deg,var(--scrim-0)_18%,var(--scrim-4)_50%,var(--scrim-5)_100%)]'
                         }`}
                       />
                       <figcaption className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-[clamp(20px,2.2vw,32px)] text-cream">
@@ -329,7 +329,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
 
       {/* Trois façons d'aider — overflow-x-clip (pas hidden) : les cartes
-          partent de l'extérieur pendant l'éventail sans créer de zone de
+          partent de l’extérieur pendant l’éventail sans créer de zone de
           défilement horizontal ni de débordement de page. */}
       <section className="overflow-x-clip">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] pt-[clamp(32px,5vw,56px)] pb-[clamp(64px,9vw,112px)]">

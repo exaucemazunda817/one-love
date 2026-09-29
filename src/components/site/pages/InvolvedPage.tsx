@@ -10,20 +10,20 @@ import { localeHref, type Locale } from '@/lib/i18n';
 
 const text = {
   fr: {
-    title: "S'impliquer",
+    title: "S’impliquer : bénévolat, dons en nature, partenariats",
     desc: 'Bénévolat, dons en nature, collectes et partenariats pour soutenir les programmes de terrain de One Love à Kinshasa.',
-    eyebrow: "S'impliquer",
+    eyebrow: "S’impliquer",
     titlePre: 'Donner de son ',
     // La virgule est dans le mot souligné : seule, elle passait à la ligne sur mobile.
     titleWord: 'temps,',
     titlePost: ' de ses talents',
     intro: "Vous pouvez soutenir nos programmes de terrain, rejoindre notre équipe comme bénévole, ou construire un partenariat avec notre association.",
     heroAlt: 'Deux garçons dessinent à une table en plein air.',
-    waysTitle: "Quatre façons de s'impliquer",
+    waysTitle: "Quatre façons de s’impliquer",
     ways: [
       { k: 'benevolat' as const, t: 'Bénévolat', d: 'À Kinshasa pour les ateliers, ou à distance : communication, traduction, recherche de fonds.', cta: 'Proposer mon aide' },
       { k: 'nature' as const, t: 'Dons en nature', d: 'Fournitures scolaires, livres, matériel sportif ou informatique.', cta: 'Voir les besoins' },
-      { k: 'collecte' as const, t: 'Collectes', d: "Anniversaire, course solidaire, événement d'église ou d'école : collectez pour RÊVES 2.", cta: 'Organiser une collecte' },
+      { k: 'collecte' as const, t: 'Collectes', d: "Anniversaire, course solidaire, événement d’église ou d’école : collectez pour RÊVES 2.", cta: 'Organiser une collecte' },
       { k: 'partenariat' as const, t: 'Partenariats', d: 'Entreprises, églises, fondations : construisons un projet ensemble, comme avec Angel Foundation.', cta: 'Devenir partenaire' }
     ],
     needsTitle: 'Nos besoins en nature',
@@ -31,7 +31,7 @@ const text = {
     needsCta: 'Nous écrire',
     formTitlePre: 'Parlons de votre ',
     formTitleWord: 'engagement',
-    formIntro: 'Dites-nous ce qui vous intéresse, nous revenons vers vous rapidement.',
+    formIntro: 'Dites-nous ce qui vous intéresse : nous vous répondons dès que possible.',
     whatsapp: 'Ou écrivez-nous depuis la page Contact',
     interestLabel: 'Je souhaite',
     interests: {
@@ -53,7 +53,7 @@ const text = {
     error: 'Une erreur est survenue. Merci de réessayer.'
   },
   en: {
-    title: 'Get involved',
+    title: 'Get involved: volunteering, in-kind gifts, partnerships',
     desc: 'Volunteering, in-kind gifts, fundraising and partnerships to support One Love’s field programmes in Kinshasa.',
     eyebrow: 'Get involved',
     titlePre: 'Give your ',
@@ -71,9 +71,9 @@ const text = {
     needsTitle: 'What we need',
     needsIntro: 'Equipment in good condition, collected in France or Kinshasa. Our needs change with the workshops: write to us to find out what is needed now, before sending anything.',
     needsCta: 'Write to us',
-    formTitlePre: "Let's talk about your ",
+    formTitlePre: "Let’s talk about your ",
     formTitleWord: 'involvement',
-    formIntro: "Tell us what interests you and we'll get back to you quickly.",
+    formIntro: 'Tell us what interests you: we will reply as soon as we can.',
     whatsapp: 'Or write to us from the Contact page',
     interestLabel: 'I would like to',
     interests: {
@@ -90,7 +90,7 @@ const text = {
     send: 'Send',
     sending: 'Sending…',
     thanksTitle: 'Thank you, message received.',
-    thanksText: "We'll reply within a few days.",
+    thanksText: "We’ll reply within a few days.",
     sendAnother: 'Send another message',
     error: 'Something went wrong. Please try again.'
   }
@@ -125,7 +125,7 @@ export function InvolvedPage({ locale }: { locale: Locale }) {
             <div className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
               <Reveal className="flex max-w-[640px] flex-col gap-3">
                 <h2 className="m-0 font-serif text-[clamp(28px,3vw,38px)] font-medium leading-[1.2]"><BrushLast text={t.needsTitle} /></h2>
-                <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.needsIntro}</p>
+                <p className="m-0 max-w-measure text-[17px] leading-[1.6] text-ink-body">{t.needsIntro}</p>
               </Reveal>
               <Reveal delay={90} className="mt-5">
                 <Link href={localeHref('/contact', locale)} className="inline-flex min-h-11 items-center gap-1.5 font-bold no-underline">

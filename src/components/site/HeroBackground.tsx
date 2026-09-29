@@ -2,6 +2,8 @@
 
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { PauseIcon, PlayIcon } from '@phosphor-icons/react';
 import { HERO_PHOTOS } from '@/lib/hero-photos';
 
 type Photo = { src: string; position: string };
@@ -42,6 +44,16 @@ export function HeroBackground({
   const photosRef = useRef<[Photo, Photo | null]>([{ src, position }, null]);
   const bag = useRef<Photo[]>([]);
   const swapTimer = useRef(0);
+  // Pause manuelle (WCAG 2.2.2) : le bouton est posé dans le bandeau parent,
+  // après tous les autres éléments, pour rester au-dessus du texte et cliquable.
+  const pausedRef = useRef(false);
+  const [paused, setPaused] = useState(false);
+  const [active, setActive] = useState(false);
+  const [host, setHost] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setHost(rootRef.current?.parentElement ?? null);
+  }, []);
 
   useEffect(() => {
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
@@ -53,6 +65,7 @@ export function HeroBackground({
     ) {
       return;
     }
+    setActive(true);
 
     let timer = 0;
     let stopped = false;
@@ -74,7 +87,7 @@ export function HeroBackground({
       if (stopped) return;
       const el = rootRef.current;
       const visibleNow = el && el.getClientRects().length > 0 && !document.hidden;
-      if (visibleNow) {
+      if (visibleNow && !pausedRef.current) {
         let photo = nextPhoto();
         if (photo.src === photosRef.current[frontRef.current]?.src) photo = nextPhoto();
         const back: Layer = frontRef.current === 0 ? 1 : 0;
@@ -107,8 +120,35 @@ export function HeroBackground({
     }, FADE_MS + 100);
   };
 
+  const lang = typeof document !== 'undefined' ? document.documentElement.lang : 'fr';
+  const label =
+    lang === 'en'
+      ? paused
+        ? 'Resume the changing photos'
+        : 'Pause the changing photos'
+      : paused
+        ? 'Reprendre le changement de photos'
+        : 'Mettre en pause le changement de photos';
+
   return (
     <div ref={rootRef} className="absolute inset-0 isolate">
+      {active &&
+        host &&
+        createPortal(
+          <button
+            type="button"
+            aria-pressed={paused}
+            aria-label={label}
+            onClick={() => {
+              pausedRef.current = !paused;
+              setPaused(!paused);
+            }}
+            className="absolute bottom-4 right-4 z-30 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-cream/35 bg-night/70 text-cream backdrop-blur-sm dk:bottom-6 dk:right-8"
+          >
+            {paused ? <PlayIcon size={20} aria-hidden /> : <PauseIcon size={20} aria-hidden />}
+          </button>,
+          host
+        )}
       {([0, 1] as Layer[]).map((i) => {
         const photo = photos[i];
         if (!photo) return null;

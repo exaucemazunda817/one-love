@@ -37,7 +37,7 @@ export function MobilePhotoCard({
           style={{ objectPosition: imagePosition }}
         />
       </Reveal>
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,0)_18%,rgba(10,10,10,.6)_52%,rgba(10,10,10,.94)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-0)_18%,var(--scrim-3)_52%,var(--scrim-5)_100%)]" />
       <div className="absolute inset-0 flex flex-col justify-end gap-2.5 p-5 text-cream">
         {badge && (
           <Reveal delay={120} className="flex">

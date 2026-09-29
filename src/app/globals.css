@@ -53,6 +53,17 @@
 
   --error: #b3261e;
 
+  /* Voiles noirs posés sur les photos : six niveaux au lieu de quatorze
+     valeurs écrites à la main (audit du 29/09/2026). Les valeurs
+     intermédiaires ont été ramenées au niveau le plus proche ; le contraste
+     du texte sur photo a été re-mesuré après coup. */
+  --scrim-0: rgba(10, 10, 10, 0);
+  --scrim-1: rgba(10, 10, 10, 0.1);
+  --scrim-2: rgba(10, 10, 10, 0.35);
+  --scrim-3: rgba(10, 10, 10, 0.6);
+  --scrim-4: rgba(10, 10, 10, 0.8);
+  --scrim-5: rgba(10, 10, 10, 0.92);
+
   /* Teintes secondaires de la maquette, jusqu'ici écrites en dur. */
   --taupe: #8c8177;
   --track: #ede3d5;
@@ -270,6 +281,25 @@ html.js [data-reveal='pending'] {
     transform 800ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
 }
 
+/* Bandeaux (Reveal eager) : visibles dès le premier affichage, avec la même
+   entrée jouée en CSS pur. Plus spécifique que la règle « pending » ci-dessus. */
+html.js [data-reveal-eager][data-reveal='pending'] {
+  opacity: 1;
+  transform: none;
+  animation: ol-hero-in 800ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms) both;
+}
+
+@keyframes ol-hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes ol-reveal-failsafe {
   to {
     opacity: 1;
@@ -467,11 +497,17 @@ html.js [data-reveal-variant='scale'][data-reveal='waiting'] {
   animation-direction: var(--ol-marquee-direction, normal);
 }
 
-.ol-marquee:hover .ol-marquee-track {
+.ol-marquee:hover .ol-marquee-track,
+.ol-marquee:focus-within .ol-marquee-track,
+.ol-marquee[data-paused='true'] .ol-marquee-track {
   animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ol-marquee-pause {
+    display: none;
+  }
+
   .ol-marquee {
     overflow-x: auto;
     -webkit-mask-image: none;

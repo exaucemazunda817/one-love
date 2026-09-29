@@ -19,16 +19,16 @@ export const text = {
     titleWord: 'don',
     intro:
       'Votre don finance directement les programmes de terrain : ateliers, matériel pédagogique, suivi médical et psychosocial des enfants.',
-    fundsTitle: "L'emploi de vos dons",
+    fundsTitle: "L’emploi de vos dons",
     fundsIntro:
-      "Sauf mention spéciale, l'affectation de vos dons se fait en fonction des besoins des programmes de terrain. Si vous souhaitez soutenir un programme en particulier, précisez-le lors de votre virement.",
+      "Sauf mention spéciale, l’affectation de vos dons se fait en fonction des besoins des programmes de terrain. Si vous souhaitez soutenir un programme en particulier, précisez-le lors de votre virement.",
     privacyTitle: 'Respect de votre vie privée',
-    privacyText: "Nous ne commercialisons pas nos fichiers de donateurs, de clients ni d'abonnés. Voir notre",
+    privacyText: "Nous ne cédons ni ne vendons nos fichiers de donateurs, de parrains ni d’abonnés à la lettre. Voir notre",
     privacyLink: 'politique de confidentialité',
     sponsorTitle: 'Parrainer plutôt ?',
-    sponsorText: "Un engagement mensuel qui assure la continuité de l'accompagnement d'un enfant.",
+    sponsorText: "Un engagement mensuel qui assure la continuité de l’accompagnement d’un enfant.",
     sponsorCta: 'Découvrir le parrainage',
-    otherTitle: "Autrement qu'un don",
+    otherTitle: "Autrement qu’un don",
     otherText: "Vous pouvez aussi rejoindre notre équipe comme bénévole ou construire un partenariat avec notre association.",
     otherCta: 'Prendre contact',
     cancelled: 'Le paiement a été annulé. Aucun montant n’a été prélevé.'
@@ -45,7 +45,7 @@ export const text = {
     fundsIntro:
       'Unless otherwise specified, your gift is allocated according to the needs of our field programmes. If you would like to support a specific programme, please mention it in your transfer.',
     privacyTitle: 'Respecting your privacy',
-    privacyText: 'We do not sell our donor, customer or subscriber lists. See our',
+    privacyText: 'We never sell or pass on our donor, sponsor or newsletter lists. See our',
     privacyLink: 'privacy policy',
     sponsorTitle: 'Sponsor instead?',
     sponsorText: 'A monthly commitment that ensures continuous support for a child.',
@@ -61,7 +61,7 @@ export function donsMetadata(locale: Locale): Metadata {
   return pageMetadata({
     locale,
     path: '/dons',
-    title: locale === 'en' ? 'Donate' : 'Faire un don',
+    title: locale === 'en' ? 'Donate for the children of Kinshasa' : 'Faire un don pour les enfants de Kinshasa',
     description: text[locale].metaDescription
   });
 }
@@ -74,9 +74,9 @@ export function DonsPage({ locale }: { locale: Locale }) {
     <>
       <section className="relative overflow-hidden bg-night text-cream">
         <HeroBackground src="/photos/photo-ecriture.jpg" alt="" position="70% 30%" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,10,10,.94)_0%,rgba(10,10,10,.82)_45%,rgba(10,10,10,.35)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_45%,var(--scrim-2)_100%)]" />
         <div className="relative mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pb-[clamp(48px,7vw,88px)] pt-[clamp(120px,12vw,148px)]">
-          <Reveal className="mx-auto flex max-w-[620px] flex-col items-center gap-[18px] text-center dk:mx-0 dk:max-w-none dk:items-start dk:text-left">
+          <Reveal eager className="mx-auto flex max-w-[620px] flex-col items-center gap-[18px] text-center dk:mx-0 dk:max-w-none dk:items-start dk:text-left">
           <Eyebrow dark>{t.eyebrow}</Eyebrow>
           <h1 className="m-0 text-balance font-serif text-[clamp(38px,5vw,64px)] font-medium leading-[1.06]">
             {t.titlePre}
@@ -92,7 +92,7 @@ export function DonsPage({ locale }: { locale: Locale }) {
       </Suspense>
 
       {/* Lu au build (page statique) : après avoir ajouté la clé Stripe sur
-          Vercel, un redéploiement suffit pour que la carte s'active. */}
+          Vercel, un redéploiement suffit pour que la carte s’active. */}
       <DonationFlow locale={locale} cardEnabled={isStripeConfigured()} />
 
       <section className="bg-sand">
