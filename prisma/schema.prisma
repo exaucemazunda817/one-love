@@ -1096,6 +1096,9 @@ enum SponsorMode {
 
 enum SponsorStatus {
   ACTIVE
+  /// Dernier paiement refusé ; Stripe réessaie avant de résilier. Repassé à
+  /// ACTIVE dès qu'une facture est payée, ou à ENDED à la résiliation.
+  PAYMENT_FAILED
   ENDED
 }
 

@@ -13,6 +13,39 @@ import { Prisma, type DonationMethod } from '@prisma/client';
 const MIN_DONATION_EUR = 1;
 const MAX_DONATION_EUR = 100_000;
 
+/**
+ * Trouve ou crée le donateur par e-mail SANS écraser une fiche existante :
+ * seuls les champs encore vides sont remplis. Un e-mail saisi par un
+ * visiteur n'est pas vérifié ; avec l'ancien `update`, quelqu'un pouvait
+ * remplacer le nom d'un donateur connu en payant avec son adresse (audit de
+ * sécurité du 29/09/2026).
+ */
+export async function upsertDonorFillEmpty(input: {
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  phone?: string | null;
+  country?: string | null;
+}) {
+  const donor = await prisma.donor.upsert({
+    where: { email: input.email },
+    update: {},
+    create: {
+      email: input.email,
+      firstName: input.firstName || null,
+      lastName: input.lastName || null,
+      phone: input.phone || null,
+      country: input.country || 'FR'
+    }
+  });
+  const fill: Prisma.DonorUpdateInput = {};
+  if (!donor.firstName && input.firstName) fill.firstName = input.firstName;
+  if (!donor.lastName && input.lastName) fill.lastName = input.lastName;
+  if (!donor.phone && input.phone) fill.phone = input.phone;
+  if (Object.keys(fill).length === 0) return donor;
+  return prisma.donor.update({ where: { id: donor.id }, data: fill });
+}
+
 export function isValidDonationAmount(amountEur: number): boolean {
   return Number.isFinite(amountEur) && amountEur >= MIN_DONATION_EUR && amountEur <= MAX_DONATION_EUR;
 }
@@ -38,23 +71,12 @@ export async function createPendingDonation({
     ? await prisma.project.findUnique({ where: { slug: projectSlug } })
     : null;
 
-  // `update` réécrit nom/pays à chaque nouveau don : un même donateur qui
-  // redonne avec une coordonnée mise à jour (ex. pays) voit sa fiche
-  // rafraîchie plutôt que figée sur son tout premier don.
   const donor = donorEmail
-    ? await prisma.donor.upsert({
-        where: { email: donorEmail },
-        update: {
-          ...(donorFirstName ? { firstName: donorFirstName } : {}),
-          ...(donorLastName ? { lastName: donorLastName } : {}),
-          ...(donorCountry ? { country: donorCountry } : {})
-        },
-        create: {
-          email: donorEmail,
-          firstName: donorFirstName || null,
-          lastName: donorLastName || null,
-          country: donorCountry || 'FR'
-        }
+    ? await upsertDonorFillEmpty({
+        email: donorEmail,
+        firstName: donorFirstName,
+        lastName: donorLastName,
+        country: donorCountry
       })
     : null;
 
@@ -207,19 +229,11 @@ export async function createConfirmedDonation({
     ? await prisma.project.findUnique({ where: { slug: projectSlug } })
     : null;
   const donor = donorEmail
-    ? await prisma.donor.upsert({
-        where: { email: donorEmail },
-        update: {
-          ...(donorFirstName ? { firstName: donorFirstName } : {}),
-          ...(donorLastName ? { lastName: donorLastName } : {}),
-          ...(donorCountry ? { country: donorCountry } : {})
-        },
-        create: {
-          email: donorEmail,
-          firstName: donorFirstName || null,
-          lastName: donorLastName || null,
-          country: donorCountry || 'FR'
-        }
+    ? await upsertDonorFillEmpty({
+        email: donorEmail,
+        firstName: donorFirstName,
+        lastName: donorLastName,
+        country: donorCountry
       })
     : null;
 

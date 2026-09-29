@@ -28,6 +28,13 @@ const CSP = [
   'upgrade-insecure-requests'
 ].join('; ');
 
+// La construction de production échoue tant que l'adresse publique manque :
+// sans elle, l'aperçu WhatsApp, le sitemap et les retours de paiement pointent
+// vers localhost (variable créée vide sur Vercel, piège déjà rencontré).
+if (process.env.VERCEL_ENV === 'production' && !/^https?:\/\//.test((process.env.NEXT_PUBLIC_SITE_URL || '').trim())) {
+  throw new Error('NEXT_PUBLIC_SITE_URL est absente ou invalide : construction de production refusée.');
+}
+
 const nextConfig: NextConfig = {
   // En-têtes de sécurité envoyés sur toutes les pages.
   async headers() {
@@ -49,6 +56,29 @@ const nextConfig: NextConfig = {
         source: '/gestion/:path*',
         headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' }]
       }
+    ];
+  },
+  // Anciennes adresses du site WordPress de l'association : elles n'ont d'effet
+  // qu'une fois associationonelove.org branché sur ce site, mais ne coûtent
+  // rien d'ici là. « /voyage-humanitaire » n'a pas d'équivalent : renvoyé vers
+  // « S'impliquer » en attendant une décision de l'association.
+  async redirects() {
+    const perm = { permanent: true } as const;
+    return [
+      { source: '/un-peu-de-nous', destination: '/association', ...perm },
+      { source: '/un-peu-de-nous/:slug*', destination: '/association', ...perm },
+      { source: '/parrainage', destination: '/parrainer', ...perm },
+      { source: '/ca-bouge', destination: '/galerie', ...perm },
+      { source: '/infos-dons', destination: '/dons', ...perm },
+      { source: '/voyage-humanitaire', destination: '/s-impliquer', ...perm },
+      { source: '/actions/:slug+', destination: '/actions', ...perm },
+      { source: '/en/un-peu-de-nous', destination: '/en/association', ...perm },
+      { source: '/en/un-peu-de-nous/:slug*', destination: '/en/association', ...perm },
+      { source: '/en/parrainage', destination: '/en/parrainer', ...perm },
+      { source: '/en/ca-bouge', destination: '/en/galerie', ...perm },
+      { source: '/en/infos-dons', destination: '/en/dons', ...perm },
+      { source: '/en/voyage-humanitaire', destination: '/en/s-impliquer', ...perm },
+      { source: '/en/actions/:slug+', destination: '/en/actions', ...perm }
     ];
   },
   images: {

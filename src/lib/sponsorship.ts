@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { sendEmail } from '@/lib/email';
+import { upsertDonorFillEmpty } from '@/lib/donations';
 import { escapeHtml } from '@/lib/validation';
 import { CONTACT_EMAIL } from '@/lib/i18n';
 
@@ -96,20 +97,12 @@ export async function recordSponsorFromInvoice({
   const existing = await prisma.sponsor.findUnique({ where: { stripeSubscriptionId: subscriptionId } });
   if (existing) return { created: false };
 
-  const donor = await prisma.donor.upsert({
-    where: { email },
-    update: {
-      ...(metadata.donorFirstName ? { firstName: metadata.donorFirstName } : {}),
-      ...(metadata.donorLastName ? { lastName: metadata.donorLastName } : {}),
-      ...(metadata.donorPhone ? { phone: metadata.donorPhone } : {})
-    },
-    create: {
-      email,
-      firstName: metadata.donorFirstName || null,
-      lastName: metadata.donorLastName || null,
-      phone: metadata.donorPhone || null,
-      country: metadata.donorCountry || 'FR'
-    }
+  const donor = await upsertDonorFillEmpty({
+    email,
+    firstName: metadata.donorFirstName,
+    lastName: metadata.donorLastName,
+    phone: metadata.donorPhone,
+    country: metadata.donorCountry
   });
 
   try {
@@ -133,12 +126,67 @@ export async function recordSponsorFromInvoice({
   return { created: true };
 }
 
+/**
+ * Paiement refusé : le parrain reste dans la liste mais passe en « paiement en
+ * échec », pour que l'équipe écrive un mot humain pendant que Stripe réessaie.
+ * Ne casse jamais le webhook : si la base ne connaît pas encore cette valeur
+ * de statut, on journalise et on continue (le paiement lui-même est déjà
+ * traité par Stripe).
+ */
+export async function markSponsorPaymentFailed(subscriptionId: string): Promise<void> {
+  try {
+    await prisma.sponsor.updateMany({
+      where: { stripeSubscriptionId: subscriptionId, status: 'ACTIVE' },
+      data: { status: 'PAYMENT_FAILED' }
+    });
+  } catch (error) {
+    console.error('Statut « paiement en échec » non enregistré', error);
+  }
+}
+
+/** Une facture est payée : un parrain en échec de paiement redevient actif. */
+export async function markSponsorPaymentRecovered(subscriptionId: string): Promise<void> {
+  try {
+    await prisma.sponsor.updateMany({
+      where: { stripeSubscriptionId: subscriptionId, status: 'PAYMENT_FAILED' },
+      data: { status: 'ACTIVE' }
+    });
+  } catch (error) {
+    console.error('Statut « actif » non rétabli', error);
+  }
+}
+
 /** Résiliation de l'abonnement côté Stripe : le parrain passe à « terminé ». */
 export async function endSponsorBySubscription(subscriptionId: string): Promise<void> {
   await prisma.sponsor.updateMany({
     where: { stripeSubscriptionId: subscriptionId, status: 'ACTIVE' },
     data: { status: 'ENDED', endedAt: new Date() }
   });
+  // Séparé et protégé : tant que la base ne connaît pas la valeur
+  // PAYMENT_FAILED, cette requête échoue et ne doit pas faire échouer la
+  // résiliation ci-dessus.
+  try {
+    await prisma.sponsor.updateMany({
+      where: { stripeSubscriptionId: subscriptionId, status: 'PAYMENT_FAILED' },
+      data: { status: 'ENDED', endedAt: new Date() }
+    });
+  } catch (error) {
+    console.error('Résiliation d\'un parrain en échec de paiement non enregistrée', error);
+  }
+}
+
+/**
+ * Prénom affiché dans l'e-mail : lettres, espaces, tirets et apostrophes,
+ * 40 caractères au plus. Le prénom vient d'un formulaire public ; sans ce
+ * nettoyage, il pouvait glisser une phrase dans un e-mail qui part du nom de
+ * l'association (audit de sécurité du 29/09/2026).
+ */
+export function cleanFirstName(value: string | null | undefined): string {
+  return (value ?? '')
+    .replace(/[^\p{L}\s'’-]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 40);
 }
 
 /** Courriel de bienvenue : les informations pour le parrainage. Silencieux si Resend n'est pas configuré. */
@@ -155,7 +203,7 @@ export async function sendSponsorWelcome({
   amountEur: number;
   locale: 'fr' | 'en';
 }): Promise<void> {
-  const name = firstName || '';
+  const name = cleanFirstName(firstName);
   const amount = `${amountEur} €`;
   const contact = CONTACT_EMAIL;
 

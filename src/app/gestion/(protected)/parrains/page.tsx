@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 const MODE_LABELS = { CHILD: 'Parrainage d’un enfant', PROGRAMME: 'Soutien d’un programme' } as const;
-const STATUS_LABELS = { ACTIVE: 'Actif', ENDED: 'Terminé' } as const;
+const STATUS_LABELS = { ACTIVE: 'Actif', PAYMENT_FAILED: 'Paiement en échec', ENDED: 'Terminé' } as const;
 
 // Liste INTERNE des parrains. Une ligne n'existe que si un paiement de
 // parrainage a été confirmé (webhook Stripe) : sans paiement, personne
@@ -29,6 +29,7 @@ export default async function ParrainsPage() {
   });
 
   const active = sponsors.filter((s) => s.status === 'ACTIVE');
+  const failed = sponsors.filter((s) => s.status === 'PAYMENT_FAILED');
   const monthlyTotal = active.reduce((sum, s) => sum + Number(s.monthlyAmountEur), 0);
 
   return (
@@ -41,7 +42,7 @@ export default async function ParrainsPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-ol-line bg-ol-white p-5">
           <p className="text-xs font-bold uppercase tracking-[0.1em] text-ol-muted">Parrains actifs</p>
           <p className="mt-1 text-3xl font-black text-ol-charcoal">{active.length}</p>
@@ -49,6 +50,11 @@ export default async function ParrainsPage() {
         <div className="rounded-xl border border-ol-line bg-ol-white p-5">
           <p className="text-xs font-bold uppercase tracking-[0.1em] text-ol-muted">Engagement mensuel actif</p>
           <p className="mt-1 text-3xl font-black text-ol-charcoal">{monthlyTotal.toLocaleString('fr-FR')} €</p>
+        </div>
+        <div className="rounded-xl border border-ol-line bg-ol-white p-5">
+          <p className="text-xs font-bold uppercase tracking-[0.1em] text-ol-muted">Paiements en échec</p>
+          <p className="mt-1 text-3xl font-black text-ol-charcoal">{failed.length}</p>
+          <p className="mt-1 text-xs text-ol-muted">Stripe réessaie ; écrivez-leur un mot si besoin.</p>
         </div>
       </div>
 
@@ -90,7 +96,7 @@ export default async function ParrainsPage() {
                 </td>
                 <td className="px-5 py-3 whitespace-nowrap text-ol-muted">{formatFieldDateTime(s.sponsorSince)}</td>
                 <td className="px-5 py-3">
-                  <span className={`text-xs font-bold ${s.status === 'ACTIVE' ? 'text-ol-ink' : 'text-ol-muted'}`}>
+                  <span className={`text-xs font-bold ${s.status === 'PAYMENT_FAILED' ? 'text-error' : s.status === 'ACTIVE' ? 'text-ol-ink' : 'text-ol-muted'}`}>
                     {STATUS_LABELS[s.status]}
                   </span>
                 </td>

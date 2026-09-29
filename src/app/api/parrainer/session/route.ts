@@ -3,7 +3,7 @@ import { allowRequest, TOO_MANY_REQUESTS_MESSAGE } from '@/lib/rate-limit';
 import { isStripeConfigured, createDonationCheckoutSession } from '@/lib/stripe';
 import { sponsorSessionSchema, sponsorPlanFor, sponsorMetadata } from '@/lib/sponsorship';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+import { getSiteUrl } from '@/lib/site-url';
 
 // Devenir parrain = payer. Cette route ne crée AUCUN parrain : elle ouvre
 // seulement une session de paiement Stripe. Le parrain est enregistré par le
@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
 
   const prefix = data.locale === 'en' ? '/en' : '';
   try {
+    const siteUrl = getSiteUrl();
     const session = await createDonationCheckoutSession({
       // Montant libre saisi (borné par le schéma : 1 à 5 000 €) sinon prix de la formule.
       amountEurCents: Math.round((data.amountEur ?? plan.eur) * 100),

@@ -6,7 +6,7 @@ import { isStripeConfigured, createDonationCheckoutSession } from '@/lib/stripe'
 import { prisma } from '@/lib/prisma';
 import { org } from '@/lib/content';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+import { getSiteUrl } from '@/lib/site-url';
 
 export async function POST(request: NextRequest) {
   if (!isStripeConfigured()) {
@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
   const description = project ? `Don — ${project.name} — ${org.name}` : `Don — ${org.name}`;
 
   try {
+    const siteUrl = getSiteUrl();
     if (data.frequency === 'once') {
       // Don unique : le Donation PENDING existe AVANT Checkout, pour porter
       // son id dans les métadonnées de la session — voir confirmDonation().

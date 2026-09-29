@@ -7,7 +7,14 @@ import {
   type StripeInvoiceObject
 } from '@/lib/stripe';
 import { confirmDonation, createConfirmedDonation } from '@/lib/donations';
-import { recordSponsorFromInvoice, endSponsorBySubscription, sendSponsorWelcome, sponsorPlanFor } from '@/lib/sponsorship';
+import {
+  recordSponsorFromInvoice,
+  endSponsorBySubscription,
+  markSponsorPaymentFailed,
+  markSponsorPaymentRecovered,
+  sendSponsorWelcome,
+  sponsorPlanFor
+} from '@/lib/sponsorship';
 
 // Le corps DOIT être lu en texte brut, AVANT tout JSON.parse : la vérification
 // de signature Stripe porte sur les octets exacts envoyés, pas sur une
@@ -116,6 +123,7 @@ export async function POST(request: NextRequest) {
       // signature), c'est donc maintenant, et seulement maintenant, que la
       // personne devient parrain. Idempotent en cas de webhook rejoué.
       if (isSponsorship) {
+        await markSponsorPaymentRecovered(invoice.subscription);
         const { created } = await recordSponsorFromInvoice({
           subscriptionId: invoice.subscription,
           metadata: subscription.metadata,
@@ -131,6 +139,11 @@ export async function POST(request: NextRequest) {
           });
         }
       }
+    }
+
+    if (event.type === 'invoice.payment_failed') {
+      const invoice = event.data.object as unknown as StripeInvoiceObject;
+      if (invoice.subscription) await markSponsorPaymentFailed(invoice.subscription);
     }
 
     if (event.type === 'customer.subscription.deleted') {
