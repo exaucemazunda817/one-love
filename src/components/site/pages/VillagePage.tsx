@@ -71,6 +71,9 @@ const text = {
     titleWord: 'Village',
     intro: 'Sur notre terrain de Kasangulu, nous construisons le One Love Village. Voici son histoire, pas à pas.',
     heroAlt: 'Des engins au travail sur le terrain de Kasangulu, au coucher du soleil.',
+    leadEyebrow: 'Le projet',
+    leadTitlePre: 'Bâtir quelque chose de ',
+    leadTitleWord: 'durable',
     lead: 'Depuis 2015, nous voulons construire quelque chose de durable au Congo. Le terrain de Kasangulu est le lieu de ce projet : nous l’avons repéré, borné, débroussaillé, et les travaux ont commencé.',
     pathEyebrow: 'Le chemin parcouru',
     pathTitlePre: 'Du premier repérage aux ',
@@ -112,6 +115,9 @@ const text = {
     titleWord: 'Village',
     intro: 'On our land in Kasangulu, we are building the One Love Village. Here is its story, step by step.',
     heroAlt: 'Machines at work on the Kasangulu land, at sunset.',
+    leadEyebrow: 'The project',
+    leadTitlePre: 'Building something ',
+    leadTitleWord: 'lasting',
     lead: 'Since 2015, we have wanted to build something lasting in Congo. The Kasangulu land is where it will happen: we surveyed it, marked it out, cleared it, and work has begun.',
     pathEyebrow: 'The road so far',
     pathTitlePre: 'From the first visit to the ',
@@ -167,7 +173,7 @@ function SectionHead({ eyebrow, pre, word, id }: { eyebrow: string; pre: string;
 export function VillagePage({ locale }: { locale: Locale }) {
   const t = text[locale];
   const href = (p: string) => localeHref(p, locale);
-  const wrap = 'mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]';
+  const wrap = 'mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(36px,5vw,64px)]';
   const link =
     'inline-flex min-h-11 items-center rounded-full border-[1.5px] border-field-line px-5 text-[14px] font-bold text-ink no-underline transition-colors hover:border-copper-600 hover:text-copper-700';
 
@@ -185,19 +191,22 @@ export function VillagePage({ locale }: { locale: Locale }) {
         photoPool={heroPool}
       />
 
-      <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pt-[clamp(56px,8vw,104px)]">
-        <Reveal>
-          <p className="m-0 max-w-[760px] text-pretty font-serif text-[clamp(22px,2.4vw,30px)] font-medium leading-[1.4] text-ink">{t.lead}</p>
-        </Reveal>
+      <section aria-labelledby="village-projet">
+        <div className={`${wrap} dk:grid dk:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] dk:items-start dk:gap-14`}>
+          <SectionHead eyebrow={t.leadEyebrow} pre={t.leadTitlePre} word={t.leadTitleWord} id="village-projet" />
+          <Reveal delay={80} className="flex flex-col gap-5 rounded-card bg-copper-tint p-[clamp(24px,3vw,36px)]">
+            <p className="m-0 max-w-measure text-[17px] leading-[1.7] text-ink-body">{t.lead}</p>
+          </Reveal>
+        </div>
       </section>
 
-      <section aria-labelledby="village-chemin">
+      <section aria-labelledby="village-chemin" className="bg-sand">
         <div className={wrap}>
           <SectionHead eyebrow={t.pathEyebrow} pre={t.pathTitlePre} word={t.pathTitleWord} id="village-chemin" />
           <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-6 p-0">
             {t.path.map((step, i) => (
               <li key={step.year}>
-                <Reveal delay={i * 90} className="flex flex-col gap-3 border-t-[3px] border-copper-600 pt-5">
+                <Reveal delay={i * 90} className="flex h-full flex-col gap-3 rounded-card border-t-[3px] border-copper-600 bg-cream p-6">
                 <span className="font-serif text-[clamp(32px,3.4vw,42px)] font-medium leading-none tabular-nums text-copper-600">{step.year}</span>
                 <h3 className="m-0 text-balance font-serif text-[22px] font-medium leading-[1.25] text-ink">{step.title}</h3>
                 <p className="m-0 text-pretty text-[16px] leading-[1.6] text-ink-body">{step.text}</p>
@@ -208,7 +217,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section aria-labelledby="village-film" className="bg-sand">
+      <section aria-labelledby="village-film">
         <div className={wrap}>
           <SectionHead eyebrow={t.filmEyebrow} pre={t.filmTitlePre} word={t.filmTitleWord} id="village-film" />
           <p className="m-0 max-w-measure text-pretty text-[16px] leading-[1.65] text-ink-body">{t.filmText}</p>
@@ -219,7 +228,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section aria-labelledby="village-images">
+      <section aria-labelledby="village-images" className="bg-sand">
         <div className={wrap}>
           <SectionHead eyebrow={t.galleryEyebrow} pre={t.galleryTitlePre} word={t.galleryTitleWord} id="village-images" />
           <div className="grid grid-flow-dense grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
@@ -230,7 +239,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section aria-labelledby="village-diners" className="bg-sand">
+      <section aria-labelledby="village-diners">
         <div className={wrap}>
           <SectionHead eyebrow={t.dinnersEyebrow} pre={t.dinnersTitlePre} word={t.dinnersTitleWord} id="village-diners" />
           <p className="m-0 max-w-measure text-pretty text-[16px] leading-[1.65] text-ink-body">{t.dinnersText}</p>
@@ -242,7 +251,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section aria-labelledby="village-suivre">
+      <section aria-labelledby="village-suivre" className="bg-sand">
         <div className={`${wrap} items-start gap-5`}>
           <Reveal className="flex flex-col gap-3">
             <h2 id="village-suivre" className="m-0 font-serif text-[clamp(24px,2.6vw,30px)] font-medium leading-[1.2]">{t.followTitle}</h2>
