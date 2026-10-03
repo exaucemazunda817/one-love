@@ -19,12 +19,9 @@ export const org = {
   foundedYear: 2013,
   founders: 'Kanda et Maïté Kabangu',
 
-  // ATTENTION — contradiction non résolue, à trancher AVANT de publier les
-  // mentions légales : le site actuel annonce le 44 rue de la Roquette à
-  // Paris 11e, tandis qu'une base officielle indique un siège à
-  // Châtenay-Malabry. Demander la dernière déclaration en préfecture.
+  // Siège social confirmé par l'association le 03/10/2026 (seul et unique
+  // siège) : ne pas rouvrir la question de Châtenay-Malabry.
   addressAsPublished: '44 rue de la Roquette, 75011 Paris',
-  addressNeedsConfirmation: true,
 
   contactEmail: 'contact@associationonelove.org',
   /// Adresse historiquement indiquée pour les demandes d'accès aux données.

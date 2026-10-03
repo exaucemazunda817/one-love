@@ -346,9 +346,9 @@ pour WhatsApp. Ne pas remettre un `opengraph-image` dans le groupe `(site-en)` :
 Next le publie sous une adresse suffixée (`/en/opengraph-image-1cwhjg`) et la
 référence en dur répond 404.
 
-**Contradiction non résolue, à trancher avant les mentions légales** : le site
-actuel annonce le 44 rue de la Roquette (Paris 11e), une base officielle
-indique Châtenay-Malabry.
+**Siège social (tranché par l'association le 03/10/2026)** : 44 rue de la
+Roquette, 75011 Paris, seul et unique siège. Débat clos : ne plus évoquer
+Châtenay-Malabry.
 
 ## Bug réel trouvé et corrigé au jalon 4 (confirmation de don)
 
@@ -444,7 +444,7 @@ foi du contenu du webhook.
 
 ## Ce qui bloque, côté association
 
-Adresse du siège à confirmer · habilitation aux reçus fiscaux (rescrit) ·
+habilitation aux reçus fiscaux (rescrit) ·
 dossier Stripe (dont un numéro SIREN, que beaucoup d'associations n'ont pas) ·
 accès au compte OVH · décisions RGPD (référent, base légale, durées de
 conservation, consentements photo).

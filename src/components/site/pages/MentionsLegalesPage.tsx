@@ -15,10 +15,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 // À FAIRE CONFIRMER AVANT MISE EN LIGNE :
-//   1. L'adresse du siège. Le site actuel annonce le 44 rue de la Roquette
-//      (Paris 11e) ; une base officielle indique Châtenay-Malabry. C'est
-//      l'adresse publiée par l'association elle-même qui est reprise ici, mais
-//      publier un siège inexact dans des mentions légales est un risque inutile.
+//   1. (Réglé le 03/10/2026 : siège social confirmé au 44 rue de la Roquette,
+//      75011 Paris.)
 //   2. Le nom du directeur de la publication (président de l'association).
 //   3. L'hébergeur définitif, si le site n'est pas déployé sur Vercel.
 const cards = [

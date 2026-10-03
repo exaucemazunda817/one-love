@@ -9,7 +9,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 // Données structurées : aident les moteurs de recherche à relier le site à la
 // page Facebook de l'association et à la présenter comme une ONG.
 //
-// Pas d'adresse (le siège reste à trancher), pas de reçu fiscal (pas de
+// Pas d'adresse (siège confirmé le 03/10/2026, à ajouter si besoin), pas de reçu fiscal (pas de
 // rescrit), pas d'avis : rien qui ne soit vrai et visible sur le site.
 const organizationJsonLd = {
   '@context': 'https://schema.org',
