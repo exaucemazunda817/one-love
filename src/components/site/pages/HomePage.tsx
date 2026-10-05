@@ -17,6 +17,19 @@ import { PhotoCycle } from '@/components/site/PhotoCycle';
 import { PathTimeline } from '@/components/site/effects/PathTimeline';
 import { ScrollFan } from '@/components/site/effects/ScrollFan';
 
+// Bandeau de l'accueil (05/10/2026) : on commence par la photo du pasteur, de
+// sa femme et des enfants, puis les autres défilent au hasard. Photos fournies
+// par Mazunda, recadrées en paysage.
+const HOME_POOL = [
+  { src: '/hero-accueil/pasteur-famille.webp', position: '50% 50%' },
+  { src: '/hero-accueil/trois-garcons.webp', position: '50% 35%' },
+  { src: '/hero-accueil/bonnets-1.webp', position: '50% 40%' },
+  { src: '/hero-accueil/bonnets-2.webp', position: '50% 40%' },
+  { src: '/hero-accueil/peace.webp', position: '50% 40%' },
+  { src: '/hero-accueil/sourire.webp', position: '50% 40%' },
+  { src: '/hero-accueil/rires.webp', position: '50% 35%' }
+];
+
 const text = {
   fr: {
     eyebrow: 'Kinshasa, RDC · depuis 2013',
@@ -28,7 +41,7 @@ const text = {
     donate: 'Faire un don',
     sponsor: 'Parrainer un enfant',
     badge: 'Association loi 1901 · RNA W951001528',
-    heroImgAlt: 'Trois garçons assis dehors, souriants et riant ensemble.',
+    heroImgAlt: 'Le pasteur, sa femme et les enfants de One Love, hilares devant la caméra.',
     pathTitle: 'Le chemin parcouru',
     pathIntro:
       'Un couple, trois garçons rencontrés dans la rue, puis un centre qui accueille une centaine d’enfants chaque semaine.',
@@ -110,7 +123,7 @@ const text = {
     donate: 'Donate',
     sponsor: 'Sponsor a child',
     badge: 'Registered non-profit (France) · RNA W951001528',
-    heroImgAlt: 'Three boys sitting outside, smiling and laughing together.',
+    heroImgAlt: 'The pastor, his wife and the One Love children, laughing together for the camera.',
     pathTitle: 'How far we have come',
     pathIntro:
       'A couple, three boys met on the street, then a centre that welcomes around a hundred children every week.',
@@ -202,7 +215,7 @@ export function HomePage({ locale }: { locale: Locale }) {
     <>
       {/* Hero — desktop */}
       <section className="relative hidden min-h-[min(88vh,780px)] overflow-hidden bg-night text-cream dk:flex dk:items-center">
-        <HeroBackground src="/photos/hero-accueil.jpg" alt={t.heroImgAlt} position="50% 30%" />
+        <HeroBackground src={HOME_POOL[0].src} alt={t.heroImgAlt} position={HOME_POOL[0].position} pool={HOME_POOL} />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
         <div className="relative mx-auto w-full max-w-[1280px] px-12 py-24">
           <div className="flex max-w-[600px] flex-col gap-7">
@@ -235,7 +248,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       {/* Hero — mobile */}
       <section className="relative flex min-h-svh flex-col justify-end overflow-hidden bg-night text-cream dk:hidden">
-        <HeroBackground src="/photos/hero-accueil.jpg" alt={t.heroImgAlt} position="52% 30%" />
+        <HeroBackground src={HOME_POOL[0].src} alt={t.heroImgAlt} position={HOME_POOL[0].position} pool={HOME_POOL} />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)]" />
         <div className="relative flex flex-col items-center gap-[14px] px-5 pb-10 pt-[120px] text-center">
           <Eyebrow dark className="text-[12px]">
