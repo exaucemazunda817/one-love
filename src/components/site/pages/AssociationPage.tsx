@@ -178,7 +178,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/one-love-boys/2023-famille/02.webp"
+        image="/photos-hd/one-love-boys/2023-famille/02.webp"
         imageAlt={t.heroAlt}
         still
         cta={{ donate: t.donate, sponsor: t.sponsor }}
@@ -301,7 +301,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
 
       {/* Citation, sur photo comme « Projet en cours » de l'accueil */}
       <section className="relative overflow-hidden bg-night text-cream">
-        <Image src="/centre-aere/2023-12-02/09.webp" alt="" fill sizes="100vw" className="photo-tone object-cover object-[60%_30%]" />
+        <Image src="/photos-hd/centre-aere/2023-12-02/09.webp" alt="" fill sizes="100vw" className="photo-tone object-cover object-[60%_30%]" />
         <div className="relative mx-auto max-w-[1280px] px-[clamp(12px,4vw,48px)] py-[clamp(40px,8vw,120px)]">
           <Reveal className="flex max-w-[640px] flex-col gap-[18px] rounded-card bg-[color:var(--scrim-5)] p-[clamp(28px,4vw,48px)]">
             <Eyebrow dark>{t.quoteTitle}</Eyebrow>

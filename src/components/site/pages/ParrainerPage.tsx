@@ -10,10 +10,10 @@ import { SPONSOR_PLANS } from '@/lib/sponsorship';
 
 // Bandeau du parrainage : uniquement les visages des One Love Boys (05/10/2026).
 const BOYS_POOL = [
-  { src: '/one-love-boys/2022-noel/11.webp', position: '50% 35%' },
-  { src: '/one-love-boys/2022-noel/13.webp', position: '50% 40%' },
-  { src: '/one-love-boys/2023-rentree/03.webp', position: '50% 35%' },
-  { src: '/one-love-boys/2022-noel/01.webp', position: '50% 25%' },
+  { src: '/photos-hd/one-love-boys/2022-noel/11.webp', position: '50% 35%' },
+  { src: '/photos-hd/one-love-boys/2022-noel/13.webp', position: '50% 40%' },
+  { src: '/photos-hd/one-love-boys/2023-rentree/03.webp', position: '50% 35%' },
+  { src: '/photos-hd/one-love-boys/2022-noel/01.webp', position: '50% 25%' },
   { src: '/photos/drive/boys-noel-2022.jpg', position: '50% 35%' }
 ];
 
@@ -183,7 +183,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
         style={{ minHeight: 'min(80vh,720px)' }}
       >
         <div className="relative flex min-h-svh w-full items-end dk:min-h-0 dk:items-center">
-          <HeroBackground src="/one-love-boys/2022-noel/11.webp" alt={t.heroAlt} position="50% 35%" pool={BOYS_POOL} />
+          <HeroBackground src="/photos-hd/one-love-boys/2022-noel/11.webp" alt={t.heroAlt} position="50% 35%" pool={BOYS_POOL} />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)] dk:bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
           <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
             <Reveal eager className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:mx-0 dk:items-start dk:text-left dk:gap-6">

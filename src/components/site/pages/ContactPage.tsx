@@ -82,7 +82,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/centre-aere/2024-04-24/01.webp"
+        image="/photos-hd/centre-aere/2024-04-24/01.webp"
         imageAlt={t.heroAlt}
       />
 

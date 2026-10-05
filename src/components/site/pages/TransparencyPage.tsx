@@ -77,7 +77,7 @@ export function TransparencyPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/one-love-boys/2023-rentree/03.webp"
+        image="/photos-hd/one-love-boys/2023-rentree/03.webp"
         imageAlt={t.heroAlt}
       />
 

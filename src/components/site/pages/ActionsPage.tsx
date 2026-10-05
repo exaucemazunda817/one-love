@@ -78,7 +78,7 @@ export function ActionsPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/one-love-boys/2022-noel/13.webp"
+        image="/photos-hd/one-love-boys/2022-noel/13.webp"
         imageAlt={t.heroAlt}
         cta={{ donate: t.donate, sponsor: t.sponsor }}
       />

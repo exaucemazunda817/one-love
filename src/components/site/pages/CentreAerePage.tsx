@@ -120,7 +120,7 @@ export function CentreAerePage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/centre-aere/2023-12-02/07.webp"
+        image="/photos-hd/centre-aere/2023-12-02/07.webp"
         imageAlt={t.heroAlt}
         objectPosition="50% 30%"
         still

@@ -68,18 +68,18 @@ const text = {
         alt: 'Cinq One Love Boys en bonnet de Noël, souriants.',
         pos: '50% 35%',
         href: '/one-love-boys',
-        cycle: [{ src: '/photos/drive/boys-noel-2022.jpg', pos: '50% 35%' }, { src: '/one-love-boys/2022-noel/11.webp', pos: '50% 30%' }, { src: '/one-love-boys/2023-rentree/03.webp', pos: '50% 35%' }, { src: '/one-love-boys/2022-noel/13.webp', pos: '50% 45%' }, { src: '/one-love-boys/2023-famille/03.webp', pos: '50% 45%' }, { src: '/one-love-boys/2022-noel/01.webp', pos: '50% 25%' }],
+        cycle: [{ src: '/photos/drive/boys-noel-2022.jpg', pos: '50% 35%' }, { src: '/photos-hd/one-love-boys/2022-noel/11.webp', pos: '50% 30%' }, { src: '/photos-hd/one-love-boys/2023-rentree/03.webp', pos: '50% 35%' }, { src: '/photos-hd/one-love-boys/2022-noel/13.webp', pos: '50% 45%' }, { src: '/photos-hd/one-love-boys/2023-famille/03.webp', pos: '50% 45%' }, { src: '/photos-hd/one-love-boys/2022-noel/01.webp', pos: '50% 25%' }],
         more: 'Découvrir les One Love Boys'
       },
       {
         k: 'Chaque semaine',
         t: 'Les enfants du centre aéré',
         d: 'Des enfants des quartiers défavorisés, filles et garçons de 5 à 12 ans et de 13 à 17 ans, qui viennent au One Love Center le mercredi, le samedi et le dimanche. Le mercredi est réservé aux jeux et à un film ; le samedi, ce sont les ateliers ; le dimanche, la Parole de Dieu (One Love Ministry) et un repas. Ils y trouvent un lieu sûr pour apprendre, jouer, partager un repas et, le dimanche, écouter la Parole de Dieu. Ils sont une centaine chaque semaine.',
-        img: '/centre-aere/2023-12-02/05.webp',
+        img: '/photos-hd/centre-aere/2023-12-02/05.webp',
         alt: 'Un groupe d’enfants du centre aéré, souriants et serrés les uns contre les autres.',
         pos: '50% 35%',
         href: '/centre-aere',
-        cycle: [{ src: '/centre-aere/2023-12-02/05.webp', pos: '50% 30%' }, { src: '/centre-aere/2023-12-02/09.webp', pos: '50% 40%' }, { src: '/centre-aere/2024-02/04.webp', pos: '50% 30%' }, { src: '/centre-aere/2022-06/06.webp', pos: '50% 35%' }, { src: '/centre-aere/2024-04-24/01.webp', pos: '50% 30%' }, { src: '/centre-aere/2023-12-02/02.webp', pos: '50% 30%' }],
+        cycle: [{ src: '/photos-hd/centre-aere/2023-12-02/05.webp', pos: '50% 30%' }, { src: '/photos-hd/centre-aere/2023-12-02/09.webp', pos: '50% 40%' }, { src: '/photos-hd/centre-aere/2024-02/04.webp', pos: '50% 30%' }, { src: '/photos-hd/centre-aere/2022-06/06.webp', pos: '50% 35%' }, { src: '/photos-hd/centre-aere/2024-04-24/01.webp', pos: '50% 30%' }, { src: '/photos-hd/centre-aere/2023-12-02/02.webp', pos: '50% 30%' }],
         more: 'Découvrir le centre aéré'
       }
     ],
@@ -148,18 +148,18 @@ const text = {
         alt: 'Five One Love Boys in Christmas hats, smiling.',
         pos: '50% 35%',
         href: '/one-love-boys',
-        cycle: [{ src: '/photos/drive/boys-noel-2022.jpg', pos: '50% 35%' }, { src: '/one-love-boys/2022-noel/11.webp', pos: '50% 30%' }, { src: '/one-love-boys/2023-rentree/03.webp', pos: '50% 35%' }, { src: '/one-love-boys/2022-noel/13.webp', pos: '50% 45%' }, { src: '/one-love-boys/2023-famille/03.webp', pos: '50% 45%' }, { src: '/one-love-boys/2022-noel/01.webp', pos: '50% 25%' }],
+        cycle: [{ src: '/photos/drive/boys-noel-2022.jpg', pos: '50% 35%' }, { src: '/photos-hd/one-love-boys/2022-noel/11.webp', pos: '50% 30%' }, { src: '/photos-hd/one-love-boys/2023-rentree/03.webp', pos: '50% 35%' }, { src: '/photos-hd/one-love-boys/2022-noel/13.webp', pos: '50% 45%' }, { src: '/photos-hd/one-love-boys/2023-famille/03.webp', pos: '50% 45%' }, { src: '/photos-hd/one-love-boys/2022-noel/01.webp', pos: '50% 25%' }],
         more: 'Discover the One Love Boys'
       },
       {
         k: 'Every week',
         t: 'The day-centre children',
         d: 'Children from disadvantaged neighbourhoods, girls and boys aged 5 to 12 and 13 to 17, who come to the One Love Center on Wednesdays, Saturdays and Sundays. Wednesday is reserved for games and a film; Saturday is for workshops; Sunday is for the Word of God (One Love Ministry) and a meal. They find a safe place there to learn, play, share a meal and, on Sundays, hear the Word of God. Around a hundred come every week.',
-        img: '/centre-aere/2023-12-02/05.webp',
+        img: '/photos-hd/centre-aere/2023-12-02/05.webp',
         alt: 'A group of day-centre children, smiling and huddled together.',
         pos: '50% 35%',
         href: '/centre-aere',
-        cycle: [{ src: '/centre-aere/2023-12-02/05.webp', pos: '50% 30%' }, { src: '/centre-aere/2023-12-02/09.webp', pos: '50% 40%' }, { src: '/centre-aere/2024-02/04.webp', pos: '50% 30%' }, { src: '/centre-aere/2022-06/06.webp', pos: '50% 35%' }, { src: '/centre-aere/2024-04-24/01.webp', pos: '50% 30%' }, { src: '/centre-aere/2023-12-02/02.webp', pos: '50% 30%' }],
+        cycle: [{ src: '/photos-hd/centre-aere/2023-12-02/05.webp', pos: '50% 30%' }, { src: '/photos-hd/centre-aere/2023-12-02/09.webp', pos: '50% 40%' }, { src: '/photos-hd/centre-aere/2024-02/04.webp', pos: '50% 30%' }, { src: '/photos-hd/centre-aere/2022-06/06.webp', pos: '50% 35%' }, { src: '/photos-hd/centre-aere/2024-04-24/01.webp', pos: '50% 30%' }, { src: '/photos-hd/centre-aere/2023-12-02/02.webp', pos: '50% 30%' }],
         more: 'Discover the day centre'
       }
     ],
@@ -197,10 +197,10 @@ const text = {
 
 // Photos et cadrage de chaque moment de « Une journée » (communs FR/EN).
 const dayMedia = [
-  { img: '/centre-aere/2023-12-02/09.webp', pos: '50% 35%' },
-  { img: '/centre-aere/2022-06/01.webp', pos: '50% 40%' },
-  { img: '/centre-aere/2023-02/03.webp', pos: '50% 40%' },
-  { img: '/centre-aere/2022-11/03.webp', pos: '50% 35%' }
+  { img: '/photos-hd/centre-aere/2023-12-02/09.webp', pos: '50% 35%' },
+  { img: '/photos-hd/centre-aere/2022-06/01.webp', pos: '50% 40%' },
+  { img: '/photos-hd/centre-aere/2023-02/03.webp', pos: '50% 40%' },
+  { img: '/photos-hd/centre-aere/2022-11/03.webp', pos: '50% 35%' }
 ];
 
 // Mosaïque sur ordinateur (12 colonnes, 2 rangées) : grande photo à gauche,

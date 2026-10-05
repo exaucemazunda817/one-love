@@ -113,7 +113,7 @@ export function InvolvedPage({ locale }: { locale: Locale }) {
         titleWord={t.titleWord}
         titlePost={t.titlePost}
         intro={t.intro}
-        image="/centre-aere/2022-06/06.webp"
+        image="/photos-hd/centre-aere/2022-06/06.webp"
         imageAlt={t.heroAlt}
       />
 

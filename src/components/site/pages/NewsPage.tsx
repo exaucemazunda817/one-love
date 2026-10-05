@@ -79,7 +79,7 @@ export function NewsPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/centre-aere/2023-12-02/05.webp"
+        image="/photos-hd/centre-aere/2023-12-02/05.webp"
         imageAlt={t.heroAlt}
       />
 

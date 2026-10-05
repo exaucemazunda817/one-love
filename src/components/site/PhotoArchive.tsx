@@ -90,6 +90,7 @@ export function PhotoArchive({ months, locale, altPrefix }: { months: CentreMont
                           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 290px"
                           loading="lazy"
                           className="object-cover"
+                          style={{ objectPosition: p.pos ?? '50% 35%' }}
                         />
                       </button>
                     </Reveal>
@@ -104,7 +105,7 @@ export function PhotoArchive({ months, locale, altPrefix }: { months: CentreMont
       {open !== null && flat[open] && (
         <div role="dialog" aria-modal="true" aria-label={flat[open].alt} className="fixed inset-0 z-[100] flex items-center justify-center bg-night/95 p-4" onClick={() => setOpen(null)}>
           <div className="relative h-full max-h-[88vh] w-full max-w-[1200px]" onClick={(e) => e.stopPropagation()}>
-            <Image src={flat[open].src} alt={flat[open].alt} fill sizes="100vw" className="object-contain" priority />
+            <Image src={flat[open].src} alt={flat[open].alt} fill sizes="100vw" quality={85} className="object-contain" priority />
           </div>
           <button type="button" onClick={() => setOpen(null)} aria-label={t.close} className="absolute right-4 top-4 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-0 bg-cream/15 text-cream hover:bg-cream/25">
             <XIcon size={24} aria-hidden />
