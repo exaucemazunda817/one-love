@@ -140,9 +140,10 @@ export function CallBanner({
   title: ReactNode;
   text: ReactNode;
   donateLabel: string;
-  sponsorLabel: string;
+  /** Bouton secondaire facultatif (absent sur la page du village). */
+  sponsorLabel?: string;
   donateHref: string;
-  sponsorHref: string;
+  sponsorHref?: string;
   Icon: React.ComponentType<{ size?: number | string; 'aria-hidden'?: boolean }>;
   /** Espace au-dessus du bandeau (faux si la section précédente a déjà sa marge basse). */
   spaced?: boolean;
@@ -157,17 +158,19 @@ export function CallBanner({
         <div className="flex flex-wrap gap-3">
           <a
             href={donateHref}
-            className="inline-flex min-h-[52px] items-center gap-2 whitespace-nowrap rounded-full bg-gold px-7 text-[17px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night"
+            className="inline-flex min-h-[52px] max-w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-2 text-center text-[17px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night sm:whitespace-nowrap"
           >
             <Icon size="1em" aria-hidden />
             {donateLabel}
           </a>
-          <a
-            href={sponsorHref}
-            className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full border-2 border-gold px-[26px] text-[17px] font-bold text-gold-hover no-underline hover:bg-[rgba(232,154,44,.14)] hover:text-gold-hover"
-          >
-            {sponsorLabel}
-          </a>
+          {sponsorLabel && sponsorHref && (
+            <a
+              href={sponsorHref}
+              className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full border-2 border-gold px-[26px] text-[17px] font-bold text-gold-hover no-underline hover:bg-[rgba(232,154,44,.14)] hover:text-gold-hover"
+            >
+              {sponsorLabel}
+            </a>
+          )}
         </div>
       </Reveal>
     </section>

@@ -31,13 +31,16 @@ export function HeroBackground({
   src,
   alt,
   position = '50% 35%',
-  pool: poolProp
+  pool: poolProp,
+  still = false
 }: {
   src: string;
   alt: string;
   position?: string;
   // Photos à faire défiler à la place de celles des enfants (page du village).
   pool?: Photo[];
+  // Photo fixe, sans défilement (hero de l'accueil, demande du 04/10/2026).
+  still?: boolean;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [photos, setPhotos] = useState<[Photo, Photo | null]>([{ src, position }, null]);
@@ -59,6 +62,7 @@ export function HeroBackground({
   }, []);
 
   useEffect(() => {
+    if (still) return;
     const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
     if (
       window.matchMedia('(prefers-reduced-motion: reduce)').matches ||

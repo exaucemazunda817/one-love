@@ -189,7 +189,7 @@ const text = {
     wordA: 'Notre',
     wordB: 'histoire',
     intro: 'Un couple, trois garçons rencontrés dans la rue, puis un centre qui accueille une centaine d’enfants chaque semaine.',
-    heroAlt: 'Des garçons de One Love sur le chemin de l’école.',
+    heroAlt: 'Cinq garçons de One Love en bonnet de Noël, serrés les uns contre les autres et souriants.',
     jumpLabel: 'Aller à une période',
     pathEyebrow: 'En quelques chiffres',
     pathTitlePre: 'Le chemin ',
@@ -218,7 +218,7 @@ const text = {
     wordA: 'Our',
     wordB: 'story',
     intro: 'A couple, three boys met on the street, then a centre that welcomes around a hundred children every week.',
-    heroAlt: 'One Love boys on their way to school.',
+    heroAlt: 'Five One Love boys in Christmas hats, huddled together and smiling.',
     jumpLabel: 'Jump to a period',
     pathEyebrow: 'In a few figures',
     pathTitlePre: 'How far we ',
@@ -316,7 +316,7 @@ export function HistoryPage({ locale }: { locale: Locale }) {
         wordA={t.wordA}
         wordB={t.wordB}
         intro={t.intro}
-        image="/histoire/2023-rentree.webp"
+        image="/photos/drive/boys-noel-2022.jpg"
         imageAlt={t.heroAlt}
         fallback={
           <InnerHero
@@ -325,9 +325,9 @@ export function HistoryPage({ locale }: { locale: Locale }) {
             titlePre={t.titlePre}
             titleWord={t.titleWord}
             intro={t.intro}
-            image="/histoire/2023-rentree.webp"
+            image="/photos/drive/boys-noel-2022.jpg"
             imageAlt={t.heroAlt}
-            objectPosition="50% 45%"
+            objectPosition="50% 35%"
           />
         }
       />

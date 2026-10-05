@@ -3,32 +3,23 @@ import { pageMetadata } from '@/lib/seo';
 import { InnerHero } from '@/components/site/InnerHero';
 import { NewsInteractive, type NewsText } from '@/components/site/pages/NewsInteractive';
 import { FacebookBand } from '@/components/site/FacebookBand';
-import type { Locale } from '@/lib/i18n';
+import { localeHref, type Locale } from '@/lib/i18n';
+import { NEWS, NEWS_TAGS, formatNewsDate, type NewsTag } from '@/lib/news';
 
 const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: string; titlePre: string; titleWord: string; intro: string; heroAlt: string }> = {
   fr: {
     title: 'Nouvelles du terrain : actualités et galerie',
-    desc: 'Nouvelles du terrain et galerie photo du programme RÊVES 2, au centre One Love à Kinshasa.',
+    desc: 'Les nouvelles de One Love à Kinshasa : vie du centre, rentrées, fêtes, dîners caritatifs, avancée du One Love Village et projet RÊVES 2.',
     eyebrow: 'Actualités et galerie',
     titlePre: 'Nouvelles du ',
     titleWord: 'terrain',
-    intro: 'Suivez RÊVES 2 et la vie du centre, semaine après semaine.',
+    intro: 'Ce qui se passe et ce qui vient de se passer à One Love, raconté par notre équipe.',
     heroAlt: 'Un garçon rit et fait le signe de la paix.',
     categoriesLabel: 'Catégories',
     listTitle: 'Dernières nouvelles',
-    readLabel: 'Voir sur Instagram',
-    categories: ['Tout', 'RÊVES 2', 'Éducation', 'Culture', 'Partenariat'],
-    // Articles de la maquette, limités à ce qui est vérifié (visuels Facebook
-    // de RÊVES 2). Chaque carte mène à la publication Instagram d'origine
-    // (repérage du 25/09/2026) : une carte qui a l'air cliquable doit l'être. L'article « Premier bilan médical » (oct. 2026) a été
-    // écarté : il annonçait comme passé un événement pas encore arrivé.
-    posts: [
-      { tag: 'RÊVES 2', date: '5 sept. 2026', t: "Premiers pas dans l’alphabétisation", url: 'https://www.instagram.com/p/DdHIhhejfqo/', d: "Samedi 5 septembre, les enfants ont ouvert leurs cahiers pour le lancement de RÊVES 2.", img: '/photos/photo-ecriture.jpg', alt: 'Une jeune fille écrit.' },
-      { tag: 'Éducation', date: 'Sept. 2026', t: "Le français, langue de l’école", url: 'https://www.instagram.com/p/DdBdhKqjeDY/', d: "Pourquoi l’apprentissage du français est au cœur de la deuxième phase.", img: '/photos/photo-cahier.jpg', alt: 'Un garçon écrit dans son cahier.' },
-      { tag: 'Culture', date: 'Sept. 2026', t: 'Jeu, sport et création', url: 'https://www.instagram.com/reel/DdUgL_Hg32u/', d: 'Dessin, musique et football : réapprendre la vie en groupe.', img: '/photos/photo-dessin.jpg', alt: 'Deux garçons dessinent.' },
-      { tag: 'RÊVES 2', date: 'Sept. 2026', t: 'Nos formateurs mobilisés', url: 'https://www.instagram.com/reel/DdEItmagznY/', d: "Notre équipe d’animateurs formée pour encadrer les ateliers.", img: '/photos/photo-mains.jpg', alt: 'Des mains colorient des lettres.' },
-      { tag: 'Partenariat', date: '2026', t: 'Angel Foundation à nos côtés', url: 'https://www.instagram.com/angelfoundationrdc/p/DR_rTe4jRSt/', d: 'Un partenaire engagé à nos côtés pour la deuxième phase du projet RÊVES.', img: '/photos/coeur-degrade.jpg', alt: '' }
-    ],
+    readLabel: 'Lire l’article',
+    categories: [],
+    posts: [],
     galleryTitle: 'Galerie',
     galleryIntro: "Des moments de vie au centre. Touchez une photo pour l’agrandir.",
     galleryEmpty: 'Aucune photo publiable pour le moment.',
@@ -37,23 +28,17 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
   },
   en: {
     title: 'News from the field: updates and gallery',
-    desc: 'News from the field and photo gallery of the RÊVES 2 programme, at the One Love centre in Kinshasa.',
+    desc: 'News from One Love in Kinshasa: life at the centre, back to school, celebrations, charity dinners, the One Love Village and the RÊVES 2 project.',
     eyebrow: 'News and gallery',
     titlePre: 'News from the ',
     titleWord: 'field',
-    intro: 'Follow RÊVES 2 and life at the centre, week by week.',
+    intro: 'What is happening, and what has just happened, at One Love, told by our team.',
     heroAlt: 'A boy laughs and makes a peace sign.',
     categoriesLabel: 'Categories',
     listTitle: 'Latest news',
-    readLabel: 'View on Instagram',
-    categories: ['All', 'RÊVES 2', 'Education', 'Culture', 'Partnership'],
-    posts: [
-      { tag: 'RÊVES 2', date: '5 Sept. 2026', t: 'First steps in literacy', url: 'https://www.instagram.com/p/DdHIhhejfqo/', d: 'On Saturday 5 September, the children opened their notebooks for the launch of RÊVES 2.', img: '/photos/photo-ecriture.jpg', alt: 'A girl writing.' },
-      { tag: 'Education', date: 'Sept. 2026', t: 'French, the language of school', url: 'https://www.instagram.com/p/DdBdhKqjeDY/', d: 'Why learning French is at the heart of the second phase.', img: '/photos/photo-cahier.jpg', alt: 'A boy writes in his notebook.' },
-      { tag: 'Culture', date: 'Sept. 2026', t: 'Play, sport and creativity', url: 'https://www.instagram.com/reel/DdUgL_Hg32u/', d: 'Drawing, music and football: learning to live together again.', img: '/photos/photo-dessin.jpg', alt: 'Two boys drawing.' },
-      { tag: 'RÊVES 2', date: 'Sept. 2026', t: 'Our trainers at work', url: 'https://www.instagram.com/reel/DdEItmagznY/', d: 'Our team of facilitators trained to run the workshops.', img: '/photos/photo-mains.jpg', alt: 'Hands colouring in letters.' },
-      { tag: 'Partnership', date: '2026', t: 'Angel Foundation by our side', url: 'https://www.instagram.com/angelfoundationrdc/p/DR_rTe4jRSt/', d: 'A committed partner at our side for the second phase of the RÊVES project.', img: '/photos/coeur-degrade.jpg', alt: '' }
-    ],
+    readLabel: 'Read the article',
+    categories: [],
+    posts: [],
     galleryTitle: 'Gallery',
     galleryIntro: 'Moments of life at the centre. Tap a photo to enlarge it.',
     galleryEmpty: 'No publishable photo at the moment.',
@@ -68,7 +53,23 @@ export function newsMetadata(locale: Locale): Metadata {
 }
 
 export function NewsPage({ locale }: { locale: Locale }) {
-  const t = text[locale];
+  const base = text[locale];
+  // Articles et catégories viennent de src/lib/news.ts, du plus récent au plus ancien.
+  const sorted = [...NEWS].sort((a, b) => b.date.localeCompare(a.date));
+  const tags = (Object.keys(NEWS_TAGS) as NewsTag[]).filter((k) => sorted.some((n) => n.tag === k));
+  const t: typeof base = {
+    ...base,
+    categories: [locale === 'fr' ? 'Tout' : 'All', ...tags.map((k) => NEWS_TAGS[k][locale])],
+    posts: sorted.map((n) => ({
+      tag: NEWS_TAGS[n.tag][locale],
+      date: formatNewsDate(n.date, locale),
+      t: n.title[locale],
+      url: localeHref(`/galerie/${n.slug}`, locale),
+      d: n.lead[locale],
+      img: n.img,
+      alt: n.alt[locale]
+    }))
+  };
 
   return (
     <>

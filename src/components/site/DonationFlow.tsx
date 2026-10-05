@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import Link from 'next/link';
 import {
   CreditCardIcon,
@@ -26,7 +26,10 @@ import {
 } from '@/lib/donation-ui';
 import { bankTransfer, currentProject } from '@/lib/content';
 
-type Dest = 'besoins' | 'reves' | 'sante';
+type Dest = 'besoins' | 'village' | 'reves' | 'sante';
+// Slug du One Love Village (table projects) : un don ainsi affecté y est rattaché
+// dès que la ligne existe en base (sinon il reste en fonds général).
+export const VILLAGE_SLUG = 'one-love-village';
 type Method = 'card' | 'momo' | 'virement';
 
 const T = {
@@ -47,6 +50,7 @@ const T = {
     allocate: 'Affecter mon don',
     dest: {
       besoins: 'Là où les besoins sont les plus importants',
+      village: 'One Love Village (construction à Kasangulu)',
       reves: `Programme ${currentProject.name}`,
       sante: 'Suivi médical et psychosocial'
     } as Record<Dest, string>,
@@ -90,6 +94,7 @@ const T = {
     bic: 'BIC',
     copy: "Copier l’IBAN",
     copied: 'IBAN copié',
+    virementNoteVillage: 'Pour que votre don aille au One Love Village, indiquez « One Love Village » dans le libellé du virement.',
     virementNote: `Pour soutenir un programme en particulier, comme ${currentProject.name}, indiquez-le dans le libellé du virement.`,
     momoNote: 'Orange Money, Airtel Money et M-Pesa seront bientôt disponibles pour les donateurs en RDC. Laissez votre numéro et votre e-mail pour être prévenu.',
     phonePlaceholder: '+243 …',
@@ -129,6 +134,7 @@ const T = {
     allocate: 'Direct my gift',
     dest: {
       besoins: 'Where the need is greatest',
+      village: 'One Love Village (construction in Kasangulu)',
       reves: `${currentProject.name} programme`,
       sante: 'Medical and psychosocial care'
     } as Record<Dest, string>,
@@ -172,6 +178,7 @@ const T = {
     bic: 'BIC',
     copy: 'Copy IBAN',
     copied: 'IBAN copied',
+    virementNoteVillage: 'So that your gift goes to the One Love Village, write “One Love Village” in the transfer reference.',
     virementNote: `To support a specific programme, such as ${currentProject.name}, mention it in the transfer reference.`,
     momoNote: 'Orange Money, Airtel Money and M-Pesa will soon be available for donors in the DRC. Leave your number and email to be notified.',
     phonePlaceholder: '+243 …',
@@ -214,6 +221,11 @@ export function DonationFlow({ locale, cardEnabled }: { locale: Locale; cardEnab
   const [amt, setAmt] = useState(1);
   const [custom, setCustom] = useState('');
   const [dest, setDest] = useState<Dest>('besoins');
+  // Arrivée depuis la page du village (/dons?affectation=village) : le don y
+  // est affecté d'office, le visiteur peut toujours changer.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('affectation') === 'village') setDest('village');
+  }, []);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [donorEmail, setDonorEmail] = useState('');
@@ -244,7 +256,7 @@ export function DonationFlow({ locale, cardEnabled }: { locale: Locale; cardEnab
   // d'affichage choisie ($ ou FC ne sont que des conversions indicatives).
   const eurLabel = formatCustom(amountEur, 'EUR', locale);
   const payLabel = cur === 'EUR' ? amountStr : eurLabel;
-  const projectSlug = dest === 'reves' ? currentProject.slug : undefined;
+  const projectSlug = dest === 'reves' ? currentProject.slug : dest === 'village' ? VILLAGE_SLUG : undefined;
   const cardUsable = method === 'card' && cardEnabled;
 
   function chooseMethod(next: Method) {
@@ -628,7 +640,7 @@ export function DonationFlow({ locale, cardEnabled }: { locale: Locale; cardEnab
                     {copied ? <CheckIcon size={16} aria-hidden /> : <CopyIcon size={16} aria-hidden />}
                     {copied ? t.copied : t.copy}
                   </button>
-                  <p className="m-0 text-[13px] text-ink-soft">{t.virementNote}</p>
+                  <p className="m-0 text-[13px] text-ink-soft">{dest === 'village' ? t.virementNoteVillage : t.virementNote}</p>
                   {transferDone && (
                     <div role="status" className="flex flex-col gap-1.5 rounded-lg bg-white p-4 text-[14px] leading-[1.5] text-ink">
                       <span className="flex items-start gap-2 font-bold">

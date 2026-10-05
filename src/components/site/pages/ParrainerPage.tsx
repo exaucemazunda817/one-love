@@ -11,7 +11,7 @@ import { SPONSOR_PLANS } from '@/lib/sponsorship';
 const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow: string; heroPre: string; heroWord: string; heroPost: string; heroIntro: string; heroAlt: string; heroCta: string; heroScroll: string }> = {
   fr: {
     title: 'Parrainer un enfant à Kinshasa, chaque mois',
-    desc: "Parrainage mensuel à One Love : accompagner un enfant ou soutenir un programme, avec des nouvelles régulières et le respect de sa vie privée.",
+    desc: "Parrainage mensuel à One Love : accompagner un enfant, avec des nouvelles régulières et le respect de sa vie privée.",
     eyebrow: 'Parrainage',
     heroPre: 'Accompagner un enfant, ',
     heroWord: 'mois après mois',
@@ -22,7 +22,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     heroScroll: 'Comment ça marche',
     howTitle: 'Comment ça marche',
     how: [
-      { n: '1', t: 'Vous choisissez un engagement', d: 'Une formule mensuelle, pour un enfant ou pour un programme comme RÊVES 2.' },
+      { n: '1', t: 'Vous choisissez un engagement', d: 'Une formule mensuelle, pour accompagner un enfant.' },
       { n: '2', t: 'Vous payez et devenez parrain', d: 'Dès que votre paiement est confirmé, vous êtes parrain ou marraine et vous recevez toutes les informations pour votre parrainage.' },
       { n: '3', t: 'Vous suivez son chemin', d: 'Des nouvelles chaque trimestre, un bilan annuel, et la possibilité de lui écrire.' }
     ],
@@ -47,7 +47,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
       { t: 'Des nouvelles chaque trimestre', d: "Un message de notre équipe sur les progrès, à l’école et au quotidien." },
       { t: 'Des photos respectueuses', d: "Des images d’activités, jamais d’information permettant d’identifier l’enfant ou son lieu de vie." },
       { t: 'Un dessin ou une lettre', d: "Une fois par an, un mot ou un dessin de l’enfant, s’il le souhaite." },
-      { t: 'Un bilan annuel', d: "L’essentiel de l’année et l’emploi des fonds du programme." }
+      { t: 'Un bilan annuel', d: "L’essentiel de l’année et l’emploi des fonds du parrainage." }
     ],
     charterTitle: "Notre charte de protection de l’enfant",
     charterIntro: "Le lien avec votre filleul passe toujours par notre équipe. C’est ce qui protège l’enfant et le sens de votre engagement.",
@@ -60,7 +60,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     faqTitle: 'Questions fréquentes',
     faq: [
       { q: 'Puis-je arrêter ou modifier mon parrainage ?', a: 'Oui, à tout moment, par simple e-mail. Aucun engagement de durée.' },
-      { q: 'Mon don va-t-il à un seul enfant ?', a: 'Il est lié à un enfant : après votre paiement, vous recevez son prénom, son âge et ses envies, sans rien qui permette de l’identifier en ligne. Les moyens sont mutualisés dans le programme, pour qu’aucun enfant ne soit laissé de côté.' },
+      { q: 'Mon don va-t-il à un seul enfant ?', a: 'Il est lié à un enfant : après votre paiement, vous recevez son prénom, son âge et ses envies, sans rien qui permette de l’identifier en ligne. Une partie des moyens est mise en commun au centre, pour qu’aucun enfant ne soit laissé de côté.' },
       { q: 'Puis-je écrire à mon filleul ou lui rendre visite ?', a: "Oui, par l’intermédiaire de notre équipe. Les visites se font sur rendez-vous, accompagnées d’un membre de notre équipe." },
       { q: 'Quelles nouvelles vais-je recevoir ?', a: "Un message chaque trimestre avec une photo respectueuse ou un dessin, et un bilan annuel." }
     ],
@@ -85,7 +85,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
   },
   en: {
     title: 'Sponsor a child in Kinshasa, every month',
-    desc: 'Monthly sponsorship at One Love: support a child or a programme, with regular updates and full respect for their privacy.',
+    desc: 'Monthly sponsorship at One Love: support a child, with regular updates and full respect for their privacy.',
     eyebrow: 'Sponsorship',
     heroPre: 'Stand by a child, ',
     heroWord: 'month after month',
@@ -96,7 +96,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     heroScroll: 'How it works',
     howTitle: 'How it works',
     how: [
-      { n: '1', t: 'You choose a commitment', d: 'A monthly plan, for a child or for a programme such as RÊVES 2.' },
+      { n: '1', t: 'You choose a commitment', d: 'A monthly plan to support one child.' },
       { n: '2', t: 'You pay and become a sponsor', d: 'As soon as your payment is confirmed, you are a sponsor and you receive all the information you need for your sponsorship.' },
       { n: '3', t: 'You follow their journey', d: 'Updates every quarter, a yearly review, and the chance to write to them.' }
     ],
@@ -121,7 +121,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
       { t: 'Updates every quarter', d: 'A message from our team about progress, at school and day to day.' },
       { t: 'Respectful photos', d: 'Photos of activities, never anything that could identify the child or where they live.' },
       { t: 'A drawing or a letter', d: 'Once a year, a note or drawing from the child, if they wish.' },
-      { t: 'A yearly review', d: "The year’s highlights and how the programme’s funds were used." }
+      { t: 'A yearly review', d: "The year’s highlights and how the sponsorship funds were used." }
     ],
     charterTitle: 'Our child protection charter',
     charterIntro: "Contact with your sponsored child always goes through our team. This protects the child and the meaning of your commitment.",
@@ -134,7 +134,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     faqTitle: 'Frequently asked questions',
     faq: [
       { q: 'Can I stop or change my sponsorship?', a: 'Yes, at any time, with a simple email. No minimum term.' },
-      { q: 'Does my gift go to one child only?', a: 'It is linked to one child: after your payment you receive their first name, age and interests, with nothing that could identify them online. Funds are pooled within the programme so that no child is left out.' },
+      { q: 'Does my gift go to one child only?', a: 'It is linked to one child: after your payment you receive their first name, age and interests, with nothing that could identify them online. Part of the funds is pooled at the centre so that no child is left out.' },
       { q: 'Can I write to or visit my sponsored child?', a: 'Yes, through our team. Visits are by appointment, accompanied by a member of our team.' },
       { q: 'What updates will I receive?', a: 'A message every quarter with a respectful photo or a drawing, and a yearly review.' }
     ],

@@ -32,13 +32,13 @@ export const chrome = {
     home: 'One Love, accueil',
     nav: [
       { label: 'Accueil', href: '/' },
-      { label: "L’association", href: '/association' },
       { label: 'Notre histoire', href: '/histoire' },
-      { label: 'Nos actions', href: '/actions' },
       { label: 'Le village', href: '/projets/village' },
+      { label: 'Nos actions', href: '/actions' },
       { label: 'Actualités', href: '/galerie' },
       { label: 'Parrainer', href: '/parrainer' },
       { label: "S’impliquer", href: '/s-impliquer' },
+      { label: 'À propos', href: '/association' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Faire un don',
@@ -49,11 +49,11 @@ export const chrome = {
       motto: "L’amour et la foi, notre carburant.",
       explore: 'DÉCOUVRIR',
       links: [
-        { label: "L’association", href: '/association' },
         { label: 'Notre histoire', href: '/histoire' },
-        { label: 'Nos actions', href: '/actions' },
-        { label: 'Le projet RÊVES 2', href: '/projets/reves-2' },
         { label: 'Le One Love Village', href: '/projets/village' },
+        { label: 'Nos actions', href: '/actions' },
+        { label: 'Actualités', href: '/galerie' },
+        { label: 'À propos', href: '/association' },
         { label: 'Parrainer un enfant', href: '/parrainer' },
         { label: 'Faire un don', href: '/dons' }
       ],
@@ -75,13 +75,13 @@ export const chrome = {
     home: 'One Love, home',
     nav: [
       { label: 'Home', href: '/' },
-      { label: 'About us', href: '/association' },
       { label: 'Our story', href: '/histoire' },
-      { label: 'Our work', href: '/actions' },
       { label: 'The village', href: '/projets/village' },
+      { label: 'Our work', href: '/actions' },
       { label: 'News', href: '/galerie' },
       { label: 'Sponsor', href: '/parrainer' },
       { label: 'Get involved', href: '/s-impliquer' },
+      { label: 'About us', href: '/association' },
       { label: 'Contact', href: '/contact' }
     ],
     donate: 'Donate',
@@ -92,11 +92,11 @@ export const chrome = {
       motto: 'Love and faith are what drive us.',
       explore: 'EXPLORE',
       links: [
-        { label: 'About us', href: '/association' },
         { label: 'Our story', href: '/histoire' },
-        { label: 'Our work', href: '/actions' },
-        { label: 'The RÊVES 2 project', href: '/projets/reves-2' },
         { label: 'The One Love Village', href: '/projets/village' },
+        { label: 'Our work', href: '/actions' },
+        { label: 'News', href: '/galerie' },
+        { label: 'About us', href: '/association' },
         { label: 'Sponsor a child', href: '/parrainer' },
         { label: 'Donate', href: '/dons' }
       ],

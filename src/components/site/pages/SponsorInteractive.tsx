@@ -69,7 +69,8 @@ function fmt(eur: number, currency: Currency, locale: Locale): string {
 export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorText }) {
   const id = useId();
   const [cur, setCur] = useState<Currency>('EUR');
-  const [mode, setMode] = useState<Mode>('child');
+  // Toujours « enfant » : l'option programme a été retirée (05/10/2026).
+  const mode: Mode = 'child';
   const [plan, setPlan] = useState(1);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [pending, setPending] = useState(false);
@@ -78,18 +79,13 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
   const [errors, setErrors] = useState<FieldErrors>({});
   const formRef = useRef<HTMLFormElement>(null);
 
-  const plans = mode === 'child' ? t.plansChild : t.plansProg;
+  const plans = t.plansChild;
   const chosen = plans[plan];
   // Montant libre (facultatif) : s'il est saisi, il remplace le prix de la formule.
   const customValue = Number(custom.replace(',', '.'));
   const hasCustom = custom !== '' && Number.isFinite(customValue) && customValue > 0;
   const customEur = hasCustom ? toEur(customValue, cur) : null;
   const chosenPrice = hasCustom ? formatCustom(customValue, cur, locale) : fmt(chosen.price, cur, locale);
-
-  function pickMode(m: Mode) {
-    setMode(m);
-    setPlan(m === 'child' ? 1 : 0);
-  }
 
   // Devenir parrain = payer. Le formulaire n'enregistre personne : il ouvre
   // une session de paiement, et c'est le paiement confirmé (webhook Stripe) qui
@@ -200,23 +196,8 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
             </div>
           </div>
 
-          <div role="radiogroup" aria-label={t.formulesTitle} className="grid max-w-[560px] grid-cols-2 rounded-full bg-cream p-1">
-            {(['child', 'prog'] as Mode[]).map((m) => (
-              <button
-                key={m}
-                type="button"
-                role="radio"
-                aria-checked={mode === m}
-                onClick={() => pickMode(m)}
-                className={`min-h-12 cursor-pointer rounded-full border-0 text-[15px] font-bold ${
-                  mode === m ? 'bg-ink text-cream' : 'bg-transparent text-ink'
-                }`}
-              >
-                {t.modes[m]}
-              </button>
-            ))}
-          </div>
-
+          {/* Parrainage = un enfant uniquement (décision du 05/10/2026) : le choix
+              « Soutenir un programme » a été retiré. */}
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
             {plans.map((p, i) => (
               <button

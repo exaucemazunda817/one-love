@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { XIcon } from '@phosphor-icons/react';
 import { BrushLast } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
@@ -68,22 +69,18 @@ export function NewsInteractive({ t }: { t: NewsText }) {
                   title={p.t}
                   text={p.d}
                   action={
-                    <a
+                    <Link
                       href={p.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="inline-flex min-h-11 items-center gap-1.5 text-[15px] font-bold text-gold-hover no-underline hover:text-gold-hover"
                     >
-                      {t.readLabel} <span aria-hidden>↗</span>
-                    </a>
+                      {t.readLabel} <span aria-hidden>→</span>
+                    </Link>
                   }
                 />
               </div>
               <Reveal delay={(i % 3) * 90} className="hidden h-full md:block">
-                <a
+                <Link
                   href={p.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="ol-news-card flex h-full flex-col gap-3 overflow-hidden rounded-card bg-white text-ink no-underline shadow-ol-sm hover:text-ink"
                 >
                   <div className="ol-news-frame relative aspect-[4/3] overflow-hidden">
@@ -105,10 +102,10 @@ export function NewsInteractive({ t }: { t: NewsText }) {
                       <p className="m-0 text-[15px] leading-[1.55] text-ink-body">{p.d}</p>
                     </Reveal>
                     <span className="mt-auto inline-flex items-center gap-1.5 pt-1 text-[14px] font-bold text-copper-700">
-                      {t.readLabel} <span aria-hidden>↗</span>
+                      {t.readLabel} <span aria-hidden>→</span>
                     </span>
                   </div>
-                </a>
+                </Link>
               </Reveal>
             </div>
           ))}

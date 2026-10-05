@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { NEWS } from '@/lib/news';
 
 // `||` et non `??` : sur Vercel une variable peut exister avec une valeur vide.
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
@@ -15,7 +16,8 @@ const paths = [
   '/transparence',
   '/galerie',
   '/dons',
-  '/contact'
+  '/contact',
+  ...NEWS.map((n) => `/galerie/${n.slug}`)
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

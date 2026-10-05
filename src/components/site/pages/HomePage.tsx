@@ -15,7 +15,6 @@ import { BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { PathTimeline } from '@/components/site/effects/PathTimeline';
 import { ScrollFan } from '@/components/site/effects/ScrollFan';
-import { currentProject } from '@/lib/content';
 
 const text = {
   fr: {
@@ -28,7 +27,7 @@ const text = {
     donate: 'Faire un don',
     sponsor: 'Parrainer un enfant',
     badge: 'Association loi 1901 · RNA W951001528',
-    heroImgAlt: 'Deux garçons dessinent à une table en plein air, au centre One Love.',
+    heroImgAlt: 'Trois garçons assis dehors, souriants et riant ensemble.',
     pathTitle: 'Le chemin parcouru',
     pathIntro:
       'Un couple, trois garçons rencontrés dans la rue, puis un centre qui accueille une centaine d’enfants chaque semaine.',
@@ -41,15 +40,37 @@ const text = {
       { value: 90, prefix: '', label: 'enfants au centre aéré, un samedi', when: 'mars 2022' },
       { value: 100, prefix: '≈ ', label: 'enfants accueillis chaque semaine', when: '2024' }
     ] as const,
-    dayEyebrow: 'RÊVES 2 · carnet de bord',
-    dayTitlePre: 'Une journée à ',
-    dayTitleWord: 'One Love',
-    daySubtitle: 'Ce que votre soutien rend possible, au fil de la journée.',
+    orgEyebrow: 'Notre organisation',
+    orgTitlePre: 'Comment One Love ',
+    orgTitleWord: 's’organise',
+    orgIntro: 'À Kinshasa, nous accompagnons deux groupes d’enfants, de deux façons différentes.',
+    groups: [
+      {
+        k: 'À plein temps',
+        t: 'Les One Love Boys',
+        d: 'Des garçons qui vivaient dans la rue et que nous accueillons à temps plein à la One Love House. Ils y trouvent un foyer, des repas, des soins, et vont à l’école chaque jour : nous les scolarisons et suivons leur année, de la rentrée aux résultats. Ils étaient 16 en 2025.',
+        img: '/photos/drive/boys-noel-2022.jpg',
+        alt: 'Cinq One Love Boys en bonnet de Noël, souriants.',
+        pos: '50% 35%'
+      },
+      {
+        k: 'Chaque semaine',
+        t: 'Les enfants du centre aéré',
+        d: 'Des enfants des quartiers défavorisés, filles et garçons de 5 à 12 ans et de 13 à 17 ans, qui viennent au One Love Center le mercredi et le samedi après-midi. Ils vivent chez eux et trouvent au centre un lieu sûr pour apprendre, jouer et partager un goûter. Ils sont une centaine chaque semaine.',
+        img: '/histoire/2022-centre-aere.webp',
+        alt: 'Des enfants réunis au centre aéré One Love.',
+        pos: '50% 45%'
+      }
+    ],
+    dayEyebrow: 'Le programme',
+    dayTitlePre: 'Un après-midi au ',
+    dayTitleWord: 'centre aéré',
+    daySubtitle: 'Mercredi et samedi après-midi, au One Love Center.',
     day: [
-      ["L’arrivée", 'Les enfants arrivent au centre, prêts à découvrir et apprendre.', 'Un garçon rit en arrivant au centre.'],
-      ["Atelier d’écriture", "Lire et écrire en petits groupes : le premier levier d’autonomie.", 'Une jeune fille écrit dans son cahier.'],
-      ['Français', "Maîtriser la langue de l’école pour ouvrir l’accès à la scolarité.", 'Un garçon écrit, concentré.'],
-      ['Création et jeu', 'Dessin, sport, musique : retrouver la confiance et la vie en groupe.', 'Des mains colorient des lettres.']
+      ['L’accueil', 'Les enfants arrivent des quartiers alentour. Nos éducateurs les accueillent et soignent les petites blessures, trousse de secours à la main.', 'Un garçon rit en arrivant au centre.'],
+      ['Les ateliers', 'Bibliothèque, alphabétisation, informatique, chant et chorale, ateliers de cuisine : chacun choisit et apprend en petit groupe.', 'Une jeune fille écrit dans son cahier.'],
+      ['Sport et jeux', 'Football, basket et jeux de société : retrouver confiance et vie en groupe.', 'Un garçon écrit, concentré.'],
+      ['Le goûter', 'Avant de rentrer chez eux, les enfants partagent un goûter ou un repas ensemble.', 'Des mains colorient des lettres.']
     ] as const,
     projectEyebrow: 'Projet en cours · sept. à déc. 2026',
     projectSupport: 'Soutenir RÊVES 2',
@@ -63,9 +84,9 @@ const text = {
     waysTitlePre: 'Trois façons d’',
     waysTitleWord: 'aider',
     ways: [
-      { icon: HeartIcon, t: 'Donner', d: 'Un don ponctuel ou mensuel finance les ateliers, le matériel et le suivi des enfants.', cta: 'Faire un don', bg: 'bg-night', fg: 'text-cream', fg2: 'text-on-dark-1', ic: 'text-gold-hover', href: '/dons' },
-      { icon: HandHeartIcon, t: 'Parrainer', d: 'Un engagement mensuel pour la continuité de l’accompagnement, avec des nouvelles régulières.', cta: 'Devenir parrain', bg: 'bg-sand', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-copper-700', href: '/parrainer' },
-      { icon: UsersThreeIcon, t: 'S’engager', d: 'Bénévolat, dons en nature, collectes, partenariats avec des entreprises ou des églises.', cta: 'S’impliquer', bg: 'bg-sage-100', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-sage-700', href: '/s-impliquer' }
+      { icon: HandHeartIcon, t: 'Parrainer', d: 'Parrainer, c’est accompagner un enfant, un seul, chaque mois. Votre engagement assure la continuité de son accompagnement : l’école, le suivi médical, l’écoute. Après votre paiement, vous recevez son prénom, son âge et ses envies, puis un message chaque trimestre et un bilan annuel. Le lien passe toujours par notre équipe, et vous pouvez arrêter à tout moment.', cta: 'Parrainer un enfant', bg: 'bg-sand', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-copper-700', href: '/parrainer' },
+      { icon: HeartIcon, t: 'Donner', d: 'Un don, ponctuel ou mensuel, finance directement nos actions sur le terrain : les ateliers, le matériel pédagogique, le suivi médical et psychosocial des enfants. Sauf mention de votre part, il va là où les besoins sont les plus forts. Vous pouvez aussi le réserver à un projet précis, comme le One Love Village, en l’indiquant dans le libellé de votre virement.', cta: 'Faire un don', bg: 'bg-night', fg: 'text-cream', fg2: 'text-on-dark-1', ic: 'text-gold-hover', href: '/dons' },
+      { icon: UsersThreeIcon, t: 'S’engager', d: 'Donnez de votre temps comme bénévole, à Kinshasa pendant les ateliers ou à distance : communication, traduction, recherche de fonds. Offrez du matériel en bon état (fournitures scolaires, livres, matériel sportif ou informatique), organisez une collecte pour un anniversaire, une course solidaire ou un événement d’église, ou construisez un partenariat avec votre entreprise, votre église ou votre fondation.', cta: 'S’impliquer', bg: 'bg-sage-100', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-sage-700', href: '/s-impliquer' }
     ],
     testimonials: [
       { q: '« Depuis que nous nous sommes rencontrés en 2010, ma femme et moi avons eu à cœur de vivre un rêve commun : aimer et aider ceux qui en ont besoin. »', name: 'Kanda Kabangu', role: 'cofondateur' },
@@ -81,7 +102,7 @@ const text = {
     donate: 'Donate',
     sponsor: 'Sponsor a child',
     badge: 'Registered non-profit (France) · RNA W951001528',
-    heroImgAlt: 'Two boys drawing at an outdoor table at the One Love centre.',
+    heroImgAlt: 'Three boys sitting outside, smiling and laughing together.',
     pathTitle: 'How far we have come',
     pathIntro:
       'A couple, three boys met on the street, then a centre that welcomes around a hundred children every week.',
@@ -92,15 +113,37 @@ const text = {
       { value: 90, prefix: '', label: 'children at the day centre, one Saturday', when: 'March 2022' },
       { value: 100, prefix: '≈ ', label: 'children welcomed every week', when: '2024' }
     ] as const,
-    dayEyebrow: 'RÊVES 2 · logbook',
-    dayTitlePre: 'A day at ',
-    dayTitleWord: 'One Love',
-    daySubtitle: 'What your support makes possible, through the day.',
+    orgEyebrow: 'How we work',
+    orgTitlePre: 'How One Love is ',
+    orgTitleWord: 'organised',
+    orgIntro: 'In Kinshasa, we support two groups of children, in two different ways.',
+    groups: [
+      {
+        k: 'Full time',
+        t: 'The One Love Boys',
+        d: 'Boys who used to live on the street and whom we welcome full time at the One Love House. They find a home, meals and care there, and go to school every day: we enrol them and follow their year, from the first day to their results. There were 16 of them in 2025.',
+        img: '/photos/drive/boys-noel-2022.jpg',
+        alt: 'Five One Love Boys in Christmas hats, smiling.',
+        pos: '50% 35%'
+      },
+      {
+        k: 'Every week',
+        t: 'The day-centre children',
+        d: 'Children from disadvantaged neighbourhoods, girls and boys aged 5 to 12 and 13 to 17, who come to the One Love Center on Wednesday and Saturday afternoons. They live at home and find at the centre a safe place to learn, play and share a snack. Around a hundred come every week.',
+        img: '/histoire/2022-centre-aere.webp',
+        alt: 'Children gathered at the One Love day centre.',
+        pos: '50% 45%'
+      }
+    ],
+    dayEyebrow: 'The programme',
+    dayTitlePre: 'An afternoon at the ',
+    dayTitleWord: 'day centre',
+    daySubtitle: 'Wednesday and Saturday afternoons, at the One Love Center.',
     day: [
-      ['Arrival', 'The children arrive at the centre, ready to discover and learn.', 'A boy laughs as he arrives at the centre.'],
-      ['Writing workshop', 'Reading and writing in small groups: the first step towards independence.', 'A girl writes in her notebook.'],
-      ['French', 'Mastering the language of school opens the door to education.', 'A boy writes, focused.'],
-      ['Creativity and play', 'Drawing, sport, music: regaining confidence and group life.', 'Hands colouring in letters.']
+      ['Welcome', 'The children arrive from the surrounding neighbourhoods. Our educators welcome them and treat small injuries, first-aid kit in hand.', 'A boy laughs as he arrives at the centre.'],
+      ['Workshops', 'Library, literacy, computers, singing and choir, cooking workshops: everyone chooses and learns in a small group.', 'A girl writes in her notebook.'],
+      ['Sport and games', 'Football, basketball and board games: regaining confidence and group life.', 'A boy writes, focused.'],
+      ['Snack time', 'Before going home, the children share a snack or a meal together.', 'Hands colouring in letters.']
     ] as const,
     projectEyebrow: 'Current project · Sept. to Dec. 2026',
     projectSupport: 'Support RÊVES 2',
@@ -114,9 +157,9 @@ const text = {
     waysTitlePre: 'Three ways to ',
     waysTitleWord: 'help',
     ways: [
-      { icon: HeartIcon, t: 'Give', d: 'A one-off or monthly gift funds workshops, materials and the children’s follow-up.', cta: 'Donate', bg: 'bg-night', fg: 'text-cream', fg2: 'text-on-dark-1', ic: 'text-gold-hover', href: '/dons' },
-      { icon: HandHeartIcon, t: 'Sponsor', d: 'A monthly commitment for continuous support, with regular updates.', cta: 'Become a sponsor', bg: 'bg-sand', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-copper-700', href: '/parrainer' },
-      { icon: UsersThreeIcon, t: 'Take part', d: 'Volunteering, in-kind gifts, fundraising, partnerships with companies or churches.', cta: 'Get involved', bg: 'bg-sage-100', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-sage-700', href: '/s-impliquer' }
+      { icon: HandHeartIcon, t: 'Sponsor', d: 'Sponsoring means supporting one child, and only one, every month. Your commitment keeps their support going: school, medical follow-up, someone to listen. After your payment, you receive their first name, age and wishes, then a message every quarter and a yearly report. Contact always goes through our team, and you can stop at any time.', cta: 'Sponsor a child', bg: 'bg-sand', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-copper-700', href: '/parrainer' },
+      { icon: HeartIcon, t: 'Give', d: 'A gift, one-off or monthly, directly funds our work on the ground: workshops, teaching materials, medical and psychosocial follow-up for the children. Unless you say otherwise, it goes where the needs are greatest. You can also set it aside for a specific project, such as the One Love Village, by mentioning it in your transfer reference.', cta: 'Donate', bg: 'bg-night', fg: 'text-cream', fg2: 'text-on-dark-1', ic: 'text-gold-hover', href: '/dons' },
+      { icon: UsersThreeIcon, t: 'Take part', d: 'Give your time as a volunteer, in Kinshasa during the workshops or remotely: communication, translation, fundraising. Donate equipment in good condition (school supplies, books, sports or computer equipment), run a fundraiser for a birthday, a charity run or a church event, or build a partnership with your company, church or foundation.', cta: 'Get involved', bg: 'bg-sage-100', fg: 'text-ink', fg2: 'text-ink-body', ic: 'text-sage-700', href: '/s-impliquer' }
     ],
     testimonials: [
       { q: '“Since we met in 2010, my wife and I have shared one dream: to love and help those in need.”', name: 'Kanda Kabangu', role: 'co-founder' },
@@ -144,7 +187,7 @@ export function HomePage({ locale }: { locale: Locale }) {
     <>
       {/* Hero — desktop */}
       <section className="relative hidden min-h-[min(88vh,780px)] overflow-hidden bg-night text-cream dk:flex dk:items-center">
-        <HeroBackground src="/photos/photo-dessin.jpg" alt={t.heroImgAlt} position="50% 42%" />
+        <HeroBackground still src="/photos/hero-accueil.jpg" alt={t.heroImgAlt} position="50% 30%" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
         <div className="relative mx-auto w-full max-w-[1280px] px-12 py-24">
           <div className="flex max-w-[600px] flex-col gap-7">
@@ -177,7 +220,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       {/* Hero — mobile */}
       <section className="relative flex min-h-svh flex-col justify-end overflow-hidden bg-night text-cream dk:hidden">
-        <HeroBackground src="/photos/photo-dessin.jpg" alt={t.heroImgAlt} position="62% 30%" />
+        <HeroBackground still src="/photos/hero-accueil.jpg" alt={t.heroImgAlt} position="52% 30%" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)]" />
         <div className="relative flex flex-col items-center gap-[14px] px-5 pb-10 pt-[120px] text-center">
           <Eyebrow dark className="text-[12px]">
@@ -205,8 +248,6 @@ export function HomePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <PartnersMarquee locale={locale} />
-
       {/* Le chemin parcouru — mêmes chiffres que la page Notre histoire, en
           frise plutôt qu’à plat : ce sont quatre étapes d’une progression
           dans le temps, pas quatre chiffres indépendants (revu le
@@ -229,28 +270,6 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div className="flex-1">
             <PathTimeline steps={t.path.map((s) => ({ ...s }))} />
           </div>
-        </div>
-      </section>
-
-      {/* Projet en cours */}
-      <section className="relative overflow-hidden bg-night text-cream">
-        <Image src="/photos/photo-ecriture.jpg" alt={t.projectImgAlt} fill sizes="100vw" className="photo-tone object-cover object-[60%_30%]" />
-        <div className="relative mx-auto max-w-[1280px] px-[clamp(12px,4vw,48px)] py-[clamp(40px,8vw,120px)]">
-          <Reveal className="flex max-w-[520px] flex-col gap-[18px] rounded-card bg-[color:var(--scrim-5)] p-[clamp(28px,4vw,48px)]">
-            <Eyebrow dark>{t.projectEyebrow}</Eyebrow>
-            <h2 className="m-0 font-serif text-[clamp(40px,5vw,64px)] font-medium leading-none">{currentProject.name}</h2>
-            <p className="m-0 text-[15px] font-bold tracking-[0.04em] text-gold-hover">{currentProject.acronymMeaning}</p>
-            <p className="m-0 text-[17px] leading-[1.65] text-on-dark-1">{currentProject.intro}</p>
-            <div className="flex flex-wrap gap-3 pt-1">
-              <Link href={href('/dons')} className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full bg-gold px-6 text-[16px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night">
-                {t.projectSupport}
-              </Link>
-              <Link href={href('/projets/reves-2')} className="inline-flex min-h-[52px] items-center gap-1.5 whitespace-nowrap px-2 font-bold text-gold-hover no-underline">
-                {t.projectLink}
-                <ArrowRightIcon aria-hidden />
-              </Link>
-            </div>
-          </Reveal>
         </div>
       </section>
 
@@ -278,12 +297,37 @@ export function HomePage({ locale }: { locale: Locale }) {
           trackpad (voir CLAUDE.md, 27/09/2026). */}
       <section aria-labelledby="journee-titre" className="bg-sand">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)] md:gap-10">
-          <Reveal className="mx-auto flex max-w-[640px] flex-col items-center gap-3 text-center">
-            <Eyebrow>{t.dayEyebrow}</Eyebrow>
+          {/* Deux publics distincts (demande du 04/10/2026). Sources : publications
+              Instagram de l'association (2021-2025) ; chiffres datés. */}
+          <Reveal className="mx-auto flex max-w-[680px] flex-col items-center gap-3 text-center">
+            <Eyebrow>{t.orgEyebrow}</Eyebrow>
             <h2 id="journee-titre" className={h2Class}>
+              {t.orgTitlePre}
+              <BrushWord>{t.orgTitleWord}</BrushWord>
+            </h2>
+            <p className="m-0 mt-1 text-pretty text-[17px] leading-[1.6] text-ink-body">{t.orgIntro}</p>
+          </Reveal>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-5">
+            {t.groups.map((g, i) => (
+              <Reveal key={g.t} delay={i * 90} className="flex h-full flex-col overflow-hidden rounded-card bg-cream shadow-ol-sm">
+                <div className="relative aspect-[16/10] bg-night">
+                  <Image src={g.img} alt={g.alt} fill sizes="(max-width: 900px) 92vw, 580px" loading="lazy" className="object-cover" style={{ objectPosition: g.pos }} />
+                </div>
+                <div className="flex flex-col gap-2.5 p-[clamp(22px,2.6vw,32px)]">
+                  <span className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-copper-700">{g.k}</span>
+                  <h3 className="m-0 font-serif text-[clamp(24px,2.4vw,30px)] font-medium text-ink">{g.t}</h3>
+                  <p className="m-0 text-pretty text-[16px] leading-[1.65] text-ink-body">{g.d}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal className="mx-auto mt-[clamp(16px,3vw,32px)] flex max-w-[640px] flex-col items-center gap-3 text-center">
+            <Eyebrow>{t.dayEyebrow}</Eyebrow>
+            <h3 className={h2Class}>
               {t.dayTitlePre}
               <BrushWord>{t.dayTitleWord}</BrushWord>
-            </h2>
+            </h3>
             <p className="m-0 mt-1 text-pretty text-[17px] leading-[1.6] text-ink-body">{t.daySubtitle}</p>
           </Reveal>
 
@@ -403,6 +447,10 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       <div className="pt-[clamp(8px,2vw,24px)]">
         <FacebookBand locale={locale} />
+      </div>
+
+      <div>
+        <PartnersMarquee locale={locale} />
       </div>
     </>
   );

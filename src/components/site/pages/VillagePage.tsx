@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRightIcon, HeartIcon } from '@phosphor-icons/react/ssr';
 import { pageMetadata } from '@/lib/seo';
@@ -8,13 +9,12 @@ import { Brush, BrushWord, CallBanner, Eyebrow, h2Class } from '@/components/sit
 import { MediaItem, photo, video, type Media } from '@/components/site/pages/HistoryPage';
 import { FACEBOOK_URL, INSTAGRAM_URL, YOUTUBE_URL, localeHref, type Locale } from '@/lib/i18n';
 
-// Page « One Love Village » : le grand projet de Kasangulu. Tout ce qui est
-// affiché vient de faits déjà publiés sur « Notre histoire » (dates, dîners,
-// partenaires) et des médias de l'association. Surface, plans, budget et
-// calendrier de construction ne sont pas connus : ils n'apparaissent pas.
+// Page « One Love Village » : le grand projet de Kasangulu. Sources : la vidéo
+// de Kanda et Maïté sur le terrain (2023, transcrite le 05/10/2026), les
+// publications Instagram de l'association (dîners 2023 et 2024, guérite) et
+// « Notre histoire ». Les montants cités dans la vidéo (2 000 € pour la guérite,
+// 2 000 € pour l'avant-projet) datent de 2023 : ils ne sont pas repris.
 // Photos : public/histoire (village-*.webp), vidéos : public/histoire/videos.
-
-type L = { fr: string; en: string };
 
 const film: Media = video(
   '2023-kasangulu-village',
@@ -65,91 +65,139 @@ const heroPool = [
 const text = {
   fr: {
     title: 'One Love Village, notre projet à Kasangulu',
-    desc: 'Le One Love Village, notre grand projet en construction à Kasangulu : son histoire depuis 2015, les dîners caritatifs, le terrain en photos et en vidéos.',
+    desc: 'Le One Love Village : un centre socio-éducatif et sportif en construction à Kasangulu, près de Kinshasa. Le projet, la vidéo qui l’explique, les dîners caritatifs et le terrain en images.',
     eyebrow: 'Grand projet en construction',
     titlePre: 'One Love ',
     titleWord: 'Village',
-    intro: 'Sur notre terrain de Kasangulu, nous construisons le One Love Village. Voici son histoire, pas à pas.',
+    intro: 'Sur notre terrain de Kasangulu, nous construisons un lieu pour accueillir, instruire et faire grandir les enfants.',
     heroAlt: 'Des engins au travail sur le terrain de Kasangulu, au coucher du soleil.',
-    leadEyebrow: 'Le projet',
-    leadTitlePre: 'Bâtir quelque chose de ',
-    leadTitleWord: 'durable',
-    lead: 'Depuis 2015, nous voulons construire quelque chose de durable au Congo. Le terrain de Kasangulu est le lieu de ce projet : nous l’avons repéré, borné, débroussaillé, et les travaux ont commencé.',
+    bannerTitle: 'Le village se construit avec vous.',
+    bannerText: 'Votre don pour ce projet va entièrement à la construction du One Love Village.',
+    accompany: 'Nous accompagner sur ce projet',
+    leadEyebrow: 'Le projet, concrètement',
+    leadTitlePre: 'Un centre pour ',
+    leadTitleWord: 'grandir',
+    lead: [
+      'Le One Love Village sera un grand centre socio-éducatif et sportif, construit sur le terrain que nous possédons à Kasangulu, une petite ville à 25 km au sud de Kinshasa. Il accueillera des enfants défavorisés et leur offrira une éducation de qualité : c’est le sens de notre appel « Une école pour tous ».',
+      'Autour de l’école, le village fera aussi place au sport, avec des centres de formation en basket, et à l’agriculture, avec une mini-ferme pédagogique, un potager et des plantations d’arbres.'
+    ],
+    stepsTitle: 'Les étapes en cours',
+    steps: [
+      { t: 'La guérite', d: 'Le premier bâtiment, à l’entrée du terrain. Il sert à stocker le matériel et à récupérer l’eau de pluie de son toit, pour lancer le potager et les plantations.' },
+      { t: 'L’avant-projet', d: 'Architecte, géomètre, plans de préparation du terrain et d’implantation des bâtiments.' },
+      { t: 'La maquette', d: 'Une maquette en trois dimensions, pour vous montrer le village tel que nous le rêvons.' }
+    ],
+    droneAlt: 'Vue aérienne du terrain de Kasangulu, entre collines boisées et brume.',
+    filmEyebrow: 'La vidéo explicative',
+    filmTitlePre: 'Tout le projet, ',
+    filmTitleWord: 'en trois minutes',
+    filmText: 'Kanda et Maïté vous présentent le One Love Village depuis le terrain de Kasangulu.',
     pathEyebrow: 'Le chemin parcouru',
     pathTitlePre: 'Du premier repérage aux ',
     pathTitleWord: 'premiers travaux',
     path: [
       { year: '2015', title: 'Un projet d’école', text: 'Notre but de départ est concret : construire une école au Congo. En août, nous repérons et bornons le terrain de Kasangulu.' },
       { year: '2018', title: 'Le premier débroussaillage', text: 'Notre équipe se met au travail sur le terrain pour le dégager.' },
-      { year: '2023', title: 'Le premier dîner caritatif', text: 'Près de 260 invités à l’hôtel Pullman de Kinshasa, le 8 décembre, pour financer le One Love Village. Les travaux commencent à Kasangulu.' },
-      { year: '2024', title: 'Une deuxième édition', text: 'Le 13 décembre, un nouveau dîner rassemble de grands partenaires, dont la Fondation Vodacom, autour du même projet.' }
+      { year: '2023', title: 'La guérite et le premier dîner', text: 'La construction de la guérite commence. Le 8 décembre, le premier dîner caritatif lance la levée de fonds du village.' },
+      { year: '2024', title: 'Une deuxième édition', text: 'Le 13 décembre, un nouveau dîner rassemble nos soutiens et de grands partenaires, dont la Fondation Vodacom.' }
     ],
-    filmEyebrow: 'En vidéo',
-    filmTitlePre: 'Le terrain, ',
-    filmTitleWord: 'vu du ciel et de près',
-    filmText: 'Ce film a été tourné sur le terrain de Kasangulu. La deuxième vidéo est celle de notre premier repérage, en 2015.',
     galleryEyebrow: 'En images',
     galleryTitlePre: 'Le terrain de ',
     galleryTitleWord: 'Kasangulu',
     dinnersEyebrow: 'Ceux qui le rendent possible',
     dinnersTitlePre: 'Deux dîners ',
     dinnersTitleWord: 'caritatifs',
-    dinnersText: 'Ces dîners réunissent nos amis, nos partenaires et nos soutiens autour du village. Ils financent le chantier.',
+    dinners: [
+      {
+        t: '8 décembre 2023 : « Une école pour tous »',
+        d: [
+          'Le premier dîner caritatif One Love a réuni 236 invités sous le chapiteau de l’hôtel Pullman, à Kinshasa. Son but était clair : construire une école pour les enfants vulnérables, et lancer officiellement la levée de fonds du One Love Village.',
+          'Au programme : un spectacle de danse et de chant, une tombola aux nombreux lots offerts par nos partenaires, et la présentation du projet avec des images inédites du terrain. Dans la foulée, nous avons ouvert une promesse de don pour que chacun puisse participer à la construction, depuis la France comme depuis le Congo.'
+        ]
+      },
+      {
+        t: '13 décembre 2024 : la deuxième édition',
+        d: [
+          'Un an plus tard, près de 200 personnes se sont retrouvées au même endroit pour la deuxième édition, avec un sponsor premium, la Fondation Vodacom, et de nombreux partenaires, de Toylander à PPC.',
+          'Grâce à ces deux soirées, de nouveaux projets ont pu prendre vie pour les enfants que nous accompagnons chaque jour, et le village continue d’avancer.'
+        ]
+      }
+    ],
     followTitle: 'Suivre le chantier',
     followText: 'Nous partageons l’avancée du projet sur nos réseaux.',
     facebook: 'Facebook',
     instagram: 'Instagram',
     youtube: 'YouTube',
     historyLink: 'Lire toute notre histoire',
-    play: 'Lire la vidéo',
-    bannerTitle: 'Le village se construit avec vous.',
-    bannerText: 'Un don ou un parrainage nous aide à avancer, pour le village comme pour les enfants que nous accueillons déjà.',
-    donate: 'Faire un don',
-    sponsor: 'Parrainer un enfant'
+    play: 'Lire la vidéo'
   },
   en: {
     title: 'One Love Village, our project in Kasangulu',
-    desc: 'The One Love Village, our large project under construction in Kasangulu: its story since 2015, the charity dinners, and the land in photos and videos.',
+    desc: 'The One Love Village: a socio-educational and sports centre under construction in Kasangulu, near Kinshasa. The project, the video that explains it, the charity dinners and the land in pictures.',
     eyebrow: 'Large project under construction',
     titlePre: 'One Love ',
     titleWord: 'Village',
-    intro: 'On our land in Kasangulu, we are building the One Love Village. Here is its story, step by step.',
+    intro: 'On our land in Kasangulu, we are building a place to welcome, educate and help children grow.',
     heroAlt: 'Machines at work on the Kasangulu land, at sunset.',
-    leadEyebrow: 'The project',
-    leadTitlePre: 'Building something ',
-    leadTitleWord: 'lasting',
-    lead: 'Since 2015, we have wanted to build something lasting in Congo. The Kasangulu land is where it will happen: we surveyed it, marked it out, cleared it, and work has begun.',
+    bannerTitle: 'The village is built with you.',
+    bannerText: 'Your gift to this project goes entirely to building the One Love Village.',
+    accompany: 'Support this project',
+    leadEyebrow: 'The project, in practice',
+    leadTitlePre: 'A centre to ',
+    leadTitleWord: 'grow up in',
+    lead: [
+      'The One Love Village will be a large socio-educational and sports centre, built on the land we own in Kasangulu, a small town 25 km south of Kinshasa. It will welcome disadvantaged children and give them a quality education: that is the meaning of our call, “A school for all”.',
+      'Around the school, the village will also make room for sport, with basketball training centres, and for farming, with a small teaching farm, a vegetable garden and tree planting.'
+    ],
+    stepsTitle: 'Current steps',
+    steps: [
+      { t: 'The gatehouse', d: 'The first building, at the entrance to the land. It stores equipment and collects rainwater from its roof, to start the garden and the planting.' },
+      { t: 'The preliminary design', d: 'Architect, surveyor, plans for preparing the land and siting the buildings.' },
+      { t: 'The model', d: 'A three-dimensional model, to show you the village as we dream it.' }
+    ],
+    droneAlt: 'Aerial view of the Kasangulu land, between wooded hills and mist.',
+    filmEyebrow: 'The explainer video',
+    filmTitlePre: 'The whole project, ',
+    filmTitleWord: 'in three minutes',
+    filmText: 'Kanda and Maïté present the One Love Village from the Kasangulu land.',
     pathEyebrow: 'The road so far',
     pathTitlePre: 'From the first visit to the ',
     pathTitleWord: 'first works',
     path: [
       { year: '2015', title: 'A school project', text: 'Our starting goal is concrete: build a school in Congo. In August, we survey and mark out the Kasangulu land.' },
       { year: '2018', title: 'The first clearing', text: 'Our team gets to work on the land to clear it.' },
-      { year: '2023', title: 'The first charity dinner', text: 'Nearly 260 guests at the Pullman hotel in Kinshasa on 8 December, to fund the One Love Village. Work begins in Kasangulu.' },
-      { year: '2024', title: 'A second edition', text: 'On 13 December, a new dinner brings together major partners, including the Vodacom Foundation, around the same project.' }
+      { year: '2023', title: 'The gatehouse and the first dinner', text: 'Building the gatehouse begins. On 8 December, the first charity dinner launches the village fundraising.' },
+      { year: '2024', title: 'A second edition', text: 'On 13 December, a new dinner brings together our supporters and major partners, including the Vodacom Foundation.' }
     ],
-    filmEyebrow: 'On video',
-    filmTitlePre: 'The land, ',
-    filmTitleWord: 'from the sky and up close',
-    filmText: 'This film was shot on the Kasangulu land. The second video is from our first visit, in 2015.',
     galleryEyebrow: 'In pictures',
     galleryTitlePre: 'The land in ',
     galleryTitleWord: 'Kasangulu',
     dinnersEyebrow: 'Those who make it possible',
     dinnersTitlePre: 'Two ',
     dinnersTitleWord: 'charity dinners',
-    dinnersText: 'These dinners bring our friends, partners and supporters together around the village. They fund the building work.',
+    dinners: [
+      {
+        t: '8 December 2023: “A school for all”',
+        d: [
+          'The first One Love charity dinner brought 236 guests together under the marquee of the Pullman hotel in Kinshasa. Its goal was clear: build a school for vulnerable children, and officially launch the One Love Village fundraising.',
+          'On the programme: a dance and singing show, a raffle with many prizes donated by our partners, and a presentation of the project with never-before-seen images of the land. Straight afterwards, we opened a pledge so that everyone could take part in the building, from France as well as from Congo.'
+        ]
+      },
+      {
+        t: '13 December 2024: the second edition',
+        d: [
+          'A year later, nearly 200 people met at the same place for the second edition, with a premium sponsor, the Vodacom Foundation, and many partners, from Toylander to PPC.',
+          'Thanks to these two evenings, new projects have come to life for the children we support every day, and the village keeps moving forward.'
+        ]
+      }
+    ],
     followTitle: 'Follow the building work',
     followText: 'We share the progress of the project on our social networks.',
     facebook: 'Facebook',
     instagram: 'Instagram',
     youtube: 'YouTube',
     historyLink: 'Read our whole story',
-    play: 'Play video',
-    bannerTitle: 'The village is built with you.',
-    bannerText: 'A donation or a sponsorship helps us move forward, for the village and for the children we already welcome.',
-    donate: 'Donate',
-    sponsor: 'Sponsor a child'
+    play: 'Play video'
   }
 } as const satisfies Record<Locale, unknown>;
 
@@ -176,6 +224,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
   const wrap = 'mx-auto flex max-w-[1200px] flex-col gap-10 px-[clamp(20px,4vw,32px)] py-[clamp(36px,5vw,64px)]';
   const link =
     'inline-flex min-h-11 items-center rounded-full border-[1.5px] border-field-line px-5 text-[14px] font-bold text-ink no-underline transition-colors hover:border-copper-600 hover:text-copper-700';
+  const villageDonate = `${href('/dons')}?affectation=village`;
 
   return (
     <>
@@ -191,12 +240,60 @@ export function VillagePage({ locale }: { locale: Locale }) {
         photoPool={heroPool}
       />
 
+      {/* Appel en haut de page, un seul bouton : don réservé au village
+          (demande de Mazunda du 04/10/2026). */}
+      <CallBanner
+        title={t.bannerTitle}
+        text={t.bannerText}
+        donateLabel={t.accompany}
+        donateHref={villageDonate}
+        Icon={HeartIcon}
+      />
+
       <section aria-labelledby="village-projet">
-        <div className={`${wrap} dk:grid dk:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] dk:items-start dk:gap-14`}>
-          <SectionHead eyebrow={t.leadEyebrow} pre={t.leadTitlePre} word={t.leadTitleWord} id="village-projet" />
-          <Reveal delay={80} className="flex flex-col gap-5 rounded-card bg-copper-tint p-[clamp(24px,3vw,36px)]">
-            <p className="m-0 max-w-measure text-[17px] leading-[1.7] text-ink-body">{t.lead}</p>
+        <div className={`${wrap} pt-0`}>
+          <div className="dk:grid dk:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] dk:items-start dk:gap-14">
+            <SectionHead eyebrow={t.leadEyebrow} pre={t.leadTitlePre} word={t.leadTitleWord} id="village-projet" />
+            <Reveal delay={80} className="mt-6 flex flex-col gap-4 rounded-card bg-copper-tint p-[clamp(24px,3vw,36px)] dk:mt-0">
+              {t.lead.map((para) => (
+                <p key={para.slice(0, 24)} className="m-0 max-w-measure text-[17px] leading-[1.7] text-ink-body">{para}</p>
+              ))}
+            </Reveal>
+          </div>
+          <Reveal className="relative aspect-[16/9] overflow-hidden rounded-card bg-night shadow-ol-photo">
+            <Image src="/photos/drive/drone-kasangulu-brume.jpg" alt={t.droneAlt} fill sizes="(max-width: 1200px) 100vw, 1136px" className="object-cover" />
           </Reveal>
+          <div className="flex flex-col gap-5">
+            <h3 className="m-0 font-serif text-[clamp(22px,2.4vw,28px)] font-medium">{t.stepsTitle}</h3>
+            <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-5 p-0">
+              {t.steps.map((st, i) => (
+                <li key={st.t}>
+                  <Reveal delay={i * 90} className="flex h-full flex-col gap-2.5 rounded-card border-t-[3px] border-copper-600 bg-sand p-6">
+                    <span className="text-[13px] font-extrabold tracking-[0.12em] text-copper-700">{String(i + 1).padStart(2, '0')}</span>
+                    <h4 className="m-0 font-serif text-[21px] font-medium text-ink">{st.t}</h4>
+                    <p className="m-0 text-[16px] leading-[1.6] text-ink-body">{st.d}</p>
+                  </Reveal>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* La vidéo explicative, seule et en grand : c'est elle qui détaille tout le projet. */}
+      <section aria-labelledby="village-film" className="bg-night text-cream">
+        <div className={wrap}>
+          <Reveal className="flex max-w-[720px] flex-col gap-3">
+            <Eyebrow dark>{t.filmEyebrow}</Eyebrow>
+            <h2 id="village-film" className="m-0 font-serif text-[clamp(32px,4vw,52px)] font-semibold leading-[1.1]">
+              {t.filmTitlePre}
+              <BrushWord>{t.filmTitleWord}</BrushWord>
+            </h2>
+            <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{t.filmText}</p>
+          </Reveal>
+          <div className="grid grid-cols-2 [&_figcaption]:hidden">
+            <MediaItem m={film} locale={locale} playLabel={t.play} index={0} />
+          </div>
         </div>
       </section>
 
@@ -207,9 +304,9 @@ export function VillagePage({ locale }: { locale: Locale }) {
             {t.path.map((step, i) => (
               <li key={step.year}>
                 <Reveal delay={i * 90} className="flex h-full flex-col gap-3 rounded-card border-t-[3px] border-copper-600 bg-cream p-6">
-                <span className="font-serif text-[clamp(32px,3.4vw,42px)] font-medium leading-none tabular-nums text-copper-600">{step.year}</span>
-                <h3 className="m-0 text-balance font-serif text-[22px] font-medium leading-[1.25] text-ink">{step.title}</h3>
-                <p className="m-0 text-pretty text-[16px] leading-[1.6] text-ink-body">{step.text}</p>
+                  <span className="font-serif text-[clamp(32px,3.4vw,42px)] font-medium leading-none tabular-nums text-copper-600">{step.year}</span>
+                  <h3 className="m-0 text-balance font-serif text-[22px] font-medium leading-[1.25] text-ink">{step.title}</h3>
+                  <p className="m-0 text-pretty text-[16px] leading-[1.6] text-ink-body">{step.text}</p>
                 </Reveal>
               </li>
             ))}
@@ -217,33 +314,43 @@ export function VillagePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section aria-labelledby="village-film">
-        <div className={wrap}>
-          <SectionHead eyebrow={t.filmEyebrow} pre={t.filmTitlePre} word={t.filmTitleWord} id="village-film" />
-          <p className="m-0 max-w-measure text-pretty text-[16px] leading-[1.65] text-ink-body">{t.filmText}</p>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            <MediaItem m={film} locale={locale} playLabel={t.play} index={0} />
-            <MediaItem m={youtube} locale={locale} playLabel={t.play} index={1} />
-          </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="village-images" className="bg-sand">
+      <section aria-labelledby="village-images">
         <div className={wrap}>
           <SectionHead eyebrow={t.galleryEyebrow} pre={t.galleryTitlePre} word={t.galleryTitleWord} id="village-images" />
+          <Reveal className="relative aspect-[16/9] overflow-hidden rounded-card bg-night shadow-ol-photo">
+            <Image src="/photos/drive/drone-kasangulu-terrain.jpg" alt={t.droneAlt} fill sizes="(max-width: 1200px) 100vw, 1136px" loading="lazy" className="object-cover" />
+          </Reveal>
           <div className="grid grid-flow-dense grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
             {gallery.map((m, i) => (
               <MediaItem key={m.kind === 'photo' ? m.src : i} m={m} locale={locale} playLabel={t.play} index={i} />
             ))}
           </div>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <MediaItem m={youtube} locale={locale} playLabel={t.play} index={0} />
+          </div>
         </div>
       </section>
 
-      <section aria-labelledby="village-diners">
+      <section aria-labelledby="village-diners" className="bg-sand">
         <div className={wrap}>
           <SectionHead eyebrow={t.dinnersEyebrow} pre={t.dinnersTitlePre} word={t.dinnersTitleWord} id="village-diners" />
-          <p className="m-0 max-w-measure text-pretty text-[16px] leading-[1.65] text-ink-body">{t.dinnersText}</p>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-6">
+            {t.dinners.map((dn, i) => (
+              <Reveal key={dn.t} delay={i * 90} className="flex flex-col gap-3.5 rounded-card bg-cream p-[clamp(24px,3vw,36px)]">
+                <h3 className="m-0 text-balance font-serif text-[clamp(22px,2.4vw,28px)] font-medium leading-[1.25] text-ink">{dn.t}</h3>
+                {dn.d.map((para) => (
+                  <p key={para.slice(0, 24)} className="m-0 text-pretty text-[16px] leading-[1.65] text-ink-body">{para}</p>
+                ))}
+              </Reveal>
+            ))}
+          </div>
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <Reveal className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-night shadow-ol-sm">
+              <Image src="/photos/drive/diner-2023-table.jpg" alt={locale === 'fr' ? 'Des invités à table lors du premier dîner caritatif, en 2023.' : 'Guests at their table at the first charity dinner, in 2023.'} fill sizes="(max-width: 1200px) 50vw, 560px" loading="lazy" className="object-cover" />
+            </Reveal>
+            <Reveal delay={80} className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-night shadow-ol-sm">
+              <Image src="/photos/drive/diner-2023-invites.jpg" alt={locale === 'fr' ? 'Des invités échangent pendant le premier dîner caritatif.' : 'Guests talking during the first charity dinner.'} fill sizes="(max-width: 1200px) 50vw, 560px" loading="lazy" className="object-cover" />
+            </Reveal>
             {dinners.map((m, i) => (
               <MediaItem key={m.kind === 'video' ? m.src : i} m={m} locale={locale} playLabel={t.play} index={i} />
             ))}
@@ -251,8 +358,8 @@ export function VillagePage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section aria-labelledby="village-suivre" className="bg-sand">
-        <div className={`${wrap} items-start gap-5`}>
+      <section aria-labelledby="village-suivre">
+        <div className={`${wrap} items-start gap-5 pb-[clamp(56px,8vw,104px)]`}>
           <Reveal className="flex flex-col gap-3">
             <h2 id="village-suivre" className="m-0 font-serif text-[clamp(24px,2.6vw,30px)] font-medium leading-[1.2]">{t.followTitle}</h2>
             <Brush fill="var(--clay)" className="h-2 w-full max-w-[160px]" stretch />
@@ -271,16 +378,6 @@ export function VillagePage({ locale }: { locale: Locale }) {
           </Reveal>
         </div>
       </section>
-
-      <CallBanner
-        title={t.bannerTitle}
-        text={t.bannerText}
-        donateLabel={t.donate}
-        sponsorLabel={t.sponsor}
-        donateHref={href('/dons')}
-        sponsorHref={href('/parrainer')}
-        Icon={HeartIcon}
-      />
     </>
   );
 }

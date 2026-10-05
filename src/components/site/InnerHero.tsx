@@ -18,6 +18,7 @@ export function InnerHero({
   imageAlt,
   objectPosition = '50% 35%',
   photoPool,
+  still = false,
   cta
 }: {
   locale: Locale;
@@ -30,12 +31,14 @@ export function InnerHero({
   imageAlt: string;
   objectPosition?: string;
   photoPool?: { src: string; position: string }[];
+  /** Photo fixe, sans défilement (articles d'actualité). */
+  still?: boolean;
   cta?: { donate: string; sponsor: string };
 }) {
   const href = (p: string) => localeHref(p, locale);
   return (
     <section className="relative flex min-h-[min(82svh,640px)] items-end overflow-hidden bg-night text-cream dk:min-h-[min(64vh,580px)] dk:items-center">
-      <HeroBackground src={image} alt={imageAlt} position={objectPosition} pool={photoPool} />
+      <HeroBackground src={image} alt={imageAlt} position={objectPosition} pool={photoPool} still={still} />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)] dk:bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
       <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
         <Reveal eager className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:mx-0 dk:items-start dk:text-left dk:gap-6">
