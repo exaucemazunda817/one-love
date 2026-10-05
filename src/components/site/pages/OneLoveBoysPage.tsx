@@ -142,7 +142,7 @@ export function OneLoveBoysPage({ locale }: { locale: Locale }) {
               const Icon = d.icon;
               return (
                 <li key={d.t}>
-                  <Reveal delay={i * 80} className="flex h-full flex-col gap-3 rounded-card bg-cream p-6">
+                  <Reveal delay={i * 80} className="flex h-full flex-col gap-3 ol-spot rounded-card bg-cream p-6">
                     <span className="flex h-12 w-12 items-center justify-center rounded-full bg-copper-tint-2">
                       <Icon size={26} className="text-copper-600" aria-hidden />
                     </span>

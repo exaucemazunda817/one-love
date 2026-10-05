@@ -1,5 +1,7 @@
 import { Lora, Nunito_Sans } from 'next/font/google';
 import '@/app/globals.css';
+import { IntroOverlay } from '@/components/site/IntroOverlay';
+import { SpotlightTracker } from '@/components/site/SpotlightTracker';
 
 // Les deux familles du design system 2026 : Lora pour les titres, chiffres
 // et citations ; Nunito Sans pour le texte et l'interface. Chargées ici et
@@ -45,7 +47,13 @@ const SCRIPT =
   "addEventListener('scroll',function(){if(!t)h.classList.add('is-scrolling');clearTimeout(t);" +
   "t=setTimeout(function(){h.classList.remove('is-scrolling');t=0},150)},{passive:true})})()";
 
-export function RootHtml({ lang, children }: { lang: 'fr' | 'en'; children: React.ReactNode }) {
+// Écran d'ouverture (site public uniquement) : posé à chaque chargement complet
+// de page, retiré au plus tard à 3,6 s ; jamais si « Réduire les animations ».
+const INTRO_SCRIPT =
+  "(function(){var h=document.documentElement;try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return}catch(e){}" +
+  "h.setAttribute('data-intro','');setTimeout(function(){h.removeAttribute('data-intro')},3600)})()";
+
+export function RootHtml({ lang, children, intro = false }: { lang: 'fr' | 'en'; children: React.ReactNode; intro?: boolean }) {
   return (
     <html lang={lang} className={`${lora.variable} ${nunito.variable}`} suppressHydrationWarning>
       <head>
@@ -56,8 +64,13 @@ export function RootHtml({ lang, children }: { lang: 'fr' | 'en'; children: Reac
             classe n’est posée qu’au début et retirée à la fin d’un geste — pas
             à chaque image. */}
         <script dangerouslySetInnerHTML={{ __html: SCRIPT }} />
+        {intro && <script dangerouslySetInnerHTML={{ __html: INTRO_SCRIPT }} />}
       </head>
-      <body className="flex min-h-screen flex-col">{children}</body>
+      <body className="flex min-h-screen flex-col">
+        {intro && <IntroOverlay lang={lang} />}
+        {intro && <SpotlightTracker />}
+        {children}
+      </body>
     </html>
   );
 }

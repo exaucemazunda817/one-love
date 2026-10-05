@@ -268,7 +268,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
             <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-5 p-0">
               {t.steps.map((st, i) => (
                 <li key={st.t}>
-                  <Reveal delay={i * 90} className="flex h-full flex-col gap-2.5 rounded-card border-t-[3px] border-copper-600 bg-sand p-6">
+                  <Reveal delay={i * 90} className="flex h-full flex-col gap-2.5 ol-spot rounded-card border-t-[3px] border-copper-600 bg-sand p-6">
                     <span className="text-[13px] font-extrabold tracking-[0.12em] text-copper-700">{String(i + 1).padStart(2, '0')}</span>
                     <h4 className="m-0 font-serif text-[21px] font-medium text-ink">{st.t}</h4>
                     <p className="m-0 text-[16px] leading-[1.6] text-ink-body">{st.d}</p>
@@ -303,7 +303,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
           <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-6 p-0">
             {t.path.map((step, i) => (
               <li key={step.year}>
-                <Reveal delay={i * 90} className="flex h-full flex-col gap-3 rounded-card border-t-[3px] border-copper-600 bg-cream p-6">
+                <Reveal delay={i * 90} className="flex h-full flex-col gap-3 ol-spot rounded-card border-t-[3px] border-copper-600 bg-cream p-6">
                   <span className="font-serif text-[clamp(32px,3.4vw,42px)] font-medium leading-none tabular-nums text-copper-600">{step.year}</span>
                   <h3 className="m-0 text-balance font-serif text-[22px] font-medium leading-[1.25] text-ink">{step.title}</h3>
                   <p className="m-0 text-pretty text-[16px] leading-[1.6] text-ink-body">{step.text}</p>
@@ -336,7 +336,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
           <SectionHead eyebrow={t.dinnersEyebrow} pre={t.dinnersTitlePre} word={t.dinnersTitleWord} id="village-diners" />
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-6">
             {t.dinners.map((dn, i) => (
-              <Reveal key={dn.t} delay={i * 90} className="flex flex-col gap-3.5 rounded-card bg-cream p-[clamp(24px,3vw,36px)]">
+              <Reveal key={dn.t} delay={i * 90} className="flex flex-col gap-3.5 ol-spot rounded-card bg-cream p-[clamp(24px,3vw,36px)]">
                 <h3 className="m-0 text-balance font-serif text-[clamp(22px,2.4vw,28px)] font-medium leading-[1.25] text-ink">{dn.t}</h3>
                 {dn.d.map((para) => (
                   <p key={para.slice(0, 24)} className="m-0 text-pretty text-[16px] leading-[1.65] text-ink-body">{para}</p>

@@ -99,7 +99,8 @@ export function ContactFormCard({
   }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+    <form ref={formRef} onSubmit={handleSubmit} noValidate className="relative flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+              <span className="ol-beam" aria-hidden />
       <h2 className="m-0 font-serif text-[24px] font-semibold leading-[1.25]">{t.formTitle}</h2>
       <p className="m-0 -mt-2 text-[14px] text-ink-soft">
         {locale === 'fr' ? 'Tous les champs sont obligatoires.' : 'All fields are required.'}

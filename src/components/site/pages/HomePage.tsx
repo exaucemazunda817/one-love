@@ -13,6 +13,7 @@ import { FacebookBand } from '@/components/site/FacebookBand';
 import { PartnersMarquee } from '@/components/site/PartnersMarquee';
 import { BrushWord, Eyebrow, h2Class } from '@/components/site/ui';
 import { localeHref, type Locale } from '@/lib/i18n';
+import { PhotoCycle } from '@/components/site/PhotoCycle';
 import { PathTimeline } from '@/components/site/effects/PathTimeline';
 import { ScrollFan } from '@/components/site/effects/ScrollFan';
 
@@ -44,6 +45,7 @@ const text = {
     orgTitlePre: 'Comment One Love ',
     orgTitleWord: 's’organise',
     orgIntro: 'À Kinshasa, nous accompagnons deux groupes d’enfants, de deux façons différentes.',
+    cycleLabel: { pause: 'Mettre en pause le diaporama', play: 'Reprendre le diaporama' },
     groups: [
       {
         k: 'À plein temps',
@@ -53,6 +55,7 @@ const text = {
         alt: 'Cinq One Love Boys en bonnet de Noël, souriants.',
         pos: '50% 35%',
         href: '/one-love-boys',
+        cycle: [{ src: '/photos/drive/boys-noel-2022.jpg', pos: '50% 35%' }, { src: '/one-love-boys/2022-noel/11.webp', pos: '50% 30%' }, { src: '/one-love-boys/2023-rentree/03.webp', pos: '50% 35%' }, { src: '/one-love-boys/2022-noel/13.webp', pos: '50% 45%' }, { src: '/one-love-boys/2023-famille/03.webp', pos: '50% 45%' }, { src: '/one-love-boys/2022-noel/01.webp', pos: '50% 25%' }],
         more: 'Découvrir les One Love Boys'
       },
       {
@@ -63,6 +66,7 @@ const text = {
         alt: 'Un groupe d’enfants du centre aéré, souriants et serrés les uns contre les autres.',
         pos: '50% 35%',
         href: '/centre-aere',
+        cycle: [{ src: '/centre-aere/2023-12-02/05.webp', pos: '50% 30%' }, { src: '/centre-aere/2023-12-02/09.webp', pos: '50% 40%' }, { src: '/centre-aere/2024-02/04.webp', pos: '50% 30%' }, { src: '/centre-aere/2022-06/06.webp', pos: '50% 35%' }, { src: '/centre-aere/2024-04-24/01.webp', pos: '50% 30%' }, { src: '/centre-aere/2023-12-02/02.webp', pos: '50% 30%' }],
         more: 'Découvrir le centre aéré'
       }
     ],
@@ -72,7 +76,7 @@ const text = {
     daySubtitle: 'Mercredi, samedi et dimanche, au One Love Center.',
     day: [
       ['L’accueil', 'Les enfants arrivent des quartiers alentour. Nos éducateurs les accueillent et soignent les petites blessures, trousse de secours à la main.', 'Des filles éclatent de rire au centre aéré.'],
-      ['Les ateliers', 'Bibliothèque, alphabétisation, informatique, chant et chorale, ateliers de cuisine : chacun choisit et apprend en petit groupe.', 'Des filles jouent à un jeu de société.'],
+      ['Les ateliers', 'Bibliothèque, informatique, chant et chorale, ateliers de cuisine : chacun choisit et apprend en petit groupe.', 'Des filles jouent à un jeu de société.'],
       ['Sport et jeux', 'Football, basket et jeux de société : retrouver confiance et vie en groupe.', 'Des garçons jouent au basket dans la cour.'],
       ['Repas et Parole de Dieu', 'Un goûter avant de rentrer et, le dimanche, la prédication puis un repas de pondu madesu partagé.', 'Un enfant savoure sa glace au centre aéré.']
     ] as const,
@@ -121,6 +125,7 @@ const text = {
     orgTitlePre: 'How One Love is ',
     orgTitleWord: 'organised',
     orgIntro: 'In Kinshasa, we support two groups of children, in two different ways.',
+    cycleLabel: { pause: 'Pause the slideshow', play: 'Resume the slideshow' },
     groups: [
       {
         k: 'Full time',
@@ -130,6 +135,7 @@ const text = {
         alt: 'Five One Love Boys in Christmas hats, smiling.',
         pos: '50% 35%',
         href: '/one-love-boys',
+        cycle: [{ src: '/photos/drive/boys-noel-2022.jpg', pos: '50% 35%' }, { src: '/one-love-boys/2022-noel/11.webp', pos: '50% 30%' }, { src: '/one-love-boys/2023-rentree/03.webp', pos: '50% 35%' }, { src: '/one-love-boys/2022-noel/13.webp', pos: '50% 45%' }, { src: '/one-love-boys/2023-famille/03.webp', pos: '50% 45%' }, { src: '/one-love-boys/2022-noel/01.webp', pos: '50% 25%' }],
         more: 'Discover the One Love Boys'
       },
       {
@@ -140,6 +146,7 @@ const text = {
         alt: 'A group of day-centre children, smiling and huddled together.',
         pos: '50% 35%',
         href: '/centre-aere',
+        cycle: [{ src: '/centre-aere/2023-12-02/05.webp', pos: '50% 30%' }, { src: '/centre-aere/2023-12-02/09.webp', pos: '50% 40%' }, { src: '/centre-aere/2024-02/04.webp', pos: '50% 30%' }, { src: '/centre-aere/2022-06/06.webp', pos: '50% 35%' }, { src: '/centre-aere/2024-04-24/01.webp', pos: '50% 30%' }, { src: '/centre-aere/2023-12-02/02.webp', pos: '50% 30%' }],
         more: 'Discover the day centre'
       }
     ],
@@ -149,7 +156,7 @@ const text = {
     daySubtitle: 'Wednesdays, Saturdays and Sundays, at the One Love Center.',
     day: [
       ['Welcome', 'The children arrive from the surrounding neighbourhoods. Our educators welcome them and treat small injuries, first-aid kit in hand.', 'Girls burst out laughing at the day centre.'],
-      ['Workshops', 'Library, literacy, computers, singing and choir, cooking workshops: everyone chooses and learns in a small group.', 'Girls playing a board game.'],
+      ['Workshops', 'Library, computers, singing and choir, cooking workshops: everyone chooses and learns in a small group.', 'Girls playing a board game.'],
       ['Sport and games', 'Football, basketball and board games: regaining confidence and group life.', 'Boys playing basketball in the courtyard.'],
       ['Meals and the Word of God', 'A snack before going home and, on Sundays, the preaching followed by a shared meal of pondu madesu.', 'A child enjoying an ice cream at the day centre.']
     ] as const,
@@ -318,20 +325,26 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-5">
             {t.groups.map((g, i) => (
               <Reveal key={g.t} delay={i * 90} className="h-full">
-                <Link href={href(g.href)} className="ol-news-card group flex h-full flex-col overflow-hidden rounded-card bg-cream text-ink no-underline shadow-ol-sm hover:text-ink">
+                {/* Carte entière cliquable via le lien du titre (étendu en
+                    ::after) ; le bouton pause du diaporama reste au-dessus. */}
+                <div className="ol-news-card ol-spot group relative flex h-full flex-col overflow-hidden rounded-card bg-cream text-ink shadow-ol-sm">
                   <div className="relative aspect-[16/10] overflow-hidden bg-night">
-                    <Image src={g.img} alt={g.alt} fill sizes="(max-width: 900px) 92vw, 580px" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-[1.03]" style={{ objectPosition: g.pos }} />
+                    <PhotoCycle photos={g.cycle} alt={g.alt} sizes="(max-width: 900px) 92vw, 580px" label={t.cycleLabel} />
                   </div>
                   <div className="flex flex-1 flex-col gap-2.5 p-[clamp(22px,2.6vw,32px)]">
                     <span className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-copper-700">{g.k}</span>
-                    <h3 className="m-0 font-serif text-[clamp(24px,2.4vw,30px)] font-medium text-ink">{g.t}</h3>
+                    <h3 className="m-0 font-serif text-[clamp(24px,2.4vw,30px)] font-medium text-ink">
+                      <Link href={href(g.href)} className="text-ink no-underline after:absolute after:inset-0 after:z-20 after:content-[''] hover:text-ink">
+                        {g.t}
+                      </Link>
+                    </h3>
                     <p className="m-0 flex-1 text-pretty text-[16px] leading-[1.65] text-ink-body">{g.d}</p>
-                    <span className="inline-flex items-center gap-1.5 pt-1 font-extrabold text-copper-700">
+                    <span className="inline-flex items-center gap-1.5 pt-1 font-extrabold text-copper-700" aria-hidden>
                       {g.more}
                       <ArrowRightIcon aria-hidden />
                     </span>
                   </div>
-                </Link>
+                </div>
               </Reveal>
             ))}
           </div>
@@ -364,8 +377,8 @@ export function HomePage({ locale }: { locale: Locale }) {
                           fill
                           sizes={isLead ? '(max-width: 1024px) 92vw, 480px' : '(max-width: 1024px) 46vw, 680px'}
                           loading="lazy"
-                          className="photo-tone object-cover"
-                          style={{ objectPosition: pos }}
+                          className="photo-tone ol-kenburns object-cover"
+                          style={{ objectPosition: pos, animationDelay: `${-i * 4}s` }}
                         />
                       </Reveal>
                       {/* Petites tuiles : texte dès mi-hauteur, dégradé plus haut
@@ -428,7 +441,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           <ScrollFan className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
             {t.ways.map((w) => {
               const Icon = w.icon;
-              const cls = `flex h-full min-h-[280px] flex-col gap-3.5 rounded-card ${w.bg} ${w.fg} px-7 py-8 no-underline transition-transform hover:-translate-y-[3px] hover:${w.fg}`;
+              const cls = `ol-spot flex h-full min-h-[280px] flex-col gap-3.5 rounded-card ${w.bg} ${w.fg} px-7 py-8 no-underline transition-transform hover:-translate-y-[3px] hover:${w.fg}`;
               return (
                 <Link key={w.t} href={href(w.href)} className={cls}>
                   <Icon size={36} className={w.ic} aria-hidden />

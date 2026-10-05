@@ -171,7 +171,8 @@ export function InvolvedInteractive({
               </button>
             </div>
           ) : (
-            <form ref={formRef} onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+            <form ref={formRef} onSubmit={handleSubmit} noValidate className="relative flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-sm">
+              <span className="ol-beam" aria-hidden />
               <p className="m-0 text-[14px] text-ink-soft">
                 {locale === 'fr'
                   ? interest === 'partenariat'

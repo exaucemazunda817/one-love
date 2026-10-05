@@ -81,7 +81,7 @@ export function NewsInteractive({ t }: { t: NewsText }) {
               <Reveal delay={(i % 3) * 90} className="hidden h-full md:block">
                 <Link
                   href={p.url}
-                  className="ol-news-card flex h-full flex-col gap-3 overflow-hidden rounded-card bg-white text-ink no-underline shadow-ol-sm hover:text-ink"
+                  className="ol-news-card ol-spot flex h-full flex-col gap-3 overflow-hidden rounded-card bg-white text-ink no-underline shadow-ol-sm hover:text-ink"
                 >
                   <div className="ol-news-frame relative aspect-[4/3] overflow-hidden">
                     <Reveal variant="zoom" className="absolute inset-0">

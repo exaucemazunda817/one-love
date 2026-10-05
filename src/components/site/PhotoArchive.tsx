@@ -76,12 +76,12 @@ export function PhotoArchive({ months, locale, altPrefix }: { months: CentreMont
               <ul className="m-0 grid list-none grid-cols-2 gap-2 p-0 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
                 {m.photos.map((p, i) => (
                   <li key={p.src}>
-                    <Reveal delay={(i % 4) * 60} className="h-full">
+                    <Reveal variant="photo" delay={(i % 4) * 110} className="h-full">
                       <button
                         type="button"
                         onClick={() => setOpen(start + i)}
                         aria-label={`${t.open} : ${m.label[locale]}`}
-                        className="ol-gallery-frame group relative block aspect-[4/5] w-full cursor-zoom-in overflow-hidden rounded-xl border-0 bg-night p-0"
+                        className="ol-photo-hover group relative block aspect-[4/5] w-full cursor-zoom-in overflow-hidden rounded-xl border-0 bg-night p-0 shadow-ol-sm"
                       >
                         <Image
                           src={p.src}
@@ -89,7 +89,7 @@ export function PhotoArchive({ months, locale, altPrefix }: { months: CentreMont
                           fill
                           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 290px"
                           loading="lazy"
-                          className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                          className="object-cover"
                         />
                       </button>
                     </Reveal>

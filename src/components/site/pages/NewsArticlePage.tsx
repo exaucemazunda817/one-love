@@ -80,7 +80,7 @@ export function NewsArticlePage({ article: a, locale }: { article: NewsArticle; 
           <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-5">
             {others.map((n, i) => (
               <Reveal key={n.slug} delay={i * 80} className="h-full">
-                <Link href={href(`/galerie/${n.slug}`)} className="ol-news-card flex h-full flex-col overflow-hidden rounded-card bg-white text-ink no-underline shadow-ol-sm hover:text-ink">
+                <Link href={href(`/galerie/${n.slug}`)} className="ol-news-card ol-spot flex h-full flex-col overflow-hidden rounded-card bg-white text-ink no-underline shadow-ol-sm hover:text-ink">
                   <div className="relative aspect-[4/3] overflow-hidden bg-night">
                     <Image src={n.img} alt={n.alt[locale]} fill sizes="(max-width: 1200px) 50vw, 380px" loading="lazy" className="photo-tone object-cover" />
                   </div>

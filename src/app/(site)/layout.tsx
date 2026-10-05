@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 // défaut et routes historiques.
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
-    <RootHtml lang="fr">
+    <RootHtml lang="fr" intro>
       <SiteShell locale="fr">{children}</SiteShell>
     </RootHtml>
   );

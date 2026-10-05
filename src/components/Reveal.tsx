@@ -36,7 +36,7 @@ export function Reveal({
   children: React.ReactNode;
   delay?: number;
   className?: string;
-  variant?: 'up' | 'soft' | 'pop' | 'zoom' | 'left' | 'right' | 'scale';
+  variant?: 'up' | 'soft' | 'pop' | 'zoom' | 'left' | 'right' | 'scale' | 'photo';
   // Rejoue l'animation à chaque retour dans l'écran : le bloc se remet en
   // attente dès qu'il est entièrement sorti (comme la FAQ du campus ENA).
   // Activé par défaut sur tout le site depuis le 26/09/2026, à la demande de

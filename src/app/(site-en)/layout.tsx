@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 // Layout RACINE (voir RootHtml.tsx) du site public en anglais, sous /en.
 export default function EnglishSiteLayout({ children }: { children: React.ReactNode }) {
   return (
-    <RootHtml lang="en">
+    <RootHtml lang="en" intro>
       <SiteShell locale="en">{children}</SiteShell>
     </RootHtml>
   );

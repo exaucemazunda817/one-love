@@ -758,7 +758,8 @@ export function DonationFlow({ locale, cardEnabled }: { locale: Locale; cardEnab
         </div>
 
         {/* Récapitulatif — sticky */}
-        <div className="flex flex-col gap-4 rounded-card bg-night p-7 text-cream dk:sticky dk:top-[100px]">
+        <div className="flex flex-col gap-4 rounded-card bg-night relative p-7 text-cream dk:sticky dk:top-[100px]">
+              <span className="ol-beam" aria-hidden />
           <h3 className="m-0 font-serif text-[20px] font-semibold">{t.summary}</h3>
           <div>
             <span className="block font-serif text-[36px] font-semibold leading-none">{amountStr}</span>

@@ -206,7 +206,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                 role="radio"
                 aria-checked={plan === i}
                 onClick={() => setPlan(i)}
-                className={`relative flex cursor-pointer flex-col gap-3.5 rounded-card border-2 px-6 py-7 text-left ${
+                className={`ol-spot relative flex cursor-pointer flex-col gap-3.5 rounded-card border-2 px-6 py-7 text-left ${
                   plan === i ? 'border-copper-600 bg-white shadow-ol-hover' : 'border-card-line bg-sand'
                 }`}
               >
@@ -344,7 +344,8 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
           </Reveal>
 
           <Reveal delay={90}>
-            <form ref={formRef} onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-lg">
+            <form ref={formRef} onSubmit={handleSubmit} noValidate className="relative flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-lg">
+              <span className="ol-beam" aria-hidden />
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-3.5">
                   <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
                     <span className="text-[15px] font-bold">{t.firstName}</span>
