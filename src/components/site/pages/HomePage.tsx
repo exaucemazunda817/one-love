@@ -202,7 +202,7 @@ export function HomePage({ locale }: { locale: Locale }) {
     <>
       {/* Hero — desktop */}
       <section className="relative hidden min-h-[min(88vh,780px)] overflow-hidden bg-night text-cream dk:flex dk:items-center">
-        <HeroBackground still src="/photos/hero-accueil.jpg" alt={t.heroImgAlt} position="50% 30%" />
+        <HeroBackground src="/photos/hero-accueil.jpg" alt={t.heroImgAlt} position="50% 30%" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
         <div className="relative mx-auto w-full max-w-[1280px] px-12 py-24">
           <div className="flex max-w-[600px] flex-col gap-7">
@@ -235,7 +235,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       {/* Hero — mobile */}
       <section className="relative flex min-h-svh flex-col justify-end overflow-hidden bg-night text-cream dk:hidden">
-        <HeroBackground still src="/photos/hero-accueil.jpg" alt={t.heroImgAlt} position="52% 30%" />
+        <HeroBackground src="/photos/hero-accueil.jpg" alt={t.heroImgAlt} position="52% 30%" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)]" />
         <div className="relative flex flex-col items-center gap-[14px] px-5 pb-10 pt-[120px] text-center">
           <Eyebrow dark className="text-[12px]">
