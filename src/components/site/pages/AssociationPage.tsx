@@ -180,6 +180,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
         intro={t.intro}
         image="/one-love-boys/2023-famille/02.webp"
         imageAlt={t.heroAlt}
+        still
         cta={{ donate: t.donate, sponsor: t.sponsor }}
       />
 
