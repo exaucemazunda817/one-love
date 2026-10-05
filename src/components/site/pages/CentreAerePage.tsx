@@ -9,8 +9,8 @@ import { CENTRE_MONTHS } from '@/lib/centre-aere';
 import { localeHref, type Locale } from '@/lib/i18n';
 
 // Page du centre aéré. Textes : publications de l'association (Instagram,
-// 2021-2025) et précisions de Mazunda du 05/10/2026 (dimanche : Parole de Dieu,
-// puis repas de pondu madesu). Photos : Drive de l'association, classées par
+// 2021-2025) et précisions de Mazunda du 05/10/2026 (dimanche : Parole de Dieu
+// de 14h à 15h, puis riz et haricots ; One Love Ministry, dans le centre aéré). Photos : Drive de l'association, classées par
 // année et par mois.
 
 const text = {
@@ -38,7 +38,7 @@ const text = {
       { icon: SoccerBallIcon, t: 'Sport et jeux', d: 'Football, basketball, jeux de société, jouets : on joue, on rit, on apprend à vivre ensemble et on reprend confiance.' },
       { icon: ClockIcon, t: 'Le déroulé, de 12h30 à 16h', d: 'Les animateurs arrivent à 12h30 et préparent les jeux du jour dès 13h. Les enfants sont inscrits à 13h30, entrent à 14h pour un temps de prière et de consignes, puis jouent en groupes de 5 ou de 10. Vers 15h30, bilan, prière et jus et pain, avant la sortie à 16h pile.' },
       { icon: BowlFoodIcon, t: 'Le goûter', d: 'Avant de rentrer chez eux, les enfants partagent un goûter ou un repas.' },
-      { icon: HandsPrayingIcon, t: 'Le dimanche', d: 'Les enfants écoutent la prédication, une Parole de Dieu qui les nourrit spirituellement et les aide à grandir. À la fin, ils partagent un repas de pondu madesu (feuilles de manioc et haricots).' },
+      { icon: HandsPrayingIcon, t: 'Le dimanche', d: 'Chaque dimanche, de 14h à 16h, les enfants se retrouvent au sein de One Love Ministry, qui fait partie du centre aéré. Ils écoutent la Parole de Dieu, qui les nourrit spirituellement et les aide à grandir, puis on leur sert un repas de riz et de haricots.' },
       { icon: FirstAidIcon, t: 'Soins et écoute', d: 'Beaucoup d’enfants arrivent avec des plaies ou des soucis de santé. Nos éducateurs, formés aux premiers secours, les soignent, et nous veillons sur leur santé et sur leur cœur.' }
     ],
     galleryEyebrow: 'En images',
@@ -75,7 +75,7 @@ const text = {
       { icon: SoccerBallIcon, t: 'Sport and games', d: 'Football, basketball, board games, toys: we play, laugh, learn to live together and regain confidence.' },
       { icon: ClockIcon, t: 'The schedule, 12:30 to 4 pm', d: 'Facilitators arrive at 12:30 and prepare the day’s games from 1 pm. The children sign in at 1:30 pm, enter at 2 pm for a time of prayer and guidelines, then play in groups of 5 or 10. Around 3:30 pm, a review, a prayer and juice and bread, before the 4 pm sharp finish.' },
       { icon: BowlFoodIcon, t: 'Snack time', d: 'Before going home, the children share a snack or a meal.' },
-      { icon: HandsPrayingIcon, t: 'On Sundays', d: 'The children listen to the preaching, a Word of God that feeds them spiritually and helps them grow. At the end, they share a meal of pondu madesu (cassava leaves and beans).' },
+      { icon: HandsPrayingIcon, t: 'On Sundays', d: 'Every Sunday, from 2 pm to 4 pm, the children gather within One Love Ministry, which is part of the day centre. They listen to the Word of God, which feeds them spiritually and helps them grow, then are served a meal of rice and beans.' },
       { icon: FirstAidIcon, t: 'Care and listening', d: 'Many children arrive with wounds or health problems. Our educators, trained in first aid, take care of them, and we look after their health and their hearts.' }
     ],
     galleryEyebrow: 'In pictures',

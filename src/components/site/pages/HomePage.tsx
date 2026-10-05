@@ -74,7 +74,7 @@ const text = {
       {
         k: 'Chaque semaine',
         t: 'Les enfants du centre aéré',
-        d: 'Des enfants des quartiers défavorisés, filles et garçons de 5 à 12 ans et de 13 à 17 ans, qui viennent au One Love Center le mercredi, le samedi et le dimanche. Le mercredi est réservé aux jeux et à un film ; le samedi, ce sont les ateliers ; le dimanche, la Parole de Dieu et un repas. Ils y trouvent un lieu sûr pour apprendre, jouer, partager un repas et, le dimanche, écouter la Parole de Dieu. Ils sont une centaine chaque semaine.',
+        d: 'Des enfants des quartiers défavorisés, filles et garçons de 5 à 12 ans et de 13 à 17 ans, qui viennent au One Love Center le mercredi, le samedi et le dimanche. Le mercredi est réservé aux jeux et à un film ; le samedi, ce sont les ateliers ; le dimanche, la Parole de Dieu (One Love Ministry) et un repas. Ils y trouvent un lieu sûr pour apprendre, jouer, partager un repas et, le dimanche, écouter la Parole de Dieu. Ils sont une centaine chaque semaine.',
         img: '/centre-aere/2023-12-02/05.webp',
         alt: 'Un groupe d’enfants du centre aéré, souriants et serrés les uns contre les autres.',
         pos: '50% 35%',
@@ -91,7 +91,7 @@ const text = {
       ['L’accueil', 'Nos animateurs arrivent à 12h30 et préparent, dès 13h, les jeux du jour autour d’un thème. À 13h30, une ou deux personnes inscrivent les enfants, qui entrent dans le centre à 14h pile.', 'Des filles éclatent de rire au centre aéré.'],
       ['Prière et consignes', 'À 14h, un temps de prière, de motivation et de consignes : le thème de la journée, ce qu’on va faire et ce qu’il ne faut pas faire.', 'Des filles jouent à un jeu de société.'],
       ['Jeux et activités', 'On commence par des jeux de groupe pour apprendre à se connaître, en équipes de 5 ou de 10 selon les animateurs. Le thème est éducatif et amusant, pour que personne ne s’ennuie. Le mercredi, c’est jeux, puis un film ; le samedi, des ateliers s’y ajoutent.', 'Des garçons jouent au basket dans la cour.'],
-      ['Clôture et goûter', 'Vers 15h30, un bilan (ce qui s’est passé, ce que chacun a aimé), une prière, puis jus et pain pour tous. Sortie à 16h pile. Le dimanche, la prédication puis un repas partagé.', 'Un enfant savoure sa glace au centre aéré.']
+      ['Clôture et goûter', 'Vers 15h30, un bilan (ce qui s’est passé, ce que chacun a aimé), une prière, puis jus et pain pour tous. Sortie à 16h pile. Le dimanche, de 14h à 16h, la Parole de Dieu puis du riz et des haricots.', 'Un enfant savoure sa glace au centre aéré.']
     ] as const,
     projectEyebrow: 'Projet en cours · sept. à déc. 2026',
     projectSupport: 'Soutenir RÊVES 2',
@@ -154,7 +154,7 @@ const text = {
       {
         k: 'Every week',
         t: 'The day-centre children',
-        d: 'Children from disadvantaged neighbourhoods, girls and boys aged 5 to 12 and 13 to 17, who come to the One Love Center on Wednesdays, Saturdays and Sundays. Wednesday is reserved for games and a film; Saturday is for workshops; Sunday is for the Word of God and a meal. They find a safe place there to learn, play, share a meal and, on Sundays, hear the Word of God. Around a hundred come every week.',
+        d: 'Children from disadvantaged neighbourhoods, girls and boys aged 5 to 12 and 13 to 17, who come to the One Love Center on Wednesdays, Saturdays and Sundays. Wednesday is reserved for games and a film; Saturday is for workshops; Sunday is for the Word of God (One Love Ministry) and a meal. They find a safe place there to learn, play, share a meal and, on Sundays, hear the Word of God. Around a hundred come every week.',
         img: '/centre-aere/2023-12-02/05.webp',
         alt: 'A group of day-centre children, smiling and huddled together.',
         pos: '50% 35%',
@@ -171,7 +171,7 @@ const text = {
       ['Welcome', 'Our facilitators arrive at 12:30 and, from 1 pm, prepare the day’s games around a theme. At 1:30 pm, one or two people sign the children in, and they enter the centre at 2 pm sharp.', 'Girls burst out laughing at the day centre.'],
       ['Prayer and guidelines', 'At 2 pm, a time of prayer, encouragement and guidelines: the theme of the day, what we will do and what we must not do.', 'Girls playing a board game.'],
       ['Games and activities', 'We start with group games so the children get to know each other, in teams of 5 or 10 depending on the facilitators. The theme is educational and fun, so nobody gets bored. On Wednesdays it is games, then a film; on Saturdays, workshops are added.', 'Boys playing basketball in the courtyard.'],
-      ['Closing and snack', 'Around 3:30 pm, a review (what happened, what each child enjoyed), a prayer, then juice and bread for everyone. Out at 4 pm sharp. On Sundays, the preaching, then a shared meal.', 'A child enjoying an ice cream at the day centre.']
+      ['Closing and snack', 'Around 3:30 pm, a review (what happened, what each child enjoyed), a prayer, then juice and bread for everyone. Out at 4 pm sharp. On Sundays, from 2 pm to 4 pm, the Word of God, then rice and beans.', 'A child enjoying an ice cream at the day centre.']
     ] as const,
     projectEyebrow: 'Current project · Sept. to Dec. 2026',
     projectSupport: 'Support RÊVES 2',
