@@ -86,12 +86,12 @@ const text = {
     dayEyebrow: 'Le programme',
     dayTitlePre: 'Un après-midi au ',
     dayTitleWord: 'centre aéré',
-    daySubtitle: 'Mercredi, samedi et dimanche, au One Love Center.',
+    daySubtitle: 'Le mercredi et le samedi, de 14h à 16h, au One Love Center.',
     day: [
-      ['L’accueil', 'Les enfants arrivent des quartiers alentour. Nos éducateurs les accueillent et soignent les petites blessures, trousse de secours à la main.', 'Des filles éclatent de rire au centre aéré.'],
-      ['Les ateliers du samedi', 'Bibliothèque, informatique, chant et chorale, ateliers de cuisine : chacun choisit et apprend en petit groupe.', 'Des filles jouent à un jeu de société.'],
-      ['Sport et jeux', 'Football, basket et jeux de société : retrouver confiance et vie en groupe. Le mercredi est réservé aux jeux, puis les enfants regardent un film ensemble.', 'Des garçons jouent au basket dans la cour.'],
-      ['Repas et Parole de Dieu', 'Un goûter avant de rentrer et, le dimanche, la prédication puis un repas de pondu madesu partagé.', 'Un enfant savoure sa glace au centre aéré.']
+      ['L’accueil', 'Nos animateurs arrivent à 12h30 et préparent, dès 13h, les jeux du jour autour d’un thème. À 13h30, une ou deux personnes inscrivent les enfants, qui entrent dans le centre à 14h pile.', 'Des filles éclatent de rire au centre aéré.'],
+      ['Prière et consignes', 'À 14h, un temps de prière, de motivation et de consignes : le thème de la journée, ce qu’on va faire et ce qu’il ne faut pas faire.', 'Des filles jouent à un jeu de société.'],
+      ['Jeux et activités', 'On commence par des jeux de groupe pour apprendre à se connaître, en équipes de 5 ou de 10 selon les animateurs. Le thème est éducatif et amusant, pour que personne ne s’ennuie. Le mercredi, c’est jeux, puis un film ; le samedi, des ateliers s’y ajoutent.', 'Des garçons jouent au basket dans la cour.'],
+      ['Clôture et goûter', 'Vers 15h30, un bilan (ce qui s’est passé, ce que chacun a aimé), une prière, puis jus et pain pour tous. Sortie à 16h pile. Le dimanche, la prédication puis un repas partagé.', 'Un enfant savoure sa glace au centre aéré.']
     ] as const,
     projectEyebrow: 'Projet en cours · sept. à déc. 2026',
     projectSupport: 'Soutenir RÊVES 2',
@@ -166,12 +166,12 @@ const text = {
     dayEyebrow: 'The programme',
     dayTitlePre: 'An afternoon at the ',
     dayTitleWord: 'day centre',
-    daySubtitle: 'Wednesdays, Saturdays and Sundays, at the One Love Center.',
+    daySubtitle: 'Wednesdays and Saturdays, from 2 pm to 4 pm, at the One Love Center.',
     day: [
-      ['Welcome', 'The children arrive from the surrounding neighbourhoods. Our educators welcome them and treat small injuries, first-aid kit in hand.', 'Girls burst out laughing at the day centre.'],
-      ['Saturday workshops', 'Library, computers, singing and choir, cooking workshops: everyone chooses and learns in a small group.', 'Girls playing a board game.'],
-      ['Sport and games', 'Football, basketball and board games: regaining confidence and group life. Wednesday is reserved for games, then the children watch a film together.', 'Boys playing basketball in the courtyard.'],
-      ['Meals and the Word of God', 'A snack before going home and, on Sundays, the preaching followed by a shared meal of pondu madesu.', 'A child enjoying an ice cream at the day centre.']
+      ['Welcome', 'Our facilitators arrive at 12:30 and, from 1 pm, prepare the day’s games around a theme. At 1:30 pm, one or two people sign the children in, and they enter the centre at 2 pm sharp.', 'Girls burst out laughing at the day centre.'],
+      ['Prayer and guidelines', 'At 2 pm, a time of prayer, encouragement and guidelines: the theme of the day, what we will do and what we must not do.', 'Girls playing a board game.'],
+      ['Games and activities', 'We start with group games so the children get to know each other, in teams of 5 or 10 depending on the facilitators. The theme is educational and fun, so nobody gets bored. On Wednesdays it is games, then a film; on Saturdays, workshops are added.', 'Boys playing basketball in the courtyard.'],
+      ['Closing and snack', 'Around 3:30 pm, a review (what happened, what each child enjoyed), a prayer, then juice and bread for everyone. Out at 4 pm sharp. On Sundays, the preaching, then a shared meal.', 'A child enjoying an ice cream at the day centre.']
     ] as const,
     projectEyebrow: 'Current project · Sept. to Dec. 2026',
     projectSupport: 'Support RÊVES 2',
