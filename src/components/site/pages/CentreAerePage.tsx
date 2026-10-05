@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { HeartIcon, BookOpenIcon, SoccerBallIcon, BowlFoodIcon, HandsPrayingIcon, FirstAidIcon } from '@phosphor-icons/react/ssr';
+import { HeartIcon, PlayIcon, BookOpenIcon, SoccerBallIcon, BowlFoodIcon, HandsPrayingIcon, FirstAidIcon } from '@phosphor-icons/react/ssr';
 import { pageMetadata } from '@/lib/seo';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
@@ -33,7 +33,8 @@ const text = {
     daysTitlePre: 'Mercredi, samedi et ',
     daysTitleWord: 'dimanche',
     days: [
-      { icon: BookOpenIcon, t: 'Mercredi et samedi après-midi', d: 'Accueil des enfants, puis ateliers en petits groupes : bibliothèque et lecture, informatique, chant et chorale, ateliers de cuisine animés par nos bénévoles.' },
+      { icon: PlayIcon, t: 'Le mercredi : jeux et film', d: 'Le mercredi est exclusivement réservé aux jeux. Les enfants jouent ensemble, puis regardent un film.' },
+      { icon: BookOpenIcon, t: 'Le samedi après-midi', d: 'Accueil des enfants, puis ateliers en petits groupes : bibliothèque et lecture, informatique, chant et chorale, ateliers de cuisine animés par nos bénévoles.' },
       { icon: SoccerBallIcon, t: 'Sport et jeux', d: 'Football, basketball, jeux de société, jouets : on joue, on rit, on apprend à vivre ensemble et on reprend confiance.' },
       { icon: BowlFoodIcon, t: 'Le goûter', d: 'Avant de rentrer chez eux, les enfants partagent un goûter ou un repas.' },
       { icon: HandsPrayingIcon, t: 'Le dimanche', d: 'Les enfants écoutent la prédication, une Parole de Dieu qui les nourrit spirituellement et les aide à grandir. À la fin, ils partagent un repas de pondu madesu (feuilles de manioc et haricots).' },
@@ -68,7 +69,8 @@ const text = {
     daysTitlePre: 'Wednesday, Saturday and ',
     daysTitleWord: 'Sunday',
     days: [
-      { icon: BookOpenIcon, t: 'Wednesday and Saturday afternoons', d: 'The children are welcomed, then workshops in small groups: library and reading, computers, singing and choir, cooking workshops led by our volunteers.' },
+      { icon: PlayIcon, t: 'Wednesdays: games and a film', d: 'Wednesday is reserved exclusively for games. The children play together, then watch a film.' },
+      { icon: BookOpenIcon, t: 'Saturday afternoons', d: 'The children are welcomed, then workshops in small groups: library and reading, computers, singing and choir, cooking workshops led by our volunteers.' },
       { icon: SoccerBallIcon, t: 'Sport and games', d: 'Football, basketball, board games, toys: we play, laugh, learn to live together and regain confidence.' },
       { icon: BowlFoodIcon, t: 'Snack time', d: 'Before going home, the children share a snack or a meal.' },
       { icon: HandsPrayingIcon, t: 'On Sundays', d: 'The children listen to the preaching, a Word of God that feeds them spiritually and helps them grow. At the end, they share a meal of pondu madesu (cassava leaves and beans).' },

@@ -74,7 +74,7 @@ const text = {
       {
         k: 'Chaque semaine',
         t: 'Les enfants du centre aéré',
-        d: 'Des enfants des quartiers défavorisés, filles et garçons de 5 à 12 ans et de 13 à 17 ans, qui viennent au One Love Center le mercredi, le samedi et le dimanche. Ils y trouvent un lieu sûr pour apprendre, jouer, partager un repas et, le dimanche, écouter la Parole de Dieu. Ils sont une centaine chaque semaine.',
+        d: 'Des enfants des quartiers défavorisés, filles et garçons de 5 à 12 ans et de 13 à 17 ans, qui viennent au One Love Center le mercredi, le samedi et le dimanche. Le mercredi est réservé aux jeux et à un film ; le samedi, ce sont les ateliers ; le dimanche, la Parole de Dieu et un repas. Ils y trouvent un lieu sûr pour apprendre, jouer, partager un repas et, le dimanche, écouter la Parole de Dieu. Ils sont une centaine chaque semaine.',
         img: '/centre-aere/2023-12-02/05.webp',
         alt: 'Un groupe d’enfants du centre aéré, souriants et serrés les uns contre les autres.',
         pos: '50% 35%',
@@ -89,8 +89,8 @@ const text = {
     daySubtitle: 'Mercredi, samedi et dimanche, au One Love Center.',
     day: [
       ['L’accueil', 'Les enfants arrivent des quartiers alentour. Nos éducateurs les accueillent et soignent les petites blessures, trousse de secours à la main.', 'Des filles éclatent de rire au centre aéré.'],
-      ['Les ateliers', 'Bibliothèque, informatique, chant et chorale, ateliers de cuisine : chacun choisit et apprend en petit groupe.', 'Des filles jouent à un jeu de société.'],
-      ['Sport et jeux', 'Football, basket et jeux de société : retrouver confiance et vie en groupe.', 'Des garçons jouent au basket dans la cour.'],
+      ['Les ateliers du samedi', 'Bibliothèque, informatique, chant et chorale, ateliers de cuisine : chacun choisit et apprend en petit groupe.', 'Des filles jouent à un jeu de société.'],
+      ['Sport et jeux', 'Football, basket et jeux de société : retrouver confiance et vie en groupe. Le mercredi est réservé aux jeux, puis les enfants regardent un film ensemble.', 'Des garçons jouent au basket dans la cour.'],
       ['Repas et Parole de Dieu', 'Un goûter avant de rentrer et, le dimanche, la prédication puis un repas de pondu madesu partagé.', 'Un enfant savoure sa glace au centre aéré.']
     ] as const,
     projectEyebrow: 'Projet en cours · sept. à déc. 2026',
@@ -154,7 +154,7 @@ const text = {
       {
         k: 'Every week',
         t: 'The day-centre children',
-        d: 'Children from disadvantaged neighbourhoods, girls and boys aged 5 to 12 and 13 to 17, who come to the One Love Center on Wednesdays, Saturdays and Sundays. They find a safe place there to learn, play, share a meal and, on Sundays, hear the Word of God. Around a hundred come every week.',
+        d: 'Children from disadvantaged neighbourhoods, girls and boys aged 5 to 12 and 13 to 17, who come to the One Love Center on Wednesdays, Saturdays and Sundays. Wednesday is reserved for games and a film; Saturday is for workshops; Sunday is for the Word of God and a meal. They find a safe place there to learn, play, share a meal and, on Sundays, hear the Word of God. Around a hundred come every week.',
         img: '/centre-aere/2023-12-02/05.webp',
         alt: 'A group of day-centre children, smiling and huddled together.',
         pos: '50% 35%',
@@ -169,8 +169,8 @@ const text = {
     daySubtitle: 'Wednesdays, Saturdays and Sundays, at the One Love Center.',
     day: [
       ['Welcome', 'The children arrive from the surrounding neighbourhoods. Our educators welcome them and treat small injuries, first-aid kit in hand.', 'Girls burst out laughing at the day centre.'],
-      ['Workshops', 'Library, computers, singing and choir, cooking workshops: everyone chooses and learns in a small group.', 'Girls playing a board game.'],
-      ['Sport and games', 'Football, basketball and board games: regaining confidence and group life.', 'Boys playing basketball in the courtyard.'],
+      ['Saturday workshops', 'Library, computers, singing and choir, cooking workshops: everyone chooses and learns in a small group.', 'Girls playing a board game.'],
+      ['Sport and games', 'Football, basketball and board games: regaining confidence and group life. Wednesday is reserved for games, then the children watch a film together.', 'Boys playing basketball in the courtyard.'],
       ['Meals and the Word of God', 'A snack before going home and, on Sundays, the preaching followed by a shared meal of pondu madesu.', 'A child enjoying an ice cream at the day centre.']
     ] as const,
     projectEyebrow: 'Current project · Sept. to Dec. 2026',
