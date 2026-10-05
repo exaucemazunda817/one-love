@@ -82,6 +82,8 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // Qualité 85 pour les photos de bandeau (nettes sur écran à 3 pixels par point).
+    qualities: [75, 85],
     // Plafonné à 1920 px : le réglage par défaut monte à 3840 px et fabrique à
     // la demande des images géantes pour des cadres de 320 px (1,3 à 2,4 s
     // chacune, mesuré sur gospel-nation).
