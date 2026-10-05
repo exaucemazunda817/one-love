@@ -1,9 +1,17 @@
 // Photos d'enfants qui tournent, au hasard, dans les bandeaux des pages.
-// Ce sont les cinq clichés fournis par l'association pour le site.
+// Originaux du Drive de l'association (centre aéré et One Love Boys), aucune
+// photo du programme RÊVES 2 (demande de Mazunda du 05/10/2026).
 export const HERO_PHOTOS = [
-  { src: '/photos/photo-joie.jpg', position: '50% 38%' },
-  { src: '/photos/photo-ecriture.jpg', position: '50% 28%' },
-  { src: '/photos/photo-dessin.jpg', position: '50% 40%' },
-  { src: '/photos/photo-mains.jpg', position: '50% 45%' },
-  { src: '/photos/photo-cahier.jpg', position: '50% 28%' }
+  { src: '/centre-aere/2022-06/06.webp', position: '50% 35%' },
+  { src: '/centre-aere/2023-12-02/05.webp', position: '50% 30%' },
+  { src: '/centre-aere/2023-12-02/07.webp', position: '50% 35%' },
+  { src: '/centre-aere/2023-12-02/08.webp', position: '50% 30%' },
+  { src: '/centre-aere/2023-12-02/09.webp', position: '50% 40%' },
+  { src: '/centre-aere/2024-02/03.webp', position: '50% 35%' },
+  { src: '/centre-aere/2024-02/04.webp', position: '50% 30%' },
+  { src: '/centre-aere/2024-03/03.webp', position: '50% 30%' },
+  { src: '/centre-aere/2024-04-24/01.webp', position: '50% 30%' },
+  { src: '/one-love-boys/2022-noel/11.webp', position: '50% 35%' },
+  { src: '/one-love-boys/2022-noel/13.webp', position: '50% 40%' },
+  { src: '/one-love-boys/2023-rentree/03.webp', position: '50% 35%' }
 ] as const;

@@ -73,7 +73,7 @@ export function DonsPage({ locale }: { locale: Locale }) {
   return (
     <>
       <section className="relative overflow-hidden bg-night text-cream">
-        <HeroBackground src="/photos/photo-ecriture.jpg" alt="" position="70% 30%" />
+        <HeroBackground src="/centre-aere/2024-02/04.webp" alt="" position="50% 30%" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_45%,var(--scrim-2)_100%)]" />
         <div className="relative mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pb-[clamp(48px,7vw,88px)] pt-[clamp(120px,12vw,148px)]">
           <Reveal eager className="mx-auto flex max-w-[620px] flex-col items-center gap-[18px] text-center dk:mx-0 dk:max-w-none dk:items-start dk:text-left">

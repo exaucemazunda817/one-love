@@ -16,7 +16,7 @@ const text = {
     titlePre: 'Rendre compte de chaque ',
     titleWord: 'euro',
     intro: 'Statut, emploi des fonds et protection des enfants : ce que vous avez le droit de savoir de notre part.',
-    heroAlt: 'Une jeune fille écrit dans son cahier.',
+    heroAlt: 'Les One Love Boys en uniforme, sur le chemin de l’école.',
     statusTitle: 'Statut juridique',
     statusText: 'Nous sommes une association loi 1901 à but non lucratif et nous menons nos projets en République démocratique du Congo.',
     fields: [
@@ -41,7 +41,7 @@ const text = {
     titlePre: 'Accounting for every ',
     titleWord: 'euro',
     intro: 'Legal status, use of funds and child protection: what you have a right to know.',
-    heroAlt: 'A girl writes in her notebook.',
+    heroAlt: 'The One Love Boys in uniform, on their way to school.',
     statusTitle: 'Legal status',
     statusText: 'We are a French non-profit association (loi 1901) carrying out our projects in the Democratic Republic of the Congo.',
     fields: [
@@ -77,7 +77,7 @@ export function TransparencyPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/photos/photo-ecriture.jpg"
+        image="/one-love-boys/2023-rentree/03.webp"
         imageAlt={t.heroAlt}
       />
 

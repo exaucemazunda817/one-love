@@ -18,7 +18,7 @@ const text = {
     titleWord: 'temps,',
     titlePost: ' de ses talents',
     intro: "Vous pouvez soutenir nos programmes de terrain, rejoindre notre équipe comme bénévole, ou construire un partenariat avec notre association.",
-    heroAlt: 'Deux garçons dessinent à une table en plein air.',
+    heroAlt: 'Des garçons du centre aéré, souriants, épaule contre épaule.',
     waysTitle: "Quatre façons de s’impliquer",
     ways: [
       { k: 'benevolat' as const, t: 'Bénévolat', d: 'À Kinshasa pour les ateliers, ou à distance : communication, traduction, recherche de fonds.', cta: 'Proposer mon aide' },
@@ -60,7 +60,7 @@ const text = {
     titleWord: 'time',
     titlePost: ' and your talents',
     intro: 'You can support our field programmes, join our team as a volunteer, or build a partnership with our association.',
-    heroAlt: 'Two boys drawing at an outdoor table.',
+    heroAlt: 'Boys from the day centre, smiling, shoulder to shoulder.',
     waysTitle: 'Four ways to get involved',
     ways: [
       { k: 'benevolat' as const, t: 'Volunteering', d: 'In Kinshasa for workshops, or remotely: communication, translation, fundraising.', cta: 'Offer my help' },
@@ -113,7 +113,7 @@ export function InvolvedPage({ locale }: { locale: Locale }) {
         titleWord={t.titleWord}
         titlePost={t.titlePost}
         intro={t.intro}
-        image="/photos/photo-dessin.jpg"
+        image="/centre-aere/2022-06/06.webp"
         imageAlt={t.heroAlt}
       />
 

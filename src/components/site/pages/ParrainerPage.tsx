@@ -17,7 +17,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     heroWord: 'mois après mois',
     heroPost: '.',
     heroIntro: "Le parrainage assure la continuité : l’école, le suivi médical, l’écoute. Vous recevez des nouvelles régulières, dans le respect de la vie privée de l’enfant.",
-    heroAlt: 'Un garçon rit et fait le signe de la paix, assis sur un muret du jardin.',
+    heroAlt: 'Un garçon du centre aéré éclate de rire.',
     heroCta: 'Devenir parrain',
     heroScroll: 'Comment ça marche',
     howTitle: 'Comment ça marche',
@@ -91,7 +91,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     heroWord: 'month after month',
     heroPost: '.',
     heroIntro: "Sponsorship provides continuity: school, medical care, someone to listen. You receive regular updates, always respecting the child’s privacy.",
-    heroAlt: 'A boy laughs and makes a peace sign, sitting on a garden wall.',
+    heroAlt: 'A boy from the day centre bursts out laughing.',
     heroCta: 'Become a sponsor',
     heroScroll: 'How it works',
     howTitle: 'How it works',
@@ -174,7 +174,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
         style={{ minHeight: 'min(80vh,720px)' }}
       >
         <div className="relative flex min-h-svh w-full items-end dk:min-h-0 dk:items-center">
-          <HeroBackground src="/photos/photo-joie.jpg" alt={t.heroAlt} position="45% 30%" />
+          <HeroBackground src="/centre-aere/2023-12-02/02.webp" alt={t.heroAlt} position="50% 30%" />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)] dk:bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
           <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
             <Reveal eager className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:mx-0 dk:items-start dk:text-left dk:gap-6">
