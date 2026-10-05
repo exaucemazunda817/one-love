@@ -11,6 +11,8 @@ const paths = [
   '/actions',
   '/projets/reves-2',
   '/projets/village',
+  '/centre-aere',
+  '/one-love-boys',
   '/parrainer',
   '/s-impliquer',
   '/transparence',
