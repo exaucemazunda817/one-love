@@ -1,11 +1,10 @@
 'use client';
 
-import { getImageProps } from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { PauseIcon, PlayIcon } from '@phosphor-icons/react';
-import { HERO_PHOTOS } from '@/lib/hero-photos';
-import { HERO_MOBILE } from '@/lib/hero-mobile';
+import { HERO_PHOTOS, DESKTOP_SKIP, MOBILE_SKIP } from '@/lib/hero-photos';
+import { HeroLayer } from '@/components/site/HeroPicture';
 
 type Photo = { src: string; position: string };
 type Layer = 0 | 1;
@@ -13,26 +12,6 @@ type Layer = 0 | 1;
 const FIRST_DELAY_MS = 5000;
 const EVERY_MS = 6000;
 const FADE_MS = 1400;
-
-// Une couche photo. Sous 1200 px (téléphone et tablette, où le bandeau est en
-// hauteur) le navigateur prend la version verticale de la photo, découpée sur
-// les visages depuis l'original ; au-dessus, la version paysage. Une seule des
-// deux est téléchargée (balise <picture>, rendue côté serveur : pas de saut).
-function HeroLayer({ photo, alt, priority, onLoad, className, style }: { photo: Photo; alt: string; priority: boolean; onLoad: () => void; className: string; style: React.CSSProperties }) {
-  const common = { alt, fill: true as const, sizes: '100vw', priority, quality: 85, className, style };
-  const { props: desk } = getImageProps({ ...common, src: photo.src });
-  const mobileSrc = HERO_MOBILE[photo.src];
-  // eslint-disable-next-line @next/next/no-img-element
-  const img = <img {...desk} alt={alt} onLoad={onLoad} />;
-  if (!mobileSrc) return img;
-  const { props: mob } = getImageProps({ ...common, src: mobileSrc });
-  return (
-    <picture>
-      <source media="(max-width: 1199px)" srcSet={mob.srcSet} sizes="100vw" />
-      {img}
-    </picture>
-  );
-}
 
 // Image de fond d'un bandeau : la photo de la page s'affiche d'abord (rendu
 // serveur, sans attente), puis une photo d'enfant tirée au hasard passe par-
@@ -101,7 +80,8 @@ export function HeroBackground({
     const nextPhoto = (): Photo => {
       const shownSrc = photosRef.current[frontRef.current]?.src;
       if (bag.current.length === 0) {
-        const pool = (poolProp ?? HERO_PHOTOS).filter((p) => p.src !== shownSrc).map((p) => ({ ...p }));
+        const wide = window.matchMedia('(min-width: 1200px)').matches;
+        const pool = (poolProp ?? HERO_PHOTOS).filter((p) => p.src !== shownSrc && !(wide ? DESKTOP_SKIP.has(p.src) : MOBILE_SKIP.has(p.src))).map((p) => ({ ...p }));
         for (let i = pool.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [pool[i], pool[j]] = [pool[j], pool[i]];

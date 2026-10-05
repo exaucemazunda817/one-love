@@ -15,7 +15,7 @@ const text = {
     titlePre: 'Écrivez-nous, nous ',
     titleWord: 'répondons',
     intro: 'Une question sur un don, un parrainage, une visite ou un partenariat : écrivez-nous par le formulaire, par e-mail ou sur nos réseaux sociaux.',
-    heroAlt: "Des enfants du centre aéré font des grimaces en riant.",
+    heroAlt: "Un garçon du centre aéré sourit, un jouet à la main.",
     email: 'E-mail',
     facebook: 'Facebook',
     instagram: 'Instagram',
@@ -43,7 +43,7 @@ const text = {
     titlePre: 'Write to us, we ',
     titleWord: 'reply',
     intro: 'A question about a gift, sponsorship, a visit or a partnership? Write to us using the form, by email or on our social networks.',
-    heroAlt: "Children from the day centre pulling funny faces and laughing.",
+    heroAlt: "A boy from the day centre smiles, holding a toy.",
     email: 'Email',
     facebook: 'Facebook',
     instagram: 'Instagram',
@@ -82,7 +82,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/photos-hd/centre-aere/2024-04-24/01.webp"
+        image="/hero-desktop/centre-aere-2023-02-tim-pt-012.webp"
         imageAlt={t.heroAlt}
       />
 

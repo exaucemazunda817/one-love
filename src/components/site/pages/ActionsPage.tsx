@@ -18,7 +18,7 @@ const text = {
     intro: "Depuis 2017 à Kinshasa, pas à pas, avec nos éducateurs, nos bénévoles et nos soutiens.",
     donate: 'Faire un don',
     sponsor: 'Parrainer un enfant',
-    heroAlt: 'Les One Love Boys assis sur les marches, à Noël 2022.',
+    heroAlt: 'Des enfants jouent dans la cour du centre, devant la fresque.',
     items: [
       { when: 'Depuis 2017', k: 'Accueil', t: 'Un foyer pour les garçons de la rue', d: 'En 2017, nous ouvrons la One Love House pour accueillir à plein temps des garçons qui vivaient dans la rue. Ils étaient 4 au départ, 20 en 2020, 16 en 2025. Chacun y trouve un toit, des repas, des soins et une famille.', img: '/histoire/2017-les-garcons.webp', alt: 'Quatre garçons de la One Love House, en 2017.' },
       { when: 'Chaque rentrée', k: 'Scolarité', t: 'Tous les One Love Boys à l’école', d: 'Chaque année, nous inscrivons les garçons à l’école, du primaire au secondaire, avec uniforme, sac et fournitures. À la rentrée 2023, ils étaient douze, de la 2e primaire à la 3e secondaire. La scolarité coûte cher à Kinshasa : environ 720 $ par enfant et par an, hors fournitures.', img: '/histoire/2023-rentree.webp', alt: 'Des garçons sur le chemin de l’école, à la rentrée 2023.' },
@@ -43,7 +43,7 @@ const text = {
     intro: 'Since 2017 in Kinshasa, step by step, with our educators, volunteers and supporters.',
     donate: 'Donate',
     sponsor: 'Sponsor a child',
-    heroAlt: 'The One Love Boys sitting on the steps, Christmas 2022.',
+    heroAlt: 'Children playing in the centre’s courtyard, in front of the mural.',
     items: [
       { when: 'Since 2017', k: 'Home', t: 'A home for street boys', d: 'In 2017, we opened the One Love House to welcome full time boys who used to live on the street. There were 4 at first, 20 in 2020, 16 in 2025. Each finds a roof, meals, care and a family there.', img: '/histoire/2017-les-garcons.webp', alt: 'Four boys of the One Love House, in 2017.' },
       { when: 'Every school year', k: 'Schooling', t: 'Every One Love Boy at school', d: 'Every year, we enrol the boys at school, from primary to secondary, with uniform, bag and supplies. At the start of the 2023 school year there were twelve of them, from year 2 of primary to year 3 of secondary. School is expensive in Kinshasa: about $720 per child per year, not counting supplies.', img: '/histoire/2023-rentree.webp', alt: 'Boys on their way to school, at the start of the 2023 school year.' },
@@ -78,7 +78,7 @@ export function ActionsPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/photos-hd/one-love-boys/2022-noel/13.webp"
+        image="/hero-desktop/centre-aere-2023-02-tim-pt-002.webp"
         imageAlt={t.heroAlt}
         cta={{ donate: t.donate, sponsor: t.sponsor }}
       />

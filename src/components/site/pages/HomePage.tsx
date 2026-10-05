@@ -21,13 +21,13 @@ import { ScrollFan } from '@/components/site/effects/ScrollFan';
 // sa femme et des enfants, puis les autres défilent au hasard. Photos fournies
 // par Mazunda, recadrées en paysage.
 const HOME_POOL = [
-  { src: '/hero-accueil/pasteur-famille.webp', position: '10% 50%' },
-  { src: '/hero-accueil/trois-garcons.webp', position: '50% 35%' },
+  { src: '/hero-desktop/boys-2023-famille-tim-pt-009.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2023-12-02-ol-photo-012.webp', position: '50% 50%' },
   { src: '/hero-accueil/bonnets-1.webp', position: '50% 40%' },
   { src: '/hero-accueil/bonnets-2.webp', position: '50% 40%' },
   { src: '/hero-accueil/peace.webp', position: '50% 40%' },
   { src: '/hero-accueil/sourire.webp', position: '50% 40%' },
-  { src: '/hero-accueil/rires.webp', position: '50% 35%' }
+  { src: '/hero-accueil/trois-garcons.webp', position: '50% 35%' }
 ];
 
 const text = {

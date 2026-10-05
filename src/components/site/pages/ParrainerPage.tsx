@@ -10,11 +10,13 @@ import { SPONSOR_PLANS } from '@/lib/sponsorship';
 
 // Bandeau du parrainage : uniquement les visages des One Love Boys (05/10/2026).
 const BOYS_POOL = [
-  { src: '/photos-hd/one-love-boys/2022-noel/11.webp', position: '50% 35%' },
-  { src: '/photos-hd/one-love-boys/2022-noel/13.webp', position: '50% 40%' },
-  { src: '/photos-hd/one-love-boys/2023-rentree/03.webp', position: '50% 35%' },
-  { src: '/photos-hd/one-love-boys/2022-noel/01.webp', position: '50% 25%' },
-  { src: '/photos/drive/boys-noel-2022.jpg', position: '50% 35%' }
+  { src: '/hero-desktop/boys-2022-noel-tim-pt-001.webp', position: '50% 50%' },
+  { src: '/hero-desktop/boys-2022-noel-tim-pt-004.webp', position: '50% 50%' },
+  { src: '/hero-desktop/boys-2022-noel-tim-pt-012.webp', position: '50% 50%' },
+  { src: '/hero-desktop/boys-2023-rentree-ol-photo-007.webp', position: '50% 50%' },
+  { src: '/hero-desktop/boys-2023-rentree-ol-photo-001.webp', position: '50% 50%' },
+  { src: '/hero-accueil/bonnets-1.webp', position: '50% 40%' },
+  { src: '/hero-accueil/bonnets-2.webp', position: '50% 40%' }
 ];
 
 const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow: string; heroPre: string; heroWord: string; heroPost: string; heroIntro: string; heroAlt: string; heroCta: string; heroScroll: string }> = {
@@ -26,7 +28,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     heroWord: 'mois après mois',
     heroPost: '.',
     heroIntro: "Le parrainage assure la continuité : l’école, le suivi médical, l’écoute. Vous recevez des nouvelles régulières, dans le respect de la vie privée de l’enfant.",
-    heroAlt: 'Des One Love Boys souriants.',
+    heroAlt: 'Un One Love Boy en bonnet de Noël, grand sourire.',
     heroCta: 'Devenir parrain',
     heroScroll: 'Comment ça marche',
     howTitle: 'Comment ça marche',
@@ -100,7 +102,7 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     heroWord: 'month after month',
     heroPost: '.',
     heroIntro: "Sponsorship provides continuity: school, medical care, someone to listen. You receive regular updates, always respecting the child’s privacy.",
-    heroAlt: 'Smiling One Love Boys.',
+    heroAlt: 'A One Love Boy in a Christmas hat, grinning.',
     heroCta: 'Become a sponsor',
     heroScroll: 'How it works',
     howTitle: 'How it works',
@@ -183,7 +185,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
         style={{ minHeight: 'min(80vh,720px)' }}
       >
         <div className="relative flex min-h-svh w-full items-end dk:min-h-0 dk:items-center">
-          <HeroBackground src="/photos-hd/one-love-boys/2022-noel/11.webp" alt={t.heroAlt} position="50% 35%" pool={BOYS_POOL} />
+          <HeroBackground src="/hero-desktop/boys-2022-noel-tim-pt-001.webp" alt={t.heroAlt} position="50% 50%" pool={BOYS_POOL} />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)] dk:bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
           <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
             <Reveal eager className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:mx-0 dk:items-start dk:text-left dk:gap-6">

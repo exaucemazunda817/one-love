@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import Image from 'next/image';
+import { HeroLayer } from '@/components/site/HeroPicture';
 import { BrushWord, Eyebrow } from '@/components/site/ui';
 
 // Ouverture de la page « Notre histoire » (effet repris du « zoom texte » du
@@ -104,7 +104,7 @@ export function HistoryHero({
             borderRadius: `${16 * (1 - grow)}px`
           }}
         >
-          <Image src={image} alt={imageAlt} fill priority sizes="100vw" className="photo-tone object-cover" />
+          <HeroLayer photo={{ src: image }} alt={imageAlt} priority className="photo-tone object-cover" />
         </div>
 
         {/* Bandeau final : même dégradé et même bloc de texte que les autres

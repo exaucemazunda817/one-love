@@ -20,7 +20,7 @@ const text = {
     titlePre: 'Les One Love ',
     titleWord: 'Boys',
     intro: 'Des garçons qui vivaient dans la rue, et qui ont trouvé à la One Love House un foyer, l’école et une famille.',
-    heroAlt: 'Cinq One Love Boys en bonnet de Noël, serrés les uns contre les autres et souriants.',
+    heroAlt: 'Les One Love Boys en uniforme, sur le chemin de l’école.',
     storyEyebrow: 'Leur histoire',
     storyTitlePre: 'De la rue à la ',
     storyTitleWord: 'maison',
@@ -56,7 +56,7 @@ const text = {
     titlePre: 'The One Love ',
     titleWord: 'Boys',
     intro: 'Boys who used to live on the street, and who found a home, school and a family at the One Love House.',
-    heroAlt: 'Five One Love Boys in Christmas hats, huddled together and smiling.',
+    heroAlt: 'The One Love Boys in uniform, on their way to school.',
     storyEyebrow: 'Their story',
     storyTitlePre: 'From the street to ',
     storyTitleWord: 'home',
@@ -117,9 +117,9 @@ export function OneLoveBoysPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/photos/drive/boys-noel-2022.jpg"
+        image="/hero-desktop/boys-2023-rentree-ol-photo-007.webp"
         imageAlt={t.heroAlt}
-        objectPosition="50% 35%"
+        objectPosition="50% 50%"
         still
       />
 

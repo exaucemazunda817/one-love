@@ -178,7 +178,8 @@ export function AssociationPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/photos-hd/one-love-boys/2023-famille/02.webp"
+        image="/hero-desktop/boys-2023-famille-tim-pt-006.webp"
+        objectPosition="50% 50%"
         imageAlt={t.heroAlt}
         still
         cta={{ donate: t.donate, sponsor: t.sponsor }}

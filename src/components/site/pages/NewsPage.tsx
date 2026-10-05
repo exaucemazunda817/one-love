@@ -14,7 +14,7 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
     titlePre: 'Nouvelles du ',
     titleWord: 'terrain',
     intro: 'Ce qui se passe et ce qui vient de se passer à One Love, raconté par notre équipe.',
-    heroAlt: 'Un groupe d’enfants du centre aéré, souriants.',
+    heroAlt: 'Trois enfants du centre aéré, face à l’objectif.',
     categoriesLabel: 'Catégories',
     listTitle: 'Dernières nouvelles',
     readLabel: 'Lire l’article',
@@ -33,7 +33,7 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
     titlePre: 'News from the ',
     titleWord: 'field',
     intro: 'What is happening, and what has just happened, at One Love, told by our team.',
-    heroAlt: 'A group of smiling children from the day centre.',
+    heroAlt: 'Three children from the day centre, facing the camera.',
     categoriesLabel: 'Categories',
     listTitle: 'Latest news',
     readLabel: 'Read the article',
@@ -79,7 +79,7 @@ export function NewsPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/photos-hd/centre-aere/2023-12-02/05.webp"
+        image="/hero-desktop/centre-aere-2024-02-ol-photo-002.webp"
         imageAlt={t.heroAlt}
       />
 
