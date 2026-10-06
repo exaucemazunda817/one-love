@@ -831,7 +831,11 @@ html[data-intro] .ol-intro {
     gap: 14px !important;
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
+    /* « proximity » et non « mandatory » : la rangée suit librement le doigt
+       et ne se cale sur une carte que si on s'arrête près d'elle (retour de
+       Mazunda du 06/10/2026 : « comme si on forçait »). */
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
     margin-inline: -20px;
     padding-inline: 20px;
     padding-bottom: 6px;
@@ -846,5 +850,20 @@ html[data-intro] .ol-intro {
     flex: 0 0 82%;
     min-width: 0;
     scroll-snap-align: start;
+  }
+  /* Dans une rangée qui glisse, les cartes ne jouent pas d'apparition : une
+     carte hors écran à droite était « sortie de l'écran », donc remise en
+     attente puis réanimée à chaque glissement (saccades, et le doigt posé sur
+     une carte en mouvement bloquait le défilement vers le bas). Pas de zoom
+     lent non plus : quatre photos animées pendant le glissement le ralentissent. */
+  .ol-swipe [data-reveal],
+  .ol-swipe [data-reveal] img {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+  .ol-swipe .ol-kenburns {
+    animation: none !important;
   }
 }

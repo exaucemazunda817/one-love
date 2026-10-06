@@ -19,6 +19,14 @@ import { FACEBOOK_URL, INSTAGRAM_URL, YOUTUBE_URL, localeHref, type Locale } fro
 
 const STEP_ART = ['/illustrations/village-guerite.svg', '/illustrations/village-avant-projet.svg', '/illustrations/village-maquette.svg'];
 
+// Une photo par date du « chemin parcouru » (06/10/2026).
+const PATH_PHOTOS = [
+  { src: '/histoire/2015-salle-de-classe.webp', pos: '50% 45%', alt: { fr: 'Une salle de classe, en 2015.', en: 'A classroom, in 2015.' } },
+  { src: '/histoire/2018-kasangulu-2.webp', pos: '50% 40%', alt: { fr: 'Débroussaillage du terrain de Kasangulu, en 2018.', en: 'Clearing the Kasangulu land, in 2018.' } },
+  { src: '/photos/drive/diner-2023-invites.jpg', pos: '50% 30%', alt: { fr: 'Des invités au premier dîner caritatif, en 2023.', en: 'Guests at the first charity dinner, in 2023.' } },
+  { src: '/histoire/2024-diner.webp', pos: '50% 35%', alt: { fr: 'Le dîner caritatif de 2024.', en: 'The 2024 charity dinner.' } }
+];
+
 const film: Media = video(
   '2023-kasangulu-village',
   'wide',
@@ -317,10 +325,15 @@ export function VillagePage({ locale }: { locale: Locale }) {
           <ol className="ol-swipe m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-6 p-0">
             {t.path.map((step, i) => (
               <li key={step.year}>
-                <Reveal delay={i * 90} className="flex h-full flex-col gap-3 ol-spot rounded-card border-t-[3px] border-copper-600 bg-cream p-6">
-                  <span className="font-serif text-[clamp(32px,3.4vw,42px)] font-medium leading-none tabular-nums text-copper-600">{step.year}</span>
-                  <h3 className="m-0 text-balance font-serif text-[22px] font-medium leading-[1.25] text-ink">{step.title}</h3>
-                  <p className="m-0 text-pretty text-[16px] leading-[1.6] text-ink-body">{step.text}</p>
+                <Reveal delay={i * 90} className="ol-spot flex h-full flex-col overflow-hidden rounded-card bg-white shadow-ol-sm">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-night">
+                    <Image src={PATH_PHOTOS[i].src} alt={PATH_PHOTOS[i].alt[locale]} fill sizes="(max-width: 767px) 82vw, 300px" className="photo-tone object-cover" style={{ objectPosition: PATH_PHOTOS[i].pos }} />
+                  </div>
+                  <div className="flex flex-col gap-2 p-6">
+                    <span className="font-serif text-[clamp(26px,2.8vw,32px)] font-medium leading-none tabular-nums text-copper-700">{step.year}</span>
+                    <h3 className="m-0 text-balance font-serif text-[21px] font-medium leading-[1.25] text-ink">{step.title}</h3>
+                    <p className="m-0 text-pretty text-[16px] leading-[1.6] text-ink-body">{step.text}</p>
+                  </div>
                 </Reveal>
               </li>
             ))}
