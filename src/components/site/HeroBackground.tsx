@@ -100,10 +100,16 @@ export function HeroBackground({
         if (photo.src === photosRef.current[frontRef.current]?.src) photo = nextPhoto();
         const back: Layer = frontRef.current === 0 ? 1 : 0;
         const next: [Photo, Photo | null] = [...photosRef.current] as [Photo, Photo | null];
+        // Si la photo voulue est déjà dans le calque de derrière, le navigateur
+        // ne la recharge pas : aucun événement « chargée » n'arrive et le
+        // défilement s'arrêtait là (bug du 06/10/2026). On déclenche donc le
+        // fondu à la main.
+        const alreadyThere = next[back]?.src === photo.src;
         next[back] = photo;
         photosRef.current = next;
         setFading(false);
         setPhotos(next);
+        if (alreadyThere) window.setTimeout(() => handleLoaded(back), 60);
       }
       timer = window.setTimeout(tick, EVERY_MS);
     };

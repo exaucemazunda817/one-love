@@ -23,6 +23,11 @@ import { ScrollFan } from '@/components/site/effects/ScrollFan';
 const HOME_POOL = [
   { src: '/hero-desktop/boys-2023-famille-tim-pt-009.webp', position: '50% 50%' },
   { src: '/hero-desktop/centre-aere-2023-12-02-ol-photo-012.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-07-ol-photo-006.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-03-ol-photo-003.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-02-ol-photo-002.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2023-12-25-ol-photo-004.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-03-ol-photo-009.webp', position: '50% 50%' },
   { src: '/hero-accueil/bonnets-1.webp', position: '50% 40%' },
   { src: '/hero-accueil/bonnets-2.webp', position: '50% 40%' },
   { src: '/hero-accueil/peace.webp', position: '50% 40%' },
