@@ -40,6 +40,7 @@ export const HERO_MOBILE: Record<string, string> = {
   '/hero-accueil/bonnets-2.webp': '/hero-mobile/hero-accueil_bonnets-2.webp',
   '/hero-accueil/sourire.webp': '/hero-mobile/hero-accueil_sourire.webp',
   '/photos/drive/boys-noel-2022.jpg': '/hero-mobile/hero-accueil_bonnets-1.webp',
-  '/hero-desktop/village-drone-terrain.webp': '/hero-mobile/village-drone-terrain.webp',
-  '/hero-desktop/village-drone-brume.webp': '/hero-mobile/village-drone-brume.webp',
+  // Vues du drone en version « cinéma » (heure dorée), 07/10/2026.
+  '/hero-desktop/village-drone-terrain.webp': '/hero-mobile/village-drone-terrain-cine.webp',
+  '/hero-desktop/village-drone-brume.webp': '/hero-mobile/village-drone-brume-cine.webp',
 };

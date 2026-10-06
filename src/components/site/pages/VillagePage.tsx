@@ -247,7 +247,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
         titleWord={t.titleWord}
         intro={t.intro}
         image="/histoire/village-hero.webp"
-        imageMobile="/hero-mobile/village-drone-terrain.webp"
+        imageMobile="/hero-mobile/village-drone-terrain-cine.webp"
         imageAlt={t.heroAlt}
         objectPosition="50% 55%"
         photoPool={heroPool}
