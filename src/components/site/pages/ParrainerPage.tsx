@@ -9,12 +9,11 @@ import type { Locale } from '@/lib/i18n';
 import { SPONSOR_PLANS } from '@/lib/sponsorship';
 
 // Bandeau du parrainage : uniquement les visages des One Love Boys (05/10/2026).
+// Photos de la rentrée 2023 retirées par Mazunda (planches numérotées, 07/10/2026).
 const BOYS_POOL = [
   { src: '/hero-desktop/boys-2022-noel-tim-pt-001.webp', position: '50% 50%' },
   { src: '/hero-desktop/boys-2022-noel-tim-pt-004.webp', position: '50% 50%' },
   { src: '/hero-desktop/boys-2022-noel-tim-pt-012.webp', position: '50% 50%' },
-  { src: '/hero-desktop/boys-2023-rentree-ol-photo-007.webp', position: '50% 50%' },
-  { src: '/hero-desktop/boys-2023-rentree-ol-photo-001.webp', position: '50% 50%' },
   { src: '/hero-accueil/bonnets-1.webp', position: '50% 40%' },
   { src: '/hero-accueil/bonnets-2.webp', position: '50% 40%' }
 ];
