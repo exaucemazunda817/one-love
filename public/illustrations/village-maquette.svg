@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="t"><title id="t">Illustration : la maquette en trois dimensions du One Love Village</title>
+<rect width="640" height="400" fill="#f6e6d6"/>
+<path d="M320 120 L560 240 L320 360 L80 240 Z" fill="#b9c99a" stroke="#2a2420" stroke-width="3" stroke-linejoin="round"/>
+<path d="M80 240 L320 360 L320 376 L80 256 Z" fill="#8a6b4a" stroke="#2a2420" stroke-width="3" stroke-linejoin="round"/>
+<path d="M560 240 L320 360 L320 376 L560 256 Z" fill="#6f5843" stroke="#2a2420" stroke-width="3" stroke-linejoin="round"/>
+<path d="M200 270 L280 310 L320 290 L240 250 Z" fill="#e8d3b4" stroke="#2a2420" stroke-width="2"/>
+<path d="M220 270 L260 290 M240 262 L300 292" stroke="#fbf7f1" stroke-width="2"/>
+<g stroke="#2a2420" stroke-width="2.5" stroke-linejoin="round">
+<path d="M250 190 L330 230 L330 196 L250 156 Z" fill="#f3ebe0"/>
+<path d="M330 230 L370 210 L370 176 L330 196 Z" fill="#dcc7aa"/>
+<path d="M246 158 L330 200 L374 178 L290 136 Z" fill="#a9531a"/>
+<path d="M270 186 v-14 M290 196 v-14 M310 206 v-14" stroke="#3f7fb3" stroke-width="5"/>
+<path d="M390 230 L430 250 L430 228 L390 208 Z" fill="#f3ebe0"/>
+<path d="M430 250 L460 235 L460 213 L430 228 Z" fill="#dcc7aa"/>
+<path d="M386 210 L430 232 L464 215 L420 193 Z" fill="#c2651a"/>
+<path d="M440 270 L480 290 L480 268 L440 248 Z" fill="#f3ebe0"/>
+<path d="M480 290 L510 275 L510 253 L480 268 Z" fill="#dcc7aa"/>
+<path d="M436 250 L480 272 L514 255 L470 233 Z" fill="#c2651a"/>
+</g>
+<g stroke="#2a2420" stroke-width="2">
+<path d="M150 246 v-14" /><circle cx="150" cy="226" r="14" fill="#5f7d45"/>
+<path d="M180 228 v-14" /><circle cx="180" cy="208" r="12" fill="#6e9150"/>
+<path d="M380 300 v-14" /><circle cx="380" cy="280" r="13" fill="#5f7d45"/>
+<path d="M350 318 v-12" /><circle cx="350" cy="300" r="11" fill="#6e9150"/>
+</g>
+<path d="M120 70 h120 M120 70 v26" stroke="#a9531a" stroke-width="3" fill="none"/>
+<text x="126" y="92" font-family="Georgia, serif" font-size="20" fill="#2a2420">One Love Village</text>
+</svg>

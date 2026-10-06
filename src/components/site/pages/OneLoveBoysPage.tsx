@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SwipeDots } from '@/components/site/SwipeDots';
 import { HeartIcon, HouseIcon, GraduationCapIcon, SoccerBallIcon, CakeIcon, FirstAidIcon, MusicNotesIcon } from '@phosphor-icons/react/ssr';
 import { pageMetadata } from '@/lib/seo';
 import { Reveal } from '@/components/Reveal';
@@ -137,7 +138,7 @@ export function OneLoveBoysPage({ locale }: { locale: Locale }) {
       <section aria-labelledby="boys-quotidien" className="bg-sand">
         <div className={wrap}>
           <Head eyebrow={t.lifeEyebrow} pre={t.lifeTitlePre} word={t.lifeTitleWord} id="boys-quotidien" />
-          <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-5 p-0">
+          <ul className="ol-swipe m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-5 p-0">
             {t.life.map((d, i) => {
               const Icon = d.icon;
               return (
@@ -154,6 +155,7 @@ export function OneLoveBoysPage({ locale }: { locale: Locale }) {
               );
             })}
           </ul>
+          <SwipeDots count={t.life.length} label={t.lifeEyebrow} />
         </div>
       </section>
 

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="t"><title id="t">Illustration : les plans de l’avant-projet, règle et crayon, avec les piquets du géomètre</title>
+<rect width="640" height="400" fill="#efe2cf"/>
+<g transform="rotate(-6 320 200)">
+<rect x="110" y="70" width="420" height="270" fill="#2f4f6f"/>
+<g stroke="#4f7397" stroke-width="1">
+<path d="M110 100 h420 M110 130 h420 M110 160 h420 M110 190 h420 M110 220 h420 M110 250 h420 M110 280 h420 M110 310 h420"/>
+<path d="M140 70 v270 M170 70 v270 M200 70 v270 M230 70 v270 M260 70 v270 M290 70 v270 M320 70 v270 M350 70 v270 M380 70 v270 M410 70 v270 M440 70 v270 M470 70 v270 M500 70 v270"/>
+</g>
+<g fill="none" stroke="#f3ebe0" stroke-width="3">
+<rect x="150" y="100" width="130" height="80"/><path d="M150 140 h130 M215 100 v80"/>
+<rect x="310" y="100" width="90" height="60"/>
+<rect x="420" y="100" width="80" height="110"/>
+<rect x="150" y="210" width="190" height="100" stroke-dasharray="8 6"/>
+<path d="M240 260 m-26 0 a26 26 0 1 0 52 0 a26 26 0 1 0 -52 0"/>
+<rect x="370" y="240" width="130" height="70"/><path d="M435 240 v70 M370 275 h130"/>
+</g>
+<g fill="#f2b257" font-family="Arial, sans-serif" font-size="13"><text x="160" y="96">ÉCOLE</text><text x="314" y="96">MINI-FERME</text><text x="420" y="96">PLANTATIONS</text><text x="160" y="206">BASKET</text><text x="372" y="236">POTAGER</text></g>
+</g>
+<g transform="rotate(18 330 352)">
+<rect x="210" y="340" width="260" height="26" rx="3" fill="#e89a2c" stroke="#2a2420" stroke-width="2"/>
+<path d="M230 340 v10 M250 340 v6 M270 340 v10 M290 340 v6 M310 340 v10 M330 340 v6 M350 340 v10 M370 340 v6 M390 340 v10 M410 340 v6 M430 340 v10 M450 340 v6" stroke="#2a2420" stroke-width="2"/>
+</g>
+<g transform="rotate(-38 540 300)">
+<rect x="470" y="292" width="130" height="16" fill="#c2651a" stroke="#2a2420" stroke-width="2"/>
+<path d="M600 292 l22 8 l-22 8 Z" fill="#f3ebe0" stroke="#2a2420" stroke-width="2"/>
+<rect x="458" y="292" width="14" height="16" fill="#f2b257" stroke="#2a2420" stroke-width="2"/>
+</g>
+<g>
+<path d="M60 380 v-120" stroke="#7a5a3a" stroke-width="6"/><path d="M60 262 l40 12 l-40 12 Z" fill="#c2412d"/>
+<path d="M92 384 v-80" stroke="#7a5a3a" stroke-width="5"/><path d="M92 306 l30 9 l-30 9 Z" fill="#fbf7f1" stroke="#c2412d" stroke-width="2"/>
+</g>
+</svg>

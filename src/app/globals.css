@@ -817,3 +817,34 @@ html[data-intro] .ol-intro {
     display: none;
   }
 }
+
+/* Défilement horizontal des listes de cartes sur téléphone (06/10/2026,
+   demande de Mazunda) : sous 768 px, une liste marquée .ol-swipe devient une
+   rangée qu'on fait glisser au doigt, chaque carte s'arrêtant au bord gauche.
+   La liste déborde jusqu'aux bords de l'écran (marge négative = gouttière de
+   20 px) pour que la carte suivante dépasse et invite à glisser. Au-dessus de
+   768 px, la grille d'origine s'applique. Points de repère : SwipeDots.tsx. */
+@media (max-width: 767px) {
+  .ol-swipe {
+    display: flex !important;
+    flex-wrap: nowrap;
+    gap: 14px !important;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    margin-inline: -20px;
+    padding-inline: 20px;
+    padding-bottom: 6px;
+    scroll-padding-inline: 20px;
+    scrollbar-width: none;
+    height: auto !important;
+  }
+  .ol-swipe::-webkit-scrollbar {
+    display: none;
+  }
+  .ol-swipe > * {
+    flex: 0 0 82%;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+}

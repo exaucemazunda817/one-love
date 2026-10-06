@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SwipeDots } from '@/components/site/SwipeDots';
 import { pageMetadata } from '@/lib/seo';
 import { HeartIcon, StarIcon, LeafIcon, UsersThreeIcon, SparkleIcon, CompassIcon, ArrowRightIcon } from '@phosphor-icons/react/ssr';
 import Image from 'next/image';
@@ -286,7 +287,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
               <BrushWord>{t.valuesTitle}</BrushWord>
             </h2>
           </Reveal>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-4">
+          <div className="ol-swipe grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-4">
             {t.values.map((v, i) => {
               const Icon = v.icon;
               return (
@@ -297,6 +298,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
               );
             })}
           </div>
+          <SwipeDots count={t.values.length} label={t.valuesTitle} />
         </div>
       </section>
 
@@ -380,7 +382,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
           </h2>
           <p className="m-0 max-w-measure text-pretty text-[17px] leading-[1.6] text-ink-body">{t.voicesIntro}</p>
         </Reveal>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5">
+        <div className="ol-swipe grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5">
           {t.voices.map((m, i) => (
             <Reveal key={m.q} delay={(i % 3) * 90}>
               <figure className="m-0 flex h-full flex-col gap-3.5 rounded-card bg-white p-7 shadow-ol-sm">
@@ -394,6 +396,7 @@ export function AssociationPage({ locale }: { locale: Locale }) {
             </Reveal>
           ))}
         </div>
+        <SwipeDots count={t.voices.length} label={t.voicesEyebrow} />
       </section>
 
       <PartnersMarquee locale={locale} />

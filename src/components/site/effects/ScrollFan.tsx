@@ -16,7 +16,8 @@ export function ScrollFan({ children, className }: { children: ReactNode; classN
 
   useEffect(() => {
     const list = listRef.current;
-    if (!list || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Sur téléphone la rangée défile à l'horizontale (.ol-swipe) : pas d'éventail.
+    if (!list || window.matchMedia('(prefers-reduced-motion: reduce), (max-width: 767px)').matches) return;
 
     const slots = Array.from(list.children) as HTMLElement[];
     const inners = slots.map((slot) => slot.firstElementChild as HTMLElement);

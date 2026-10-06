@@ -6,6 +6,7 @@ import { pageMetadata } from '@/lib/seo';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { Brush, BrushWord, CallBanner, Eyebrow, h2Class } from '@/components/site/ui';
+import { SwipeDots } from '@/components/site/SwipeDots';
 import { MediaItem, photo, video, type Media } from '@/components/site/pages/HistoryPage';
 import { FACEBOOK_URL, INSTAGRAM_URL, YOUTUBE_URL, localeHref, type Locale } from '@/lib/i18n';
 
@@ -15,6 +16,8 @@ import { FACEBOOK_URL, INSTAGRAM_URL, YOUTUBE_URL, localeHref, type Locale } fro
 // « Notre histoire ». Les montants cités dans la vidéo (2 000 € pour la guérite,
 // 2 000 € pour l'avant-projet) datent de 2023 : ils ne sont pas repris.
 // Photos : public/histoire (village-*.webp), vidéos : public/histoire/videos.
+
+const STEP_ART = ['/illustrations/village-guerite.svg', '/illustrations/village-avant-projet.svg', '/illustrations/village-maquette.svg'];
 
 const film: Media = video(
   '2023-kasangulu-village',
@@ -84,6 +87,7 @@ const text = {
       'Autour de l’école, le village fera aussi place au sport, avec des centres de formation en basket, et à l’agriculture, avec une mini-ferme pédagogique, un potager et des plantations d’arbres.'
     ],
     stepsTitle: 'Les étapes en cours',
+    stepLabel: 'ÉTAPE',
     steps: [
       { t: 'La guérite', d: 'Le premier bâtiment, à l’entrée du terrain. Il sert à stocker le matériel et à récupérer l’eau de pluie de son toit, pour lancer le potager et les plantations.' },
       { t: 'L’avant-projet', d: 'Architecte, géomètre, plans de préparation du terrain et d’implantation des bâtiments.' },
@@ -152,6 +156,7 @@ const text = {
       'Around the school, the village will also make room for sport, with basketball training centres, and for farming, with a small teaching farm, a vegetable garden and tree planting.'
     ],
     stepsTitle: 'Current steps',
+    stepLabel: 'STEP',
     steps: [
       { t: 'The gatehouse', d: 'The first building, at the entrance to the land. It stores equipment and collects rainwater from its roof, to start the garden and the planting.' },
       { t: 'The preliminary design', d: 'Architect, surveyor, plans for preparing the land and siting the buildings.' },
@@ -267,17 +272,24 @@ export function VillagePage({ locale }: { locale: Locale }) {
           </Reveal>
           <div className="flex flex-col gap-5">
             <h3 className="m-0 font-serif text-[clamp(22px,2.4vw,28px)] font-medium">{t.stepsTitle}</h3>
-            <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-5 p-0">
+            <ol className="ol-swipe m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-5 p-0">
               {t.steps.map((st, i) => (
                 <li key={st.t}>
-                  <Reveal delay={i * 90} className="flex h-full flex-col gap-2.5 ol-spot rounded-card border-t-[3px] border-copper-600 bg-sand p-6">
-                    <span className="text-[13px] font-extrabold tracking-[0.12em] text-copper-700">{String(i + 1).padStart(2, '0')}</span>
-                    <h4 className="m-0 font-serif text-[21px] font-medium text-ink">{st.t}</h4>
-                    <p className="m-0 text-[16px] leading-[1.6] text-ink-body">{st.d}</p>
+                  <Reveal delay={i * 90} className="ol-spot flex h-full flex-col overflow-hidden rounded-card bg-white shadow-ol-sm">
+                    {/* Illustration dessinée pour l'étape (06/10/2026) : pas de
+                        photo réelle de la maquette ni des plans à ce jour. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={STEP_ART[i]} alt="" width={640} height={400} loading="lazy" className="block aspect-[16/10] w-full object-cover" />
+                    <div className="flex flex-col gap-2 p-6">
+                      <span className="text-[13px] font-extrabold tracking-[0.12em] text-copper-700">{t.stepLabel} {i + 1}</span>
+                      <h4 className="m-0 font-serif text-[21px] font-medium text-ink">{st.t}</h4>
+                      <p className="m-0 text-[16px] leading-[1.6] text-ink-body">{st.d}</p>
+                    </div>
                   </Reveal>
                 </li>
               ))}
             </ol>
+            <SwipeDots count={t.steps.length} label={t.stepsTitle} />
           </div>
         </div>
       </section>
@@ -302,7 +314,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
       <section aria-labelledby="village-chemin" className="bg-sand">
         <div className={wrap}>
           <SectionHead eyebrow={t.pathEyebrow} pre={t.pathTitlePre} word={t.pathTitleWord} id="village-chemin" />
-          <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-6 p-0">
+          <ol className="ol-swipe m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-6 p-0">
             {t.path.map((step, i) => (
               <li key={step.year}>
                 <Reveal delay={i * 90} className="flex h-full flex-col gap-3 ol-spot rounded-card border-t-[3px] border-copper-600 bg-cream p-6">
@@ -313,6 +325,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
               </li>
             ))}
           </ol>
+          <SwipeDots count={t.path.length} label={t.pathEyebrow} />
         </div>
       </section>
 

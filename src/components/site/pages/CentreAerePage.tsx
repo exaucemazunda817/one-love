@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SwipeDots } from '@/components/site/SwipeDots';
 import { HeartIcon, ClockIcon, PlayIcon, BookOpenIcon, SoccerBallIcon, BowlFoodIcon, HandsPrayingIcon, FirstAidIcon } from '@phosphor-icons/react/ssr';
 import { pageMetadata } from '@/lib/seo';
 import { Reveal } from '@/components/Reveal';
@@ -140,7 +141,7 @@ export function CentreAerePage({ locale }: { locale: Locale }) {
       <section aria-labelledby="centre-programme" className="bg-sand">
         <div className={wrap}>
           <Head eyebrow={t.daysEyebrow} pre={t.daysTitlePre} word={t.daysTitleWord} id="centre-programme" />
-          <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-5 p-0">
+          <ul className="ol-swipe m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-5 p-0">
             {t.days.map((d, i) => {
               const Icon = d.icon;
               return (
@@ -157,6 +158,7 @@ export function CentreAerePage({ locale }: { locale: Locale }) {
               );
             })}
           </ul>
+          <SwipeDots count={t.days.length} label={t.daysEyebrow} />
         </div>
       </section>
 

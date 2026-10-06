@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { SwipeDots } from '@/components/site/SwipeDots';
 import Link from 'next/link';
 import {
   HeartIcon,
@@ -376,7 +377,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             <p className="m-0 mt-1 text-pretty text-[17px] leading-[1.6] text-ink-body">{t.daySubtitle}</p>
           </Reveal>
 
-          <ol className="m-0 grid list-none grid-cols-1 gap-3 p-0 md:grid-cols-2 md:gap-4 lg:h-[clamp(560px,50vw,620px)] lg:grid-cols-12 lg:grid-rows-2">
+          <ol className="ol-swipe m-0 grid list-none grid-cols-1 gap-3 p-0 md:grid-cols-2 md:gap-4 lg:h-[clamp(560px,50vw,620px)] lg:grid-cols-12 lg:grid-rows-2">
             {t.day.map(([dt, d, alt], i) => {
               const { img, pos } = dayMedia[i];
               const step = String(i + 1).padStart(2, '0');
@@ -384,9 +385,8 @@ export function HomePage({ locale }: { locale: Locale }) {
               return (
                 <li key={dt} className={dayTile[i]}>
                   {/* Photo plein cadre, texte posé sur un dégradé. Sur téléphone,
-                      seule la première garde ce format ; les suivantes passent en
-                      ligne compacte (vignette + texte) juste en dessous. */}
-                  <Reveal delay={i * 90} className={`h-full ${isLead ? '' : 'hidden md:block'}`}>
+                      les quatre étapes défilent à l'horizontale (06/10/2026). */}
+                  <Reveal delay={i * 90} className="h-full">
                     <figure className="ol-news-frame ol-gallery-frame relative m-0 aspect-[4/5] h-full overflow-hidden rounded-card bg-night shadow-ol-photo lg:aspect-auto">
                       <Reveal variant="zoom" className="absolute inset-0">
                         <Image
@@ -424,24 +424,11 @@ export function HomePage({ locale }: { locale: Locale }) {
                     </figure>
                   </Reveal>
 
-                  {!isLead && (
-                    <Reveal delay={i * 90} className="md:hidden">
-                      <div className="flex items-center gap-4 rounded-card bg-cream p-3 pr-4 shadow-ol-sm">
-                        <div className="relative h-[104px] w-[84px] shrink-0 overflow-hidden rounded-xl bg-night">
-                          <Image src={img} alt={alt} fill sizes="84px" loading="lazy" className="photo-tone object-cover" style={{ objectPosition: pos }} />
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-[12px] font-extrabold tracking-[0.12em] text-copper-700">{step}</span>
-                          <h3 className="m-0 font-serif text-[19px] font-semibold leading-[1.2] text-ink">{dt}</h3>
-                          <p className="m-0 text-[14px] leading-[1.45] text-ink-body">{d}</p>
-                        </div>
-                      </div>
-                    </Reveal>
-                  )}
                 </li>
               );
             })}
           </ol>
+          <SwipeDots count={t.day.length} label={t.dayEyebrow} />
         </div>
       </section>
 
@@ -456,7 +443,7 @@ export function HomePage({ locale }: { locale: Locale }) {
               <BrushWord>{t.waysTitleWord}</BrushWord>
             </h2>
           </Reveal>
-          <ScrollFan className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
+          <ScrollFan className="ol-swipe grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
             {t.ways.map((w) => {
               const Icon = w.icon;
               const cls = `ol-spot flex h-full min-h-[280px] flex-col gap-3.5 rounded-card ${w.bg} ${w.fg} px-7 py-8 no-underline transition-transform hover:-translate-y-[3px] hover:${w.fg}`;
@@ -473,6 +460,7 @@ export function HomePage({ locale }: { locale: Locale }) {
               );
             })}
           </ScrollFan>
+          <SwipeDots count={t.ways.length} label={`${t.waysTitlePre}${t.waysTitleWord}`} />
         </div>
       </section>
 

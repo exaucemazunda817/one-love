@@ -1,5 +1,6 @@
 'use client';
 
+import { SwipeDots } from '@/components/site/SwipeDots';
 import { useId, useRef, useState } from 'react';
 import { FieldError, errorProps } from '@/components/forms/FieldError';
 import { focusFirstError, serverIssuesToErrors, validateFields, type FieldErrors } from '@/lib/form-validation';
@@ -120,7 +121,7 @@ export function InvolvedInteractive({
         <Reveal>
           <h2 className="m-0 text-balance font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.waysTitle} /></h2>
         </Reveal>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4">
+        <div className="ol-swipe grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4">
           {t.ways.map((w, i) => {
             const Icon = ICONS[w.k];
             return (
@@ -141,6 +142,7 @@ export function InvolvedInteractive({
             );
           })}
         </div>
+        <SwipeDots count={t.ways.length} label={t.waysTitle} />
       </section>
 
       {between}
