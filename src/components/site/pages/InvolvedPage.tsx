@@ -8,6 +8,19 @@ import { InnerHero } from '@/components/site/InnerHero';
 import { InvolvedInteractive } from '@/components/site/pages/InvolvedInteractive';
 import { localeHref, type Locale } from '@/lib/i18n';
 
+// Bandeau de « S’impliquer » : choix de Mazunda sur planches numérotées
+// (07/10/2026), propre à cette page (les autres pages gardent la liste
+// commune). `desktop: false` / `mobile: false` : retirée sur ce format seulement.
+const HERO_POOL = [
+  { src: '/hero-desktop/centre-aere-2024-07-camp-23-ol-photo-015.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-07-ol-photo-009.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2023-12-25-ol-photo-004.webp', position: '50% 50%', mobile: false },
+  { src: '/hero-desktop/centre-aere-2023-02-tim-pt-012.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2024-02-ol-photo-002.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2022-06-tim-0160.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2022-06-tim-7516.webp', position: '50% 50%' }
+];
+
 const text = {
   fr: {
     title: "S’impliquer : bénévolat, dons en nature, partenariats",
@@ -115,6 +128,8 @@ export function InvolvedPage({ locale }: { locale: Locale }) {
         intro={t.intro}
         image="/hero-desktop/centre-aere-2024-07-camp-23-ol-photo-015.webp"
         imageAlt={t.heroAlt}
+        objectPosition="50% 50%"
+        photoPool={HERO_POOL}
       />
 
       <InvolvedInteractive
