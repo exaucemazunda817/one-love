@@ -312,7 +312,10 @@ export function HomePage({ locale }: { locale: Locale }) {
 
       {/* Grand projet : le One Love Village */}
       <section className="relative overflow-hidden bg-night text-cream">
-        <Image src="/photos/drive/drone-kasangulu-terrain.jpg" alt={t.villageImgAlt} fill sizes="100vw" className="photo-tone object-cover object-[35%_60%]" />
+        {/* Version étalonnée « cinéma » (heure dorée), faite depuis l'original brut
+            du drone, choisie par Mazunda le 07/10/2026 : pas de filtre photo-tone
+            par-dessus, l'étalonnage est déjà dans le fichier. */}
+        <Image src="/photos/drive/drone-kasangulu-terrain-cine.jpg" alt={t.villageImgAlt} fill sizes="100vw" className="object-cover object-[35%_60%]" />
         <div className="relative mx-auto max-w-[1280px] px-[clamp(12px,4vw,48px)] py-[clamp(40px,8vw,120px)]">
           <Reveal className="flex max-w-[520px] flex-col gap-[18px] rounded-card bg-[color:var(--scrim-5)] p-[clamp(28px,4vw,48px)]">
             <Eyebrow dark>{t.villageEyebrow}</Eyebrow>

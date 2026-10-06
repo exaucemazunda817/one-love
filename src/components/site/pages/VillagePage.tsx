@@ -344,7 +344,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
         <div className={wrap}>
           <SectionHead eyebrow={t.galleryEyebrow} pre={t.galleryTitlePre} word={t.galleryTitleWord} id="village-images" />
           <Reveal className="relative aspect-[16/9] overflow-hidden rounded-card bg-night shadow-ol-photo">
-            <Image src="/photos/drive/drone-kasangulu-terrain.jpg" alt={t.droneAlt} fill sizes="(max-width: 1200px) 100vw, 1136px" loading="lazy" className="object-cover" />
+            <Image src="/photos/drive/drone-kasangulu-terrain-cine.jpg" alt={t.droneAlt} fill sizes="(max-width: 1200px) 100vw, 1136px" loading="lazy" className="object-cover" />
           </Reveal>
           <div className="ol-swipe ol-swipe-photos grid grid-flow-dense grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
             {gallery.map((m, i) => (
