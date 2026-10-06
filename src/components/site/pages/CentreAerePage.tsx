@@ -22,7 +22,7 @@ const text = {
     titlePre: 'Le centre ',
     titleWord: 'aéré',
     intro: 'Un lieu sûr où les enfants des quartiers viennent apprendre, jouer, partager un repas et grandir dans l’amour.',
-    heroAlt: 'Des enfants du centre aéré posent en riant, serrés les uns contre les autres.',
+    heroAlt: 'Des enfants et des jeunes du centre aéré réunis sous les palmiers, près du panier de basket.',
     whoEyebrow: 'Qui vient au centre',
     whoTitlePre: 'Des enfants des ',
     whoTitleWord: 'quartiers',
@@ -59,7 +59,7 @@ const text = {
     titlePre: 'The day ',
     titleWord: 'centre',
     intro: 'A safe place where children from the neighbourhoods come to learn, play, share a meal and grow up in love.',
-    heroAlt: 'Children from the day centre pose, laughing, close together.',
+    heroAlt: 'Children and young people from the day centre gathered under the palm trees, by the basketball hoop.',
     whoEyebrow: 'Who comes to the centre',
     whoTitlePre: 'Children from the ',
     whoTitleWord: 'neighbourhoods',
@@ -121,7 +121,7 @@ export function CentreAerePage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/hero-desktop/centre-aere-2024-07-ol-photo-006.webp"
+        image="/hero-desktop/centre-aere-2022-06-tim-7516.webp"
         imageAlt={t.heroAlt}
         objectPosition="50% 50%"
         still
