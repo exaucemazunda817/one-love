@@ -5,11 +5,14 @@ import { createPortal } from 'react-dom';
 import { PauseIcon, PlayIcon } from '@phosphor-icons/react';
 import { HERO_PHOTOS, DESKTOP_SKIP, MOBILE_SKIP } from '@/lib/hero-photos';
 import { HeroLayer } from '@/components/site/HeroPicture';
+import { HERO_MOBILE } from '@/lib/hero-mobile';
 
 // `desktop` : photo autorisée sur ordinateur dans ce bandeau-là, même si elle
 // figure dans DESKTOP_SKIP (bandeau assez haut pour garder les visages entiers).
+// `desktop: false` : photo retirée sur ordinateur dans ce bandeau-là.
 // `mobile: false` : photo retirée sur téléphone et tablette dans ce bandeau-là.
-type Photo = { src: string; position: string; desktop?: boolean; mobile?: boolean };
+// `mobileSrc` : photo affichée à la place sur téléphone et tablette.
+type Photo = { src: string; position: string; desktop?: boolean; mobile?: boolean; mobileSrc?: string };
 type Layer = 0 | 1;
 
 const FIRST_DELAY_MS = 5000;
@@ -34,23 +37,26 @@ export function HeroBackground({
   src,
   alt,
   position = '50% 35%',
+  mobileSrc,
   pool: poolProp,
   still = false
 }: {
   src: string;
   alt: string;
   position?: string;
+  // Première photo différente sur téléphone et tablette (page du village).
+  mobileSrc?: string;
   // Photos à faire défiler à la place de celles des enfants (page du village).
   pool?: Photo[];
   // Photo fixe, sans défilement (hero de l'accueil, demande du 04/10/2026).
   still?: boolean;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [photos, setPhotos] = useState<[Photo, Photo | null]>([{ src, position }, null]);
+  const [photos, setPhotos] = useState<[Photo, Photo | null]>([{ src, position, mobileSrc }, null]);
   const [front, setFront] = useState<Layer>(0);
   const [fading, setFading] = useState(false);
   const frontRef = useRef<Layer>(0);
-  const photosRef = useRef<[Photo, Photo | null]>([{ src, position }, null]);
+  const photosRef = useRef<[Photo, Photo | null]>([{ src, position, mobileSrc }, null]);
   const bag = useRef<Photo[]>([]);
   const swapTimer = useRef(0);
   // Pause manuelle (WCAG 2.2.2) : le bouton est posé dans le bandeau parent,
@@ -80,11 +86,19 @@ export function HeroBackground({
     let timer = 0;
     let stopped = false;
 
+    // Image réellement affichée selon le format : sur téléphone, deux entrées
+    // peuvent donner la même image (première photo du village).
+    const wideNow = () => window.matchMedia('(min-width: 1200px)').matches;
+    const shownKey = (p: Photo | null | undefined, wide: boolean) =>
+      p ? (wide ? p.src : (p.mobileSrc ?? HERO_MOBILE[p.src] ?? p.src)) : undefined;
+
     const nextPhoto = (): Photo => {
-      const shownSrc = photosRef.current[frontRef.current]?.src;
+      const wide = wideNow();
+      const shown = shownKey(photosRef.current[frontRef.current], wide);
       if (bag.current.length === 0) {
-        const wide = window.matchMedia('(min-width: 1200px)').matches;
-        const pool = (poolProp ?? (HERO_PHOTOS as readonly Photo[])).filter((p) => p.src !== shownSrc && !(wide ? DESKTOP_SKIP.has(p.src) && !p.desktop : MOBILE_SKIP.has(p.src) || p.mobile === false)).map((p) => ({ ...p }));
+        const allowed = (p: Photo) =>
+          wide ? p.desktop !== false && (!DESKTOP_SKIP.has(p.src) || p.desktop === true) : p.mobile !== false && !MOBILE_SKIP.has(p.src);
+        const pool = (poolProp ?? (HERO_PHOTOS as readonly Photo[])).filter((p) => shownKey(p, wide) !== shown && allowed(p)).map((p) => ({ ...p }));
         for (let i = pool.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -100,7 +114,11 @@ export function HeroBackground({
       const visibleNow = el && el.getClientRects().length > 0 && !document.hidden;
       if (visibleNow && !pausedRef.current) {
         let photo = nextPhoto();
-        if (photo.src === photosRef.current[frontRef.current]?.src) photo = nextPhoto();
+        if (shownKey(photo, wideNow()) === shownKey(photosRef.current[frontRef.current], wideNow())) photo = nextPhoto();
+        if (!photo) {
+          timer = window.setTimeout(tick, EVERY_MS);
+          return;
+        }
         const back: Layer = frontRef.current === 0 ? 1 : 0;
         const next: [Photo, Photo | null] = [...photosRef.current] as [Photo, Photo | null];
         // Si la photo voulue est déjà dans le calque de derrière, le navigateur

@@ -59,18 +59,15 @@ const dinners: Media[] = [
 ];
 
 // Seules les photos du chantier et du terrain défilent dans le bandeau.
+// Choix de Mazunda sur planches numérotées (07/10/2026) : sur ordinateur, cinq
+// photos du terrain et du chantier ; sur téléphone, les deux vues du drone (les
+// autres photos, en basse résolution, y seraient floues).
 const heroPool = [
-  { src: '/hero-desktop/village-drone-terrain.webp', position: '50% 50%' },
-  { src: '/hero-desktop/village-drone-brume.webp', position: '50% 50%' },
+  { src: '/hero-desktop/village-drone-terrain.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/village-drone-brume.webp', position: '50% 50%', desktop: false },
   { src: '/histoire/village-hero.webp', position: '50% 55%' },
-  { src: '/histoire/village-terrain-ciel.webp', position: '50% 75%' },
-  { src: '/histoire/village-terrain-equipe.webp', position: '50% 60%' },
-  { src: '/histoire/village-terrain-chemin.webp', position: '50% 55%' },
   { src: '/histoire/village-terrain-palmier.webp', position: '50% 70%' },
-  { src: '/histoire/village-terrain-piste.webp', position: '50% 62%' },
   { src: '/histoire/village-chantier-coucher-soleil.webp', position: '50% 60%' },
-  { src: '/histoire/2018-kasangulu.webp', position: '50% 50%' },
-  { src: '/histoire/2018-kasangulu-2.webp', position: '50% 50%' },
   { src: '/histoire/2023-kasangulu.webp', position: '50% 50%' },
   { src: '/histoire/2023-kasangulu-2.webp', position: '50% 50%' }
 ];
@@ -83,7 +80,7 @@ const text = {
     titlePre: 'One Love ',
     titleWord: 'Village',
     intro: 'Sur notre terrain de Kasangulu, nous construisons un lieu pour accueillir, instruire et faire grandir les enfants.',
-    heroAlt: 'Vue aérienne du terrain de Kasangulu, où sera bâti le village.',
+    heroAlt: 'Le terrain de Kasangulu, où sera bâti le village.',
     bannerTitle: 'Le village se construit avec vous.',
     bannerText: 'Votre don pour ce projet va entièrement à la construction du One Love Village.',
     accompany: 'Nous accompagner sur ce projet',
@@ -152,7 +149,7 @@ const text = {
     titlePre: 'One Love ',
     titleWord: 'Village',
     intro: 'On our land in Kasangulu, we are building a place to welcome, educate and help children grow.',
-    heroAlt: 'Aerial view of the Kasangulu land, where the village will be built.',
+    heroAlt: 'The Kasangulu land, where the village will be built.',
     bannerTitle: 'The village is built with you.',
     bannerText: 'Your gift to this project goes entirely to building the One Love Village.',
     accompany: 'Support this project',
@@ -249,9 +246,10 @@ export function VillagePage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/hero-desktop/village-drone-terrain.webp"
+        image="/histoire/village-hero.webp"
+        imageMobile="/hero-mobile/village-drone-terrain.webp"
         imageAlt={t.heroAlt}
-        objectPosition="50% 50%"
+        objectPosition="50% 55%"
         photoPool={heroPool}
       />
 
