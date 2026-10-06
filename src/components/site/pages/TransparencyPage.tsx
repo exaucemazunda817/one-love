@@ -8,6 +8,15 @@ import { InnerHero } from '@/components/site/InnerHero';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { org } from '@/lib/content';
 
+// Bandeau de « Transparence » : choix de Mazunda sur planches numérotées
+// (07/10/2026), propre à cette page (les autres pages gardent la liste
+// commune). `desktop: false` / `mobile: false` : retirée sur ce format seulement.
+const HERO_POOL = [
+  { src: '/hero-desktop/boys-2023-rentree-ol-photo-001.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2022-06-tim-0160.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2022-06-tim-7516.webp', position: '50% 50%' }
+];
+
 const text = {
   fr: {
     title: 'Transparence : statut, fonds, protection des enfants',
@@ -79,6 +88,8 @@ export function TransparencyPage({ locale }: { locale: Locale }) {
         intro={t.intro}
         image="/hero-desktop/boys-2023-rentree-ol-photo-001.webp"
         imageAlt={t.heroAlt}
+        objectPosition="50% 50%"
+        photoPool={HERO_POOL}
       />
 
       <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-16 gap-y-8 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
