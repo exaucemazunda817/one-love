@@ -6,6 +6,27 @@ import { FacebookBand } from '@/components/site/FacebookBand';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { NEWS, NEWS_TAGS, formatNewsDate, type NewsTag } from '@/lib/news';
 
+// Bandeau de « Actualités » : choix de Mazunda sur planches numérotées
+// (07/10/2026), propre à cette page (les autres pages gardent la liste
+// commune). `desktop: false` / `mobile: false` : retirée sur ce format seulement.
+const HERO_POOL = [
+  { src: '/hero-desktop/boys-2023-rentree-ol-photo-007.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2024-07-ol-photo-009.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2023-12-25-ol-photo-004.webp', position: '50% 50%', mobile: false },
+  { src: '/hero-desktop/centre-aere-2023-12-25-ol-photo-013.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2023-02-tim-pt-002.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2023-02-tim-pt-009.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2023-02-tim-pt-012.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2023-02-tim-pt-015.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-07-camp-23-ol-photo-023.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2024-03-ol-photo-002.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-02-ol-photo-010.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2022-06-tim-0160.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2022-06-tim-7516.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2023-12-02-ol-photo-008.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2023-12-02-ol-photo-012.webp', position: '50% 50%' }
+];
+
 const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: string; titlePre: string; titleWord: string; intro: string; heroAlt: string }> = {
   fr: {
     title: 'Nouvelles du terrain : actualités et galerie',
@@ -14,7 +35,7 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
     titlePre: 'Nouvelles du ',
     titleWord: 'terrain',
     intro: 'Ce qui se passe et ce qui vient de se passer à One Love, raconté par notre équipe.',
-    heroAlt: 'Trois enfants du centre aéré, face à l’objectif.',
+    heroAlt: 'Deux enfants du centre aéré, assis dans l’herbe, bras dessus bras dessous.',
     categoriesLabel: 'Catégories',
     listTitle: 'Dernières nouvelles',
     readLabel: 'Lire l’article',
@@ -33,7 +54,7 @@ const text: Record<Locale, NewsText & { title: string; desc: string; eyebrow: st
     titlePre: 'News from the ',
     titleWord: 'field',
     intro: 'What is happening, and what has just happened, at One Love, told by our team.',
-    heroAlt: 'Three children from the day centre, facing the camera.',
+    heroAlt: 'Two children from the day centre, sitting arm in arm on the grass.',
     categoriesLabel: 'Categories',
     listTitle: 'Latest news',
     readLabel: 'Read the article',
@@ -79,8 +100,10 @@ export function NewsPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/hero-desktop/centre-aere-2024-02-ol-photo-002.webp"
+        image="/hero-desktop/centre-aere-2024-07-ol-photo-009.webp"
         imageAlt={t.heroAlt}
+        objectPosition="50% 50%"
+        photoPool={HERO_POOL}
       />
 
       <NewsInteractive t={t} />
