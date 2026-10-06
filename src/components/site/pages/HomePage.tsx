@@ -20,20 +20,23 @@ import { ScrollFan } from '@/components/site/effects/ScrollFan';
 
 // Bandeau de l'accueil (05/10/2026) : on commence par la photo du pasteur, de
 // sa femme et des enfants, puis les autres défilent au hasard. Photos fournies
-// par Mazunda, recadrées en paysage.
+// par Mazunda, recadrées en paysage. Mêmes photos sur ordinateur et sur
+// téléphone (07/10/2026) : les cinq dernières passent aussi sur ordinateur,
+// cadrées sur les visages détectés (le bandeau de l'accueil, 780 px de haut,
+// les garde entiers jusqu'à 1920 px de large). Choix de Mazunda sur planches
+// numérotées (07/10/2026) : deux photos retirées partout, et l'enfant au pull
+// rouge qui saute retiré sur téléphone seulement.
 const HOME_POOL = [
   { src: '/hero-desktop/boys-2023-famille-tim-pt-009.webp', position: '50% 50%' },
   { src: '/hero-desktop/centre-aere-2023-12-02-ol-photo-012.webp', position: '50% 50%' },
   { src: '/hero-desktop/centre-aere-2024-07-ol-photo-006.webp', position: '50% 50%' },
-  { src: '/hero-desktop/centre-aere-2024-03-ol-photo-003.webp', position: '50% 50%' },
   { src: '/hero-desktop/centre-aere-2024-02-ol-photo-002.webp', position: '50% 50%' },
-  { src: '/hero-desktop/centre-aere-2023-12-25-ol-photo-004.webp', position: '50% 50%' },
-  { src: '/hero-desktop/centre-aere-2024-03-ol-photo-009.webp', position: '50% 50%' },
-  { src: '/hero-accueil/bonnets-1.webp', position: '50% 40%' },
-  { src: '/hero-accueil/bonnets-2.webp', position: '50% 40%' },
-  { src: '/hero-accueil/peace.webp', position: '50% 40%' },
-  { src: '/hero-accueil/sourire.webp', position: '50% 40%' },
-  { src: '/hero-accueil/trois-garcons.webp', position: '50% 35%' }
+  { src: '/hero-desktop/centre-aere-2024-03-ol-photo-009.webp', position: '50% 50%', mobile: false },
+  { src: '/hero-accueil/bonnets-1.webp', position: '50% 50%', desktop: true },
+  { src: '/hero-accueil/bonnets-2.webp', position: '50% 50%', desktop: true },
+  { src: '/hero-accueil/peace.webp', position: '50% 50%', desktop: true },
+  { src: '/hero-accueil/sourire.webp', position: '50% 55%', desktop: true },
+  { src: '/hero-accueil/trois-garcons.webp', position: '50% 35%', desktop: true }
 ];
 
 const text = {

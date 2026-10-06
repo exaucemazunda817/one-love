@@ -6,7 +6,10 @@ import { PauseIcon, PlayIcon } from '@phosphor-icons/react';
 import { HERO_PHOTOS, DESKTOP_SKIP, MOBILE_SKIP } from '@/lib/hero-photos';
 import { HeroLayer } from '@/components/site/HeroPicture';
 
-type Photo = { src: string; position: string };
+// `desktop` : photo autorisée sur ordinateur dans ce bandeau-là, même si elle
+// figure dans DESKTOP_SKIP (bandeau assez haut pour garder les visages entiers).
+// `mobile: false` : photo retirée sur téléphone et tablette dans ce bandeau-là.
+type Photo = { src: string; position: string; desktop?: boolean; mobile?: boolean };
 type Layer = 0 | 1;
 
 const FIRST_DELAY_MS = 5000;
@@ -81,7 +84,7 @@ export function HeroBackground({
       const shownSrc = photosRef.current[frontRef.current]?.src;
       if (bag.current.length === 0) {
         const wide = window.matchMedia('(min-width: 1200px)').matches;
-        const pool = (poolProp ?? HERO_PHOTOS).filter((p) => p.src !== shownSrc && !(wide ? DESKTOP_SKIP.has(p.src) : MOBILE_SKIP.has(p.src))).map((p) => ({ ...p }));
+        const pool = (poolProp ?? (HERO_PHOTOS as readonly Photo[])).filter((p) => p.src !== shownSrc && !(wide ? DESKTOP_SKIP.has(p.src) && !p.desktop : MOBILE_SKIP.has(p.src) || p.mobile === false)).map((p) => ({ ...p }));
         for (let i = pool.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [pool[i], pool[j]] = [pool[j], pool[i]];
