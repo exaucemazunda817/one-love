@@ -155,12 +155,9 @@ export const actions = [
 /// Les chemins ci-dessous ne résolvent volontairement que pour les images
 /// publiables.
 ///
-/// RÉSOLUTION — à demander à l'association : sur les trois images publiables,
-/// seule `atelier-1` est en pleine définition (1638 × 2048). `annonce` ne fait
-/// que 640 × 800 et `formateurs` 384 × 480, parce qu'elles ont été récupérées
-/// depuis Facebook, qui recompresse. Elles restent lisibles mais manquent de
-/// netteté sur les écrans à forte densité. Le photographe du projet a
-/// forcément les originaux.
+/// RÉSOLUTION : les photos des formateurs viennent maintenant des originaux du
+/// Drive (dossier Projet / 2026 / Angel Fondation / 05 Septembre, 06/10/2026).
+/// Seul le visuel `annonce` (640 × 800, affiche Facebook) reste en basse définition.
 export const gallery = [
   {
     src: '/projets/reves-2/reves2-atelier-1.jpg',
@@ -169,10 +166,22 @@ export const gallery = [
     consentNote: 'Non identifiante : noir et blanc, visages non visibles.'
   },
   {
-    src: '/projets/reves-2/reves2-formateurs.jpg',
-    caption: 'Les formateurs du programme RÊVES 2, mobilisés pour encadrer les enfants.',
+    src: '/projets/reves-2/reves2-formateurs.webp',
+    caption: 'Les formateurs et animateurs du programme RÊVES 2, le 5 septembre 2026.',
     publishable: true,
-    consentNote: "Support déjà diffusé par l’association ; majoritairement des adultes."
+    consentNote: 'Photo originale du Drive de l’association (06/10/2026) ; des adultes.'
+  },
+  {
+    src: '/projets/reves-2/reves2-formateur-seance.webp',
+    caption: 'Un formateur anime une séance du programme RÊVES 2.',
+    publishable: true,
+    consentNote: 'Photo originale du Drive ; enfants de dos, non identifiables.'
+  },
+  {
+    src: '/projets/reves-2/reves2-animateur.webp',
+    caption: 'Un animateur de RÊVES 2 pendant la séance du 5 septembre 2026.',
+    publishable: true,
+    consentNote: 'Photo originale du Drive ; un adulte.'
   },
   {
     src: '/projets/reves-2/reves2-annonce.jpg',

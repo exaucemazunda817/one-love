@@ -78,8 +78,8 @@ const chapters: Chapter[] = [
     years: '2016 – 2017',
     title: { fr: 'Trois garçons, puis une maison', en: 'Three boys, then a home' },
     text: {
-      fr: "C’est le tournant de l’histoire. À l’été 2016, notre plus belle rencontre : trois garçons rencontrés dans la rue. En octobre, un programme d’alphabétisation pour mineurs démarre. En 2017 apparaît la One Love House, la maison des enfants : les garçons y vivent, vont à l’école, partent en vacances et préparent leur premier spectacle de Noël.",
-      en: "This is the turning point. In summer 2016, our most precious encounter: three boys we met on the street. In October, a literacy programme for minors began. In 2017 came the One Love House, the children’s home: the boys lived there, went to school, went on holiday and prepared their first Christmas show."
+      fr: "C’est le tournant de l’histoire. À l’été 2016, notre plus belle rencontre : trois garçons rencontrés dans la rue. En 2017 apparaît la One Love House, la maison des enfants : les garçons y vivent, vont à l’école, partent en vacances et préparent leur premier spectacle de Noël.",
+      en: "This is the turning point. In summer 2016, our most precious encounter: three boys we met on the street. In 2017 came the One Love House, the children’s home: the boys lived there, went to school, went on holiday and prepared their first Christmas show."
     },
     media: [
       photo('2016-premiere-rencontre', 'square', "Les premiers garçons accueillis, avec l’équipe One Love.", 'The first boys welcomed, with the One Love team.'),
@@ -117,8 +117,8 @@ const chapters: Chapter[] = [
     years: '2021 – 2022',
     title: { fr: 'Ouvrir les portes', en: 'Opening the doors' },
     text: {
-      fr: "En juin 2021, nous lançons un nouveau programme : un centre aéré ouvert aux enfants du quartier, le mercredi et le samedi. Bibliothèque, informatique, alphabétisation, football : un samedi de mars 2022, 90 enfants sont accueillis. Il y a aussi les grandes sorties, comme ce jour de janvier 2022 au parc de la N’sele avec 54 enfants, et l’été 2022, le voyage « Congo je t’aime » mené avec l’église Gospel Nation.",
-      en: "In June 2021, we launched a new programme: a day centre open to the neighbourhood’s children on Wednesdays and Saturdays. Library, computers, literacy, football: one Saturday in March 2022, 90 children came. There were big outings too, like that January 2022 day at the N’sele park with 54 children, and in summer 2022, the \"Congo je t’aime\" trip organised with the Gospel Nation church."
+      fr: "En juin 2021, nous lançons un nouveau programme : un centre aéré ouvert aux enfants du quartier, le mercredi et le samedi. Bibliothèque, informatique, football : un samedi de mars 2022, 90 enfants sont accueillis. Il y a aussi les grandes sorties, comme ce jour de janvier 2022 au parc de la N’sele avec 54 enfants, et l’été 2022, le voyage « Congo je t’aime » mené avec l’église Gospel Nation.",
+      en: "In June 2021, we launched a new programme: a day centre open to the neighbourhood’s children on Wednesdays and Saturdays. Library, computers, football: one Saturday in March 2022, 90 children came. There were big outings too, like that January 2022 day at the N’sele park with 54 children, and in summer 2022, the \"Congo je t’aime\" trip organised with the Gospel Nation church."
     },
     media: [
       photo('2021-bibliotheque', 'square', 'Lecture et jeux à la bibliothèque du centre.', "Reading and games in the centre’s library."),
