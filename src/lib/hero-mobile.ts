@@ -8,7 +8,8 @@ export const HERO_MOBILE: Record<string, string> = {
   '/hero-desktop/boys-2022-noel-tim-pt-001.webp': '/hero-mobile/boys-2022-noel-tim-pt-001.webp',
   '/hero-desktop/boys-2022-noel-tim-pt-004.webp': '/hero-mobile/boys-2022-noel-tim-pt-004.webp',
   '/hero-desktop/boys-2022-noel-tim-pt-012.webp': '/hero-mobile/boys-2022-noel-tim-pt-012.webp',
-  '/hero-desktop/boys-2023-famille-tim-pt-006.webp': '/hero-mobile/boys-2023-famille-tim-pt-006.webp',
+  // Recadrée le 07/10/2026 sur le pasteur et Maïté côte à côte (demande de Mazunda).
+  '/hero-desktop/boys-2023-famille-tim-pt-006.webp': '/hero-mobile/boys-2023-famille-tim-pt-006-v2.webp',
   '/hero-desktop/boys-2023-famille-tim-pt-009.webp': '/hero-mobile/boys-2023-famille-tim-pt-009.webp',
   '/hero-desktop/centre-aere-2024-07-ol-photo-006.webp': '/hero-mobile/centre-aere-2024-07-ol-photo-006.webp',
   '/hero-desktop/centre-aere-2024-07-ol-photo-009.webp': '/hero-mobile/centre-aere-2024-07-ol-photo-009.webp',
