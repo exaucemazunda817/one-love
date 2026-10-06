@@ -33,6 +33,7 @@ export function PathTimeline({ steps }: { steps: PathStep[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const seen = useSeen(ref, 0.7);
   const drawn = seen !== false;
+  const max = Math.max(...steps.map((s) => s.value));
 
   return (
     <div ref={ref}>
@@ -79,47 +80,39 @@ export function PathTimeline({ steps }: { steps: PathStep[] }) {
         </div>
       </div>
 
-      {/* Téléphone / tablette : ligne verticale à gauche. */}
-      <div className="relative flex flex-col gap-7 pl-6 dk:hidden">
-        <div className="absolute bottom-[6px] left-[3px] top-[6px] w-px bg-card-line" />
-        <div
-          className="absolute left-[3px] top-[6px] w-px bg-gradient-to-b from-copper-600 to-gold transition-[height] ease-out"
-          style={{ height: drawn ? '100%' : '0%', transitionDuration: '1400ms' }}
-        />
-        {steps.map((step, i) => (
-          <div key={step.label} className="relative flex items-center gap-4">
-            <span
-              className="absolute left-[-24px] h-[7px] w-[7px] flex-none rounded-full bg-gold shadow-[0_0_0_3px_var(--cream)] transition-transform ease-out"
-              style={{
-                transform: drawn ? 'scale(1)' : 'scale(0)',
-                transitionDuration: '350ms',
-                transitionDelay: drawn ? `${180 + i * 220}ms` : '0ms'
-              }}
-            />
-            <div
-              className="flex items-baseline gap-3 transition-all ease-out"
-              style={{
-                opacity: drawn ? 1 : 0,
-                transform: drawn ? 'translateX(0)' : 'translateX(-8px)',
-                transitionDuration: '450ms',
-                transitionDelay: drawn ? `${220 + i * 220}ms` : '0ms'
-              }}
-            >
-              <CountUp
-                value={step.value}
-                prefix={step.prefix}
-                className="flex-none font-serif text-[30px] font-medium leading-none text-copper-600"
-              />
-              <span className="flex flex-col gap-0.5">
-                <span className="text-[14px] leading-[1.3] text-ink-body">{step.label}</span>
-                <span className="text-[12px] font-extrabold uppercase tracking-[0.1em] text-ink-soft">
-                  {step.when}
-                </span>
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Téléphone / tablette : barres de croissance (06/10/2026, choix de
+          Mazunda). La longueur de chaque barre est proportionnelle au chiffre :
+          on voit d'un coup d'œil le passage de 3 garçons à une centaine
+          d'enfants. Chaque barre se remplit pendant que son chiffre compte. */}
+      <ol className="m-0 flex list-none flex-col gap-6 p-0 dk:hidden">
+        {steps.map((step, i) => {
+          const pct = Math.max(4, Math.round((step.value / max) * 100));
+          const last = i === steps.length - 1;
+          return (
+            <li key={step.label} className="flex flex-col gap-2">
+              <div className="flex items-baseline justify-between gap-4">
+                <CountUp
+                  value={step.value}
+                  prefix={step.prefix}
+                  className="font-serif text-[clamp(34px,10vw,44px)] font-medium leading-none tabular-nums text-copper-600"
+                />
+                <span className="text-[12px] font-extrabold uppercase tracking-[0.1em] text-ink-soft">{step.when}</span>
+              </div>
+              <div className="h-2.5 overflow-hidden rounded-full bg-copper-600/15" aria-hidden>
+                <div
+                  className={`h-full rounded-full transition-[width] ease-out ${last ? 'bg-gradient-to-r from-copper-600 to-gold' : 'bg-copper-600'}`}
+                  style={{
+                    width: drawn ? `${pct}%` : '0%',
+                    transitionDuration: '1100ms',
+                    transitionDelay: drawn ? `${150 + i * 250}ms` : '0ms'
+                  }}
+                />
+              </div>
+              <span className="text-[15px] leading-[1.4] text-ink-body">{step.label}</span>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
