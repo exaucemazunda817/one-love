@@ -8,6 +8,29 @@ import { Eyebrow, CallBanner } from '@/components/site/ui';
 import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
 import { localeHref, type Locale } from '@/lib/i18n';
 
+// Bandeau de « Nos actions » : choix de Mazunda sur planches numérotées
+// (07/10/2026), propre à cette page (les autres pages gardent la liste
+// commune). `desktop: false` / `mobile: false` : retirée sur ce format seulement.
+const HERO_POOL = [
+  { src: '/hero-desktop/boys-2023-rentree-ol-photo-007.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-07-ol-photo-006.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-07-ol-photo-009.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2023-12-25-ol-photo-004.webp', position: '50% 50%', mobile: false },
+  { src: '/hero-desktop/centre-aere-2023-12-25-ol-photo-013.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2023-02-tim-pt-009.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2023-02-tim-pt-012.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2023-02-tim-pt-015.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-03-ol-photo-002.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2024-02-ol-photo-002.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2024-02-ol-photo-006.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2024-02-ol-photo-010.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2022-06-tim-0160.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2022-06-tim-7516.webp', position: '50% 50%' },
+  { src: '/hero-desktop/centre-aere-2023-12-02-ol-photo-008.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2023-12-02-ol-photo-012.webp', position: '50% 50%', desktop: false },
+  { src: '/hero-desktop/centre-aere-2023-09-17-ol-photo-012.webp', position: '50% 50%' }
+];
+
 const text = {
   fr: {
     title: 'Nos actions : ce que One Love a réalisé',
@@ -18,7 +41,7 @@ const text = {
     intro: "Depuis 2017 à Kinshasa, pas à pas, avec nos éducateurs, nos bénévoles et nos soutiens.",
     donate: 'Faire un don',
     sponsor: 'Parrainer un enfant',
-    heroAlt: 'Des enfants jouent dans la cour du centre, devant la fresque.',
+    heroAlt: 'Des One Love Boys en uniforme, le jour de la rentrée scolaire.',
     items: [
       { when: 'Depuis 2017', k: 'Accueil', t: 'Un foyer pour les garçons de la rue', d: 'En 2017, nous ouvrons la One Love House pour accueillir à plein temps des garçons qui vivaient dans la rue. Ils étaient 4 au départ, 20 en 2020, 16 en 2025. Chacun y trouve un toit, des repas, des soins et une famille.', img: '/histoire/2017-les-garcons.webp', alt: 'Quatre garçons de la One Love House, en 2017.' },
       { when: 'Chaque rentrée', k: 'Scolarité', t: 'Tous les One Love Boys à l’école', d: 'Chaque année, nous inscrivons les garçons à l’école, du primaire au secondaire, avec uniforme, sac et fournitures. À la rentrée 2023, ils étaient douze, de la 2e primaire à la 3e secondaire. La scolarité coûte cher à Kinshasa : environ 720 $ par enfant et par an, hors fournitures.', img: '/histoire/2023-rentree.webp', alt: 'Des garçons sur le chemin de l’école, à la rentrée 2023.' },
@@ -43,7 +66,7 @@ const text = {
     intro: 'Since 2017 in Kinshasa, step by step, with our educators, volunteers and supporters.',
     donate: 'Donate',
     sponsor: 'Sponsor a child',
-    heroAlt: 'Children playing in the centre’s courtyard, in front of the mural.',
+    heroAlt: 'One Love Boys in school uniform on the first day of school.',
     items: [
       { when: 'Since 2017', k: 'Home', t: 'A home for street boys', d: 'In 2017, we opened the One Love House to welcome full time boys who used to live on the street. There were 4 at first, 20 in 2020, 16 in 2025. Each finds a roof, meals, care and a family there.', img: '/histoire/2017-les-garcons.webp', alt: 'Four boys of the One Love House, in 2017.' },
       { when: 'Every school year', k: 'Schooling', t: 'Every One Love Boy at school', d: 'Every year, we enrol the boys at school, from primary to secondary, with uniform, bag and supplies. At the start of the 2023 school year there were twelve of them, from year 2 of primary to year 3 of secondary. School is expensive in Kinshasa: about $720 per child per year, not counting supplies.', img: '/histoire/2023-rentree.webp', alt: 'Boys on their way to school, at the start of the 2023 school year.' },
@@ -78,8 +101,10 @@ export function ActionsPage({ locale }: { locale: Locale }) {
         titlePre={t.titlePre}
         titleWord={t.titleWord}
         intro={t.intro}
-        image="/hero-desktop/centre-aere-2023-02-tim-pt-002.webp"
+        image="/hero-desktop/boys-2023-rentree-ol-photo-007.webp"
         imageAlt={t.heroAlt}
+        objectPosition="50% 50%"
+        photoPool={HERO_POOL}
         cta={{ donate: t.donate, sponsor: t.sponsor }}
       />
 
