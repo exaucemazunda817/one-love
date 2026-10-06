@@ -9,6 +9,15 @@ import { Brush, CallBanner, BrushLast } from '@/components/site/ui';
 import { currentProject, publishableGallery } from '@/lib/content';
 import { localeHref, type Locale } from '@/lib/i18n';
 
+// Bandeau de RÊVES 2 : uniquement les photos du programme (choix de Mazunda,
+// 07/10/2026), mêmes photos sur ordinateur et téléphone.
+const HERO_POOL = [
+  { src: '/projets/reves-2/reves2-atelier-1.jpg', position: '50% 40%' },
+  { src: '/projets/reves-2/reves2-formateurs.webp', position: '50% 40%' },
+  { src: '/projets/reves-2/reves2-formateur-seance.webp', position: '50% 40%' },
+  { src: '/projets/reves-2/reves2-animateur.webp', position: '50% 40%' }
+];
+
 const text = {
   fr: {
     title: `${currentProject.name} : ${currentProject.acronymMeaning}`,
@@ -77,6 +86,7 @@ export function Reves2Page({ locale }: { locale: Locale }) {
         image="/projets/reves-2/reves2-atelier-1.jpg"
         imageAlt={t.heroAlt}
         objectPosition="50% 40%"
+        photoPool={HERO_POOL}
       />
 
       <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
