@@ -182,7 +182,7 @@ export function ParrainerPage({ locale }: { locale: Locale }) {
     <>
       <section
         className="relative flex overflow-hidden bg-night text-cream"
-        style={{ minHeight: 'min(80vh,720px)' }}
+        style={{ minHeight: 'min(80svh,720px)' }}
       >
         <div className="relative flex min-h-svh w-full items-end dk:min-h-0 dk:items-center">
           <HeroBackground src="/hero-desktop/boys-2022-noel-tim-pt-001.webp" alt={t.heroAlt} position="50% 50%" pool={BOYS_POOL} />

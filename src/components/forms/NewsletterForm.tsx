@@ -96,7 +96,7 @@ export function NewsletterForm({ locale = 'fr' }: { locale?: Locale }) {
         aria-invalid={invalid ? true : undefined}
         aria-describedby={invalid ? `${id}-err` : undefined}
         placeholder={t.label}
-        className="min-h-12 min-w-0 flex-1 rounded-lg border-[1.5px] border-dark-border aria-invalid:border-gold-hover bg-dark-surface px-3.5 text-[15px] text-cream placeholder:text-on-dark-3"
+        className="min-h-12 min-w-0 flex-1 rounded-lg border-[1.5px] border-dark-border aria-invalid:border-gold-hover bg-dark-surface px-3.5 text-[16px] text-cream placeholder:text-on-dark-3"
       />
       <button
         type="submit"

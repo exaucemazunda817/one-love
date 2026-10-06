@@ -851,6 +851,11 @@ html[data-intro] .ol-intro {
     min-width: 0;
     scroll-snap-align: start;
   }
+  /* Galeries photo : une rangée par mois (choix A de l'audit mobile du
+     06/10/2026). Vignettes plus étroites pour voir la suivante dépasser. */
+  .ol-swipe.ol-swipe-photos > * {
+    flex-basis: 62%;
+  }
   /* Dans une rangée qui glisse, les cartes ne jouent pas d'apparition : une
      carte hors écran à droite était « sortie de l'écran », donc remise en
      attente puis réanimée à chaque glissement (saccades, et le doigt posé sur

@@ -384,7 +384,7 @@ export function HistoryPage({ locale }: { locale: Locale }) {
               <p className="m-0 max-w-measure text-pretty text-[16px] leading-[1.65] text-ink-body">{c.text[locale]}</p>
             </Reveal>
 
-            <div className={`grid grid-flow-dense grid-cols-2 gap-3 sm:gap-4 ${c.media.length === 1 ? '' : 'lg:grid-cols-3'}`}>
+            <div className={`grid grid-flow-dense grid-cols-2 gap-3 sm:gap-4 ${c.media.length === 1 ? '' : 'ol-swipe ol-swipe-photos lg:grid-cols-3'}`}>
               {c.media.map((m, i) => (
                 <MediaItem key={m.kind === 'youtube' ? m.id : m.src} m={m} locale={locale} playLabel={t.play} index={i} />
               ))}

@@ -348,12 +348,12 @@ export function VillagePage({ locale }: { locale: Locale }) {
           <Reveal className="relative aspect-[16/9] overflow-hidden rounded-card bg-night shadow-ol-photo">
             <Image src="/photos/drive/drone-kasangulu-terrain.jpg" alt={t.droneAlt} fill sizes="(max-width: 1200px) 100vw, 1136px" loading="lazy" className="object-cover" />
           </Reveal>
-          <div className="grid grid-flow-dense grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+          <div className="ol-swipe ol-swipe-photos grid grid-flow-dense grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
             {gallery.map((m, i) => (
               <MediaItem key={m.kind === 'photo' ? m.src : i} m={m} locale={locale} playLabel={t.play} index={i} />
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+          <div className="ol-swipe ol-swipe-photos grid grid-cols-2 gap-3 sm:gap-4">
             <MediaItem m={youtube} locale={locale} playLabel={t.play} index={0} />
           </div>
         </div>
@@ -372,7 +372,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
               </Reveal>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+          <div className="ol-swipe ol-swipe-photos grid grid-cols-2 gap-3 sm:gap-4">
             <Reveal className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-night shadow-ol-sm">
               <Image src="/photos/drive/diner-2023-table.jpg" alt={locale === 'fr' ? 'Des invités à table lors du premier dîner caritatif, en 2023.' : 'Guests at their table at the first charity dinner, in 2023.'} fill sizes="(max-width: 1200px) 50vw, 560px" loading="lazy" className="object-cover" />
             </Reveal>

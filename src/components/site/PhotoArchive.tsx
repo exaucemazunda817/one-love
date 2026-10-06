@@ -73,7 +73,7 @@ export function PhotoArchive({ months, locale, altPrefix }: { months: CentreMont
                 </h3>
                 <p className="m-0 text-pretty text-[16px] leading-[1.6] text-ink-body">{m.caption[locale]}</p>
               </Reveal>
-              <ul className="m-0 grid list-none grid-cols-2 gap-2 p-0 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
+              <ul className="ol-swipe ol-swipe-photos m-0 grid list-none grid-cols-2 gap-2 p-0 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
                 {m.photos.map((p, i) => (
                   <li key={p.src}>
                     <Reveal variant="photo" delay={(i % 4) * 110} className="h-full">

@@ -47,7 +47,7 @@ export function SwipeDots({ count, label }: { count: number; label: string }) {
   };
 
   return (
-    <div ref={ref} className="-mt-2 flex justify-center gap-1 md:hidden" role="group" aria-label={label}>
+    <div ref={ref} className="-mt-2 flex justify-center gap-0.5 md:hidden" role="group" aria-label={label}>
       {Array.from({ length: count }, (_, i) => (
         <button
           key={i}
@@ -55,7 +55,7 @@ export function SwipeDots({ count, label }: { count: number; label: string }) {
           onClick={() => go(i)}
           aria-label={`${i + 1} / ${count}`}
           aria-current={i === active ? 'true' : undefined}
-          className="flex h-8 w-6 cursor-pointer items-center justify-center border-0 bg-transparent p-0"
+          className="flex h-8 w-8 cursor-pointer items-center justify-center border-0 bg-transparent p-0"
         >
           <span className={`block h-2 rounded-full transition-all duration-300 ${i === active ? 'w-5 bg-copper-600' : 'w-2 bg-copper-600/30'}`} />
         </button>
