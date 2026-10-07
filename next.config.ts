@@ -65,6 +65,16 @@ const nextConfig: NextConfig = {
   async redirects() {
     const perm = { permanent: true } as const;
     return [
+      // Ancienne adresse Vercel (one-love-nu.vercel.app), encore affichée par
+      // Bing/Edge le 07/10/2026 : tout visiteur est renvoyé vers le vrai nom de
+      // domaine, même page. Les adresses de prévisualisation Vercel ne sont
+      // pas concernées (autre nom d'hôte).
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'one-love-nu.vercel.app' }],
+        destination: 'https://www.associationonelove.org/:path*',
+        ...perm
+      },
       { source: '/un-peu-de-nous', destination: '/association', ...perm },
       { source: '/un-peu-de-nous/:slug*', destination: '/association', ...perm },
       { source: '/parrainage', destination: '/parrainer', ...perm },
