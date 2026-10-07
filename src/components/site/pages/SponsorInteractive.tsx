@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useMemo, useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { FieldError, errorProps } from '@/components/forms/FieldError';
 import { focusFirstError, formMessages, serverIssuesToErrors, validateFields, type FieldErrors } from '@/lib/form-validation';
 import Image from 'next/image';
@@ -17,7 +17,9 @@ import { Reveal } from '@/components/Reveal';
 import { SwipeDots } from '@/components/site/SwipeDots';
 import { Brush, BrushLast } from '@/components/site/ui';
 import type { Currency } from '@/lib/donation-ui';
-import { SYMBOL, sanitizeAmount, toEur, formatCustom } from '@/lib/donation-ui';
+import { SYMBOL, sanitizeAmount, formatCustom } from '@/lib/donation-ui';
+import { CURRENCIES, SPONSOR_FROM, SPONSOR_LIMITS, formatMoney } from '@/lib/money';
+import type { PlanPrices } from '@/lib/sponsorship';
 import type { Locale } from '@/lib/i18n';
 
 type Mode = 'child' | 'prog';
@@ -30,8 +32,8 @@ export interface SponsorText {
   formulesTitle: string;
   formulesSubtitle: string;
   modes: Record<Mode, string>;
-  plansChild: { name: string; price: number; tag: string; items: string[] }[];
-  plansProg: { name: string; price: number; tag: string; items: string[] }[];
+  plansChild: { name: string; prices: PlanPrices; tag: string; items: string[] }[];
+  plansProg: { name: string; prices: PlanPrices; tag: string; items: string[] }[];
   perMonth: string;
   monthUnit: string;
   receiveTitle: string;
@@ -58,14 +60,13 @@ export interface SponsorText {
   payNote: string;
   customLabel: string;
   customHint: string;
-  eurNote: string;
+  /** Message « dès 5 $ » ; {montant} est remplacé dans la devise choisie. */
+  fromNote: string;
+  currencyLabel: string;
+  currencyHint: string;
   error: string;
 }
 
-function fmt(eur: number, currency: Currency, locale: Locale): string {
-  const num = currency === 'EUR' ? eur : currency === 'USD' ? Math.round(eur * 1.1) : Math.round((eur * 3100) / 1000) * 1000;
-  return `${num.toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-GB')} ${SYMBOL[currency]}`;
-}
 
 export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorText }) {
   const id = useId();
@@ -85,8 +86,10 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
   // Montant libre (facultatif) : s'il est saisi, il remplace le prix de la formule.
   const customValue = Number(custom.replace(',', '.'));
   const hasCustom = custom !== '' && Number.isFinite(customValue) && customValue > 0;
-  const customEur = hasCustom ? toEur(customValue, cur) : null;
-  const chosenPrice = hasCustom ? formatCustom(customValue, cur, locale) : fmt(chosen.price, cur, locale);
+  // Paiement dans la devise choisie, sans reconversion (07/10/2026) : le
+  // montant affiché est exactement celui qui sera prélevé.
+  const chosenPrice = hasCustom ? formatCustom(customValue, cur, locale) : formatMoney(chosen.prices[cur], cur, locale);
+  const fromNote = t.fromNote.replace('{montant}', formatMoney(SPONSOR_FROM[cur], cur, locale));
 
   // Devenir parrain = payer. Le formulaire n'enregistre personne : il ouvre
   // une session de paiement, et c'est le paiement confirmé (webhook Stripe) qui
@@ -103,7 +106,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
     const msg = formMessages(locale);
     // La charte doit être cochée : sans validation native (noValidate), rien ne l'imposait.
     if (!form.querySelector<HTMLInputElement>('input[name="charter"]')?.checked) checked.charter = msg.check;
-    if (customEur !== null && customEur < 1) checked.amount = msg.amount;
+    if (hasCustom && (customValue < SPONSOR_LIMITS[cur].min || customValue > SPONSOR_LIMITS[cur].max)) checked.amount = msg.amount;
     setErrors(checked);
     if (Object.keys(checked).length > 0) {
       focusFirstError(form, checked);
@@ -119,7 +122,8 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
       mode,
       plan,
       locale,
-      ...(customEur !== null ? { amountEur: customEur } : {})
+      currency: cur,
+      ...(hasCustom ? { amount: customValue } : {})
     };
     try {
       const response = await fetch('/api/parrainer/session', {
@@ -134,7 +138,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
       }
       const fromServer = serverIssuesToErrors(
         data.issues,
-        { firstName: 'firstName', lastName: 'lastName', email: 'email', amountEur: 'amount' },
+        { firstName: 'firstName', lastName: 'lastName', email: 'email', amount: 'amount' },
         locale
       );
       if (Object.keys(fromServer).length > 0) {
@@ -149,7 +153,6 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
     setPending(false);
   }
 
-  const currencies = useMemo(() => ['EUR', 'USD', 'CDF'] as Currency[], []);
 
   return (
     <>
@@ -185,22 +188,9 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
             <Reveal className="flex max-w-[620px] flex-col gap-2.5">
               <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.formulesTitle} /></h2>
               <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.formulesSubtitle}</p>
+              {/* Les prix ne limitent pas la contribution (demande de Mazunda du 07/10/2026). */}
+              <p className="m-0 rounded-lg bg-white/70 px-4 py-3 text-[16px] font-semibold leading-[1.55] text-copper-700">{fromNote}</p>
             </Reveal>
-            <div className="flex gap-1">
-              {currencies.map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  aria-pressed={cur === c}
-                  onClick={() => setCur(c)}
-                  className={`min-h-11 min-w-[52px] cursor-pointer rounded-md border-[1.5px] px-3 text-[14px] font-bold ${
-                    cur === c ? 'border-ink bg-ink text-cream' : 'border-field-line bg-white text-ink'
-                  }`}
-                >
-                  {SYMBOL[c]}
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Parrainage = un enfant uniquement (décision du 05/10/2026) : le choix
@@ -222,7 +212,7 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                   {p.tag && <span className="rounded-full bg-sage-700 px-2.5 py-1 text-[12px] font-extrabold text-white">{p.tag}</span>}
                 </span>
                 <span className="flex items-baseline gap-1.5">
-                  <span className="font-serif text-[44px] font-medium leading-none">{fmt(p.price, cur, locale)}</span>
+                  <span className="font-serif text-[44px] font-medium leading-none">{formatMoney(p.prices[cur], cur, locale)}</span>
                   <span className="text-[15px] text-ink-soft">{t.perMonth}</span>
                 </span>
                 <span className="flex flex-col gap-2">
@@ -304,6 +294,28 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                     className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600"
                   />
                 </label>
+                {/* Devise du paiement, dans le formulaire (demande de Mazunda du
+                    07/10/2026) : euro, dollar ou franc congolais, prélevé tel
+                    quel. Elle change aussi les prix des formules au-dessus. */}
+                <fieldset className="m-0 flex flex-col gap-2 border-0 p-0">
+                  <legend className="mb-2 p-0 text-[15px] font-bold">{t.currencyLabel}</legend>
+                  <div className="flex gap-2">
+                    {CURRENCIES.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        aria-pressed={cur === c}
+                        onClick={() => setCur(c)}
+                        className={`min-h-11 min-w-[64px] cursor-pointer rounded-md border-[1.5px] px-3 text-[15px] font-bold ${
+                          cur === c ? 'border-ink bg-ink text-cream' : 'border-field-line bg-white text-ink'
+                        }`}
+                      >
+                        {SYMBOL[c]}
+                      </button>
+                    ))}
+                  </div>
+                  <span className="text-[13px] text-ink-soft">{t.currencyHint}</span>
+                </fieldset>
                 <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
                   <span className="text-[15px] font-bold">
                     {t.customLabel} <span className="font-normal text-ink-soft">{t.optional}</span>
@@ -315,21 +327,18 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
                       autoComplete="off"
                       value={custom}
                       onChange={(e) => setCustom(sanitizeAmount(e.target.value))}
-                      placeholder={String(chosen.price)}
+                      placeholder={String(chosen.prices[cur])}
                       className="min-h-[52px] min-w-0 flex-1 rounded-lg border-0 bg-transparent px-3.5 text-[17px] outline-none"
                     />
                     <span className="pr-3.5 text-[17px] font-bold text-ink-soft">{SYMBOL[cur]} / {t.monthUnit}</span>
                   </div>
-                  <span className="text-[13px] text-ink-soft">
-                    {t.customHint}
-                    {hasCustom && cur !== 'EUR' && customEur !== null ? ` ${t.eurNote} ≈ ${customEur.toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-GB')} €.` : ''}
-                  </span>
+                  <span className="text-[13px] text-ink-soft">{t.customHint}</span>
                 </label><FieldError id={`${id}-amount-err`} message={errors.amount} /></div>
                 <label className="flex min-h-12 cursor-pointer items-start gap-3">
                   <input name="charter" required type="checkbox" {...errorProps(`${id}-charter-err`, errors.charter)} className="mt-0.5 h-[22px] w-[22px] flex-none accent-copper-600" />
                   <span className="text-[15px] leading-[1.5]">
                     {t.charterAgreePre}
-                    <a href="#" className="font-bold">
+                    <a href="#charte" className="font-bold">
                       {t.charterAgreeLink}
                     </a>
                     {t.charterAgreePost}

@@ -40,14 +40,14 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     formulesSubtitle: 'Mensuel, modifiable ou résiliable à tout moment.',
     modes: { child: 'Parrainer un enfant', prog: 'Soutenir un programme' },
     plansChild: [
-      { name: 'Éducation', price: SPONSOR_PLANS.child[0].eur, tag: '', items: ['Scolarité et fournitures', "Ateliers d’alphabétisation et de français", 'Nouvelles chaque trimestre'] },
-      { name: 'Éducation et santé', price: SPONSOR_PLANS.child[1].eur, tag: '', items: ['Tout le parrainage Éducation', 'Suivi médical régulier', 'Accompagnement psychosocial'] },
-      { name: 'Accompagnement complet', price: SPONSOR_PLANS.child[2].eur, tag: '', items: ['Éducation, santé et écoute', 'Activités culturelles et sportives', 'Préparation à la (ré)insertion'] }
+      { name: 'Éducation', prices: SPONSOR_PLANS.child[0].prices, tag: '', items: ['Scolarité et fournitures', "Ateliers d’alphabétisation et de français", 'Nouvelles chaque trimestre'] },
+      { name: 'Éducation et santé', prices: SPONSOR_PLANS.child[1].prices, tag: '', items: ['Tout le parrainage Éducation', 'Suivi médical régulier', 'Accompagnement psychosocial'] },
+      { name: 'Accompagnement complet', prices: SPONSOR_PLANS.child[2].prices, tag: '', items: ['Éducation, santé et écoute', 'Activités culturelles et sportives', 'Préparation à la (ré)insertion'] }
     ],
     plansProg: [
-      { name: 'RÊVES 2', price: SPONSOR_PLANS.prog[0].eur, tag: 'En cours', items: ['Ateliers et matériel pédagogique', 'Formation des animateurs', 'Bilan à la fin du programme'] },
-      { name: 'Santé et écoute', price: SPONSOR_PLANS.prog[1].eur, tag: '', items: ['Suivi médical des enfants', 'Accompagnement psychosocial', 'Rapport semestriel'] },
-      { name: "Là où c’est utile", price: SPONSOR_PLANS.prog[2].eur, tag: '', items: ['Affectation selon les besoins', "Souplesse pour notre équipe", 'Rapport annuel'] }
+      { name: 'RÊVES 2', prices: SPONSOR_PLANS.prog[0].prices, tag: 'En cours', items: ['Ateliers et matériel pédagogique', 'Formation des animateurs', 'Bilan à la fin du programme'] },
+      { name: 'Santé et écoute', prices: SPONSOR_PLANS.prog[1].prices, tag: '', items: ['Suivi médical des enfants', 'Accompagnement psychosocial', 'Rapport semestriel'] },
+      { name: "Là où c’est utile", prices: SPONSOR_PLANS.prog[2].prices, tag: '', items: ['Affectation selon les besoins', "Souplesse pour notre équipe", 'Rapport annuel'] }
     ],
     perMonth: 'par mois',
     monthUnit: 'mois',
@@ -87,10 +87,12 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     charterAgreeLink: "charte de protection de l’enfant",
     charterAgreePost: ' et je m’engage à la respecter.',
     submitLabelPrefix: 'Payer et devenir parrain',
-    payNote: 'Paiement sécurisé par carte ou prélèvement. Vous pouvez arrêter à tout moment. Dès la confirmation, nous vous écrivons avec toutes les informations.',
+    payNote: 'Paiement sécurisé par carte (ou par prélèvement SEPA en euros). Vous pouvez arrêter à tout moment. Dès la confirmation, nous vous écrivons avec toutes les informations.',
     customLabel: 'Ou choisissez votre montant mensuel',
     customHint: 'Laissez vide pour garder la formule choisie.',
-    eurNote: 'Le paiement se fait en euros.',
+    fromNote: 'Ces formules sont des repères, pas un minimum : vous pouvez parrainer un enfant dès {montant} par mois. Indiquez simplement votre montant dans le formulaire.',
+    currencyLabel: 'Devise',
+    currencyHint: 'Vous payez dans la devise choisie, sans conversion.',
     error: 'Une erreur est survenue. Merci de réessayer.'
   },
   en: {
@@ -114,14 +116,14 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     formulesSubtitle: 'Monthly, and can be changed or cancelled at any time.',
     modes: { child: 'Sponsor a child', prog: 'Support a programme' },
     plansChild: [
-      { name: 'Education', price: SPONSOR_PLANS.child[0].eur, tag: '', items: ['Schooling and supplies', 'Literacy and French workshops', 'Updates every quarter'] },
-      { name: 'Education and health', price: SPONSOR_PLANS.child[1].eur, tag: '', items: ['Everything in Education', 'Regular medical care', 'Psychosocial support'] },
-      { name: 'Full support', price: SPONSOR_PLANS.child[2].eur, tag: '', items: ['Education, health and listening', 'Cultural and sports activities', 'Preparation for (re)integration'] }
+      { name: 'Education', prices: SPONSOR_PLANS.child[0].prices, tag: '', items: ['Schooling and supplies', 'Literacy and French workshops', 'Updates every quarter'] },
+      { name: 'Education and health', prices: SPONSOR_PLANS.child[1].prices, tag: '', items: ['Everything in Education', 'Regular medical care', 'Psychosocial support'] },
+      { name: 'Full support', prices: SPONSOR_PLANS.child[2].prices, tag: '', items: ['Education, health and listening', 'Cultural and sports activities', 'Preparation for (re)integration'] }
     ],
     plansProg: [
-      { name: 'RÊVES 2', price: SPONSOR_PLANS.prog[0].eur, tag: 'Ongoing', items: ['Workshops and teaching materials', 'Facilitator training', 'Report at the end of the programme'] },
-      { name: 'Health and listening', price: SPONSOR_PLANS.prog[1].eur, tag: '', items: ['Medical care for children', 'Psychosocial support', 'Six-monthly report'] },
-      { name: 'Where it helps most', price: SPONSOR_PLANS.prog[2].eur, tag: '', items: ['Allocated by need', 'Flexibility for our team', 'Annual report'] }
+      { name: 'RÊVES 2', prices: SPONSOR_PLANS.prog[0].prices, tag: 'Ongoing', items: ['Workshops and teaching materials', 'Facilitator training', 'Report at the end of the programme'] },
+      { name: 'Health and listening', prices: SPONSOR_PLANS.prog[1].prices, tag: '', items: ['Medical care for children', 'Psychosocial support', 'Six-monthly report'] },
+      { name: 'Where it helps most', prices: SPONSOR_PLANS.prog[2].prices, tag: '', items: ['Allocated by need', 'Flexibility for our team', 'Annual report'] }
     ],
     perMonth: 'per month',
     monthUnit: 'month',
@@ -161,10 +163,12 @@ const text: Record<Locale, SponsorText & { title: string; desc: string; eyebrow:
     charterAgreeLink: 'child protection charter',
     charterAgreePost: ' and agree to follow it.',
     submitLabelPrefix: 'Pay and become a sponsor',
-    payNote: 'Secure payment by card or direct debit. You can stop at any time. As soon as your payment is confirmed, we write to you with all the information.',
+    payNote: 'Secure payment by card (or SEPA direct debit in euros). You can stop at any time. As soon as your payment is confirmed, we write to you with all the information.',
     customLabel: 'Or choose your monthly amount',
     customHint: 'Leave empty to keep the chosen plan.',
-    eurNote: 'Payment is made in euros.',
+    fromNote: 'These plans are a guide, not a minimum: you can sponsor a child from {montant} a month. Just enter your amount in the form.',
+    currencyLabel: 'Currency',
+    currencyHint: 'You pay in the currency you choose, with no conversion.',
     error: 'Something went wrong. Please try again.'
   }
 };

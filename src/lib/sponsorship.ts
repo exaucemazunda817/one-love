@@ -5,6 +5,7 @@ import { sendEmail } from '@/lib/email';
 import { upsertDonorFillEmpty } from '@/lib/donations';
 import { escapeHtml } from '@/lib/validation';
 import { CONTACT_EMAIL } from '@/lib/i18n';
+import { CURRENCIES, SPONSOR_LIMITS, formatMoney, indicativeEur, type Currency } from '@/lib/money';
 
 // Parrainage : on devient parrain en PAYANT, jamais autrement (décision de
 // Mazunda, 29/09/2026). Une ligne `Sponsor` n'est créée que par le webhook
@@ -12,25 +13,24 @@ import { CONTACT_EMAIL } from '@/lib/i18n';
 
 export type SponsorModeKey = 'child' | 'prog';
 
-// Tarifs de référence, en euros par mois. C'est CE tableau qui fait foi côté
-// serveur : le montant prélevé n'est jamais lu dans la requête du navigateur.
-// ParrainerPage lit les mêmes prix ici, pour qu'affichage et prélèvement ne
-// puissent pas diverger.
-export const SPONSOR_PLANS: Record<SponsorModeKey, { name: string; eur: number }[]> = {
+// Tarifs de référence par mois, fixés DANS CHAQUE DEVISE (07/10/2026) : le
+// visiteur paie exactement le prix affiché, sans reconversion. Les prix en $
+// et en FC reprennent ceux qui s'affichaient déjà sur le site. C'est CE
+// tableau qui fait foi côté serveur : le prix d'une formule n'est jamais lu
+// dans la requête du navigateur. ParrainerPage lit les mêmes prix ici.
+export type PlanPrices = Record<Currency, number>;
+export const SPONSOR_PLANS: Record<SponsorModeKey, { name: string; prices: PlanPrices }[]> = {
   child: [
-    { name: 'Éducation', eur: 20 },
-    { name: 'Éducation et santé', eur: 35 },
-    { name: 'Accompagnement complet', eur: 50 }
+    { name: 'Éducation', prices: { EUR: 20, USD: 22, CDF: 62_000 } },
+    { name: 'Éducation et santé', prices: { EUR: 35, USD: 39, CDF: 109_000 } },
+    { name: 'Accompagnement complet', prices: { EUR: 50, USD: 55, CDF: 155_000 } }
   ],
   prog: [
-    { name: 'RÊVES 2', eur: 25 },
-    { name: 'Santé et écoute', eur: 30 },
-    { name: "Là où c'est utile", eur: 20 }
+    { name: 'RÊVES 2', prices: { EUR: 25, USD: 28, CDF: 78_000 } },
+    { name: 'Santé et écoute', prices: { EUR: 30, USD: 33, CDF: 93_000 } },
+    { name: "Là où c'est utile", prices: { EUR: 20, USD: 22, CDF: 62_000 } }
   ]
 };
-
-const MIN_SPONSOR_EUR = 1;
-const MAX_SPONSOR_EUR = 5000;
 
 export const sponsorSessionSchema = z.object({
   firstName: z.string().trim().min(1).max(120),
@@ -39,9 +39,17 @@ export const sponsorSessionSchema = z.object({
   phone: z.string().trim().max(40).optional().or(z.literal('')),
   mode: z.enum(['child', 'prog']),
   plan: z.number().int().min(0).max(2),
-  /** Montant mensuel libre en euros (facultatif) : remplace le prix de la formule. */
-  amountEur: z.number().min(MIN_SPONSOR_EUR).max(MAX_SPONSOR_EUR).optional(),
+  /** Devise choisie : le paiement se fait dans cette devise. */
+  currency: z.enum(CURRENCIES as [Currency, ...Currency[]]).default('EUR'),
+  /** Montant mensuel libre (facultatif), dans la devise choisie : remplace le prix de la formule. */
+  amount: z.number().finite().positive().optional(),
   locale: z.enum(['fr', 'en']).default('fr')
+}).superRefine((value, ctx) => {
+  if (value.amount === undefined) return;
+  const { min, max } = SPONSOR_LIMITS[value.currency];
+  if (value.amount < min || value.amount > max) {
+    ctx.addIssue({ code: 'custom', path: ['amount'], message: `Montant entre ${min} et ${max} ${value.currency}.` });
+  }
 });
 
 export type SponsorSessionInput = z.infer<typeof sponsorSessionSchema>;
@@ -57,6 +65,7 @@ export function sponsorMetadata(input: SponsorSessionInput): Record<string, stri
   return {
     sponsorMode: input.mode,
     sponsorPlan: String(input.plan),
+    sponsorCurrency: input.currency,
     donorPhone: input.phone || '',
     sponsorLocale: input.locale
   };
@@ -71,11 +80,14 @@ export function sponsorMetadata(input: SponsorSessionInput): Record<string, stri
 export async function recordSponsorFromInvoice({
   subscriptionId,
   metadata,
-  amountPaidEur
+  amountPaid,
+  currency
 }: {
   subscriptionId: string;
   metadata: Record<string, string>;
-  amountPaidEur: number;
+  /** Montant réellement payé, dans la devise de la facture. */
+  amountPaid: number;
+  currency: Currency;
 }): Promise<{ created: boolean }> {
   const mode = metadata.sponsorMode === 'child' || metadata.sponsorMode === 'prog' ? metadata.sponsorMode : null;
   const planIndex = Number(metadata.sponsorPlan);
@@ -89,8 +101,8 @@ export async function recordSponsorFromInvoice({
     // (le webhook répond 500 et Stripe réessaie), jamais un parrain « à moitié ».
     throw new Error(`Métadonnées de parrainage invalides pour l'abonnement ${subscriptionId}.`);
   }
-  if (!(amountPaidEur > 0)) {
-    // Une facture à 0 € n'est pas un paiement : pas de parrain.
+  if (!(amountPaid > 0)) {
+    // Une facture à 0 n'est pas un paiement : pas de parrain.
     return { created: false };
   }
 
@@ -112,7 +124,10 @@ export async function recordSponsorFromInvoice({
         mode: MODE_DB[mode],
         planIndex,
         planName: plan.name,
-        monthlyAmountEur: amountPaidEur,
+        monthlyAmount: amountPaid,
+        currency,
+        // Contre-valeur indicative, pour les totaux de l'espace de gestion.
+        monthlyAmountEur: indicativeEur(amountPaid, currency),
         stripeSubscriptionId: subscriptionId
       }
     });
@@ -194,17 +209,19 @@ export async function sendSponsorWelcome({
   email,
   firstName,
   planName,
-  amountEur,
+  amount: paid,
+  currency,
   locale
 }: {
   email: string;
   firstName: string | null;
   planName: string;
-  amountEur: number;
+  amount: number;
+  currency: Currency;
   locale: 'fr' | 'en';
 }): Promise<void> {
   const name = cleanFirstName(firstName);
-  const amount = `${amountEur} €`;
+  const amount = formatMoney(paid, currency, locale);
   const contact = CONTACT_EMAIL;
 
   const content =

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { CURRENCIES, DONATION_LIMITS, type Currency } from '@/lib/money';
 
 // Schémas de validation communs aux formulaires publics. Les limites de
 // longueur ne sont pas arbitraires : elles bornent aussi la taille d'un envoi
@@ -61,10 +62,11 @@ export const newsletterSchema = z.object({
 });
 
 export const donationSessionSchema = z.object({
-  // Montant en euros, saisi par le visiteur : borné à un intervalle large
-  // mais fini pour écarter une faute de frappe (ex. 100000 € au lieu de
-  // 100 €) et un envoi abusif automatisé.
-  amountEur: z.number().finite().min(1, 'Le don minimum est de 1 €.').max(100000, 'Montant trop élevé — contactez-nous directement.'),
+  // Montant dans la devise choisie (paiement sans reconversion, 07/10/2026),
+  // borné par devise pour écarter une faute de frappe et un envoi abusif
+  // automatisé (voir DONATION_LIMITS).
+  amount: z.number().finite().positive(),
+  currency: z.enum(CURRENCIES as [Currency, ...Currency[]]).default('EUR'),
   // Choix du donateur entre un don unique et un engagement mensuel récurrent.
   frequency: z.enum(['once', 'monthly']).default('once'),
   projectSlug: z.string().trim().max(80).optional().or(z.literal('')),
@@ -72,6 +74,10 @@ export const donationSessionSchema = z.object({
   donorFirstName: z.string().trim().max(120).optional().or(z.literal('')),
   donorLastName: z.string().trim().max(120).optional().or(z.literal('')),
   donorCountry: z.string().trim().max(2).optional().or(z.literal(''))
+}).superRefine((value, ctx) => {
+  const { min, max } = DONATION_LIMITS[value.currency];
+  if (value.amount < min) ctx.addIssue({ code: 'custom', path: ['amount'], message: `Le don minimum est de ${min} ${value.currency}.` });
+  if (value.amount > max) ctx.addIssue({ code: 'custom', path: ['amount'], message: 'Montant trop élevé — contactez-nous directement.' });
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;

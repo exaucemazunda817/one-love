@@ -18,15 +18,24 @@ import { localeHref, type Locale } from '@/lib/i18n';
 import {
   type Currency,
   SYMBOL,
-  formatFromEur,
   formatCustom,
-  toEur,
   sanitizeAmount,
   startStripeCheckout
 } from '@/lib/donation-ui';
+import { DONATION_LIMITS, formatMoney } from '@/lib/money';
 import { bankTransfer, currentProject } from '@/lib/content';
 
 type Dest = 'besoins' | 'village' | 'reves' | 'sante';
+
+// Montants proposés, FIXÉS dans chaque devise (07/10/2026) : le don est payé
+// exactement dans la devise et au montant affichés, sans reconversion. Les
+// valeurs en $ et en FC reprennent celles qui s'affichaient déjà. L'ordre
+// suit celui des équivalences de T[locale].amounts.
+const PRESETS: Record<Currency, readonly number[]> = {
+  EUR: [10, 25, 50, 100],
+  USD: [11, 28, 55, 110],
+  CDF: [31_000, 78_000, 155_000, 310_000]
+};
 // Slug du One Love Village (table projects) : un don ainsi affecté y est rattaché
 // dès que la ligne existe en base (sinon il reste en fonds général).
 export const VILLAGE_SLUG = 'one-love-village';
@@ -69,8 +78,7 @@ const T = {
     newsletterOptIn: 'Je souhaite recevoir des nouvelles du terrain, quelques fois par an.',
     newsletterNeedsEmail: '(indiquez votre e-mail ci-dessus)',
     newsletterSent: "Un e-mail vient de vous être envoyé pour confirmer votre inscription aux nouvelles du terrain.",
-    convertedNote: 'Montants convertis à titre indicatif : le don est versé en euros.',
-    chargedEur: (eur: string) => `Soit environ ${eur}, versés en euros`,
+    currencyNote: 'Votre don est payé dans la devise choisie, sans conversion.',
     cardSoonTag: 'Bientôt',
     cardSoonNote: 'Le paiement par carte sera bientôt disponible. En attendant, le virement bancaire est ouvert.',
     thanksTransfer:
@@ -153,8 +161,7 @@ const T = {
     newsletterOptIn: 'I would like to receive news from the field, a few times a year.',
     newsletterNeedsEmail: '(enter your email above)',
     newsletterSent: 'We have just sent you an email to confirm your subscription to news from the field.',
-    convertedNote: 'Amounts converted for guidance only: your gift is paid in euros.',
-    chargedEur: (eur: string) => `That is about ${eur}, paid in euros`,
+    currencyNote: 'Your gift is paid in the currency you choose, with no conversion.',
     cardSoonTag: 'Coming soon',
     cardSoonNote: 'Card payment will be available soon. In the meantime, bank transfer is open.',
     thanksTransfer:
@@ -245,17 +252,15 @@ export function DonationFlow({ locale, cardEnabled }: { locale: Locale; cardEnab
 
   const isCustom = amt === -1;
   const cVal = parseFloat(custom.replace(',', '.'));
-  const valid = isCustom ? cVal > 0 : true;
+  const valid = isCustom ? cVal >= DONATION_LIMITS[cur].min && cVal <= DONATION_LIMITS[cur].max : true;
   const amountStr = isCustom
     ? cVal > 0
       ? formatCustom(cVal, cur, locale)
       : '—'
-    : formatFromEur(t.amounts[amt][0], cur, locale);
-  const amountEur = isCustom ? (cVal > 0 ? toEur(cVal, cur) : 0) : t.amounts[amt][0];
-  // Montant réellement versé : toujours en euros, quelle que soit la devise
-  // d'affichage choisie ($ ou FC ne sont que des conversions indicatives).
-  const eurLabel = formatCustom(amountEur, 'EUR', locale);
-  const payLabel = cur === 'EUR' ? amountStr : eurLabel;
+    : formatMoney(PRESETS[cur][amt], cur, locale);
+  // Montant réellement versé : celui affiché, dans la devise choisie.
+  const amount = isCustom ? (cVal > 0 ? cVal : 0) : PRESETS[cur][amt];
+  const payLabel = amountStr;
   const projectSlug = dest === 'reves' ? currentProject.slug : dest === 'village' ? VILLAGE_SLUG : undefined;
   const cardUsable = method === 'card' && cardEnabled;
 
@@ -343,7 +348,8 @@ export function DonationFlow({ locale, cardEnabled }: { locale: Locale; cardEnab
     setError('');
     await subscribeNewsletter();
     const message = await startStripeCheckout({
-      amountEur,
+      amount,
+      currency: cur,
       frequency: freq === 'month' ? 'monthly' : 'once',
       projectSlug,
       donorEmail: emailOk ? donorEmail.trim() : undefined,
@@ -448,12 +454,12 @@ export function DonationFlow({ locale, cardEnabled }: { locale: Locale; cardEnab
                       amt === i ? 'border-copper-600 bg-copper-tint' : 'border-card-line bg-white'
                     }`}
                   >
-                    <span className="text-[22px] font-extrabold text-ink">{formatFromEur(v, cur, locale)}</span>
+                    <span className="text-[22px] font-extrabold text-ink">{formatMoney(PRESETS[cur][i], cur, locale)}</span>
                     <span className="text-[13px] leading-[1.35] text-ink-soft">{eq}</span>
                   </button>
                 ))}
               </div>
-              {cur !== 'EUR' && <p className="-mt-3 m-0 text-[13px] text-ink-soft">{t.convertedNote}</p>}
+              <p className="-mt-3 m-0 text-[13px] text-ink-soft">{t.currencyNote}</p>
               <label className="flex flex-col gap-2">
                 <span className="text-[15px] font-bold">{t.customLabel}</span>
                 <div
@@ -764,9 +770,6 @@ export function DonationFlow({ locale, cardEnabled }: { locale: Locale; cardEnab
           <div>
             <span className="block font-serif text-[36px] font-semibold leading-none">{amountStr}</span>
             <span className="text-[14px] text-on-dark-2">{freq === 'month' ? t.perMonth : t.once}</span>
-            {cur !== 'EUR' && amountEur > 0 && (
-              <span className="mt-1 block text-[13px] text-on-dark-2">{t.chargedEur(eurLabel)}</span>
-            )}
           </div>
           <p className="m-0 text-[14px] leading-[1.5] text-on-dark-1">
             {isCustom ? t.genericThanks : t.eqConfirm(t.amounts[amt][1])}

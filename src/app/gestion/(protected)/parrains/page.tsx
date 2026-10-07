@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { formatMoney } from '@/lib/money';
 import { redirect } from 'next/navigation';
 import { getCurrentGestionUser } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -49,7 +50,7 @@ export default async function ParrainsPage() {
         </div>
         <div className="rounded-xl border border-ol-line bg-ol-white p-5">
           <p className="text-xs font-bold uppercase tracking-[0.1em] text-ol-muted">Engagement mensuel actif</p>
-          <p className="mt-1 text-3xl font-black text-ol-charcoal">{monthlyTotal.toLocaleString('fr-FR')} €</p>
+          <p className="mt-1 text-3xl font-black text-ol-charcoal">≈ {monthlyTotal.toLocaleString('fr-FR')} €</p>
         </div>
         <div className="rounded-xl border border-ol-line bg-ol-white p-5">
           <p className="text-xs font-bold uppercase tracking-[0.1em] text-ol-muted">Paiements en échec</p>
@@ -92,7 +93,9 @@ export default async function ParrainsPage() {
                   <div className="text-xs text-ol-muted">{MODE_LABELS[s.mode]}</div>
                 </td>
                 <td className="px-5 py-3 whitespace-nowrap text-ol-ink">
-                  {Number(s.monthlyAmountEur).toLocaleString('fr-FR')} €
+                  {s.monthlyAmount !== null
+                    ? formatMoney(Number(s.monthlyAmount), s.currency, 'fr')
+                    : `${Number(s.monthlyAmountEur).toLocaleString('fr-FR')} €`}
                 </td>
                 <td className="px-5 py-3 whitespace-nowrap text-ol-muted">{formatFieldDateTime(s.sponsorSince)}</td>
                 <td className="px-5 py-3">

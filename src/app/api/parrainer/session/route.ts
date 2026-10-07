@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { allowRequest, TOO_MANY_REQUESTS_MESSAGE } from '@/lib/rate-limit';
 import { isStripeConfigured, createDonationCheckoutSession } from '@/lib/stripe';
 import { sponsorSessionSchema, sponsorPlanFor, sponsorMetadata } from '@/lib/sponsorship';
+import { toMinorUnits } from '@/lib/money';
 
 import { getSiteUrl } from '@/lib/site-url';
 
@@ -38,8 +39,10 @@ export async function POST(request: NextRequest) {
   try {
     const siteUrl = getSiteUrl();
     const session = await createDonationCheckoutSession({
-      // Montant libre saisi (borné par le schéma : 1 à 5 000 €) sinon prix de la formule.
-      amountEurCents: Math.round((data.amountEur ?? plan.eur) * 100),
+      // Dans la devise choisie, sans reconversion : montant libre (borné par
+      // le schéma, par devise) sinon prix fixe de la formule dans cette devise.
+      amountCents: toMinorUnits(data.amount ?? plan.prices[data.currency]),
+      currency: data.currency,
       frequency: 'monthly',
       description: `Parrainage — ${plan.name} — One Love`,
       donorEmail: data.email,

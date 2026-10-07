@@ -1116,6 +1116,10 @@ model Sponsor {
   mode      SponsorMode
   planIndex Int
   planName  String
+  /// Montant mensuel payé, dans la devise choisie par le parrain (07/10/2026).
+  monthlyAmount Decimal? @db.Decimal(18, 2)
+  currency      Currency @default(EUR)
+  /// Contre-valeur INDICATIVE en euros (taux de lib/money.ts), pour les totaux.
   monthlyAmountEur Decimal @db.Decimal(14, 2)
 
   stripeSubscriptionId String @unique

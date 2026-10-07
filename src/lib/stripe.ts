@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import type { Currency } from '@/lib/money';
 
 // Intégration Stripe par appel REST direct (Basic Auth avec la clé secrète),
 // sans le SDK officiel — même choix que src/lib/email.ts pour Resend : moins
@@ -101,12 +102,15 @@ export type DonationFrequency = 'once' | 'monthly';
  *     métadonnées de l'ABONNEMENT (`subscription_data.metadata`), relues à
  *     chaque facture payée via `getStripeSubscription()`.
  *
- * `amountEurCents` est déjà converti en centimes (Stripe attend la plus
- * petite unité monétaire) — la conversion se fait à l'appel, pas ici, pour
- * que ce module reste ignorant du type Decimal de Prisma.
+ * `amountCents` est déjà exprimé en centièmes de la devise `currency`
+ * (Stripe attend la plus petite unité, voir toMinorUnits dans lib/money.ts).
+ * Le visiteur paie dans SA devise, sans reconversion (07/10/2026). Le
+ * prélèvement SEPA n'existe qu'en euros : en dollars et en francs
+ * congolais, seule la carte est proposée.
  */
 export async function createDonationCheckoutSession({
-  amountEurCents,
+  amountCents,
+  currency,
   frequency,
   donationId,
   projectSlug,
@@ -119,7 +123,8 @@ export async function createDonationCheckoutSession({
   successUrl,
   cancelUrl
 }: {
-  amountEurCents: number;
+  amountCents: number;
+  currency: Currency;
   frequency: DonationFrequency;
   donationId?: string;
   projectSlug?: string | null;
@@ -135,12 +140,12 @@ export async function createDonationCheckoutSession({
 }): Promise<StripeCheckoutSession> {
   return stripePost<StripeCheckoutSession>('/checkout/sessions', {
     mode: frequency === 'monthly' ? 'subscription' : 'payment',
-    payment_method_types: ['card', 'sepa_debit'],
+    payment_method_types: currency === 'EUR' ? ['card', 'sepa_debit'] : ['card'],
     line_items: [
       {
         price_data: {
-          currency: 'eur',
-          unit_amount: amountEurCents,
+          currency: currency.toLowerCase(),
+          unit_amount: amountCents,
           product_data: { name: description },
           ...(frequency === 'monthly' ? { recurring: { interval: 'month' } } : {})
         },
@@ -149,7 +154,7 @@ export async function createDonationCheckoutSession({
     ],
     customer_email: donorEmail || undefined,
     ...(frequency === 'once'
-      ? { metadata: { donationId } }
+      ? { metadata: { donationId, currency } }
       : {
           subscription_data: {
             metadata: {
@@ -158,6 +163,7 @@ export async function createDonationCheckoutSession({
               donorFirstName: donorFirstName || '',
               donorLastName: donorLastName || '',
               donorCountry: donorCountry || '',
+              currency,
               ...(extraMetadata ?? {})
             }
           }
@@ -180,6 +186,8 @@ export interface StripeInvoiceObject {
   id: string;
   subscription: string | null;
   amount_paid: number;
+  /** Devise de la facture, en minuscules (« eur », « usd », « cdf »). */
+  currency: string;
   status: string;
 }
 

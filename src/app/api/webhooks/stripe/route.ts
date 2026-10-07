@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isCurrency } from '@/lib/money';
 import {
   verifyStripeWebhookSignature,
   getStripeSubscription,
@@ -95,13 +96,23 @@ export async function POST(request: NextRequest) {
       // même identifiant d'abonnement, donc la même métadonnée à chaque fois.
       const subscription = await getStripeSubscription(invoice.subscription);
 
+      // Devise réelle de la facture (le visiteur a payé dans sa devise).
+      const invoiceCurrency = (invoice.currency || '').toUpperCase();
+      if (!isCurrency(invoiceCurrency)) {
+        // Devise que le site ne propose pas : erreur visible (500, Stripe
+        // réessaie) plutôt qu'un montant enregistré dans la mauvaise unité.
+        throw new Error(`Devise de facture inattendue : ${invoice.currency} (${invoice.id}).`);
+      }
+      const amountPaid = invoice.amount_paid / 100;
+
       const isSponsorship = Boolean(subscription.metadata?.sponsorMode);
       const sponsorPlan = isSponsorship
         ? sponsorPlanFor(subscription.metadata.sponsorMode === 'prog' ? 'prog' : 'child', Number(subscription.metadata.sponsorPlan))
         : null;
 
       await createConfirmedDonation({
-        amountEur: invoice.amount_paid / 100,
+        amount: amountPaid,
+        currency: invoiceCurrency,
         method: 'STRIPE',
         isRecurring: true,
         projectSlug: subscription.metadata?.projectSlug || null,
@@ -127,14 +138,16 @@ export async function POST(request: NextRequest) {
         const { created } = await recordSponsorFromInvoice({
           subscriptionId: invoice.subscription,
           metadata: subscription.metadata,
-          amountPaidEur: invoice.amount_paid / 100
+          amountPaid,
+          currency: invoiceCurrency
         });
         if (created) {
           await sendSponsorWelcome({
             email: subscription.metadata.donorEmail,
             firstName: subscription.metadata.donorFirstName || null,
             planName: sponsorPlan?.name ?? '',
-            amountEur: invoice.amount_paid / 100,
+            amount: amountPaid,
+            currency: invoiceCurrency,
             locale: subscription.metadata.sponsorLocale === 'en' ? 'en' : 'fr'
           });
         }

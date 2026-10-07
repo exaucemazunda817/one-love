@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { Prisma, type DonationMethod } from '@prisma/client';
+import { RATE, indicativeEur, type Currency } from '@/lib/money';
 
 // Logique partagée de confirmation d'un don, appelée par le webhook Stripe
 // aujourd'hui, et demain par le webhook SerdiPay et par la confirmation
@@ -51,7 +52,8 @@ export function isValidDonationAmount(amountEur: number): boolean {
 }
 
 export async function createPendingDonation({
-  amountEur,
+  amount,
+  currency,
   method,
   projectSlug,
   donorEmail,
@@ -59,7 +61,9 @@ export async function createPendingDonation({
   donorLastName,
   donorCountry
 }: {
-  amountEur: number;
+  /** Montant dans la devise payée (sans reconversion, 07/10/2026). */
+  amount: number;
+  currency: Currency;
   method: DonationMethod;
   projectSlug?: string | null;
   donorEmail?: string | null;
@@ -82,10 +86,12 @@ export async function createPendingDonation({
 
   return prisma.donation.create({
     data: {
-      amount: amountEur,
-      currency: 'EUR',
-      fxRate: 1,
-      amountEur,
+      amount,
+      currency,
+      // fxRate : « 1 EUR = fxRate unités de currency » (convention de
+      // lib/accounting.ts) ; contre-valeur en euros indicative.
+      fxRate: RATE[currency],
+      amountEur: indicativeEur(amount, currency),
       method,
       status: 'PENDING',
       receivedOn: new Date(),
@@ -195,7 +201,8 @@ export async function confirmDonation({
  * un Project en double sur un simple rejeu.
  */
 export async function createConfirmedDonation({
-  amountEur,
+  amount,
+  currency,
   method,
   isRecurring,
   projectSlug,
@@ -208,7 +215,9 @@ export async function createConfirmedDonation({
   receivedOn,
   label
 }: {
-  amountEur: number;
+  /** Montant réellement payé, dans la devise de la facture. */
+  amount: number;
+  currency: Currency;
   method: DonationMethod;
   isRecurring: boolean;
   projectSlug?: string | null;
@@ -237,13 +246,17 @@ export async function createConfirmedDonation({
       })
     : null;
 
+  // Contre-valeur indicative en euros (taux de lib/money.ts), figée ici.
+  const fxRate = RATE[currency];
+  const amountEur = indicativeEur(amount, currency);
+
   try {
     await prisma.$transaction(async (tx) => {
       const donation = await tx.donation.create({
         data: {
-          amount: amountEur,
-          currency: 'EUR',
-          fxRate: 1,
+          amount,
+          currency,
+          fxRate,
           amountEur,
           method,
           status: 'CONFIRMED',
@@ -264,9 +277,9 @@ export async function createConfirmedDonation({
           label:
             label ??
             (project ? `Don mensuel — ${project.name}` : 'Don mensuel — fonds général'),
-          amount: amountEur,
-          currency: 'EUR',
-          fxRate: 1,
+          amount,
+          currency,
+          fxRate,
           amountEur,
           projectId: project?.id,
           donationId: donation.id

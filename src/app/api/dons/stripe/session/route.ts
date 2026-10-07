@@ -5,6 +5,7 @@ import { createPendingDonation } from '@/lib/donations';
 import { isStripeConfigured, createDonationCheckoutSession } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
 import { org } from '@/lib/content';
+import { toMinorUnits } from '@/lib/money';
 
 import { getSiteUrl } from '@/lib/site-url';
 
@@ -41,7 +42,8 @@ export async function POST(request: NextRequest) {
       // Don unique : le Donation PENDING existe AVANT Checkout, pour porter
       // son id dans les métadonnées de la session — voir confirmDonation().
       const donation = await createPendingDonation({
-        amountEur: data.amountEur,
+        amount: data.amount,
+        currency: data.currency,
         method: 'STRIPE',
         projectSlug: data.projectSlug || null,
         donorEmail: data.donorEmail || null,
@@ -51,7 +53,8 @@ export async function POST(request: NextRequest) {
       });
 
       const session = await createDonationCheckoutSession({
-        amountEurCents: Math.round(data.amountEur * 100),
+        amountCents: toMinorUnits(data.amount),
+        currency: data.currency,
         frequency: 'once',
         donationId: donation.id,
         description,
@@ -68,7 +71,8 @@ export async function POST(request: NextRequest) {
     // createDonationCheckoutSession dans src/lib/stripe.ts. Le projet et
     // l'e-mail voyagent dans les métadonnées de l'ABONNEMENT.
     const session = await createDonationCheckoutSession({
-      amountEurCents: Math.round(data.amountEur * 100),
+      amountCents: toMinorUnits(data.amount),
+      currency: data.currency,
       frequency: 'monthly',
       projectSlug: data.projectSlug || null,
       description: `${description} (don mensuel)`,
