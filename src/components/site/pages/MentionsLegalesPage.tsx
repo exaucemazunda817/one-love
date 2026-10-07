@@ -74,6 +74,7 @@ export default function MentionsLegalesPage() {
   return (
     <>
       <TextHero
+        back={{ href: '/', locale: 'fr' }}
         eyebrow="Informations légales"
         title="Mentions légales"
         intro="Éditeur, hébergeur, propriété des contenus et droit à l’image du site de l’association One Love."

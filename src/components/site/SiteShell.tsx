@@ -1,6 +1,7 @@
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { BrushDefs } from '@/components/site/ui';
+import { NavTracker } from '@/components/site/BackLink';
 import { org, identity } from '@/lib/content';
 import { FACEBOOK_URL, INSTAGRAM_URL, YOUTUBE_URL, CONTACT_EMAIL, type Locale } from '@/lib/i18n';
 
@@ -55,6 +56,7 @@ export function SiteShell({ locale, children }: { locale: Locale; children: Reac
       </a>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
       <BrushDefs />
+      <NavTracker />
       <Header locale={locale} />
       <main id="contenu" className="flex-1">
         {children}

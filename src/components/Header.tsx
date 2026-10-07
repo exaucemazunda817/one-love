@@ -13,6 +13,9 @@ const LOGO = '/brand/logo-one-love-rond.png';
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  // Fermeture animée : le menu reste affiché le temps du fondu de sortie.
+  const [closing, setClosing] = useState(false);
+  const closeTimer = useRef(0);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   // Lien actuellement en « verre » dans le menu mobile (survolé au doigt/à la
@@ -26,7 +29,24 @@ export function Header({ locale }: { locale: Locale }) {
   // Referme le menu quand on change de page.
   useEffect(() => {
     setOpen(false);
+    setClosing(false);
   }, [pathname]);
+
+  // Fermeture avec un court fondu (07/10/2026), immédiate si le visiteur a
+  // demandé moins d'animations.
+  function closeMenu() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setOpen(false);
+      return;
+    }
+    setClosing(true);
+    window.clearTimeout(closeTimer.current);
+    closeTimer.current = window.setTimeout(() => {
+      setOpen(false);
+      setClosing(false);
+    }, 240);
+  }
+  useEffect(() => () => window.clearTimeout(closeTimer.current), []);
 
   // Menu mobile modal : focus dans le menu à l'ouverture, Échap pour fermer,
   // Tab qui reste dans le menu, focus rendu au bouton à la fermeture
@@ -41,7 +61,7 @@ export function Header({ locale }: { locale: Locale }) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
-        setOpen(false);
+        closeMenu();
         return;
       }
       if (e.key !== 'Tab') return;
@@ -173,13 +193,14 @@ export function Header({ locale }: { locale: Locale }) {
           role="dialog"
           aria-modal="true"
           aria-label={locale === 'fr' ? 'Menu' : 'Menu'}
-          className="fixed inset-0 z-50 flex flex-col overflow-auto bg-night/85 text-cream backdrop-blur-xl dk:hidden"
+          data-state={closing ? 'closing' : 'open'}
+          className="ol-menu fixed inset-0 z-50 flex flex-col overflow-auto bg-night/85 text-cream backdrop-blur-xl dk:hidden"
         >
           <div className="flex items-center justify-between px-4 py-2">
             <Image src={LOGO} alt="One Love" width={44} height={44} className="h-11 w-11" />
             <button
               type="button"
-              onClick={() => setOpen(false)}
+              onClick={closeMenu}
               aria-label={t.closeMenu}
               className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-0 bg-dark-surface"
             >
@@ -190,7 +211,7 @@ export function Header({ locale }: { locale: Locale }) {
             className="flex flex-1 flex-col gap-1 px-5 py-2"
             onScroll={() => setGlassHref(null)}
           >
-            {t.nav.map((item) => {
+            {t.nav.map((item, index) => {
               const active = isActive(item.href);
               const glass = glassHref === item.href;
               return (
@@ -205,8 +226,9 @@ export function Header({ locale }: { locale: Locale }) {
                   onTouchStart={() => setGlassHref(item.href)}
                   onTouchEnd={() => setGlassHref(null)}
                   onTouchCancel={() => setGlassHref(null)}
+                  style={{ '--i': index } as React.CSSProperties}
                   className={cx(
-                    'flex min-h-14 items-center justify-between rounded-2xl border px-4 font-serif text-[22px] no-underline transition-colors duration-200',
+                    'ol-menu-item flex min-h-14 items-center justify-between rounded-2xl border px-4 font-serif text-[22px] no-underline transition-colors duration-200',
                     glass
                       ? 'border-white/30 bg-white/15 text-gold-hover shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_18px_-6px_rgba(0,0,0,0.5)] backdrop-blur-md'
                       : active
@@ -228,12 +250,13 @@ export function Header({ locale }: { locale: Locale }) {
             href={FACEBOOK_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="mx-5 mt-2 flex min-h-12 items-center gap-2.5 text-[15px] text-on-dark-1 no-underline hover:text-gold-hover"
+            style={{ '--i': t.nav.length } as React.CSSProperties}
+            className="ol-menu-item mx-5 mt-2 flex min-h-12 items-center gap-2.5 text-[15px] text-on-dark-1 no-underline hover:text-gold-hover"
           >
             <FacebookLogoIcon size={22} aria-hidden />
             Facebook
           </a>
-          <div className="flex flex-col gap-3 px-5 pb-7 pt-4">
+          <div className="ol-menu-item flex flex-col gap-3 px-5 pb-7 pt-4" style={{ '--i': t.nav.length + 1 } as React.CSSProperties}>
             <div className="flex gap-2 text-[14px] font-extrabold">
               {locale === 'fr' ? (
                 <>

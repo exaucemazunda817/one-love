@@ -3,6 +3,7 @@ import { HeartIcon } from '@phosphor-icons/react/ssr';
 import { Eyebrow, BrushWord } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { HeroBackground } from '@/components/site/HeroBackground';
+import { BackLink } from '@/components/site/BackLink';
 import { localeHref, type Locale } from '@/lib/i18n';
 
 // Hero des pages secondaires — README : « min(64vh,580px) / mobile
@@ -20,7 +21,8 @@ export function InnerHero({
   imageMobile,
   photoPool,
   still = false,
-  cta
+  cta,
+  backHref
 }: {
   locale: Locale;
   eyebrow: string;
@@ -37,6 +39,8 @@ export function InnerHero({
   /** Photo fixe, sans défilement (articles d'actualité). */
   still?: boolean;
   cta?: { donate: string; sponsor: string };
+  /** Page hors menu : bouton « Retour » ; lien de repli si le visiteur arrive directement. */
+  backHref?: string;
 }) {
   const href = (p: string) => localeHref(p, locale);
   return (
@@ -45,6 +49,7 @@ export function InnerHero({
       <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-1)_0%,var(--scrim-2)_30%,var(--scrim-5)_58%,var(--scrim-5)_100%)] dk:bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_34%,var(--scrim-1)_64%,var(--scrim-0)_100%)]" />
       <div className="relative mx-auto w-full max-w-[1280px] px-5 py-10 dk:px-12 dk:pb-[88px] dk:pt-[128px]">
         <Reveal eager className="flex max-w-[620px] flex-col gap-4 mx-auto items-center text-center dk:mx-0 dk:items-start dk:text-left dk:gap-6">
+          {backHref && <BackLink fallbackHref={backHref} locale={locale} />}
           <Eyebrow dark>{eyebrow}</Eyebrow>
           <h1 className="m-0 text-balance font-serif text-[32px] font-medium leading-[1.08] tracking-[-0.01em] dk:text-[clamp(38px,5vw,64px)]">
             {titlePre}

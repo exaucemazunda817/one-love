@@ -12,9 +12,9 @@ export function IntroOverlay({ lang }: { lang: 'fr' | 'en' }) {
       <div className="ol-intro-halo" />
       <div className="ol-intro-logo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="ol-intro-text" src="/brand/intro-texte.png" alt="" width={1400} height={416} />
+        <img className="ol-intro-text" src="/brand/intro-texte.webp" alt="" width={1100} height={327} />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="ol-intro-heart" src="/brand/intro-coeur.png" alt="" width={1400} height={416} />
+        <img className="ol-intro-heart" src="/brand/intro-coeur.webp" alt="" width={1100} height={327} />
       </div>
       <p className="ol-intro-tag">{lang === 'en' ? 'Love and faith are what drive us.' : 'L’amour et la foi, notre carburant.'}</p>
       <button type="button" className="ol-intro-skip" tabIndex={-1} onClick={() => document.documentElement.removeAttribute('data-intro')}>

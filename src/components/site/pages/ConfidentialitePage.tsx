@@ -35,6 +35,7 @@ export default function ConfidentialitePage() {
   return (
     <>
       <TextHero
+        back={{ href: '/', locale: 'fr' }}
         eyebrow="Vos données"
         title="Politique de confidentialité"
         intro="Ce que ce site collecte, comment c’est utilisé, et comment exercer vos droits auprès de l’association."

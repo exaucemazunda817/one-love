@@ -81,6 +81,7 @@ export function TransparencyPage({ locale }: { locale: Locale }) {
   return (
     <>
       <InnerHero
+        backHref={localeHref('/', locale)}
         locale={locale}
         eyebrow={t.eyebrow}
         titlePre={t.titlePre}

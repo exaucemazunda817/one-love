@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { Reveal } from '@/components/Reveal';
+import { BackLink } from '@/components/site/BackLink';
 
 // Primitives visuelles du design system 2026. Les valeurs (tailles,
 // espacements, couleurs) sont celles de la maquette, au pixel près.
@@ -104,10 +106,22 @@ export function Eyebrow({
 }
 
 /** En-tête sobre des pages utilitaires et légales (sans photo). */
-export function TextHero({ eyebrow, title, intro }: { eyebrow?: string; title: string; intro?: string }) {
+export function TextHero({
+  eyebrow,
+  title,
+  intro,
+  back
+}: {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  /** Page hors menu : bouton « Retour » (lien de repli si arrivée directe). */
+  back?: { href: string; locale: 'fr' | 'en' };
+}) {
   return (
     <section className="bg-night text-cream">
       <Reveal eager className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-center dk:items-start dk:text-left px-[clamp(20px,4vw,32px)] pb-[clamp(40px,6vw,72px)] pt-[clamp(120px,12vw,148px)]">
+        {back && <BackLink fallbackHref={back.href} locale={back.locale} />}
         {eyebrow && <Eyebrow dark>{eyebrow}</Eyebrow>}
         <h1 className="m-0 max-w-[820px] text-balance font-serif text-[clamp(34px,5vw,56px)] font-medium leading-[1.1] tracking-[-0.01em]">
           {title}
@@ -156,20 +170,23 @@ export function CallBanner({
           <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{text}</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <a
+          {/* Lien interne (navigation sans rechargement) : un <a> classique
+              rechargeait la page et rejouait l'intro du logo (signalé par
+              Mazunda le 07/10/2026 sur la page du village). */}
+          <Link
             href={donateHref}
             className="inline-flex min-h-[52px] max-w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-2 text-center text-[17px] font-extrabold text-night no-underline hover:bg-gold-hover hover:text-night sm:whitespace-nowrap"
           >
             <Icon size="1em" aria-hidden />
             {donateLabel}
-          </a>
+          </Link>
           {sponsorLabel && sponsorHref && (
-            <a
+            <Link
               href={sponsorHref}
               className="inline-flex min-h-[52px] items-center whitespace-nowrap rounded-full border-2 border-gold px-[26px] text-[17px] font-bold text-gold-hover no-underline hover:bg-[rgba(232,154,44,.14)] hover:text-gold-hover"
             >
               {sponsorLabel}
-            </a>
+            </Link>
           )}
         </div>
       </Reveal>

@@ -79,6 +79,7 @@ export function Reves2Page({ locale }: { locale: Locale }) {
   return (
     <>
       <InnerHero
+        backHref={href('/galerie')}
         locale={locale}
         eyebrow={t.eyebrow}
         titleWord={t.titleWord}

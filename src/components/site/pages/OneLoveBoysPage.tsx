@@ -113,6 +113,7 @@ export function OneLoveBoysPage({ locale }: { locale: Locale }) {
   return (
     <>
       <InnerHero
+        backHref={href('/')}
         locale={locale}
         eyebrow={t.eyebrow}
         titlePre={t.titlePre}

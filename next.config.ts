@@ -87,7 +87,13 @@ const nextConfig: NextConfig = {
     // Plafonné à 1920 px : le réglage par défaut monte à 3840 px et fabrique à
     // la demande des images géantes pour des cadres de 320 px (1,3 à 2,4 s
     // chacune, mesuré sur gospel-nation).
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920]
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    // Versions réduites gardées 31 jours par Vercel (au lieu de quelques
+    // heures) : avec peu de visites, beaucoup de visiteurs tombaient sur une
+    // photo « pas encore prête », fabriquée à la demande (1 à 2 s, jusqu'à
+    // 10 s mesurées le 07/10/2026). Sans risque ici : une photo modifiée
+    // change toujours de nom de fichier.
+    minimumCacheTTL: 2678400
   }
 };
 

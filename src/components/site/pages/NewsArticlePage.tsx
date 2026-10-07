@@ -45,6 +45,7 @@ export function NewsArticlePage({ article: a, locale }: { article: NewsArticle; 
   return (
     <>
       <InnerHero
+        backHref={href('/galerie')}
         locale={locale}
         eyebrow={`${NEWS_TAGS[a.tag][locale]} · ${formatNewsDate(a.date, locale)}`}
         titlePre={a.title[locale]}

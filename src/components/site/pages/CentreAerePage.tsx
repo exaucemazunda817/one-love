@@ -116,6 +116,7 @@ export function CentreAerePage({ locale }: { locale: Locale }) {
   return (
     <>
       <InnerHero
+        backHref={href('/')}
         locale={locale}
         eyebrow={t.eyebrow}
         titlePre={t.titlePre}
