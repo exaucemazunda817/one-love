@@ -261,6 +261,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
         donateLabel={t.accompany}
         donateHref={villageDonate}
         Icon={HeartIcon}
+        image="/hero-desktop/village-drone-terrain.webp"
       />
 
       <section aria-labelledby="village-projet">

@@ -402,6 +402,7 @@ export function HistoryPage({ locale }: { locale: Locale }) {
         sponsorHref={href('/parrainer')}
         Icon={HeartIcon}
         spaced={false}
+        image="/hero-desktop/boys-2022-noel-tim-pt-001.webp"
       />
     </>
   );

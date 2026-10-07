@@ -159,6 +159,7 @@ export function Reves2Page({ locale }: { locale: Locale }) {
         donateHref={href('/dons')}
         sponsorHref={href('/parrainer')}
         Icon={HeartIcon}
+        image="/hero-desktop/centre-aere-2023-12-02-ol-photo-012.webp"
       />
     </>
   );

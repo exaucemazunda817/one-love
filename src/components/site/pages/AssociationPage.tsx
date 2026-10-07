@@ -450,7 +450,8 @@ export function AssociationPage({ locale }: { locale: Locale }) {
           donateHref={href('/dons')}
           sponsorHref={href('/parrainer')}
           Icon={HeartIcon}
-        />
+          image="/hero-desktop/boys-2023-famille-tim-pt-009.webp"
+      />
       </div>
     </>
   );

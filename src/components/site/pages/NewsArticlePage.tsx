@@ -106,6 +106,7 @@ export function NewsArticlePage({ article: a, locale }: { article: NewsArticle; 
         donateHref={href('/dons')}
         sponsorHref={href('/parrainer')}
         Icon={HeartIcon}
+        image="/hero-desktop/centre-aere-2023-12-02-ol-photo-008.webp"
       />
     </>
   );

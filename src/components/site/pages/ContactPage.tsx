@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo';
 import { EnvelopeSimpleIcon, FacebookLogoIcon, InstagramLogoIcon, YoutubeLogoIcon } from '@phosphor-icons/react/ssr';
-import { BrushLast } from '@/components/site/ui';
+import { BrushLast, Eyebrow } from '@/components/site/ui';
+import Image from 'next/image';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { ContactFormCard } from '@/components/site/pages/ContactFormCard';
@@ -26,6 +27,7 @@ const text = {
     intro: 'Une question sur un don, un parrainage, une visite ou un partenariat : écrivez-nous par le formulaire, par e-mail ou sur nos réseaux sociaux.',
     heroAlt: "Un garçon du centre aéré sourit, un pistolet à eau à la main.",
     email: 'E-mail',
+    networksTitle: 'Nous suivre, nous écrire',
     facebook: 'Facebook',
     instagram: 'Instagram',
     youtube: 'YouTube',
@@ -54,6 +56,7 @@ const text = {
     intro: 'A question about a gift, sponsorship, a visit or a partnership? Write to us using the form, by email or on our social networks.',
     heroAlt: "A boy from the day centre smiling, holding a water pistol.",
     email: 'Email',
+    networksTitle: 'Follow us, write to us',
     facebook: 'Facebook',
     instagram: 'Instagram',
     youtube: 'YouTube',
@@ -80,8 +83,16 @@ export function contactMetadata(locale: Locale): Metadata {
   return pageMetadata({ locale, path: '/contact', title: t.title, description: t.desc });
 }
 
+const NETWORK_PHOTO = '/hero-desktop/centre-aere-2024-03-ol-photo-003.webp';
+
 export function ContactPage({ locale }: { locale: Locale }) {
   const t = text[locale];
+  const networks = [
+    { href: `mailto:${CONTACT_EMAIL}`, label: `${t.email} : ${CONTACT_EMAIL}`, Icon: EnvelopeSimpleIcon, external: false },
+    { href: FACEBOOK_URL, label: t.facebook, Icon: FacebookLogoIcon, external: true },
+    { href: INSTAGRAM_URL, label: t.instagram, Icon: InstagramLogoIcon, external: true },
+    { href: YOUTUBE_URL, label: t.youtube, Icon: YoutubeLogoIcon, external: true }
+  ];
 
   return (
     <>
@@ -97,34 +108,34 @@ export function ContactPage({ locale }: { locale: Locale }) {
         photoPool={HERO_POOL}
       />
 
-      <section className="mx-auto grid max-w-[1200px] grid-cols-1 gap-4 px-[clamp(20px,4vw,32px)] pt-[clamp(56px,8vw,104px)] sm:grid-cols-2">
-        <Reveal>
-          <a href={`mailto:${CONTACT_EMAIL}`} className="flex flex-col gap-3 rounded-card bg-white p-7 text-ink no-underline shadow-ol-sm hover:text-ink">
-            <EnvelopeSimpleIcon size={36} className="text-copper-600" aria-hidden />
-            <b className="font-serif text-[24px] font-medium">{t.email}</b>
-            <span className="break-all text-[16px] text-ink-body">{CONTACT_EMAIL}</span>
-          </a>
-        </Reveal>
-        <Reveal delay={90}>
-          <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" className="flex flex-col gap-3 rounded-card bg-white p-7 text-ink no-underline shadow-ol-sm hover:text-ink">
-            <FacebookLogoIcon size={36} className="text-copper-600" aria-hidden />
-            <b className="font-serif text-[24px] font-medium">{t.facebook}</b>
-            <span className="text-[16px] text-ink-body">associationonelove</span>
-          </a>
-        </Reveal>
-        <Reveal delay={180}>
-          <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="flex flex-col gap-3 rounded-card bg-white p-7 text-ink no-underline shadow-ol-sm hover:text-ink">
-            <InstagramLogoIcon size={36} className="text-copper-600" aria-hidden />
-            <b className="font-serif text-[24px] font-medium">{t.instagram}</b>
-            <span className="text-[16px] text-ink-body">@associationonelove</span>
-          </a>
-        </Reveal>
-        <Reveal delay={270}>
-          <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="flex flex-col gap-3 rounded-card bg-white p-7 text-ink no-underline shadow-ol-sm hover:text-ink">
-            <YoutubeLogoIcon size={36} className="text-copper-600" aria-hidden />
-            <b className="font-serif text-[24px] font-medium">{t.youtube}</b>
-            <span className="text-[16px] text-ink-body">{t.youtubeName}</span>
-          </a>
+      {/* Réseaux et e-mail (07/10/2026, option B validée par Mazunda) : quatre
+          pastilles cliquables sur une photo des enfants, à la place des quatre
+          grandes cartes ; l'adresse reste écrite en clair pour la recopier. */}
+      <section className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pt-[clamp(40px,6vw,72px)]">
+        <Reveal className="relative flex min-h-[260px] flex-col justify-end gap-4 overflow-hidden rounded-card bg-night p-[clamp(24px,4vw,48px)] text-cream dk:min-h-[300px]">
+          <Image src={NETWORK_PHOTO} alt="" fill sizes="(max-width: 1200px) 100vw, 1200px" className="photo-tone object-cover object-[50%_35%]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-2)_0%,var(--scrim-5)_100%)] dk:bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-2)_45%,var(--scrim-0)_100%)]" />
+          <div className="relative flex flex-col gap-4">
+            <Eyebrow dark>{t.networksTitle}</Eyebrow>
+            <ul className="m-0 flex list-none flex-wrap gap-3 p-0">
+              {networks.map(({ href, label, Icon, external }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    aria-label={label}
+                    title={label}
+                    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    className="flex h-14 w-14 items-center justify-center rounded-full border border-cream/35 bg-cream/15 text-cream no-underline backdrop-blur-sm transition-colors hover:border-gold hover:bg-gold hover:text-night"
+                  >
+                    <Icon size={26} aria-hidden />
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="w-fit break-all text-[16px] font-bold text-gold-hover no-underline hover:underline hover:underline-offset-4">
+              {CONTACT_EMAIL}
+            </a>
+          </div>
         </Reveal>
       </section>
 

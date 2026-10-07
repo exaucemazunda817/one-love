@@ -163,7 +163,9 @@ export function CallBanner({
   donateHref,
   sponsorHref,
   Icon,
-  spaced = true
+  spaced = true,
+  image,
+  imagePosition = '50% 30%'
 }: {
   title: ReactNode;
   text: ReactNode;
@@ -175,15 +177,22 @@ export function CallBanner({
   Icon: React.ComponentType<{ size?: number | string; 'aria-hidden'?: boolean }>;
   /** Espace au-dessus du bandeau (faux si la section précédente a déjà sa marge basse). */
   spaced?: boolean;
+  /** Photo derrière le bandeau (07/10/2026, validé par Mazunda) : en haut sur
+   * téléphone, à droite sur ordinateur, fondue dans le noir (.ol-cb-photo). */
+  image?: string;
+  imagePosition?: string;
 }) {
   return (
     <section className={`mx-auto max-w-[1200px] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)] ${spaced ? 'pt-[clamp(40px,6vw,72px)]' : ''}`}>
-      <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-7 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
-        <div className="flex flex-col gap-3">
+      <Reveal className={`relative grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-center gap-7 overflow-hidden rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream ${image ? 'max-md:pt-[230px] dk:min-h-[320px]' : ''}`}>
+        {image && (
+          <Image src={image} alt="" fill sizes="(max-width: 767px) 100vw, 640px" className="ol-cb-photo photo-tone object-cover" style={{ objectPosition: imagePosition }} />
+        )}
+        <div className="relative flex flex-col gap-3">
           <h2 className="m-0 text-balance font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.2]">{title}</h2>
           <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{text}</p>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="relative flex flex-wrap gap-3">
           {/* Lien interne (navigation sans rechargement) : un <a> classique
               rechargeait la page et rejouait l'intro du logo (signalé par
               Mazunda le 07/10/2026 sur la page du village). */}

@@ -178,6 +178,7 @@ export function OneLoveBoysPage({ locale }: { locale: Locale }) {
         donateHref={href('/dons')}
         sponsorHref={href('/parrainer')}
         Icon={HeartIcon}
+        image="/hero-desktop/boys-2023-rentree-ol-photo-007.webp"
       />
     </>
   );

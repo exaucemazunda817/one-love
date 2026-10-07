@@ -161,6 +161,7 @@ export function ActionsPage({ locale }: { locale: Locale }) {
         donateHref={href('/dons')}
         sponsorHref={href('/parrainer')}
         Icon={HeartIcon}
+        image="/hero-desktop/centre-aere-2024-03-ol-photo-009.webp"
       />
     </>
   );
