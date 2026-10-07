@@ -78,7 +78,44 @@ const nextConfig: NextConfig = {
       { source: '/en/ca-bouge', destination: '/en/galerie', ...perm },
       { source: '/en/infos-dons', destination: '/en/dons', ...perm },
       { source: '/en/voyage-humanitaire', destination: '/en/s-impliquer', ...perm },
-      { source: '/en/actions/:slug+', destination: '/en/actions', ...perm }
+      { source: '/en/actions/:slug+', destination: '/en/actions', ...perm },
+
+      // Autres adresses de l'ancien site WordPress encore connues de Google
+      // (Search Console, 07/10/2026) : plutôt qu'une page introuvable, on mène
+      // le visiteur vers la page la plus proche. Liste tirée de la sauvegarde
+      // WordPress du 03/10/2026.
+      // Ancienne version allemande : pas d'allemand sur le nouveau site, on
+      // propose l'anglais.
+      { source: '/de', destination: '/en', ...perm },
+      { source: '/de/:path*', destination: '/en', ...perm },
+      // Étiquettes, catégories, auteurs, pages de liste, flux RSS et anciens
+      // articles datés (/2019/12/12/...) : vers les actualités.
+      { source: '/tag/:path*', destination: '/galerie', ...perm },
+      { source: '/category/:path*', destination: '/galerie', ...perm },
+      { source: '/author/:path*', destination: '/galerie', ...perm },
+      { source: '/page/:path*', destination: '/galerie', ...perm },
+      { source: '/feed', destination: '/galerie', ...perm },
+      { source: '/comments/feed', destination: '/galerie', ...perm },
+      { source: '/:year(\\d{4})/:path*', destination: '/galerie', ...perm },
+      { source: '/en/tag/:path*', destination: '/en/galerie', ...perm },
+      { source: '/en/category/:path*', destination: '/en/galerie', ...perm },
+      { source: '/en/feed', destination: '/en/galerie', ...perm },
+      { source: '/en/:year(\\d{4})/:path*', destination: '/en/galerie', ...perm },
+      // Anciennes pages précises.
+      { source: '/index.php', destination: '/', ...perm },
+      { source: '/regardez/:path*', destination: '/galerie', ...perm },
+      { source: '/weekend-one-love', destination: '/galerie', ...perm },
+      { source: '/volunteer', destination: '/s-impliquer', ...perm },
+      { source: '/voyage-humanitaire-backup2022', destination: '/s-impliquer', ...perm },
+      { source: '/voyage-congo-decembre', destination: '/s-impliquer', ...perm },
+      { source: '/programme_malaka', destination: '/actions', ...perm },
+      { source: '/programme-de-valorisation-de', destination: '/actions', ...perm },
+      { source: '/unser-haus', destination: '/en/one-love-boys', ...perm },
+      { source: '/spielen', destination: '/en/centre-aere', ...perm },
+      { source: '/subscription-newsletter', destination: '/', ...perm },
+      { source: '/test/:path*', destination: '/', ...perm },
+      { source: '/product/:path*', destination: '/dons', ...perm },
+      { source: '/shop', destination: '/dons', ...perm }
     ];
   },
   images: {
