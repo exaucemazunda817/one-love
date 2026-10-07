@@ -13,7 +13,6 @@ export const HERO_MOBILE: Record<string, string> = {
   '/hero-desktop/boys-2023-famille-tim-pt-009.webp': '/hero-mobile/boys-2023-famille-tim-pt-009.webp',
   '/hero-desktop/centre-aere-2024-07-ol-photo-006.webp': '/hero-mobile/centre-aere-2024-07-ol-photo-006.webp',
   '/hero-desktop/centre-aere-2024-07-ol-photo-009.webp': '/hero-mobile/centre-aere-2024-07-ol-photo-009.webp',
-  '/hero-desktop/centre-aere-2023-12-25-ol-photo-004.webp': '/hero-mobile/centre-aere-2023-12-25-ol-photo-004.webp',
   '/hero-desktop/centre-aere-2023-12-25-ol-photo-013.webp': '/hero-mobile/centre-aere-2023-12-25-ol-photo-013.webp',
   '/hero-desktop/centre-aere-2023-02-tim-pt-002.webp': '/hero-mobile/centre-aere-2023-02-tim-pt-002.webp',
   '/hero-desktop/centre-aere-2023-02-tim-pt-009.webp': '/hero-mobile/centre-aere-2023-02-tim-pt-009.webp',

@@ -8,7 +8,6 @@ export const HERO_PHOTOS = [
   { src: '/hero-desktop/boys-2023-rentree-ol-photo-001.webp', position: '50% 50%' },
   { src: '/hero-desktop/centre-aere-2024-07-ol-photo-006.webp', position: '50% 50%' },
   { src: '/hero-desktop/centre-aere-2024-07-ol-photo-009.webp', position: '50% 50%' },
-  { src: '/hero-desktop/centre-aere-2023-12-25-ol-photo-004.webp', position: '50% 50%' },
   { src: '/hero-desktop/centre-aere-2023-12-25-ol-photo-013.webp', position: '50% 50%' },
   { src: '/hero-desktop/centre-aere-2023-02-tim-pt-002.webp', position: '50% 50%' },
   { src: '/hero-desktop/centre-aere-2023-02-tim-pt-009.webp', position: '50% 50%' },
