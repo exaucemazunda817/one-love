@@ -14,6 +14,7 @@ import {
   FileTextIcon
 } from '@phosphor-icons/react';
 import { Reveal } from '@/components/Reveal';
+import { SwipeDots } from '@/components/site/SwipeDots';
 import { Brush, BrushLast } from '@/components/site/ui';
 import type { Currency } from '@/lib/donation-ui';
 import { SYMBOL, sanitizeAmount, toEur, formatCustom } from '@/lib/donation-ui';
@@ -157,18 +158,24 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
         <Reveal>
           <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.howTitle} /></h2>
         </Reveal>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-x-10 gap-y-8">
+        {/* Sur téléphone, les trois étapes deviennent des cartes qu'on fait
+            glisser à l'horizontale (demande de Mazunda du 07/10/2026), comme
+            les autres listes de cartes du site ; grille inchangée au-dessus. */}
+        <ol className="ol-swipe m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-x-10 gap-y-8 p-0">
           {t.how.map((h, i) => (
-            <Reveal key={h.n} delay={i * 90} className="flex flex-col gap-3">
-              <div className="flex items-center gap-3.5">
-                <span className="font-serif text-[48px] leading-none text-copper-600">{h.n}</span>
-                <Brush fill="var(--clay)" className="h-2 flex-1" />
-              </div>
-              <h3 className="m-0 font-serif text-[24px] font-semibold">{h.t}</h3>
-              <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{h.d}</p>
-            </Reveal>
+            <li key={h.n} className="flex">
+              <Reveal delay={i * 90} className="flex w-full flex-col gap-3 max-md:rounded-card max-md:border max-md:border-card-line max-md:bg-white max-md:p-6">
+                <div className="flex items-center gap-3.5">
+                  <span className="font-serif text-[48px] leading-none text-copper-600">{h.n}</span>
+                  <Brush fill="var(--clay)" className="h-2 flex-1" />
+                </div>
+                <h3 className="m-0 font-serif text-[24px] font-semibold">{h.t}</h3>
+                <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{h.d}</p>
+              </Reveal>
+            </li>
           ))}
-        </div>
+        </ol>
+        <SwipeDots count={t.how.length} label={t.howTitle} />
       </section>
 
       {/* Formules */}
@@ -232,105 +239,10 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
         </div>
       </section>
 
-      {/* Ce que vous recevez */}
-      <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,32px)] pt-[clamp(32px,5vw,56px)] pb-[clamp(56px,8vw,104px)]">
-        <Reveal className="relative aspect-[4/5] max-h-[560px] overflow-hidden rounded-card">
-          <Image src="/photos/photo-mains.jpg" alt={t.receiveAlt} fill sizes="(max-width: 1200px) 100vw, 560px" className="photo-tone object-cover" />
-        </Reveal>
-        <Reveal delay={90} className="flex flex-col gap-6">
-          <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.receiveTitle} /></h2>
-          {t.receive.map((r, i) => {
-            const Icon = RECEIVE_ICONS[i];
-            return (
-              <div key={r.t} className="flex items-start gap-4">
-                <span className="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-copper-tint-2">
-                  <Icon size={24} className="text-copper-600" aria-hidden />
-                </span>
-                <div className="flex flex-col gap-1">
-                  <b className="text-[17px]">{r.t}</b>
-                  <span className="text-[16px] leading-[1.55] text-ink-body">{r.d}</span>
-                </div>
-              </div>
-            );
-          })}
-        </Reveal>
-      </section>
-
-      {/* Charte de protection */}
-      <section id="charte" className="mx-auto scroll-mt-[var(--header-clear)] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
-        <Reveal className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-8 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
-          <div className="flex flex-col gap-3.5">
-            <ShieldCheckIcon size={40} className="text-sage-300" aria-hidden />
-            <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.2]">{t.charterTitle}</h2>
-            <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{t.charterIntro}</p>
-          </div>
-          <div className="flex flex-col gap-3.5">
-            {t.charter.map((c) => (
-              <div key={c} className="flex items-start gap-3 text-[16px] leading-[1.55]">
-                <Brush fill="var(--gold)" className="mt-2.5 h-2 w-[22px] flex-none" />
-                <span>{c}</span>
-              </div>
-            ))}
-          </div>
-        </Reveal>
-      </section>
-
-      {/* Questions fréquentes */}
-      <div className="overflow-x-clip">
-      <section id="faq" className="mx-auto max-w-[1000px] scroll-mt-[var(--header-clear)] px-[clamp(20px,4vw,32px)] pb-[clamp(56px,8vw,104px)]">
-        <Reveal variant="scale" repeat className="mb-8 text-center">
-          <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.15]"><BrushLast text={t.faqTitle} /></h2>
-        </Reveal>
-        <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
-          {t.faq.map((f, i) => {
-            const open = faqOpen === i;
-            const panelId = `${id}-faq-${i}`;
-            return (
-              <Reveal key={f.q} variant={i % 2 === 0 ? 'left' : 'right'} repeat>
-                <div
-                  className={`overflow-hidden rounded-card border border-card-line shadow-ol-sm transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-ol-md ${
-                    i % 2 === 0 ? 'bg-white' : 'bg-sand'
-                  } ${open ? 'ring-2 ring-copper-600/30' : ''}`}
-                >
-                  <button
-                    type="button"
-                    aria-expanded={open}
-                    aria-controls={panelId}
-                    onClick={() => setFaqOpen(open ? null : i)}
-                    className="group flex min-h-[64px] w-full cursor-pointer items-start justify-between gap-4 border-0 bg-transparent px-5 py-4 text-left sm:px-6"
-                  >
-                    <span className="text-[16px] font-bold leading-[1.3] text-ink transition-colors group-hover:text-copper-700">{f.q}</span>
-                    <CaretDownIcon
-                      size={20}
-                      aria-hidden
-                      className={`mt-0.5 flex-none text-ink-soft transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:text-copper-600 ${open ? 'rotate-180' : ''}`}
-                    />
-                  </button>
-                  <div
-                    id={panelId}
-                    role="region"
-                    aria-hidden={!open}
-                    className={`grid transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-                      open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-                    }`}
-                  >
-                    <div className="overflow-hidden">
-                      <div className="mx-5 border-t border-card-line pb-5 pt-4 sm:mx-6 sm:pb-6">
-                        <p className="m-0 text-[15px] leading-[1.6] text-ink-body">{f.a}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      </section>
-      </div>
-
-      {/* Inscription */}
+      {/* Inscription : juste après le choix de la formule, pour qu'on voie
+          tout de suite ce qu'on a choisi (demande de Mazunda du 07/10/2026). */}
       <section id="inscription" className="scroll-mt-[var(--header-clear)] bg-sand">
-        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start gap-[clamp(32px,5vw,64px)] px-[clamp(16px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
+        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-start gap-[clamp(32px,5vw,64px)] px-[clamp(16px,4vw,32px)] pt-[clamp(8px,2vw,16px)] pb-[clamp(56px,8vw,104px)]">
           <Reveal className="flex flex-col gap-4">
             <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]">
               {t.inscriptionTitlePre}
@@ -441,6 +353,103 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
           </Reveal>
         </div>
       </section>
+
+      {/* Ce que vous recevez */}
+      <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-center gap-[clamp(32px,5vw,72px)] px-[clamp(20px,4vw,32px)] pt-[clamp(32px,5vw,56px)] pb-[clamp(56px,8vw,104px)]">
+        <Reveal className="relative aspect-[4/5] max-h-[560px] overflow-hidden rounded-card">
+          <Image src="/photos/photo-mains.jpg" alt={t.receiveAlt} fill sizes="(max-width: 1200px) 100vw, 560px" className="photo-tone object-cover" />
+        </Reveal>
+        <Reveal delay={90} className="flex flex-col gap-6">
+          <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.receiveTitle} /></h2>
+          {t.receive.map((r, i) => {
+            const Icon = RECEIVE_ICONS[i];
+            return (
+              <div key={r.t} className="flex items-start gap-4">
+                <span className="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-copper-tint-2">
+                  <Icon size={24} className="text-copper-600" aria-hidden />
+                </span>
+                <div className="flex flex-col gap-1">
+                  <b className="text-[17px]">{r.t}</b>
+                  <span className="text-[16px] leading-[1.55] text-ink-body">{r.d}</span>
+                </div>
+              </div>
+            );
+          })}
+        </Reveal>
+      </section>
+
+      {/* Charte de protection */}
+      <section id="charte" className="mx-auto scroll-mt-[var(--header-clear)] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
+        <Reveal className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-8 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
+          <div className="flex flex-col gap-3.5">
+            <ShieldCheckIcon size={40} className="text-sage-300" aria-hidden />
+            <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.2]">{t.charterTitle}</h2>
+            <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{t.charterIntro}</p>
+          </div>
+          <div className="flex flex-col gap-3.5">
+            {t.charter.map((c) => (
+              <div key={c} className="flex items-start gap-3 text-[16px] leading-[1.55]">
+                <Brush fill="var(--gold)" className="mt-2.5 h-2 w-[22px] flex-none" />
+                <span>{c}</span>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
+      {/* Questions fréquentes */}
+      <div className="overflow-x-clip">
+      <section id="faq" className="mx-auto max-w-[1000px] scroll-mt-[var(--header-clear)] px-[clamp(20px,4vw,32px)] pb-[clamp(56px,8vw,104px)]">
+        <Reveal variant="scale" repeat className="mb-8 text-center">
+          <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.15]"><BrushLast text={t.faqTitle} /></h2>
+        </Reveal>
+        <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+          {t.faq.map((f, i) => {
+            const open = faqOpen === i;
+            const panelId = `${id}-faq-${i}`;
+            return (
+              <Reveal key={f.q} variant={i % 2 === 0 ? 'left' : 'right'} repeat>
+                <div
+                  className={`overflow-hidden rounded-card border border-card-line shadow-ol-sm transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] hover:shadow-ol-md ${
+                    i % 2 === 0 ? 'bg-white' : 'bg-sand'
+                  } ${open ? 'ring-2 ring-copper-600/30' : ''}`}
+                >
+                  <button
+                    type="button"
+                    aria-expanded={open}
+                    aria-controls={panelId}
+                    onClick={() => setFaqOpen(open ? null : i)}
+                    className="group flex min-h-[64px] w-full cursor-pointer items-start justify-between gap-4 border-0 bg-transparent px-5 py-4 text-left sm:px-6"
+                  >
+                    <span className="text-[16px] font-bold leading-[1.3] text-ink transition-colors group-hover:text-copper-700">{f.q}</span>
+                    <CaretDownIcon
+                      size={20}
+                      aria-hidden
+                      className={`mt-0.5 flex-none text-ink-soft transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:text-copper-600 ${open ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-hidden={!open}
+                    className={`grid transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                      open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <div className="mx-5 border-t border-card-line pb-5 pt-4 sm:mx-6 sm:pb-6">
+                        <p className="m-0 text-[15px] leading-[1.6] text-ink-body">{f.a}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </section>
+      </div>
+
     </>
   );
 }
