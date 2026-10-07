@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { Reveal } from '@/components/Reveal';
-import { BackLink } from '@/components/site/BackLink';
+import { BackStrip } from '@/components/site/BackLink';
+import Image from 'next/image';
 
 // Primitives visuelles du design system 2026. Les valeurs (tailles,
 // espacements, couleurs) sont celles de la maquette, au pixel près.
@@ -110,25 +111,38 @@ export function TextHero({
   eyebrow,
   title,
   intro,
-  back
+  back,
+  image,
+  imagePosition = '50% 50%'
 }: {
   eyebrow?: string;
   title: string;
   intro?: string;
-  /** Page hors menu : bouton « Retour » (lien de repli si arrivée directe). */
+  /** Page hors menu : bouton « Retour » sous le bandeau (lien de repli si arrivée directe). */
   back?: { href: string; locale: 'fr' | 'en' };
+  /** Photo de fond du bandeau (pages légales, 07/10/2026), sous un voile sombre. */
+  image?: string;
+  imagePosition?: string;
 }) {
   return (
-    <section className="bg-night text-cream">
-      <Reveal eager className="mx-auto flex max-w-[1200px] flex-col items-center gap-4 text-center dk:items-start dk:text-left px-[clamp(20px,4vw,32px)] pb-[clamp(40px,6vw,72px)] pt-[clamp(120px,12vw,148px)]">
-        {back && <BackLink fallbackHref={back.href} locale={back.locale} />}
-        {eyebrow && <Eyebrow dark>{eyebrow}</Eyebrow>}
-        <h1 className="m-0 max-w-[820px] text-balance font-serif text-[clamp(34px,5vw,56px)] font-medium leading-[1.1] tracking-[-0.01em]">
-          {title}
-        </h1>
-        {intro && <p className="-mt-1.5 m-0 max-w-[620px] text-pretty text-[15px] leading-[1.5] text-on-dark-1 dk:mt-0 dk:text-[17px] dk:leading-[1.6]">{intro}</p>}
-      </Reveal>
-    </section>
+    <>
+      <section className={`relative overflow-hidden bg-night text-cream ${image ? 'flex min-h-[380px] items-end dk:block dk:min-h-0' : ''}`}>
+        {image && (
+          <>
+            <Image src={image} alt="" fill priority sizes="100vw" className="photo-tone object-cover" style={{ objectPosition: imagePosition }} />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-2)_0%,var(--scrim-4)_60%,var(--scrim-5)_100%)] dk:bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_45%,var(--scrim-2)_100%)]" />
+          </>
+        )}
+        <Reveal eager className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center gap-4 text-center dk:items-start dk:text-left px-[clamp(20px,4vw,32px)] pb-[clamp(40px,6vw,72px)] pt-[clamp(120px,12vw,148px)]">
+          {eyebrow && <Eyebrow dark>{eyebrow}</Eyebrow>}
+          <h1 className="m-0 max-w-[820px] text-balance font-serif text-[clamp(34px,5vw,56px)] font-medium leading-[1.1] tracking-[-0.01em]">
+            {title}
+          </h1>
+          {intro && <p className="-mt-1.5 m-0 max-w-[620px] text-pretty text-[15px] leading-[1.5] text-on-dark-1 dk:mt-0 dk:text-[17px] dk:leading-[1.6]">{intro}</p>}
+        </Reveal>
+      </section>
+      {back && <BackStrip href={back.href} locale={back.locale} />}
+    </>
   );
 }
 

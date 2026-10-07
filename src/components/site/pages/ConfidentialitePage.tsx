@@ -9,7 +9,7 @@ import {
   ScalesIcon,
   CameraIcon
 } from '@phosphor-icons/react/ssr';
-import { TextHero } from '@/components/site/ui';
+import { BrushLast, TextHero } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { org, donationNotice } from '@/lib/content';
 
@@ -36,16 +36,18 @@ export default function ConfidentialitePage() {
     <>
       <TextHero
         back={{ href: '/', locale: 'fr' }}
+        image="/hero-desktop/centre-aere-2023-02-tim-pt-002.webp"
+        imagePosition="50% 40%"
         eyebrow="Vos données"
         title="Politique de confidentialité"
         intro="Ce que ce site collecte, comment c’est utilisé, et comment exercer vos droits auprès de l’association."
       />
 
       <section className="bg-cream">
-        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
-          <Reveal className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm">
-            <ShieldCheckIcon size={36} className="text-copper-600" aria-hidden />
-            <h2 className="m-0 font-serif text-[24px] font-medium leading-[1.2]">Données collectées par ce site</h2>
+        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)] max-md:gap-9 max-md:py-10">
+          <Reveal className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm max-md:gap-2.5 max-md:rounded-none max-md:bg-transparent max-md:p-0 max-md:shadow-none">
+            <ShieldCheckIcon size={36} className="text-copper-600 max-md:hidden" aria-hidden />
+            <h2 className="m-0 text-balance font-serif text-[24px] font-medium leading-[1.25] max-md:text-[26px]"><BrushLast text="Données collectées par ce site" /></h2>
             <p className="m-0 text-[16px] leading-[1.65] text-ink-body">
               Ce site ne collecte des données que lorsque vous remplissez vous-même un
               formulaire (contact, bénévolat, partenariat, parrainage, don ou lettre
@@ -56,9 +58,9 @@ export default function ConfidentialitePage() {
             </p>
           </Reveal>
 
-          <Reveal delay={90} className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm">
-            <EnvelopeSimpleIcon size={36} className="text-copper-600" aria-hidden />
-            <h2 className="m-0 font-serif text-[24px] font-medium leading-[1.2]">Si vous nous écrivez</h2>
+          <Reveal delay={90} className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm max-md:gap-2.5 max-md:rounded-none max-md:bg-transparent max-md:p-0 max-md:shadow-none">
+            <EnvelopeSimpleIcon size={36} className="text-copper-600 max-md:hidden" aria-hidden />
+            <h2 className="m-0 text-balance font-serif text-[24px] font-medium leading-[1.25] max-md:text-[26px]"><BrushLast text="Si vous nous écrivez" /></h2>
             <p className="m-0 text-[16px] leading-[1.65] text-ink-body">
               Les messages du formulaire de contact (nom, e-mail, téléphone facultatif,
               sujet, message) sont conservés le temps nécessaire au traitement de votre
@@ -69,10 +71,10 @@ export default function ConfidentialitePage() {
       </section>
 
       <section className="bg-sand">
-        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
-          <Reveal className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm">
-            <HandshakeIcon size={36} className="text-copper-600" aria-hidden />
-            <h2 className="m-0 font-serif text-[24px] font-medium leading-[1.2]">Bénévolat, partenariat et parrainage</h2>
+        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)] max-md:gap-9 max-md:py-10">
+          <Reveal className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm max-md:gap-2.5 max-md:rounded-none max-md:bg-transparent max-md:p-0 max-md:shadow-none">
+            <HandshakeIcon size={36} className="text-copper-600 max-md:hidden" aria-hidden />
+            <h2 className="m-0 text-balance font-serif text-[24px] font-medium leading-[1.25] max-md:text-[26px]"><BrushLast text="Bénévolat, partenariat et parrainage" /></h2>
             <p className="m-0 text-[16px] leading-[1.65] text-ink-body">
               Une candidature bénévole (identité, coordonnées, disponibilités,
               motivation), une proposition de partenariat (organisation, contact,
@@ -81,9 +83,9 @@ export default function ConfidentialitePage() {
             </p>
           </Reveal>
 
-          <Reveal delay={90} className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm">
-            <PaperPlaneTiltIcon size={36} className="text-copper-600" aria-hidden />
-            <h2 className="m-0 font-serif text-[24px] font-medium leading-[1.2]">Lettre d&apos;information</h2>
+          <Reveal delay={90} className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm max-md:gap-2.5 max-md:rounded-none max-md:bg-transparent max-md:p-0 max-md:shadow-none">
+            <PaperPlaneTiltIcon size={36} className="text-copper-600 max-md:hidden" aria-hidden />
+            <h2 className="m-0 text-balance font-serif text-[24px] font-medium leading-[1.25] max-md:text-[26px]"><BrushLast text="Lettre d’information" /></h2>
             <p className="m-0 text-[16px] leading-[1.65] text-ink-body">
               L&apos;inscription à la lettre d&apos;information se fait en double
               consentement (un e-mail de confirmation avant tout envoi). Nous conservons
@@ -95,10 +97,10 @@ export default function ConfidentialitePage() {
       </section>
 
       <section className="bg-cream">
-        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
-          <Reveal className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm">
-            <HandCoinsIcon size={36} className="text-copper-600" aria-hidden />
-            <h2 className="m-0 font-serif text-[24px] font-medium leading-[1.2]">Donateurs</h2>
+        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)] max-md:gap-9 max-md:py-10">
+          <Reveal className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm max-md:gap-2.5 max-md:rounded-none max-md:bg-transparent max-md:p-0 max-md:shadow-none">
+            <HandCoinsIcon size={36} className="text-copper-600 max-md:hidden" aria-hidden />
+            <h2 className="m-0 text-balance font-serif text-[24px] font-medium leading-[1.25] max-md:text-[26px]"><BrushLast text="Donateurs" /></h2>
             <p className="m-0 text-[16px] leading-[1.65] text-ink-body">
               Pour un don par carte ou prélèvement, le paiement est traité par Stripe :
               votre numéro de carte ne transite jamais par nos serveurs et n&apos;y est
@@ -108,9 +110,9 @@ export default function ConfidentialitePage() {
             </p>
           </Reveal>
 
-          <Reveal delay={90} className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm">
-            <ScalesIcon size={36} className="text-copper-600" aria-hidden />
-            <h2 className="m-0 font-serif text-[24px] font-medium leading-[1.2]">Vos droits</h2>
+          <Reveal delay={90} className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm max-md:gap-2.5 max-md:rounded-none max-md:bg-transparent max-md:p-0 max-md:shadow-none">
+            <ScalesIcon size={36} className="text-copper-600 max-md:hidden" aria-hidden />
+            <h2 className="m-0 text-balance font-serif text-[24px] font-medium leading-[1.25] max-md:text-[26px]"><BrushLast text="Vos droits" /></h2>
             <p className="m-0 text-[16px] leading-[1.65] text-ink-body">
               Conformément au Règlement général sur la protection des données et à la loi
               Informatique et Libertés du 6 janvier 1978, vous disposez d&apos;un droit
@@ -124,11 +126,11 @@ export default function ConfidentialitePage() {
       </section>
 
       <section className="bg-sand">
-        <div className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
-          <Reveal className="flex max-w-[640px] flex-col gap-3 rounded-card bg-night p-8 text-cream">
-            <CameraIcon size={36} className="text-sage-300" aria-hidden />
-            <h2 className="m-0 font-serif text-[24px] font-medium leading-[1.2]">Images des enfants</h2>
-            <p className="m-0 text-[16px] leading-[1.65] text-on-dark-1">
+        <div className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)] max-md:py-10">
+          <Reveal className="flex max-w-[640px] flex-col gap-3 rounded-card bg-night p-8 text-cream max-md:gap-2.5 max-md:rounded-none max-md:bg-transparent max-md:p-0 max-md:text-ink">
+            <CameraIcon size={36} className="text-sage-300 max-md:hidden" aria-hidden />
+            <h2 className="m-0 text-balance font-serif text-[24px] font-medium leading-[1.25] max-md:text-[26px]"><BrushLast text="Images des enfants" /></h2>
+            <p className="m-0 text-[16px] leading-[1.65] text-on-dark-1 max-md:text-ink-body">
               L&apos;association accompagne des mineurs. Les photographies publiées sur ce
               site sont sélectionnées avec une attention particulière, et toute demande de
               retrait adressée à {org.privacyEmail} est traitée sans délai.

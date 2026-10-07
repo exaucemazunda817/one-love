@@ -8,7 +8,7 @@ import { BrushWord, Eyebrow, BrushLast } from '@/components/site/ui';
 import { DonationFlow } from '@/components/site/DonationFlow';
 import { CancelNotice } from '@/app/(site)/dons/CancelNotice';
 import { localeHref, type Locale } from '@/lib/i18n';
-import { BackLink } from '@/components/site/BackLink';
+import { BackStrip } from '@/components/site/BackLink';
 import { isStripeConfigured } from '@/lib/stripe';
 
 export const text = {
@@ -78,7 +78,6 @@ export function DonsPage({ locale }: { locale: Locale }) {
         <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--scrim-5)_0%,var(--scrim-4)_45%,var(--scrim-2)_100%)]" />
         <div className="relative mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pb-[clamp(48px,7vw,88px)] pt-[clamp(120px,12vw,148px)]">
           <Reveal eager className="mx-auto flex max-w-[620px] flex-col items-center gap-[18px] text-center dk:mx-0 dk:max-w-none dk:items-start dk:text-left">
-          <BackLink fallbackHref={localeHref('/', locale)} locale={locale} />
           <Eyebrow dark>{t.eyebrow}</Eyebrow>
           <h1 className="m-0 text-balance font-serif text-[clamp(38px,5vw,64px)] font-medium leading-[1.06]">
             {t.titlePre}
@@ -88,6 +87,8 @@ export function DonsPage({ locale }: { locale: Locale }) {
           </Reveal>
         </div>
       </section>
+
+      <BackStrip href={localeHref('/', locale)} locale={locale} />
 
       <Suspense fallback={null}>
         <CancelBanner locale={locale} />

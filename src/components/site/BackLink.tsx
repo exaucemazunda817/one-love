@@ -38,6 +38,16 @@ export function NavTracker() {
   return null;
 }
 
+/** Bouton « Retour » posé au début du corps de page, juste sous le bandeau
+ * (demande de Mazunda du 07/10/2026 : pas sur la photo du bandeau). */
+export function BackStrip({ href, locale }: { href: string; locale: 'fr' | 'en' }) {
+  return (
+    <div className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,32px)] pt-6 dk:pt-8">
+      <BackLink fallbackHref={href} locale={locale} tone="light" />
+    </div>
+  );
+}
+
 export function BackLink({
   fallbackHref,
   locale,

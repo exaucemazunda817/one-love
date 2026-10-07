@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo';
 import { BuildingsIcon, HardDrivesIcon, CopyrightIcon, CameraIcon } from '@phosphor-icons/react/ssr';
-import { TextHero } from '@/components/site/ui';
+import { BrushLast, TextHero } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { org } from '@/lib/content';
 
@@ -75,17 +75,19 @@ export default function MentionsLegalesPage() {
     <>
       <TextHero
         back={{ href: '/', locale: 'fr' }}
+        image="/hero-desktop/centre-aere-2023-02-tim-pt-009.webp"
+        imagePosition="50% 50%"
         eyebrow="Informations légales"
         title="Mentions légales"
         intro="Éditeur, hébergeur, propriété des contenus et droit à l’image du site de l’association One Love."
       />
 
       <section className="bg-cream">
-        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
+        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)] max-md:gap-9 max-md:py-10">
           {cards.slice(0, 2).map((c, i) => (
-            <Reveal key={c.title} delay={i * 90} className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm">
-              <c.icon size={36} className="text-copper-600" aria-hidden />
-              <h2 className="m-0 font-serif text-[24px] font-medium leading-[1.2]">{c.title}</h2>
+            <Reveal key={c.title} delay={i * 90} className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm max-md:gap-2.5 max-md:rounded-none max-md:bg-transparent max-md:p-0 max-md:shadow-none">
+              <c.icon size={36} className="text-copper-600 max-md:hidden" aria-hidden />
+              <h2 className="m-0 text-balance font-serif text-[24px] font-medium leading-[1.25] max-md:text-[26px]"><BrushLast text={c.title} /></h2>
               <p className="m-0 text-[16px] leading-[1.65] text-ink-body">{c.body}</p>
             </Reveal>
           ))}
@@ -93,11 +95,11 @@ export default function MentionsLegalesPage() {
       </section>
 
       <section className="bg-sand">
-        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
+        <div className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-5 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)] max-md:gap-9 max-md:py-10">
           {cards.slice(2, 4).map((c, i) => (
-            <Reveal key={c.title} delay={i * 90} className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm">
-              <c.icon size={36} className="text-copper-600" aria-hidden />
-              <h2 className="m-0 font-serif text-[24px] font-medium leading-[1.2]">{c.title}</h2>
+            <Reveal key={c.title} delay={i * 90} className="flex flex-col gap-3 rounded-card bg-white p-8 shadow-ol-sm max-md:gap-2.5 max-md:rounded-none max-md:bg-transparent max-md:p-0 max-md:shadow-none">
+              <c.icon size={36} className="text-copper-600 max-md:hidden" aria-hidden />
+              <h2 className="m-0 text-balance font-serif text-[24px] font-medium leading-[1.25] max-md:text-[26px]"><BrushLast text={c.title} /></h2>
               <p className="m-0 text-[16px] leading-[1.65] text-ink-body">{c.body}</p>
             </Reveal>
           ))}
