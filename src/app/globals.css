@@ -933,3 +933,15 @@ html[data-intro] .ol-intro {
     mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
   }
 }
+/* Variante « douce » : cadre dont le texte occupe les deux colonnes (charte
+   de Parrainer). Sur ordinateur, la photo couvre tout le cadre mais reste
+   très atténuée ; sur téléphone, même rendu que .ol-cb-photo (en haut). */
+@media (min-width: 768px) {
+  .ol-cb-photo.ol-cb-photo-soft {
+    left: 0 !important;
+    width: 100% !important;
+    opacity: 0.22;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}

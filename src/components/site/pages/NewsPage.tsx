@@ -108,7 +108,7 @@ export function NewsPage({ locale }: { locale: Locale }) {
       <NewsInteractive t={t} />
 
       <div className="pt-[clamp(40px,6vw,72px)]">
-        <FacebookBand locale={locale} />
+        <FacebookBand locale={locale} image="/hero-desktop/centre-aere-2024-03-ol-photo-002.webp" />
       </div>
     </>
   );

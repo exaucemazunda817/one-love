@@ -19,6 +19,8 @@ import { Brush, BrushLast } from '@/components/site/ui';
 import type { Currency } from '@/lib/donation-ui';
 import { SYMBOL, sanitizeAmount, formatCustom } from '@/lib/donation-ui';
 import { CURRENCIES, SPONSOR_FROM, SPONSOR_LIMITS, formatMoney } from '@/lib/money';
+
+const CHARTER_PHOTO = '/hero-desktop/centre-aere-2024-02-ol-photo-006.webp';
 import type { PlanPrices } from '@/lib/sponsorship';
 import type { Locale } from '@/lib/i18n';
 
@@ -390,13 +392,17 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
 
       {/* Charte de protection */}
       <section id="charte" className="mx-auto scroll-mt-[var(--header-clear)] px-[clamp(12px,3vw,32px)] pb-[clamp(56px,8vw,104px)]">
-        <Reveal className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-8 rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream">
-          <div className="flex flex-col gap-3.5">
+        <Reveal className="relative mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-8 overflow-hidden rounded-card bg-night p-[clamp(28px,5vw,56px)] text-cream max-md:pt-[230px]">
+          {/* Photo de fond (07/10/2026, demande de Mazunda) : en haut sur
+              téléphone, très atténuée derrière tout le cadre sur ordinateur
+              pour que la liste de la charte reste lisible. */}
+          <Image src={CHARTER_PHOTO} alt="" fill sizes="(max-width: 767px) 100vw, 1200px" className="ol-cb-photo ol-cb-photo-soft photo-tone object-cover object-[50%_30%]" />
+          <div className="relative flex flex-col gap-3.5">
             <ShieldCheckIcon size={40} className="text-sage-300" aria-hidden />
             <h2 className="m-0 font-serif text-[clamp(28px,3.2vw,40px)] font-medium leading-[1.2]">{t.charterTitle}</h2>
             <p className="m-0 text-[17px] leading-[1.6] text-on-dark-1">{t.charterIntro}</p>
           </div>
-          <div className="flex flex-col gap-3.5">
+          <div className="relative flex flex-col gap-3.5">
             {t.charter.map((c) => (
               <div key={c} className="flex items-start gap-3 text-[16px] leading-[1.55]">
                 <Brush fill="var(--gold)" className="mt-2.5 h-2 w-[22px] flex-none" />

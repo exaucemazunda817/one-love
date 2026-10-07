@@ -485,7 +485,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
 
       <div className="pt-[clamp(8px,2vw,24px)]">
-        <FacebookBand locale={locale} />
+        <FacebookBand locale={locale} image="/hero-desktop/centre-aere-2023-02-tim-pt-012.webp" />
       </div>
 
       <div>

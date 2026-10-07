@@ -83,7 +83,7 @@ export function contactMetadata(locale: Locale): Metadata {
   return pageMetadata({ locale, path: '/contact', title: t.title, description: t.desc });
 }
 
-const NETWORK_PHOTO = '/hero-desktop/centre-aere-2024-03-ol-photo-003.webp';
+const NETWORK_PHOTO = '/hero-desktop/centre-aere-2024-03-ol-photo-008.webp';
 
 export function ContactPage({ locale }: { locale: Locale }) {
   const t = text[locale];
