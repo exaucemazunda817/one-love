@@ -274,7 +274,7 @@ export function VillagePage({ locale }: { locale: Locale }) {
             </Reveal>
           </div>
           <Reveal className="relative aspect-[16/9] overflow-hidden rounded-card bg-night shadow-ol-photo">
-            <Image src="/photos/drive/drone-kasangulu-brume.jpg" alt={t.droneAlt} fill sizes="(max-width: 1200px) 100vw, 1136px" className="object-cover" />
+            <Image src="/photos/drive/drone-kasangulu-brume-cine.jpg" alt={t.droneAlt} fill sizes="(max-width: 1200px) 100vw, 1136px" className="object-cover" />
           </Reveal>
           <div className="flex flex-col gap-5">
             <h3 className="m-0 font-serif text-[clamp(22px,2.4vw,28px)] font-medium">{t.stepsTitle}</h3>
