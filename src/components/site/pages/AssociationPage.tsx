@@ -57,8 +57,8 @@ const text = {
     foundersTitlePre: 'Deux fondateurs, ',
     foundersTitleWord: 'une équipe',
     founderCards: [
-      { q: '« Seul on va vite, ensemble on va loin ! »', d: "One Love aujourd’hui n’est pas mon œuvre, c’est celle de notre équipe : une équipe qui court pour la même vision, poussée par l’amour.", name: 'Kanda Kabangu', role: 'Cofondateur' },
-      { q: '« Voir le sourire d’un visage transformé par l’amour réjouit mon cœur. »', d: "Avec mon mari Kanda, nous avons fondé l’association One Love en 2013. J’apprécie particulièrement discerner les talents des autres et les encourager à les développer.", name: 'Maïté Kabangu', role: 'Cofondatrice' }
+      { q: '« Seul on va vite, ensemble on va loin ! »', d: "One Love aujourd’hui n’est pas mon œuvre, c’est celle de notre équipe : une équipe qui court pour la même vision, poussée par l’amour.", name: 'Kanda Kabangu', role: 'Cofondateur', photo: '/photos-hd/fondateurs/kanda.webp' },
+      { q: '« Voir le sourire d’un visage transformé par l’amour réjouit mon cœur. »', d: "Avec mon mari Kanda, nous avons fondé l’association One Love en 2013. J’apprécie particulièrement discerner les talents des autres et les encourager à les développer.", name: 'Maïté Kabangu', role: 'Cofondatrice', photo: '/photos-hd/fondateurs/maite.webp' }
     ],
     quoteTitle: 'Ce que nous voulons transmettre',
     structEyebrow: 'Organisation',
@@ -131,8 +131,8 @@ const text = {
     foundersTitlePre: 'Two founders, ',
     foundersTitleWord: 'one team',
     founderCards: [
-      { q: '“Alone we go fast, together we go far!”', d: 'One Love today is not my work, it is our team’s: a team running towards the same vision, driven by love.', name: 'Kanda Kabangu', role: 'Co-founder' },
-      { q: '“Seeing a face lit up by love brings joy to my heart.”', d: 'With my husband Kanda, we founded One Love in 2013. I especially enjoy spotting other people’s talents and encouraging them to develop them.', name: 'Maïté Kabangu', role: 'Co-founder' }
+      { q: '“Alone we go fast, together we go far!”', d: 'One Love today is not my work, it is our team’s: a team running towards the same vision, driven by love.', name: 'Kanda Kabangu', role: 'Co-founder', photo: '/photos-hd/fondateurs/kanda.webp' },
+      { q: '“Seeing a face lit up by love brings joy to my heart.”', d: 'With my husband Kanda, we founded One Love in 2013. I especially enjoy spotting other people’s talents and encouraging them to develop them.', name: 'Maïté Kabangu', role: 'Co-founder', photo: '/photos-hd/fondateurs/maite.webp' }
     ],
     quoteTitle: 'What we want to pass on',
     structEyebrow: 'Organisation',
@@ -196,27 +196,36 @@ export function AssociationPage({ locale }: { locale: Locale }) {
             <BrushWord>{t.whatTitleWord}</BrushWord>
           </h2>
         </Reveal>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-x-10 gap-y-9">
+        {/* Sur téléphone (07/10/2026, choix A de Mazunda) : cartes blanches à
+            faire glisser, icône dans une pastille ; la grille d'origine reste
+            au-dessus de 768 px. */}
+        <div className="ol-swipe grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-x-10 gap-y-9">
           {t.pillars.map((pl, i) => {
             const Icon = pl.icon;
             return (
-              <div key={pl.t} className="flex flex-col gap-3.5">
+              <div
+                key={pl.t}
+                className="flex flex-col gap-3.5 max-md:gap-3 max-md:rounded-card max-md:border max-md:border-field-line/70 max-md:bg-white max-md:p-6"
+              >
                 <Reveal delay={i * 90}>
-                  <Icon size={34} className="text-copper-700" aria-hidden />
+                  <span className="block max-md:flex max-md:h-[52px] max-md:w-[52px] max-md:items-center max-md:justify-center max-md:rounded-full max-md:bg-copper-tint-2">
+                    <Icon size={34} className="text-copper-700 max-md:h-7 max-md:w-7" aria-hidden />
+                  </span>
                 </Reveal>
-                <Reveal variant="soft" delay={120 + i * 90}>
+                <Reveal variant="soft" delay={120 + i * 90} className="max-md:hidden">
                   <Brush fill="var(--clay)" className="h-2 w-full" stretch />
                 </Reveal>
                 <Reveal variant="soft" delay={200 + i * 90}>
-                  <h3 className="m-0 font-serif text-[26px] font-semibold leading-[1.2]">{pl.t}</h3>
+                  <h3 className="m-0 font-serif text-[26px] font-semibold leading-[1.2] max-md:text-[23px]">{pl.t}</h3>
                 </Reveal>
                 <Reveal variant="soft" delay={280 + i * 90}>
-                  <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{pl.d}</p>
+                  <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body max-md:text-[16px] max-md:leading-[1.6]">{pl.d}</p>
                 </Reveal>
               </div>
             );
           })}
         </div>
+        <SwipeDots count={t.pillars.length} label={t.whatEyebrow} />
       </section>
 
       {/* Vision et mission */}
@@ -245,37 +254,65 @@ export function AssociationPage({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      {/* Fondateurs */}
-      <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-10 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)]">
-        <Reveal className="flex flex-col gap-5">
+      {/* Fondateurs. Sur téléphone (07/10/2026, validé par Mazunda) : citation
+          d'ouverture filetée d'or, texte, puis une carte par fondateur avec son
+          portrait (tiré de la photo de famille du Drive), à faire glisser ; le
+          lien vers l'histoire passe sous les cartes. */}
+      <section className="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] gap-x-14 gap-y-10 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,104px)] max-md:gap-y-7">
+        <Reveal className="flex flex-col gap-5 max-md:gap-4">
           <Eyebrow>{t.foundersEyebrow}</Eyebrow>
           <h2 className={h2Class}>
             {t.foundersTitlePre}
             <BrushWord>{t.foundersTitleWord}</BrushWord>
           </h2>
-          <blockquote className="m-0 font-serif text-[clamp(20px,2.2vw,26px)] italic leading-[1.45]">{t.foundersQuote}</blockquote>
-          <b className="text-[17px]">{t.foundersName}</b>
-          <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.foundersText}</p>
-          <Link
-            href={href('/histoire')}
-            className="inline-flex min-h-11 items-center gap-2 self-start text-[16px] font-bold text-copper-700 no-underline hover:underline hover:underline-offset-4"
-          >
-            {t.storyLink} <ArrowRightIcon aria-hidden />
-          </Link>
+          <div className="flex flex-col gap-5 max-md:gap-2 max-md:border-l-[3px] max-md:border-gold max-md:pl-3.5">
+            <blockquote className="m-0 font-serif text-[clamp(20px,2.2vw,26px)] italic leading-[1.45]">{t.foundersQuote}</blockquote>
+            <b className="text-[17px] max-md:text-[15px] max-md:text-copper-700">{t.foundersName}</b>
+          </div>
+          <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body max-md:text-[16px]">{t.foundersText}</p>
+          <div className="max-md:hidden">
+            <Link
+              href={href('/histoire')}
+              className="inline-flex min-h-11 items-center gap-2 self-start text-[16px] font-bold text-copper-700 no-underline hover:underline hover:underline-offset-4"
+            >
+              {t.storyLink} <ArrowRightIcon aria-hidden />
+            </Link>
+          </div>
         </Reveal>
-        <div className="flex flex-col gap-5">
-          {t.founderCards.map((f, i) => (
-            <Reveal key={f.name} delay={i * 120}>
-              <figure className="m-0 flex flex-col gap-3.5 rounded-card bg-white p-[clamp(24px,3vw,32px)] shadow-ol-sm">
-                <Brush fill="var(--clay)" className="h-2 w-16" />
-                <blockquote className="m-0 font-serif text-[22px] italic leading-[1.4]">{f.q}</blockquote>
-                <p className="m-0 text-pretty text-[16px] leading-[1.6] text-ink-body">{f.d}</p>
-                <figcaption className="text-[15px]">
-                  <b>{f.name}</b> · {f.role}
-                </figcaption>
-              </figure>
-            </Reveal>
-          ))}
+        <div className="flex min-w-0 flex-col gap-5">
+          <div className="ol-swipe flex flex-col gap-5 max-md:flex-row max-md:items-stretch">
+            {t.founderCards.map((f, i) => (
+              <Reveal key={f.name} delay={i * 120}>
+                <figure className="m-0 flex h-full flex-col gap-3.5 rounded-card bg-white p-[clamp(22px,3vw,32px)] shadow-ol-sm max-md:border max-md:border-field-line/70 max-md:shadow-none">
+                  <figcaption className="flex items-center gap-3.5">
+                    <Image
+                      src={f.photo}
+                      alt={f.name}
+                      width={64}
+                      height={64}
+                      sizes="64px"
+                      className="h-16 w-16 shrink-0 rounded-full border-[3px] border-copper-tint-2 object-cover"
+                    />
+                    <span className="flex flex-col">
+                      <b className="text-[17px]">{f.name}</b>
+                      <span className="text-[14px] font-semibold text-copper-700">{f.role}</span>
+                    </span>
+                  </figcaption>
+                  <blockquote className="m-0 font-serif text-[22px] italic leading-[1.4] max-md:text-[19px]">{f.q}</blockquote>
+                  <p className="m-0 text-pretty text-[16px] leading-[1.6] text-ink-body max-md:text-[15px]">{f.d}</p>
+                </figure>
+              </Reveal>
+            ))}
+          </div>
+          <SwipeDots count={t.founderCards.length} label={t.foundersEyebrow} />
+          <div className="md:hidden">
+            <Link
+              href={href('/histoire')}
+              className="inline-flex min-h-11 items-center gap-2 self-start text-[16px] font-bold text-copper-700 no-underline hover:underline hover:underline-offset-4"
+            >
+              {t.storyLink} <ArrowRightIcon aria-hidden />
+            </Link>
+          </div>
         </div>
       </section>
 
