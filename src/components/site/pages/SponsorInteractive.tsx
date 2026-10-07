@@ -188,8 +188,6 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
             <Reveal className="flex max-w-[620px] flex-col gap-2.5">
               <h2 className="m-0 font-serif text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.15]"><BrushLast text={t.formulesTitle} /></h2>
               <p className="m-0 text-[17px] leading-[1.6] text-ink-body">{t.formulesSubtitle}</p>
-              {/* Les prix ne limitent pas la contribution (demande de Mazunda du 07/10/2026). */}
-              <p className="m-0 rounded-lg bg-white/70 px-4 py-3 text-[16px] font-semibold leading-[1.55] text-copper-700">{fromNote}</p>
             </Reveal>
           </div>
 
@@ -226,6 +224,9 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
               </button>
             ))}
           </div>
+          {/* Sous les formules, juste avant le formulaire : les prix ne limitent
+              pas la contribution (demande de Mazunda du 07/10/2026). */}
+          <p className="m-0 rounded-lg bg-white/70 px-4 py-3 text-[16px] font-semibold leading-[1.55] text-copper-700">{fromNote}</p>
         </div>
       </section>
 
