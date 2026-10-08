@@ -3,6 +3,7 @@ import { allowRequest, TOO_MANY_REQUESTS_MESSAGE } from '@/lib/rate-limit';
 import { isStripeConfigured, createDonationCheckoutSession } from '@/lib/stripe';
 import { sponsorSessionSchema, sponsorPlanFor, sponsorMetadata } from '@/lib/sponsorship';
 import { toMinorUnits } from '@/lib/money';
+import { SPONSORSHIP_FUND_SLUG } from '@/lib/funds';
 
 import { getSiteUrl } from '@/lib/site-url';
 
@@ -44,13 +45,19 @@ export async function POST(request: NextRequest) {
       amountCents: toMinorUnits(data.amount ?? plan.prices[data.currency]),
       currency: data.currency,
       frequency: 'monthly',
+      // Chaque mensualité est rangée dans le fonds « Parrainage » (08/10/2026),
+      // et non plus dans le fonds général : le bilan du parrainage se lit à part.
+      projectSlug: SPONSORSHIP_FUND_SLUG,
       description: `Parrainage — ${plan.name} — One Love`,
       donorEmail: data.email,
       donorFirstName: data.firstName,
       donorLastName: data.lastName,
       extraMetadata: sponsorMetadata(data),
       successUrl: `${siteUrl}${prefix}/parrainer/merci`,
-      cancelUrl: `${siteUrl}${prefix}/parrainer?statut=annule#inscription`
+      cancelUrl:
+        data.from === 'dons'
+          ? `${siteUrl}${prefix}/dons?statut=annule&affectation=parrainage`
+          : `${siteUrl}${prefix}/parrainer?statut=annule#inscription`
     });
 
     if (!session.url) throw new Error('Stripe n’a renvoyé aucune URL de paiement.');

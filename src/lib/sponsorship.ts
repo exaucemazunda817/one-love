@@ -43,7 +43,9 @@ export const sponsorSessionSchema = z.object({
   currency: z.enum(CURRENCIES as [Currency, ...Currency[]]).default('EUR'),
   /** Montant mensuel libre (facultatif), dans la devise choisie : remplace le prix de la formule. */
   amount: z.number().finite().positive().optional(),
-  locale: z.enum(['fr', 'en']).default('fr')
+  locale: z.enum(['fr', 'en']).default('fr'),
+  /** Page d'où vient le formulaire, pour revenir au bon endroit si le paiement est annulé. */
+  from: z.enum(['parrainer', 'dons']).default('parrainer')
 }).superRefine((value, ctx) => {
   if (value.amount === undefined) return;
   const { min, max } = SPONSOR_LIMITS[value.currency];

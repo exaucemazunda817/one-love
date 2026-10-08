@@ -74,6 +74,12 @@ export async function createPendingDonation({
   const project = projectSlug
     ? await prisma.project.findUnique({ where: { slug: projectSlug } })
     : null;
+  if (projectSlug && !project) {
+    // Ne devrait jamais arriver (la route de paiement refuse un projet
+    // inconnu) : si c'est le cas, l'argent est bien enregistré, au fonds
+    // général, et l'anomalie est visible dans les journaux Vercel.
+    console.error(`Projet « ${projectSlug} » introuvable : don rangé au fonds général.`);
+  }
 
   const donor = donorEmail
     ? await upsertDonorFillEmpty({
@@ -237,6 +243,12 @@ export async function createConfirmedDonation({
   const project = projectSlug
     ? await prisma.project.findUnique({ where: { slug: projectSlug } })
     : null;
+  if (projectSlug && !project) {
+    // Ne devrait jamais arriver (la route de paiement refuse un projet
+    // inconnu) : si c'est le cas, l'argent est bien enregistré, au fonds
+    // général, et l'anomalie est visible dans les journaux Vercel.
+    console.error(`Projet « ${projectSlug} » introuvable : don rangé au fonds général.`);
+  }
   const donor = donorEmail
     ? await upsertDonorFillEmpty({
         email: donorEmail,

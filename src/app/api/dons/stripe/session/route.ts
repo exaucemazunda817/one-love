@@ -31,9 +31,21 @@ export async function POST(request: NextRequest) {
   }
   const data = parsed.data;
 
+  // Un don fléché doit arriver dans son projet : si le projet n'existe pas
+  // ou ne reçoit pas de dons, on refuse AVANT le paiement plutôt que de
+  // ranger l'argent en silence dans le fonds général (08/10/2026).
   const project = data.projectSlug
-    ? await prisma.project.findUnique({ where: { slug: data.projectSlug }, select: { name: true } })
+    ? await prisma.project.findUnique({
+        where: { slug: data.projectSlug },
+        select: { name: true, isDonationTarget: true }
+      })
     : null;
+  if (data.projectSlug && (!project || !project.isDonationTarget)) {
+    return NextResponse.json(
+      { error: 'Ce projet ne reçoit pas de dons en ligne pour le moment. Merci de nous écrire.' },
+      { status: 400 }
+    );
+  }
   const description = project ? `Don — ${project.name} — ${org.name}` : `Don — ${org.name}`;
 
   try {

@@ -10,6 +10,7 @@ import { CancelNotice } from '@/app/(site)/dons/CancelNotice';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { BackStrip } from '@/components/site/BackLink';
 import { isStripeConfigured } from '@/lib/stripe';
+import { SPONSOR_PLANS } from '@/lib/sponsorship';
 
 export const text = {
   fr: {
@@ -96,7 +97,11 @@ export function DonsPage({ locale }: { locale: Locale }) {
 
       {/* Lu au build (page statique) : après avoir ajouté la clé Stripe sur
           Vercel, un redéploiement suffit pour que la carte s’active. */}
-      <DonationFlow locale={locale} cardEnabled={isStripeConfigured()} />
+      <DonationFlow
+        locale={locale}
+        cardEnabled={isStripeConfigured()}
+        sponsorPrices={SPONSOR_PLANS.child.map((plan) => plan.prices)}
+      />
 
       <section className="bg-sand">
         <Reveal className="mx-auto flex max-w-[1200px] flex-col gap-3 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">

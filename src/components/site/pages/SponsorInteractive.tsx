@@ -1,9 +1,8 @@
 'use client';
 
-import { useId, useRef, useState } from 'react';
-import { FieldError, errorProps } from '@/components/forms/FieldError';
-import { focusFirstError, formMessages, serverIssuesToErrors, validateFields, type FieldErrors } from '@/lib/form-validation';
+import { useId, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   CheckIcon,
   CaretDownIcon,
@@ -11,18 +10,19 @@ import {
   EnvelopeOpenIcon,
   ImageIcon,
   PaintBrushIcon,
-  FileTextIcon
+  FileTextIcon,
+  ArrowRightIcon
 } from '@phosphor-icons/react';
 import { Reveal } from '@/components/Reveal';
 import { SwipeDots } from '@/components/site/SwipeDots';
 import { Brush, BrushLast } from '@/components/site/ui';
 import type { Currency } from '@/lib/donation-ui';
-import { SYMBOL, sanitizeAmount, formatCustom } from '@/lib/donation-ui';
-import { CURRENCIES, SPONSOR_FROM, SPONSOR_LIMITS, formatMoney } from '@/lib/money';
+import { SYMBOL } from '@/lib/donation-ui';
+import { CURRENCIES, SPONSOR_FROM, formatMoney } from '@/lib/money';
 
 const CHARTER_PHOTO = '/hero-desktop/centre-aere-2024-02-ol-photo-006.webp';
 import type { PlanPrices } from '@/lib/sponsorship';
-import type { Locale } from '@/lib/i18n';
+import { localeHref, type Locale } from '@/lib/i18n';
 
 type Mode = 'child' | 'prog';
 
@@ -67,94 +67,24 @@ export interface SponsorText {
   currencyLabel: string;
   currencyHint: string;
   error: string;
+  continueLabel: string;
+  continueNote: string;
 }
 
 
 export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorText }) {
   const id = useId();
   const [cur, setCur] = useState<Currency>('EUR');
-  // Toujours « enfant » : l'option programme a été retirée (05/10/2026).
-  const mode: Mode = 'child';
+  // Parrainage d'un enfant uniquement : l'option programme a été retirée (05/10/2026).
   const [plan, setPlan] = useState(1);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState('');
-  const [custom, setCustom] = useState('');
-  const [errors, setErrors] = useState<FieldErrors>({});
-  const formRef = useRef<HTMLFormElement>(null);
 
   const plans = t.plansChild;
   const chosen = plans[plan];
-  // Montant libre (facultatif) : s'il est saisi, il remplace le prix de la formule.
-  const customValue = Number(custom.replace(',', '.'));
-  const hasCustom = custom !== '' && Number.isFinite(customValue) && customValue > 0;
-  // Paiement dans la devise choisie, sans reconversion (07/10/2026) : le
-  // montant affiché est exactement celui qui sera prélevé.
-  const chosenPrice = hasCustom ? formatCustom(customValue, cur, locale) : formatMoney(chosen.prices[cur], cur, locale);
   const fromNote = t.fromNote.replace('{montant}', formatMoney(SPONSOR_FROM[cur], cur, locale));
-
-  // Devenir parrain = payer. Le formulaire n'enregistre personne : il ouvre
-  // une session de paiement, et c'est le paiement confirmé (webhook Stripe) qui
-  // inscrit la personne dans la liste des parrains.
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError('');
-    const form = event.currentTarget;
-    const checked = validateFields(
-      form,
-      { firstName: { required: true }, lastName: { required: true }, email: { required: true, email: true } },
-      locale
-    );
-    const msg = formMessages(locale);
-    // La charte doit être cochée : sans validation native (noValidate), rien ne l'imposait.
-    if (!form.querySelector<HTMLInputElement>('input[name="charter"]')?.checked) checked.charter = msg.check;
-    if (hasCustom && (customValue < SPONSOR_LIMITS[cur].min || customValue > SPONSOR_LIMITS[cur].max)) checked.amount = msg.amount;
-    setErrors(checked);
-    if (Object.keys(checked).length > 0) {
-      focusFirstError(form, checked);
-      return;
-    }
-    setPending(true);
-    const formData = new FormData(form);
-    const payload = {
-      firstName: String(formData.get('firstName') || '').trim(),
-      lastName: String(formData.get('lastName') || '').trim(),
-      email: String(formData.get('email') || '').trim(),
-      phone: String(formData.get('phone') || '').trim(),
-      mode,
-      plan,
-      locale,
-      currency: cur,
-      ...(hasCustom ? { amount: customValue } : {})
-    };
-    try {
-      const response = await fetch('/api/parrainer/session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await response.json().catch(() => ({}));
-      if (response.status === 201 && typeof data.url === 'string') {
-        window.location.href = data.url;
-        return;
-      }
-      const fromServer = serverIssuesToErrors(
-        data.issues,
-        { firstName: 'firstName', lastName: 'lastName', email: 'email', amount: 'amount' },
-        locale
-      );
-      if (Object.keys(fromServer).length > 0) {
-        setErrors(fromServer);
-        focusFirstError(formRef.current, fromServer);
-      } else {
-        setError(data.error || t.error);
-      }
-    } catch {
-      setError(t.error);
-    }
-    setPending(false);
-  }
-
+  // Le paiement se fait dans le formulaire unique de la page « Faire un don »
+  // (08/10/2026) : le parrain y arrive avec sa formule et sa devise déjà choisies.
+  const formHref = `${localeHref('/dons', locale)}?affectation=parrainage&formule=${plan}&devise=${cur}`;
 
   return (
     <>
@@ -249,119 +179,46 @@ export function SponsorInteractive({ locale, t }: { locale: Locale; t: SponsorTe
           </Reveal>
 
           <Reveal delay={90}>
-            <form ref={formRef} onSubmit={handleSubmit} noValidate className="relative flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-lg">
+            {/* Un seul formulaire de don pour tout le site (08/10/2026, demande
+                de Mazunda) : ce bouton ouvre la page « Faire un don » avec
+                « Parrainer un enfant », la formule et la devise déjà cochées. */}
+            <div className="relative flex flex-col gap-4 rounded-card bg-white p-[clamp(20px,3vw,32px)] shadow-ol-lg">
               <span className="ol-beam" aria-hidden />
-                <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-3.5">
-                  <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
-                    <span className="text-[15px] font-bold">{t.firstName}</span>
-                    <input {...errorProps(`${id}-firstName-err`, errors.firstName)}
-                      name="firstName"
-                      required
-                      autoComplete="given-name"
-                      maxLength={120}
-                      className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600 aria-invalid:border-error"
-                    />
-                  </label>
-                <FieldError id={`${id}-charter-err`} message={errors.charter} /><FieldError id={`${id}-firstName-err`} message={errors.firstName} /></div>
-                  <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
-                    <span className="text-[15px] font-bold">{t.lastName}</span>
-                    <input {...errorProps(`${id}-lastName-err`, errors.lastName)}
-                      name="lastName"
-                      required
-                      autoComplete="family-name"
-                      maxLength={120}
-                      className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600 aria-invalid:border-error"
-                    />
-                  </label><FieldError id={`${id}-lastName-err`} message={errors.lastName} /></div>
+              <div className="flex flex-col gap-1">
+                <span className="text-[14px] font-bold text-ink-soft">{chosen.name}</span>
+                <span className="font-serif text-[36px] font-medium leading-none">
+                  {formatMoney(chosen.prices[cur], cur, locale)}
+                  <span className="text-[16px] text-ink-soft"> / {t.monthUnit}</span>
+                </span>
+              </div>
+              <fieldset className="m-0 flex flex-col gap-2 border-0 p-0">
+                <legend className="mb-2 p-0 text-[15px] font-bold">{t.currencyLabel}</legend>
+                <div className="flex gap-2">
+                  {CURRENCIES.map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      aria-pressed={cur === c}
+                      onClick={() => setCur(c)}
+                      className={`min-h-11 min-w-[64px] cursor-pointer rounded-md border-[1.5px] px-3 text-[15px] font-bold ${
+                        cur === c ? 'border-ink bg-ink text-cream' : 'border-field-line bg-white text-ink'
+                      }`}
+                    >
+                      {SYMBOL[c]}
+                    </button>
+                  ))}
                 </div>
-                <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
-                  <span className="text-[15px] font-bold">{t.email}</span>
-                  <input {...errorProps(`${id}-email-err`, errors.email)}
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    maxLength={180}
-                    className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600 aria-invalid:border-error"
-                  />
-                </label><FieldError id={`${id}-email-err`} message={errors.email} /></div>
-                <label className="flex flex-col gap-2">
-                  <span className="text-[15px] font-bold">
-                    {t.phone} <span className="font-normal text-ink-soft">{t.optional}</span>
-                  </span>
-                  <input
-                    name="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    maxLength={40}
-                    className="min-h-[52px] rounded-lg border-[1.5px] border-field-line px-3.5 text-[17px] outline-none focus:border-copper-600"
-                  />
-                </label>
-                {/* Devise du paiement, dans le formulaire (demande de Mazunda du
-                    07/10/2026) : euro, dollar ou franc congolais, prélevé tel
-                    quel. Elle change aussi les prix des formules au-dessus. */}
-                <fieldset className="m-0 flex flex-col gap-2 border-0 p-0">
-                  <legend className="mb-2 p-0 text-[15px] font-bold">{t.currencyLabel}</legend>
-                  <div className="flex gap-2">
-                    {CURRENCIES.map((c) => (
-                      <button
-                        key={c}
-                        type="button"
-                        aria-pressed={cur === c}
-                        onClick={() => setCur(c)}
-                        className={`min-h-11 min-w-[64px] cursor-pointer rounded-md border-[1.5px] px-3 text-[15px] font-bold ${
-                          cur === c ? 'border-ink bg-ink text-cream' : 'border-field-line bg-white text-ink'
-                        }`}
-                      >
-                        {SYMBOL[c]}
-                      </button>
-                    ))}
-                  </div>
-                  <span className="text-[13px] text-ink-soft">{t.currencyHint}</span>
-                </fieldset>
-                <div className="flex flex-col gap-2"><label className="flex flex-col gap-2">
-                  <span className="text-[15px] font-bold">
-                    {t.customLabel} <span className="font-normal text-ink-soft">{t.optional}</span>
-                  </span>
-                  <div className="flex items-center rounded-lg border-[1.5px] border-field-line bg-white focus-within:border-copper-600 has-[[aria-invalid=true]]:border-error">
-                    <input {...errorProps(`${id}-amount-err`, errors.amount)}
-                      name="amount"
-                      inputMode="decimal"
-                      autoComplete="off"
-                      value={custom}
-                      onChange={(e) => setCustom(sanitizeAmount(e.target.value))}
-                      placeholder={String(chosen.prices[cur])}
-                      className="min-h-[52px] min-w-0 flex-1 rounded-lg border-0 bg-transparent px-3.5 text-[17px] outline-none"
-                    />
-                    <span className="pr-3.5 text-[17px] font-bold text-ink-soft">{SYMBOL[cur]} / {t.monthUnit}</span>
-                  </div>
-                  <span className="text-[13px] text-ink-soft">{t.customHint}</span>
-                </label><FieldError id={`${id}-amount-err`} message={errors.amount} /></div>
-                <label className="flex min-h-12 cursor-pointer items-start gap-3">
-                  <input name="charter" required type="checkbox" {...errorProps(`${id}-charter-err`, errors.charter)} className="mt-0.5 h-[22px] w-[22px] flex-none accent-copper-600" />
-                  <span className="text-[15px] leading-[1.5]">
-                    {t.charterAgreePre}
-                    <a href="#charte" className="font-bold">
-                      {t.charterAgreeLink}
-                    </a>
-                    {t.charterAgreePost}
-                  </span>
-                </label>
-                {error && (
-                  <p role="alert" className="m-0 text-[14px] font-bold text-error">
-                    {error}
-                  </p>
-                )}
-                <button
-                  type="submit"
-                  disabled={pending}
-                  className="inline-flex min-h-[54px] cursor-pointer items-center justify-center gap-2 rounded-full border-0 bg-copper-600 text-[17px] font-bold text-white hover:bg-copper-700 disabled:cursor-wait disabled:bg-disabled disabled:text-ink-soft"
-                >
-                  {pending ? '…' : `${t.submitLabelPrefix} · ${chosenPrice} / ${t.monthUnit}`}
-                </button>
-                <span className="text-[13px] leading-[1.5] text-ink-soft">{t.payNote}</span>
-                <input type="hidden" name={`${id}-locale`} value={locale} />
-              </form>
+                <span className="text-[13px] text-ink-soft">{t.currencyHint}</span>
+              </fieldset>
+              <Link
+                href={formHref}
+                className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-full bg-copper-600 px-6 text-center text-[17px] font-bold text-white no-underline hover:bg-copper-700 hover:text-white"
+              >
+                {t.continueLabel}
+                <ArrowRightIcon aria-hidden />
+              </Link>
+              <span className="text-[13px] leading-[1.5] text-ink-soft">{t.continueNote}</span>
+            </div>
           </Reveal>
         </div>
       </section>
