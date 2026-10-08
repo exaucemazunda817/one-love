@@ -978,3 +978,22 @@ parrainage.
   modifier `KEY` dans le script.
 - Google n'utilise pas IndexNow : pour Google, Search Console reste le seul
   canal (sitemap + demandes d'indexation).
+
+## Formulaire de don unique, raison du don (08/10/2026)
+
+- `/dons` demande d'abord « Pourquoi donnez-vous ? » : **association** (fonds
+  général, aucun projet), **One Love Village** (projet `one-love-village`),
+  **parrainer un enfant** (fonds `parrainage` + inscription du parrain au
+  paiement confirmé). Slugs et lecture des liens dans `src/lib/funds.ts`.
+- Liens de présélection : `/dons?affectation=village`,
+  `/dons?affectation=parrainage&formule=0|1|2&devise=EUR|USD|CDF` (bouton de
+  la page Parrainer, qui n'a plus son propre formulaire).
+- En parrainage : toujours mensuel, carte ou SEPA uniquement, nom + e-mail +
+  charte obligatoires, appel de `/api/parrainer/session` avec `from: 'dons'`.
+- Les deux lignes `projects` (`one-love-village`, publié, ouvert aux dons ;
+  `parrainage`, brouillon, `isDonationTarget = false`) ont été ajoutées en
+  production le 08/10/2026. **Ne pas les supprimer** : la route
+  `/api/dons/stripe/session` refuse un projet inconnu (400) au lieu de ranger
+  le don au fonds général.
+- Options retirées du formulaire : « Programme RÊVES 2 » et « Suivi médical
+  et psychosocial » (décision de Mazunda : trois raisons seulement).
