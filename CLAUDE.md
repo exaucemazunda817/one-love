@@ -962,3 +962,19 @@ parrainage.
 - **Pauses** : bouton sur la bande des partenaires (`MarqueePause`) et sur les photos qui changent (`HeroBackground`), WCAG 2.2.2.
 - **Redirections de l'ancien WordPress** dans `next.config.ts` (utiles au branchement de `associationonelove.org`).
 - Rapport complet des audits : `~/Documents/Mazunda/08-Divers/One-Love/audits-2026-09-29.md`.
+
+## IndexNow et Bing Webmaster (08/10/2026)
+
+- Site inscrit sur **Bing Webmaster Tools** (compte de Mazunda, import depuis
+  Search Console ; propriété `https://associationonelove.org/`, qui couvre le
+  www). Ne pas laisser Chrome traduire l'interface de Bing : elle plante.
+- **IndexNow** : à chaque mise en ligne réussie en production, Vercel le
+  signale à GitHub (`deployment_status`, environnement « Production ») et
+  `.github/workflows/indexnow.yml` lance `scripts/indexnow.mjs`, qui envoie
+  tout le sitemap à `api.indexnow.org` (Bing, Yandex, Seznam…). À la main :
+  `npm run indexnow` (`-- --dry-run` pour compter sans envoyer).
+- La clé est publique par conception : `public/c0f1cc047509604087b14f15da56a63f.txt`.
+  Ne pas supprimer ce fichier ; si on change de clé, renommer le fichier ET
+  modifier `KEY` dans le script.
+- Google n'utilise pas IndexNow : pour Google, Search Console reste le seul
+  canal (sitemap + demandes d'indexation).

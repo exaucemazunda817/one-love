@@ -1,0 +1,23 @@
+name: IndexNow
+
+# Vercel signale chaque mise en ligne à GitHub (environnement « Production »).
+# Dès qu'elle a réussi, on prévient Bing et les autres moteurs IndexNow.
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+jobs:
+  indexnow:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/indexnow.mjs
