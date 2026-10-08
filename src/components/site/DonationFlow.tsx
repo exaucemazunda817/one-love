@@ -35,7 +35,9 @@ const PRESETS: Record<Currency, readonly number[]> = {
   USD: [11, 28, 55, 110],
   CDF: [31_000, 78_000, 155_000, 310_000]
 };
-type Method = 'card' | 'momo' | 'virement';
+// Carte, prélèvement SEPA et virement pour les trois raisons du don
+// (08/10/2026) ; Mobile Money reste « bientôt », hors parrainage.
+type Method = 'card' | 'sepa' | 'virement' | 'momo';
 
 const T = {
   fr: {
@@ -72,11 +74,8 @@ const T = {
     required: 'Ce champ est obligatoire.',
     emailInvalid: 'Cette adresse e-mail ne semble pas valide.',
     charterRequired: 'Merci d’accepter la charte pour devenir parrain ou marraine.',
-    sponsorCardOnly:
-      'Le parrainage se règle par carte bancaire (ou prélèvement SEPA en euros) : c’est ce qui vous inscrit automatiquement parmi nos parrains. Pour parrainer par virement permanent, écrivez-nous.',
     sponsorPay: (label: string) => `Payer et devenir parrain · ${label} / mois`,
     sponsorThanks: 'Dès la confirmation de votre paiement, nous vous écrivons avec toutes les informations sur votre filleul.',
-    writeUs: 'Nous écrire',
     coords: 'Vos coordonnées',
     firstName: 'Prénom',
     lastName: 'Nom',
@@ -94,9 +93,16 @@ const T = {
     newsletterSent: "Un e-mail vient de vous être envoyé pour confirmer votre inscription aux nouvelles du terrain.",
     currencyNote: 'Votre don est payé dans la devise choisie, sans conversion.',
     cardSoonTag: 'Bientôt',
-    cardSoonNote: 'Le paiement par carte sera bientôt disponible. En attendant, le virement bancaire est ouvert.',
-    thanksTransfer:
-      "Merci ! Pensez à indiquer votre nom dans le libellé du virement, pour que nous puissions vous remercier.",
+    cardSoonNote: 'Le paiement par carte et par prélèvement sera bientôt disponible. En attendant, le virement bancaire est ouvert.',
+    sepaEuroOnly: 'Le prélèvement SEPA n’existe qu’en euros. Choisissez l’euro, ou un autre moyen de paiement.',
+    sepaNote: 'Prélèvement sur votre compte bancaire en euros (IBAN), via Stripe. Le prélèvement apparaît sur votre relevé quelques jours plus tard.',
+    getReference: 'Obtenir ma référence de virement',
+    referenceTitle: 'Votre référence de virement',
+    referenceOnce: (amount: string) => `Faites un virement de ${amount} sur ce compte, en recopiant exactement cette référence dans le libellé.`,
+    referenceMonthly: (amount: string) => `Mettez en place un virement permanent de ${amount} par mois sur ce compte, en recopiant exactement cette référence dans le libellé.`,
+    referenceWhy: 'C’est cette référence qui range votre don au bon endroit.',
+    referenceSponsor: 'Vous devenez parrain ou marraine dès que nous recevons votre premier virement : nous vous écrivons alors avec toutes les informations.',
+    thanksTransfer: 'Merci ! Nous confirmons la réception de votre don dès qu’il apparaît sur notre compte.',
     momoEmail: 'Votre e-mail',
     momoSent: "C’est noté : nous vous préviendrons.",
     momoFallbackName: 'Donateur (Mobile Money)',
@@ -107,17 +113,17 @@ const T = {
     transferTrust: "Virement direct sur le compte de notre association",
     payMethod: 'Moyen de paiement',
     methods: {
-      card: { t: 'Carte bancaire ou prélèvement SEPA', d: 'Via Stripe, en quelques instants', tag: 'Recommandé' },
-      momo: { t: 'Mobile Money', d: 'Orange Money, Airtel Money, M-Pesa', tag: 'Bientôt' },
-      virement: { t: 'Virement bancaire', d: 'Ponctuel ou récurrent, depuis votre banque', tag: 'IBAN' }
+      card: { t: 'Carte bancaire', d: 'Visa, Mastercard… via Stripe, en quelques instants', tag: 'Recommandé' },
+      sepa: { t: 'Prélèvement SEPA', d: 'Directement sur votre compte bancaire en euros, via Stripe', tag: 'En euros' },
+      virement: { t: 'Virement bancaire', d: 'Depuis votre banque, avec une référence à recopier', tag: 'IBAN' },
+      momo: { t: 'Mobile Money', d: 'Orange Money, Airtel Money, M-Pesa', tag: 'Bientôt' }
     } as Record<Method, { t: string; d: string; tag: string }>,
     holder: 'Titulaire',
     iban: 'IBAN',
     bic: 'BIC',
     copy: "Copier l’IBAN",
     copied: 'IBAN copié',
-    virementNoteVillage: 'Pour que votre don aille au One Love Village, indiquez « One Love Village » dans le libellé du virement.',
-    virementNote: 'Indiquez votre nom dans le libellé du virement, pour que nous puissions vous remercier.',
+    virementNote: 'À l’étape suivante, nous vous donnons une référence unique à recopier dans le libellé du virement : c’est elle qui range votre don au bon endroit.',
     momoNote: 'Orange Money, Airtel Money et M-Pesa seront bientôt disponibles pour les donateurs en RDC. Laissez votre numéro et votre e-mail pour être prévenu.',
     phonePlaceholder: '+243 …',
     notifyMe: 'Me prévenir',
@@ -125,7 +131,6 @@ const T = {
     back: 'Retour',
     next: 'Continuer',
     pay: (label: string, monthly: boolean) => `Payer ${label}${monthly ? ' / mois' : ''}`,
-    notedCoords: "J’ai noté les coordonnées",
     chooseOther: 'Choisir un autre moyen',
     summary: 'Récapitulatif',
     perMonth: 'par mois',
@@ -174,11 +179,8 @@ const T = {
     required: 'This field is required.',
     emailInvalid: "This email address doesn't look valid.",
     charterRequired: 'Please accept the charter to become a sponsor.',
-    sponsorCardOnly:
-      'Sponsorship is paid by card (or SEPA direct debit in euros): that is what adds you to our sponsors automatically. To sponsor by standing bank transfer, write to us.',
     sponsorPay: (label: string) => `Pay and become a sponsor · ${label} / month`,
     sponsorThanks: 'As soon as your payment is confirmed, we write to you with all the information about your sponsored child.',
-    writeUs: 'Write to us',
     coords: 'Your details',
     firstName: 'First name',
     lastName: 'Last name',
@@ -196,9 +198,16 @@ const T = {
     newsletterSent: 'We have just sent you an email to confirm your subscription to news from the field.',
     currencyNote: 'Your gift is paid in the currency you choose, with no conversion.',
     cardSoonTag: 'Coming soon',
-    cardSoonNote: 'Card payment will be available soon. In the meantime, bank transfer is open.',
-    thanksTransfer:
-      'Thank you! Please put your name in the transfer reference so that we can thank you.',
+    cardSoonNote: 'Card and direct debit payment will be available soon. In the meantime, bank transfer is open.',
+    sepaEuroOnly: 'SEPA direct debit only exists in euros. Choose the euro, or another payment method.',
+    sepaNote: 'Debit from your euro bank account (IBAN), via Stripe. It shows on your statement a few days later.',
+    getReference: 'Get my transfer reference',
+    referenceTitle: 'Your transfer reference',
+    referenceOnce: (amount: string) => `Make a transfer of ${amount} to this account, copying this reference exactly into the transfer description.`,
+    referenceMonthly: (amount: string) => `Set up a standing transfer of ${amount} a month to this account, copying this reference exactly into the transfer description.`,
+    referenceWhy: 'This reference is what directs your gift to the right place.',
+    referenceSponsor: 'You become a sponsor as soon as we receive your first transfer: we then write to you with all the information.',
+    thanksTransfer: 'Thank you! We confirm receipt of your gift as soon as it reaches our account.',
     momoEmail: 'Your email',
     momoSent: "Noted: we’ll let you know.",
     momoFallbackName: 'Donor (Mobile Money)',
@@ -209,17 +218,17 @@ const T = {
     transferTrust: "Direct transfer to our association’s account",
     payMethod: 'Payment method',
     methods: {
-      card: { t: 'Card or SEPA direct debit', d: 'Via Stripe, in a few moments', tag: 'Recommended' },
-      momo: { t: 'Mobile Money', d: 'Orange Money, Airtel Money, M-Pesa', tag: 'Coming soon' },
-      virement: { t: 'Bank transfer', d: 'One-off or recurring, from your bank', tag: 'IBAN' }
+      card: { t: 'Bank card', d: 'Visa, Mastercard… via Stripe, in a few moments', tag: 'Recommended' },
+      sepa: { t: 'SEPA direct debit', d: 'Straight from your euro bank account, via Stripe', tag: 'Euros' },
+      virement: { t: 'Bank transfer', d: 'From your bank, with a reference to copy', tag: 'IBAN' },
+      momo: { t: 'Mobile Money', d: 'Orange Money, Airtel Money, M-Pesa', tag: 'Coming soon' }
     } as Record<Method, { t: string; d: string; tag: string }>,
     holder: 'Account holder',
     iban: 'IBAN',
     bic: 'BIC',
     copy: 'Copy IBAN',
     copied: 'IBAN copied',
-    virementNoteVillage: 'So that your gift goes to the One Love Village, write “One Love Village” in the transfer reference.',
-    virementNote: 'Please put your name in the transfer reference, so that we can thank you.',
+    virementNote: 'At the next step, we give you a unique reference to copy into the transfer description: it directs your gift to the right place.',
     momoNote: 'Orange Money, Airtel Money and M-Pesa will soon be available for donors in the DRC. Leave your number and email to be notified.',
     phonePlaceholder: '+243 …',
     notifyMe: 'Notify me',
@@ -227,7 +236,6 @@ const T = {
     back: 'Back',
     next: 'Continue',
     pay: (label: string, monthly: boolean) => `Pay ${label}${monthly ? ' / month' : ''}`,
-    notedCoords: "I’ve noted the details",
     chooseOther: 'Choose another method',
     summary: 'Summary',
     perMonth: 'per month',
@@ -287,7 +295,6 @@ export function DonationFlow({
     if (fromLink === 'parrainage' && Number.isInteger(formule) && formule >= 0 && formule <= 2) setAmt(formule);
     const devise = params.get('devise');
     if (devise === 'EUR' || devise === 'USD' || devise === 'CDF') setCur(devise);
-    if (fromLink === 'parrainage') setMethod('card');
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
   const isSponsor = reason === 'parrainage';
@@ -306,6 +313,8 @@ export function DonationFlow({
   const [momoPending, setMomoPending] = useState(false);
   const [momoError, setMomoError] = useState('');
   const [transferDone, setTransferDone] = useState(false);
+  // Référence unique du virement (OL-DON-…, OL-VIL-…, OL-PAR-…), donnée par le serveur.
+  const [transferRef, setTransferRef] = useState('');
   const [newsletterSent, setNewsletterSent] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
@@ -332,14 +341,19 @@ export function DonationFlow({
   // inscrit le parrain. Pas d'étiquette « Bientôt » sur ce parcours
   // (décision du 29/09/2026) : si Stripe n'est pas branché, le serveur répond
   // « momentanément indisponible ».
-  const cardUsable = method === 'card' && (cardEnabled || isSponsor);
+  const stripeMethod = method === 'card' || method === 'sepa';
+  const sepaBlocked = method === 'sepa' && cur !== 'EUR';
+  const cardUsable = stripeMethod && (cardEnabled || isSponsor) && !sepaBlocked;
 
   function chooseReason(next: DonationReason) {
     setReason(next);
     setFieldErrors({});
     setError('');
+    setTransferRef('');
+    setTransferDone(false);
     if (next === 'parrainage') {
-      setMethod('card');
+      // Mobile Money n'est pas proposé pour un parrainage.
+      if (method === 'momo') setMethod(cardEnabled ? 'card' : 'virement');
       // Garde un montant libre valide, sinon revient à la formule du milieu.
       if (amt > 2) setAmt(1);
     }
@@ -374,6 +388,7 @@ export function DonationFlow({
           currency: cur,
           locale,
           from: 'dons',
+          paymentMethod: method === 'sepa' ? 'sepa' : 'card',
           ...(isCustom ? { amount: cVal } : {})
         })
       });
@@ -391,6 +406,7 @@ export function DonationFlow({
 
   function chooseMethod(next: Method) {
     setMethod(next);
+    setTransferRef('');
     setTransferDone(false);
     setError('');
   }
@@ -451,6 +467,53 @@ export function DonationFlow({
     setCopied(true);
   }
 
+  /** Virement : le serveur enregistre la promesse et renvoie la référence à recopier. */
+  async function requestTransferReference() {
+    setPending(true);
+    setError('');
+    const payload = isSponsor
+      ? {
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          email: donorEmail.trim(),
+          phone: sponsorPhone.trim(),
+          mode: 'child',
+          plan: isCustom ? 1 : amt,
+          currency: cur,
+          locale,
+          from: 'dons',
+          ...(isCustom ? { amount: cVal } : {})
+        }
+      : {
+          amount,
+          currency: cur,
+          frequency: monthly ? 'monthly' : 'once',
+          projectSlug: projectSlug || undefined,
+          donorEmail: emailOk ? donorEmail.trim() : undefined,
+          donorFirstName: firstName.trim() || undefined,
+          donorLastName: lastName.trim() || undefined,
+          donorCountry: country || undefined
+        };
+    try {
+      const response = await fetch(isSponsor ? '/api/parrainer/virement' : '/api/dons/virement', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.status === 201 && typeof data.reference === 'string') {
+        setTransferRef(data.reference);
+        setNewsletterSent(await subscribeNewsletter());
+        setTransferDone(true);
+      } else {
+        setError(data.error || t.error);
+      }
+    } catch {
+      setError(t.error);
+    }
+    setPending(false);
+  }
+
   async function goNext() {
     if (step === 2 && isSponsor) {
       const errs = sponsorErrors();
@@ -464,21 +527,18 @@ export function DonationFlow({
       setStep((step + 1) as 1 | 2 | 3);
       return;
     }
-    if (isSponsor) {
-      await startSponsorship();
-      return;
-    }
     if (method === 'virement') {
-      setPending(true);
-      setNewsletterSent(await subscribeNewsletter());
-      setTransferDone(true);
-      setPending(false);
+      await requestTransferReference();
       return;
     }
     if (!cardUsable) {
-      // Carte pas encore activée, ou Mobile Money : le bouton propose de
-      // passer au virement plutôt que de ne rien faire.
+      // Carte ou prélèvement pas encore activés, ou Mobile Money : le bouton
+      // propose de passer au virement plutôt que de ne rien faire.
       chooseMethod('virement');
+      return;
+    }
+    if (isSponsor) {
+      await startSponsorship();
       return;
     }
     setPending(true);
@@ -488,6 +548,7 @@ export function DonationFlow({
       amount,
       currency: cur,
       frequency: monthly ? 'monthly' : 'once',
+      paymentMethod: method === 'sepa' ? 'sepa' : 'card',
       projectSlug,
       donorEmail: emailOk ? donorEmail.trim() : undefined,
       donorFirstName: firstName.trim() || undefined,
@@ -599,7 +660,11 @@ export function DonationFlow({
                       key={c}
                       type="button"
                       aria-pressed={cur === c}
-                      onClick={() => setCur(c)}
+                      onClick={() => {
+                        setCur(c);
+                        setTransferRef('');
+                        if (c !== 'EUR' && method === 'sepa') setMethod('card');
+                      }}
                       className={`min-h-11 min-w-12 cursor-pointer rounded-md border-[1.5px] px-2.5 text-[13px] font-bold ${
                         cur === c ? 'border-ink bg-ink text-cream' : 'border-field-line bg-white text-ink'
                       }`}
@@ -807,22 +872,28 @@ export function DonationFlow({
             <div className="flex flex-col gap-6">
               <h2 className="m-0 font-serif text-[26px] font-semibold">{t.payMethod}</h2>
               <div className="flex flex-col gap-2.5">
-                {(isSponsor ? (['card'] as Method[]) : (Object.keys(t.methods) as Method[])).map((k) => {
+                {(Object.keys(t.methods) as Method[])
+                  .filter((k) => !(isSponsor && k === 'momo'))
+                  .map((k) => {
                   const m = t.methods[k];
                   const recommended = k === 'card' && (cardEnabled || isSponsor);
-                  const tag = k === 'card' && !cardEnabled && !isSponsor ? t.cardSoonTag : m.tag;
-                  const Icon = k === 'card' ? CreditCardIcon : k === 'momo' ? DeviceMobileIcon : BankIcon;
+                  const soon = (k === 'card' || k === 'sepa') && !cardEnabled && !isSponsor;
+                  const tag = soon ? t.cardSoonTag : m.tag;
+                  // Prélèvement SEPA : euros seulement.
+                  const unavailable = k === 'sepa' && cur !== 'EUR';
+                  const Icon = k === 'card' ? CreditCardIcon : k === 'momo' ? DeviceMobileIcon : k === 'sepa' ? ArrowsClockwiseIcon : BankIcon;
                   return (
                     <label
                       key={k}
-                      className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border-2 px-4 py-3 ${
-                        method === k ? 'border-copper-600 bg-copper-tint' : 'border-card-line bg-white'
-                      }`}
+                      className={`flex min-h-12 items-center gap-3 rounded-xl border-2 px-4 py-3 ${
+                        unavailable ? 'cursor-not-allowed opacity-55' : 'cursor-pointer'
+                      } ${method === k ? 'border-copper-600 bg-copper-tint' : 'border-card-line bg-white'}`}
                     >
                       <input
                         type="radio"
                         name={`${id}-method`}
                         checked={method === k}
+                        disabled={unavailable}
                         onChange={() => chooseMethod(k)}
                         className="min-h-0 accent-copper-600"
                       />
@@ -843,17 +914,13 @@ export function DonationFlow({
                 })}
               </div>
 
-              {method === 'card' &&
-                (isSponsor ? (
-                  <p className="m-0 text-[14px] leading-[1.55] text-ink-body">
-                    {t.sponsorCardOnly}{' '}
-                    <Link href={localeHref('/contact', locale)} className="font-bold text-copper-700 underline">
-                      {t.writeUs}
-                    </Link>
-                  </p>
-                ) : (
-                  <p className="m-0 text-[13px] text-ink-soft">{cardEnabled ? t.stripeNote : t.cardSoonNote}</p>
-                ))}
+              {cur !== 'EUR' && <p className="m-0 -mt-3 text-[13px] text-ink-soft">{t.sepaEuroOnly}</p>}
+              {method === 'card' && (
+                <p className="m-0 text-[13px] text-ink-soft">{cardEnabled || isSponsor ? t.stripeNote : t.cardSoonNote}</p>
+              )}
+              {method === 'sepa' && !sepaBlocked && (
+                <p className="m-0 text-[13px] text-ink-soft">{cardEnabled || isSponsor ? t.sepaNote : t.cardSoonNote}</p>
+              )}
 
               {method === 'virement' && (
                 <div className="flex flex-col gap-4 rounded-xl bg-sand p-6">
@@ -879,14 +946,20 @@ export function DonationFlow({
                     {copied ? <CheckIcon size={16} aria-hidden /> : <CopyIcon size={16} aria-hidden />}
                     {copied ? t.copied : t.copy}
                   </button>
-                  <p className="m-0 text-[13px] text-ink-soft">{reason === 'village' ? t.virementNoteVillage : t.virementNote}</p>
-                  {transferDone && (
-                    <div role="status" className="flex flex-col gap-1.5 rounded-lg bg-white p-4 text-[14px] leading-[1.5] text-ink">
+                  {!transferRef && <p className="m-0 text-[13px] text-ink-soft">{t.virementNote}</p>}
+                  {transferDone && transferRef && (
+                    <div role="status" className="flex flex-col gap-2.5 rounded-lg bg-white p-4 text-[14px] leading-[1.5] text-ink">
+                      <span className="text-[13px] font-bold uppercase tracking-[0.1em] text-ink-soft">{t.referenceTitle}</span>
+                      <span className="w-fit rounded-md bg-copper-tint px-3 py-1.5 font-mono text-[22px] font-extrabold tracking-[0.06em] text-copper-700">
+                        {transferRef}
+                      </span>
+                      <span>{monthly ? t.referenceMonthly(`${amountStr}`) : t.referenceOnce(`${amountStr}`)}</span>
+                      <span className="text-ink-soft">{t.referenceWhy}</span>
                       <span className="flex items-start gap-2 font-bold">
                         <CheckIcon size={18} className="mt-0.5 flex-none text-sage-700" aria-hidden />
-                        {t.thanksTransfer}
+                        {isSponsor ? t.referenceSponsor : t.thanksTransfer}
                       </span>
-                      {newsletterSent && <span className="pl-[26px] text-ink-soft">{t.newsletterSent}</span>}
+                      {newsletterSent && <span className="text-ink-soft">{t.newsletterSent}</span>}
                     </div>
                   )}
                 </div>
@@ -955,7 +1028,13 @@ export function DonationFlow({
             <button
               type="button"
               disabled={step === 1}
-              onClick={() => setStep((s) => (s > 1 ? ((s - 1) as 1 | 2 | 3) : s))}
+              onClick={() => {
+                // Revenir en arrière annule la référence affichée : une
+                // modification du don en demandera une nouvelle.
+                setTransferRef('');
+                setTransferDone(false);
+                setStep((s) => (s > 1 ? ((s - 1) as 1 | 2 | 3) : s));
+              }}
               aria-label={t.back}
               className={`min-h-12 cursor-pointer rounded-full border-2 border-card-line bg-transparent px-5 text-[15px] font-bold text-ink ${
                 step === 1 ? 'opacity-35' : 'opacity-100'
@@ -983,7 +1062,7 @@ export function DonationFlow({
                 ) : method === 'virement' ? (
                   <>
                     <CheckIcon aria-hidden />
-                    {pending ? '…' : t.notedCoords}
+                    {pending ? '…' : t.getReference}
                   </>
                 ) : (
                   <>

@@ -1095,6 +1095,10 @@ enum SponsorMode {
 }
 
 enum SponsorStatus {
+  /// Parrainage par virement demandé sur le site, premier virement pas
+  /// encore reçu (08/10/2026) : PAS encore un parrain, n'entre dans aucun
+  /// total. Passe à ACTIVE quand l'équipe clique « Virement reçu ».
+  PENDING
   ACTIVE
   /// Dernier paiement refusé ; Stripe réessaie avant de résilier. Repassé à
   /// ACTIVE dès qu'une facture est payée, ou à ENDED à la résiliation.
@@ -1122,7 +1126,13 @@ model Sponsor {
   /// Contre-valeur INDICATIVE en euros (taux de lib/money.ts), pour les totaux.
   monthlyAmountEur Decimal @db.Decimal(14, 2)
 
-  stripeSubscriptionId String @unique
+  /// Nul pour un parrainage par virement (08/10/2026).
+  stripeSubscriptionId String? @unique
+  /// STRIPE (carte ou prélèvement SEPA) ou BANK_TRANSFER (virement permanent).
+  paymentMethod DonationMethod @default(STRIPE)
+  /// Référence que le parrain écrit dans le libellé de son virement, ex.
+  /// OL-PAR-7K3M2Q : c'est elle qui permet de rattacher un virement reçu.
+  bankReference String? @unique
 
   status       SponsorStatus @default(ACTIVE)
   sponsorSince DateTime      @default(now())

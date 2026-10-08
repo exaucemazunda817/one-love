@@ -69,6 +69,9 @@ export const donationSessionSchema = z.object({
   currency: z.enum(CURRENCIES as [Currency, ...Currency[]]).default('EUR'),
   // Choix du donateur entre un don unique et un engagement mensuel récurrent.
   frequency: z.enum(['once', 'monthly']).default('once'),
+  // Carte bancaire ou prélèvement SEPA, présentés séparément (08/10/2026).
+  // Le prélèvement SEPA n'existe qu'en euros.
+  paymentMethod: z.enum(['card', 'sepa']).default('card'),
   projectSlug: z.string().trim().max(80).optional().or(z.literal('')),
   donorEmail: email.optional().or(z.literal('')),
   donorFirstName: z.string().trim().max(120).optional().or(z.literal('')),
@@ -78,6 +81,9 @@ export const donationSessionSchema = z.object({
   const { min, max } = DONATION_LIMITS[value.currency];
   if (value.amount < min) ctx.addIssue({ code: 'custom', path: ['amount'], message: `Le don minimum est de ${min} ${value.currency}.` });
   if (value.amount > max) ctx.addIssue({ code: 'custom', path: ['amount'], message: 'Montant trop élevé — contactez-nous directement.' });
+  if (value.paymentMethod === 'sepa' && value.currency !== 'EUR') {
+    ctx.addIssue({ code: 'custom', path: ['paymentMethod'], message: 'Le prélèvement SEPA n’existe qu’en euros.' });
+  }
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;

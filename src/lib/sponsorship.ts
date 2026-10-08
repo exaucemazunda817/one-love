@@ -45,8 +45,13 @@ export const sponsorSessionSchema = z.object({
   amount: z.number().finite().positive().optional(),
   locale: z.enum(['fr', 'en']).default('fr'),
   /** Page d'où vient le formulaire, pour revenir au bon endroit si le paiement est annulé. */
-  from: z.enum(['parrainer', 'dons']).default('parrainer')
+  from: z.enum(['parrainer', 'dons']).default('parrainer'),
+  /** Carte ou prélèvement SEPA (euros seulement) ; le virement passe par /api/parrainer/virement. */
+  paymentMethod: z.enum(['card', 'sepa']).default('card')
 }).superRefine((value, ctx) => {
+  if (value.paymentMethod === 'sepa' && value.currency !== 'EUR') {
+    ctx.addIssue({ code: 'custom', path: ['paymentMethod'], message: 'Le prélèvement SEPA n’existe qu’en euros.' });
+  }
   if (value.amount === undefined) return;
   const { min, max } = SPONSOR_LIMITS[value.currency];
   if (value.amount < min || value.amount > max) {

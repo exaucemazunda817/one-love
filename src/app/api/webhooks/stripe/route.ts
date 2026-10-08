@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isCurrency } from '@/lib/money';
+import { prisma } from '@/lib/prisma';
 import {
   verifyStripeWebhookSignature,
   getStripeSubscription,
@@ -49,7 +50,11 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    if (event.type === 'checkout.session.completed') {
+    // Prélèvement SEPA ponctuel : à la fin du paiement, la session est
+    // « completed » mais pas encore payée (le prélèvement prend quelques
+    // jours) ; Stripe envoie ensuite `async_payment_succeeded`, traité ici de
+    // la même façon. Sans cela, ces dons resteraient en attente pour toujours.
+    if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
       const session = event.data.object as unknown as StripeCheckoutSessionObject;
 
       // Don mensuel : ignoré ici volontairement. `invoice.paid` est la seule
@@ -78,6 +83,17 @@ export async function POST(request: NextRequest) {
         providerField: 'stripePaymentIntentId',
         providerReference: session.payment_intent
       });
+    }
+
+    // Prélèvement SEPA ponctuel refusé par la banque (provision, mandat
+    // révoqué…) : le don en attente passe à « échoué » au lieu de rester en
+    // attente pour toujours.
+    if (event.type === 'checkout.session.async_payment_failed') {
+      const session = event.data.object as unknown as StripeCheckoutSessionObject;
+      const donationId = session.metadata?.donationId;
+      if (donationId) {
+        await prisma.donation.updateMany({ where: { id: donationId, status: 'PENDING' }, data: { status: 'FAILED' } });
+      }
     }
 
     if (event.type === 'invoice.paid') {

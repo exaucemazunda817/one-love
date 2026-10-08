@@ -25,6 +25,7 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   const canSeeTeam = ['RH', 'DIRECTION', 'TERRAIN'].includes(user.role);
   const canSeePayrollLedger = ['RH', 'DIRECTION', 'COMPTABLE'].includes(user.role);
   const canSeeAssets = ['DIRECTION', 'TERRAIN', 'COMPTABLE'].includes(user.role);
+  const canSeeTransfers = ['DIRECTION', 'COMPTABLE'].includes(user.role);
 
   return (
     <div className="min-h-screen bg-ol-cream">
@@ -73,6 +74,11 @@ export default async function ProtectedLayout({ children }: { children: React.Re
                   className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink"
                 >
                   Registre de paie
+                </Link>
+              )}
+              {canSeeTransfers && (
+                <Link href="/gestion/virements" className="text-sm font-bold text-ol-muted hover:text-ol-ember-ink">
+                  Virements
                 </Link>
               )}
               {canSeeAssets && (

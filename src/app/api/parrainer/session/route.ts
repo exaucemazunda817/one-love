@@ -45,6 +45,7 @@ export async function POST(request: NextRequest) {
       amountCents: toMinorUnits(data.amount ?? plan.prices[data.currency]),
       currency: data.currency,
       frequency: 'monthly',
+      paymentMethod: data.paymentMethod,
       // Chaque mensualité est rangée dans le fonds « Parrainage » (08/10/2026),
       // et non plus dans le fonds général : le bilan du parrainage se lit à part.
       projectSlug: SPONSORSHIP_FUND_SLUG,

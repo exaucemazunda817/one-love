@@ -120,6 +120,7 @@ export async function createDonationCheckoutSession({
   donorLastName,
   donorCountry,
   extraMetadata,
+  paymentMethod = 'card',
   successUrl,
   cancelUrl
 }: {
@@ -135,12 +136,14 @@ export async function createDonationCheckoutSession({
   donorCountry?: string | null;
   /** Métadonnées supplémentaires posées sur l'abonnement (ex. parrainage). */
   extraMetadata?: Record<string, string>;
+  /** Choisi par le visiteur (08/10/2026) ; « sepa » seulement en euros. */
+  paymentMethod?: 'card' | 'sepa';
   successUrl: string;
   cancelUrl: string;
 }): Promise<StripeCheckoutSession> {
   return stripePost<StripeCheckoutSession>('/checkout/sessions', {
     mode: frequency === 'monthly' ? 'subscription' : 'payment',
-    payment_method_types: currency === 'EUR' ? ['card', 'sepa_debit'] : ['card'],
+    payment_method_types: paymentMethod === 'sepa' && currency === 'EUR' ? ['sepa_debit'] : ['card'],
     line_items: [
       {
         price_data: {

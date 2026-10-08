@@ -51,6 +51,8 @@ export async function startStripeCheckout(params: {
   amount: number;
   currency: Currency;
   frequency: 'once' | 'monthly';
+  /** Carte bancaire ou prélèvement SEPA (euros seulement). */
+  paymentMethod?: 'card' | 'sepa';
   projectSlug?: string;
   donorEmail?: string;
   donorFirstName?: string;
@@ -70,6 +72,7 @@ export async function startStripeCheckout(params: {
         amount: params.amount,
         currency: params.currency,
         frequency: params.frequency,
+        paymentMethod: params.paymentMethod ?? 'card',
         projectSlug: params.projectSlug || undefined,
         donorEmail: params.donorEmail || undefined,
         donorFirstName: params.donorFirstName || undefined,

@@ -13,7 +13,12 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 const MODE_LABELS = { CHILD: 'Parrainage d’un enfant', PROGRAMME: 'Soutien d’un programme' } as const;
-const STATUS_LABELS = { ACTIVE: 'Actif', PAYMENT_FAILED: 'Paiement en échec', ENDED: 'Terminé' } as const;
+const STATUS_LABELS = {
+  PENDING: 'En attente du 1er virement',
+  ACTIVE: 'Actif',
+  PAYMENT_FAILED: 'Paiement en échec',
+  ENDED: 'Terminé'
+} as const;
 
 // Liste INTERNE des parrains. Une ligne n'existe que si un paiement de
 // parrainage a été confirmé (webhook Stripe) : sans paiement, personne
@@ -39,7 +44,7 @@ export default async function ParrainsPage() {
         <h1 className="text-2xl font-black text-ol-charcoal">Parrains</h1>
         <p className="mt-1 text-sm text-ol-muted">
           Chaque personne apparaît ici dès que son premier paiement de parrainage est confirmé. Sans paiement, personne
-          ne devient parrain.
+          ne devient parrain. Les parrainages par virement se valident dans l’onglet Virements.
         </p>
       </div>
 

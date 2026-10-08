@@ -988,8 +988,8 @@ parrainage.
 - Liens de présélection : `/dons?affectation=village`,
   `/dons?affectation=parrainage&formule=0|1|2&devise=EUR|USD|CDF` (bouton de
   la page Parrainer, qui n'a plus son propre formulaire).
-- En parrainage : toujours mensuel, carte ou SEPA uniquement, nom + e-mail +
-  charte obligatoires, appel de `/api/parrainer/session` avec `from: 'dons'`.
+- En parrainage : toujours mensuel, nom + e-mail + charte obligatoires, appel
+  de `/api/parrainer/session` avec `from: 'dons'` (carte ou SEPA).
 - Les deux lignes `projects` (`one-love-village`, publié, ouvert aux dons ;
   `parrainage`, brouillon, `isDonationTarget = false`) ont été ajoutées en
   production le 08/10/2026. **Ne pas les supprimer** : la route
@@ -997,3 +997,33 @@ parrainage.
   le don au fonds général.
 - Options retirées du formulaire : « Programme RÊVES 2 » et « Suivi médical
   et psychosocial » (décision de Mazunda : trois raisons seulement).
+
+## Carte, prélèvement SEPA et virement pour les trois raisons (08/10/2026)
+
+- Le formulaire propose séparément **carte bancaire**, **prélèvement SEPA**
+  (euros seulement, grisé en $ et FC, refusé aussi côté serveur), **virement**
+  et Mobile Money (bientôt, pas pour le parrainage). `paymentMethod: 'card' |
+  'sepa'` est transmis aux routes Stripe, qui ouvrent la session avec ce seul
+  moyen.
+- **Virement** : la banque ne prévient pas le site. `/api/dons/virement` et
+  `/api/parrainer/virement` enregistrent une promesse EN ATTENTE avec une
+  référence unique (`OL-DON-…`, `OL-VIL-…`, `OL-PAR-…`, `src/lib/bank-transfer.ts`)
+  que le donateur recopie dans le libellé. L'équipe (DIRECTION ou COMPTABLE)
+  clique « Virement reçu » dans **/gestion/virements** : le don passe à
+  CONFIRMED avec sa recette dans le bon fonds ; un parrain par virement passe
+  de PENDING à ACTIVE à ce moment-là (courriel de bienvenue). Chaque mois :
+  « Versement du mois reçu ». Actions tracées dans le journal d'audit.
+- Schéma : `SponsorStatus.PENDING`, `Sponsor.stripeSubscriptionId` facultatif,
+  `Sponsor.paymentMethod`, `Sponsor.bankReference` (unique). SQL additif :
+  `prisma/sql/2026-10-08-parrainage-virement.sql`.
+- Webhook Stripe : `checkout.session.async_payment_succeeded` confirme un don
+  ponctuel par prélèvement SEPA (payé quelques jours après la session) ;
+  `checkout.session.async_payment_failed` le passe à FAILED. **À cocher dans
+  le tableau de bord Stripe** à la configuration du webhook, en plus de
+  `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed` et
+  `customer.subscription.deleted`.
+- Testé le 08/10/2026 sur une branche Neon jetable : 26 vérifications de la
+  logique, parcours du formulaire (village en virement, parrainage en dollars
+  en virement, SEPA transmis), écran de gestion (validation, double clic,
+  refus sans session 401, refus du rôle TERRAIN 403, audit). Aucun vrai
+  paiement Stripe (Stripe non branché).
