@@ -1027,3 +1027,29 @@ parrainage.
   en virement, SEPA transmis), écran de gestion (validation, double clic,
   refus sans session 401, refus du rôle TERRAIN 403, audit). Aucun vrai
   paiement Stripe (Stripe non branché).
+
+## Double paiement et sécurité /gestion (audit du 17/10/2026)
+
+Rapport : `~/Documents/Mazunda/08-Divers/One-Love/audit-securite-paiements-2026-10-17.md`.
+
+- **Double paiement** : `src/lib/payment-guard.ts` (`guardAgainstDoublePayment`)
+  est appelé par `/api/dons/stripe/session` et `/api/parrainer/session` AVANT
+  d'ouvrir une session Stripe. Il refuse (409, `code: 'ALREADY_PAID'`) si la
+  dernière session du navigateur (`previousSessionId`) est payée ou en cours de
+  prélèvement, ou si un don identique (même e-mail, montant, devise, Stripe) date
+  de moins de 30 min / un parrainage de moins de 24 h. `confirmAgain: true` laisse
+  passer un vrai second paiement. Une session encore ouverte est fermée.
+- Le navigateur garde la dernière session dans `localStorage`
+  (`ol-paiement-en-cours`, `lib/donation-ui.ts`), relue au retour sur `/dons`
+  via `GET /api/paiement/statut` (renvoie seulement l'état). Les pages de
+  remerciement l'effacent (`ForgetCheckout`). **Ne jamais y mettre de nom ni
+  d'e-mail.**
+- **Virement** : une demande identique (même e-mail, montant, devise, fonds)
+  de moins de 24 h renvoie la MÊME référence (`reused: true`) ; l'équipe ne peut
+  pas enregistrer deux fois un versement de la même référence à la même date.
+- **/gestion** : la déconnexion incrémente `tokenVersion` (toutes les sessions
+  du compte tombent) ; `requireGestionRole` refuse un compte dont
+  `mustChangePassword` est vrai ; `allowRequest` enregistre la tentative AVANT
+  de compter (sinon une rafale simultanée contournait la limite).
+- **Testé** sur une branche Neon jetable avec une clé Stripe factice : la
+  logique de garde l'est, le parcours complet avec un vrai Stripe ne l'est pas.
