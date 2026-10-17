@@ -5,7 +5,7 @@ import { HeartIcon } from '@phosphor-icons/react/ssr';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
 import { RevesLetters } from '@/components/site/effects/RevesLetters';
-import { Brush, CallBanner, BrushLast } from '@/components/site/ui';
+import { CallBanner, BrushLast } from '@/components/site/ui';
 import { currentProject, publishableGallery } from '@/lib/content';
 import { localeHref, type Locale } from '@/lib/i18n';
 

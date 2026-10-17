@@ -36,11 +36,15 @@ export async function allowRequest(
 ): Promise<boolean> {
   const key = `${bucket}:${clientIp(request)}`;
   try {
+    // On enregistre la tentative AVANT de compter. Dans l'autre ordre, des
+    // requêtes envoyées toutes en même temps comptaient chacune « 0 » et
+    // passaient toutes : la limite de 5 essais de connexion se contournait en
+    // envoyant 50 essais d’un coup (audit de sécurité du 17/10/2026).
+    await prisma.rateLimitAttempt.create({ data: { key } });
     const recent = await prisma.rateLimitAttempt.count({
       where: { key, createdAt: { gte: new Date(Date.now() - windowMs) } }
     });
-    if (recent >= max) return false;
-    await prisma.rateLimitAttempt.create({ data: { key } });
+    if (recent > max) return false;
     if (Math.random() < 0.02) {
       await prisma.rateLimitAttempt.deleteMany({
         where: { createdAt: { lt: new Date(Date.now() - CLEANUP_AFTER_MS) } }

@@ -60,5 +60,9 @@ export const getCurrentGestionUser = cache(async (): Promise<AppUser | null> => 
 export async function requireGestionRole(allowed: UserRole[]): Promise<AppUser | null> {
   const user = await getCurrentGestionUser();
   if (!user || !allowed.includes(user.role)) return null;
+  // Mot de passe provisoire pas encore changé : les pages redirigeaient déjà
+  // vers le changement de mot de passe, mais les routes API restaient
+  // utilisables en les appelant directement (audit du 17/10/2026).
+  if (user.mustChangePassword) return null;
   return user;
 }
