@@ -6,6 +6,7 @@ import { toMinorUnits } from '@/lib/money';
 import { SPONSORSHIP_FUND_SLUG } from '@/lib/funds';
 
 import { getSiteUrl } from '@/lib/site-url';
+import { guardAgainstDoublePayment } from '@/lib/payment-guard';
 
 // Devenir parrain = payer. Cette route ne crée AUCUN parrain : elle ouvre
 // seulement une session de paiement Stripe. Le parrain est enregistré par le
@@ -36,13 +37,24 @@ export async function POST(request: NextRequest) {
   const plan = sponsorPlanFor(data.mode, data.plan);
   if (!plan) return NextResponse.json({ error: 'Formule inconnue.' }, { status: 400 });
 
+  const amount = data.amount ?? plan.prices[data.currency];
+  const blocked = await guardAgainstDoublePayment({
+    previousSessionId: data.previousSessionId,
+    confirmAgain: data.confirmAgain,
+    kind: 'parrainage',
+    email: data.email,
+    amount,
+    currency: data.currency
+  });
+  if (blocked) return blocked;
+
   const prefix = data.locale === 'en' ? '/en' : '';
   try {
     const siteUrl = getSiteUrl();
     const session = await createDonationCheckoutSession({
       // Dans la devise choisie, sans reconversion : montant libre (borné par
       // le schéma, par devise) sinon prix fixe de la formule dans cette devise.
-      amountCents: toMinorUnits(data.amount ?? plan.prices[data.currency]),
+      amountCents: toMinorUnits(amount),
       currency: data.currency,
       frequency: 'monthly',
       paymentMethod: data.paymentMethod,
@@ -62,7 +74,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!session.url) throw new Error('Stripe n’a renvoyé aucune URL de paiement.');
-    return NextResponse.json({ url: session.url }, { status: 201 });
+    return NextResponse.json({ url: session.url, sessionId: session.id }, { status: 201 });
   } catch (error) {
     console.error('Création de session Stripe (parrainage) échouée', error);
     return NextResponse.json(

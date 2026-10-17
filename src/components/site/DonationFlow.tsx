@@ -20,7 +20,11 @@ import {
   SYMBOL,
   formatCustom,
   sanitizeAmount,
-  startStripeCheckout
+  startStripeCheckout,
+  readCheckout,
+  rememberCheckout,
+  forgetCheckout,
+  type StartedCheckout
 } from '@/lib/donation-ui';
 import { DONATION_LIMITS, SPONSOR_FROM, SPONSOR_LIMITS, formatMoney } from '@/lib/money';
 import { bankTransfer } from '@/lib/content';
@@ -143,7 +147,19 @@ const T = {
     editable: 'Don mensuel modifiable à tout moment',
     badge: 'Association loi 1901 · RNA W951001528',
     question: 'Une question ? Écrivez-nous',
-    error: 'Une erreur est survenue. Merci de réessayer.'
+    error: 'Une erreur est survenue. Merci de réessayer.',
+    // Protection contre le double paiement (17/10/2026).
+    prevPaid: (what: string, when: string) =>
+      `Votre ${what} du ${when} a bien été reçu. Inutile de recommencer : Stripe vous a envoyé un reçu par e-mail.`,
+    prevProcessing: (what: string, when: string) =>
+      `Votre ${what} du ${when} est en cours de traitement par votre banque. Inutile de recommencer.`,
+    prevGift: (amount: string) => `don de ${amount}`,
+    prevSponsor: (amount: string) => `parrainage de ${amount} par mois`,
+    payAgain: 'Faire un nouveau paiement quand même',
+    referenceReused: 'Vous aviez déjà demandé une référence pour ce don : c’est la même. Ne faites qu’un seul virement.',
+    alreadyPaidAsk:
+      'Un paiement identique semble avoir été reçu il y a peu. Vérifiez votre boîte e-mail (reçu de Stripe) avant de recommencer.',
+    confirmPayAgain: 'Oui, je veux payer une nouvelle fois'
   },
   en: {
     steps: ['Amount', 'Your details', 'Payment'],
@@ -248,7 +264,18 @@ const T = {
     editable: 'Monthly gift, editable at any time',
     badge: 'Registered non-profit (France) · RNA W951001528',
     question: 'A question? Write to us',
-    error: 'Something went wrong. Please try again.'
+    error: 'Something went wrong. Please try again.',
+    prevPaid: (what: string, when: string) =>
+      `Your ${what} of ${when} has been received. No need to pay again: Stripe has emailed you a receipt.`,
+    prevProcessing: (what: string, when: string) =>
+      `Your ${what} of ${when} is being processed by your bank. No need to pay again.`,
+    prevGift: (amount: string) => `gift of ${amount}`,
+    prevSponsor: (amount: string) => `sponsorship of ${amount} a month`,
+    payAgain: 'Make a new payment anyway',
+    referenceReused: 'You already asked for a reference for this gift: it is the same one. Please make only one transfer.',
+    alreadyPaidAsk:
+      'An identical payment seems to have been received a moment ago. Please check your inbox (Stripe receipt) before paying again.',
+    confirmPayAgain: 'Yes, I want to pay again'
   }
 };
 
@@ -315,9 +342,34 @@ export function DonationFlow({
   const [transferDone, setTransferDone] = useState(false);
   // Référence unique du virement (OL-DON-…, OL-VIL-…, OL-PAR-…), donnée par le serveur.
   const [transferRef, setTransferRef] = useState('');
+  const [transferReused, setTransferReused] = useState(false);
   const [newsletterSent, setNewsletterSent] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  // Dernier paiement commencé dans ce navigateur, s'il est déjà passé, et
+  // confirmation explicite de payer à nouveau (protection anti-doublon).
+  const [previousPaid, setPreviousPaid] = useState<{ checkout: StartedCheckout; state: 'paid' | 'processing' } | null>(null);
+  const [confirmAgain, setConfirmAgain] = useState(false);
+  const [alreadyPaidAsk, setAlreadyPaidAsk] = useState(false);
+
+  // Au retour sur le formulaire (connexion coupée après un paiement, page de
+  // remerciement jamais affichée) : le paiement précédent est-il passé ?
+  useEffect(() => {
+    const checkout = readCheckout();
+    if (!checkout) return;
+    let cancelled = false;
+    fetch(`/api/paiement/statut?session_id=${encodeURIComponent(checkout.sessionId)}`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: { state?: string } | null) => {
+        if (cancelled || !data) return;
+        if (data.state === 'paid' || data.state === 'processing') setPreviousPaid({ checkout, state: data.state });
+        else if (data.state === 'expired') forgetCheckout();
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const emailOk = EMAIL_RE.test(donorEmail.trim());
 
   // Le parrainage est toujours mensuel ; les montants proposés sont alors les
@@ -370,9 +422,10 @@ export function DonationFlow({
     return out;
   }
 
-  async function startSponsorship() {
+  async function startSponsorship(again: boolean) {
     setPending(true);
     setError('');
+    setAlreadyPaidAsk(false);
     await subscribeNewsletter();
     try {
       const response = await fetch('/api/parrainer/session', {
@@ -389,15 +442,27 @@ export function DonationFlow({
           locale,
           from: 'dons',
           paymentMethod: method === 'sepa' ? 'sepa' : 'card',
+          previousSessionId: readCheckout()?.sessionId,
+          confirmAgain: again || undefined,
           ...(isCustom ? { amount: cVal } : {})
         })
       });
       const data = await response.json().catch(() => ({}));
       if (response.status === 201 && typeof data.url === 'string') {
+        if (typeof data.sessionId === 'string') {
+          rememberCheckout({
+            sessionId: data.sessionId,
+            kind: 'parrainage',
+            amount: isCustom ? cVal : sponsorPrices[amt][cur],
+            currency: cur,
+            startedAt: Date.now()
+          });
+        }
         window.location.href = data.url;
         return;
       }
-      setError(data.error || t.error);
+      if (response.status === 409 && data.code === 'ALREADY_PAID') setAlreadyPaidAsk(true);
+      else setError(data.error || t.error);
     } catch {
       setError(t.error);
     }
@@ -503,6 +568,7 @@ export function DonationFlow({
       const data = await response.json().catch(() => ({}));
       if (response.status === 201 && typeof data.reference === 'string') {
         setTransferRef(data.reference);
+        setTransferReused(data.reused === true);
         setNewsletterSent(await subscribeNewsletter());
         setTransferDone(true);
       } else {
@@ -537,14 +603,21 @@ export function DonationFlow({
       chooseMethod('virement');
       return;
     }
+    await payOnline(confirmAgain);
+  }
+
+  /** Carte ou prélèvement : ouvre la page de paiement Stripe. `again` = le
+   * visiteur a confirmé vouloir payer malgré un paiement identique récent. */
+  async function payOnline(again: boolean) {
     if (isSponsor) {
-      await startSponsorship();
+      await startSponsorship(again);
       return;
     }
     setPending(true);
     setError('');
+    setAlreadyPaidAsk(false);
     await subscribeNewsletter();
-    const message = await startStripeCheckout({
+    const result = await startStripeCheckout({
       amount,
       currency: cur,
       frequency: monthly ? 'monthly' : 'once',
@@ -554,12 +627,18 @@ export function DonationFlow({
       donorFirstName: firstName.trim() || undefined,
       donorLastName: lastName.trim() || undefined,
       donorCountry: country || undefined,
+      previousSessionId: readCheckout()?.sessionId,
+      confirmAgain: again || undefined,
       locale
     });
-    if (message) {
-      setError(message);
-      setPending(false);
-    }
+    if (result.alreadyPaid) setAlreadyPaidAsk(true);
+    else if (result.error) setError(result.error);
+    setPending(false);
+  }
+
+  function payAgainAnyway() {
+    setConfirmAgain(true);
+    setPreviousPaid(null);
   }
 
   const noNext = !valid;
@@ -569,6 +648,31 @@ export function DonationFlow({
       <div className="grid grid-cols-1 gap-10 dk:grid-cols-[2fr_1fr] dk:items-start">
         {/* Colonne formulaire */}
         <div className="flex flex-col gap-8">
+          {previousPaid && (
+            <div role="status" className="flex flex-col gap-3 rounded-card border border-sage-700/30 bg-white p-5 shadow-ol-sm">
+              <p className="m-0 flex items-start gap-2.5 text-[15px] leading-relaxed text-ink-body">
+                <ShieldCheckIcon size={22} weight="fill" className="mt-0.5 shrink-0 text-sage-700" aria-hidden />
+                {(previousPaid.state === 'paid' ? t.prevPaid : t.prevProcessing)(
+                  (previousPaid.checkout.kind === 'parrainage' ? t.prevSponsor : t.prevGift)(
+                    formatMoney(previousPaid.checkout.amount, previousPaid.checkout.currency, locale)
+                  ),
+                  new Date(previousPaid.checkout.startedAt).toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })
+                )}
+              </p>
+              <button
+                type="button"
+                onClick={payAgainAnyway}
+                className="inline-flex min-h-11 w-fit cursor-pointer items-center rounded-full border border-card-line bg-transparent px-4 text-[14px] font-bold text-ink-soft hover:text-ink"
+              >
+                {t.payAgain}
+              </button>
+            </div>
+          )}
           {/* Étapes */}
           <ol aria-label={t.steps.join(', ')} className="flex list-none gap-3 p-0">
             {t.steps.map((label, i) => {
@@ -955,6 +1059,7 @@ export function DonationFlow({
                       </span>
                       <span>{monthly ? t.referenceMonthly(`${amountStr}`) : t.referenceOnce(`${amountStr}`)}</span>
                       <span className="text-ink-soft">{t.referenceWhy}</span>
+                      {transferReused && <span className="font-bold text-copper-700">{t.referenceReused}</span>}
                       <span className="flex items-start gap-2 font-bold">
                         <CheckIcon size={18} className="mt-0.5 flex-none text-sage-700" aria-hidden />
                         {isSponsor ? t.referenceSponsor : t.thanksTransfer}
@@ -1019,6 +1124,23 @@ export function DonationFlow({
                 <p role="alert" className="m-0 text-[14px] font-bold text-error">
                   {error}
                 </p>
+              )}
+
+              {alreadyPaidAsk && (
+                <div role="alert" className="flex flex-col gap-3 rounded-card border border-copper-600/40 bg-white p-4">
+                  <p className="m-0 text-[14px] font-bold leading-relaxed text-ink">{t.alreadyPaidAsk}</p>
+                  <button
+                    type="button"
+                    disabled={pending}
+                    onClick={() => {
+                      setConfirmAgain(true);
+                      void payOnline(true);
+                    }}
+                    className="inline-flex min-h-11 w-fit cursor-pointer items-center rounded-full border border-card-line bg-transparent px-4 text-[14px] font-bold text-ink-soft hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {t.confirmPayAgain}
+                  </button>
+                </div>
               )}
             </div>
           )}

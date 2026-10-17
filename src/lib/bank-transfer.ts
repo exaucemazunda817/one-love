@@ -22,6 +22,11 @@ const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sans I, O, 0, 1 : illisi
 
 export type TransferKind = 'DON' | 'VIL' | 'PAR';
 
+// Le visiteur qui recommence (page rechargée, connexion coupée) retrouve la
+// MÊME référence au lieu d'en recevoir une nouvelle : deux références pour un
+// même don l'inciteraient à faire deux virements (audit du 17/10/2026).
+const REUSE_PENDING_MS = 24 * 60 * 60 * 1000;
+
 function randomCode(): string {
   let out = '';
   for (let i = 0; i < 6; i += 1) out += ALPHABET[randomInt(ALPHABET.length)];
@@ -52,7 +57,26 @@ export async function createTransferPledge(input: {
   donorFirstName?: string | null;
   donorLastName?: string | null;
   donorCountry?: string | null;
-}): Promise<{ reference: string }> {
+}): Promise<{ reference: string; reused: boolean }> {
+  if (input.donorEmail) {
+    const pending = await prisma.donation.findFirst({
+      where: {
+        method: 'BANK_TRANSFER',
+        status: 'PENDING',
+        donor: { email: input.donorEmail.trim().toLowerCase() },
+        amount: input.amount,
+        currency: input.currency,
+        isRecurring: input.isRecurring,
+        projectId: input.projectId,
+        bankReference: { not: null },
+        createdAt: { gte: new Date(Date.now() - REUSE_PENDING_MS) }
+      },
+      orderBy: { createdAt: 'desc' },
+      select: { bankReference: true }
+    });
+    if (pending?.bankReference) return { reference: pending.bankReference, reused: true };
+  }
+
   const reference = await newTransferReference(input.kind);
   const donor = input.donorEmail
     ? await upsertDonorFillEmpty({
@@ -84,15 +108,32 @@ export async function createTransferPledge(input: {
           : null
     }
   });
-  return { reference };
+  return { reference, reused: false };
 }
 
 /** Demande de parrainage par virement : un parrain EN ATTENTE, pas encore un parrain. */
-export async function createSponsorTransferRequest(input: SponsorSessionInput): Promise<{ reference: string }> {
+export async function createSponsorTransferRequest(
+  input: SponsorSessionInput
+): Promise<{ reference: string; reused: boolean }> {
   const plan = sponsorPlanFor(input.mode, input.plan);
   if (!plan) throw new Error('Formule inconnue.');
-  const reference = await newTransferReference('PAR');
   const amount = input.amount ?? plan.prices[input.currency];
+  const pending = await prisma.sponsor.findFirst({
+    where: {
+      paymentMethod: 'BANK_TRANSFER',
+      status: 'PENDING',
+      donor: { email: input.email },
+      monthlyAmount: amount,
+      currency: input.currency,
+      bankReference: { not: null },
+      createdAt: { gte: new Date(Date.now() - REUSE_PENDING_MS) }
+    },
+    orderBy: { createdAt: 'desc' },
+    select: { bankReference: true }
+  });
+  if (pending?.bankReference) return { reference: pending.bankReference, reused: true };
+
+  const reference = await newTransferReference('PAR');
   const donor = await upsertDonorFillEmpty({
     email: input.email,
     firstName: input.firstName,
@@ -114,7 +155,23 @@ export async function createSponsorTransferRequest(input: SponsorSessionInput): 
       status: 'PENDING'
     }
   });
-  return { reference };
+  return { reference, reused: false };
+}
+
+/**
+ * Un versement de cette référence est-il déjà enregistré à cette date ? Évite
+ * qu'un double clic, ou deux personnes de l'équipe, enregistrent deux fois le
+ * même virement du relevé (audit du 17/10/2026). Deux vrais virements le même
+ * jour restent possibles : il suffit de corriger la date de l'un des deux.
+ */
+async function transferAlreadyRecorded(bankReference: string | null, receivedOn: Date): Promise<boolean> {
+  if (!bankReference) return false;
+  const day = new Date(Date.UTC(receivedOn.getUTCFullYear(), receivedOn.getUTCMonth(), receivedOn.getUTCDate()));
+  const existing = await prisma.donation.findFirst({
+    where: { bankReference, status: 'CONFIRMED', receivedOn: day },
+    select: { id: true }
+  });
+  return Boolean(existing);
 }
 
 /** Écrit un don CONFIRMÉ par virement et sa recette, dans une transaction. */
@@ -226,6 +283,7 @@ export async function recordNextMonthlyTransfer(
 ): Promise<boolean> {
   const source = await prisma.donation.findUnique({ where: { id: donationId } });
   if (!source || source.method !== 'BANK_TRANSFER' || !source.isRecurring || source.status !== 'CONFIRMED') return false;
+  if (await transferAlreadyRecorded(source.bankReference, received.receivedOn)) return false;
   await writeConfirmedTransfer({
     amount: received.amount ?? Number(source.amount),
     currency: source.currency as Currency,
@@ -275,17 +333,24 @@ export async function activateTransferSponsor(
   const sponsor = await prisma.sponsor.findUniqueOrThrow({ where: { id: sponsorId }, include: { donor: true } });
   const currency = sponsor.currency as Currency;
   const amount = received.amount ?? Number(sponsor.monthlyAmount ?? sponsor.monthlyAmountEur);
-  await writeConfirmedTransfer({
-    amount,
-    currency,
-    isRecurring: true,
-    projectId: await sponsorFundId(),
-    donorId: sponsor.donorId,
-    bankReference: sponsor.bankReference,
-    receivedOn: received.receivedOn,
-    confirmedById: actorId,
-    label: `Parrainage par virement — ${sponsor.planName}`
-  });
+  try {
+    await writeConfirmedTransfer({
+      amount,
+      currency,
+      isRecurring: true,
+      projectId: await sponsorFundId(),
+      donorId: sponsor.donorId,
+      bankReference: sponsor.bankReference,
+      receivedOn: received.receivedOn,
+      confirmedById: actorId,
+      label: `Parrainage par virement — ${sponsor.planName}`
+    });
+  } catch (error) {
+    // Sans l'écriture de recette, la personne ne doit pas rester « parrain » :
+    // elle repasse en attente et l'équipe pourra recliquer.
+    await prisma.sponsor.update({ where: { id: sponsorId }, data: { status: 'PENDING' } });
+    throw error;
+  }
 
   if (sponsor.donor.email) {
     await sendSponsorWelcome({
@@ -308,6 +373,7 @@ export async function recordSponsorTransfer(
 ): Promise<boolean> {
   const sponsor = await prisma.sponsor.findUnique({ where: { id: sponsorId } });
   if (!sponsor || sponsor.paymentMethod !== 'BANK_TRANSFER' || sponsor.status !== 'ACTIVE') return false;
+  if (await transferAlreadyRecorded(sponsor.bankReference, received.receivedOn)) return false;
   const currency = sponsor.currency as Currency;
   await writeConfirmedTransfer({
     amount: received.amount ?? Number(sponsor.monthlyAmount ?? sponsor.monthlyAmountEur),

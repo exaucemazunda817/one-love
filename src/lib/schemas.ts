@@ -61,6 +61,17 @@ export const newsletterSchema = z.object({
   source: z.enum(['pied-de-page', 'don']).optional()
 });
 
+// Protection contre le double paiement (17/10/2026), voir lib/payment-guard.ts :
+// la dernière session Stripe ouverte par ce navigateur, et la confirmation
+// explicite du visiteur s'il veut vraiment payer une seconde fois.
+export const checkoutGuardFields = {
+  previousSessionId: z
+    .string()
+    .regex(/^cs_(test|live)_[A-Za-z0-9]{10,200}$/)
+    .optional(),
+  confirmAgain: z.boolean().optional()
+};
+
 export const donationSessionSchema = z.object({
   // Montant dans la devise choisie (paiement sans reconversion, 07/10/2026),
   // borné par devise pour écarter une faute de frappe et un envoi abusif
@@ -76,7 +87,8 @@ export const donationSessionSchema = z.object({
   donorEmail: email.optional().or(z.literal('')),
   donorFirstName: z.string().trim().max(120).optional().or(z.literal('')),
   donorLastName: z.string().trim().max(120).optional().or(z.literal('')),
-  donorCountry: z.string().trim().max(2).optional().or(z.literal(''))
+  donorCountry: z.string().trim().max(2).optional().or(z.literal('')),
+  ...checkoutGuardFields
 }).superRefine((value, ctx) => {
   const { min, max } = DONATION_LIMITS[value.currency];
   if (value.amount < min) ctx.addIssue({ code: 'custom', path: ['amount'], message: `Le don minimum est de ${min} ${value.currency}.` });

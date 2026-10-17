@@ -23,8 +23,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { reference } = await createSponsorTransferRequest(parsed.data);
-    return NextResponse.json({ reference }, { status: 201 });
+    const { reference, reused } = await createSponsorTransferRequest(parsed.data);
+    return NextResponse.json({ reference, reused }, { status: 201 });
   } catch (error) {
     console.error('Demande de parrainage par virement non enregistrée', error);
     return NextResponse.json({ error: 'Une erreur est survenue. Merci de réessayer.' }, { status: 500 });

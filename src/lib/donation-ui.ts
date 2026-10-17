@@ -44,8 +44,69 @@ export function formatCustom(value: number, currency: Currency, locale: Locale):
   return `${value.toLocaleString(NUM_LOCALE[locale])} ${SYMBOL[currency]}`;
 }
 
-/** Lance le paiement via la session Stripe Checkout existante. Renvoie un
- * message d'erreur, ou redirige (et ne revient pas). */
+// Mémoire du dernier paiement commencé dans ce navigateur (protection contre
+// le double paiement, 17/10/2026). Si la connexion coupe après le paiement,
+// avant la page de remerciement, le formulaire relit cette mémoire au retour
+// et demande au site si le paiement est passé avant de laisser recommencer.
+// Rangée dans le navigateur seulement, sans nom ni e-mail.
+export interface StartedCheckout {
+  sessionId: string;
+  kind: 'don' | 'parrainage';
+  amount: number;
+  currency: Currency;
+  startedAt: number;
+}
+const CHECKOUT_KEY = 'ol-paiement-en-cours';
+const CHECKOUT_TTL_MS = 48 * 60 * 60 * 1000;
+
+export function rememberCheckout(checkout: StartedCheckout): void {
+  try {
+    window.localStorage.setItem(CHECKOUT_KEY, JSON.stringify(checkout));
+  } catch {
+    // Stockage indisponible (navigation privée stricte) : le contrôle par
+    // e-mail côté serveur reste actif.
+  }
+}
+
+export function readCheckout(): StartedCheckout | null {
+  try {
+    const raw = window.localStorage.getItem(CHECKOUT_KEY);
+    if (!raw) return null;
+    const value = JSON.parse(raw) as Partial<StartedCheckout>;
+    const valid =
+      typeof value.sessionId === 'string' &&
+      /^cs_(test|live)_[A-Za-z0-9]{10,200}$/.test(value.sessionId) &&
+      (value.kind === 'don' || value.kind === 'parrainage') &&
+      typeof value.amount === 'number' &&
+      (value.currency === 'EUR' || value.currency === 'USD' || value.currency === 'CDF') &&
+      typeof value.startedAt === 'number';
+    if (!valid || Date.now() - (value.startedAt as number) > CHECKOUT_TTL_MS) {
+      window.localStorage.removeItem(CHECKOUT_KEY);
+      return null;
+    }
+    return value as StartedCheckout;
+  } catch {
+    return null;
+  }
+}
+
+export function forgetCheckout(): void {
+  try {
+    window.localStorage.removeItem(CHECKOUT_KEY);
+  } catch {
+    // Rien à faire.
+  }
+}
+
+export interface CheckoutResult {
+  /** Message à afficher ; absent si le visiteur part vers Stripe. */
+  error?: string;
+  /** Un paiement identique semble déjà passé : demander confirmation. */
+  alreadyPaid?: boolean;
+}
+
+/** Lance le paiement via la session Stripe Checkout existante. Renvoie une
+ * erreur, ou redirige (et ne revient pas). */
 export async function startStripeCheckout(params: {
   /** Montant dans la devise choisie : c'est exactement ce qui est prélevé. */
   amount: number;
@@ -58,8 +119,11 @@ export async function startStripeCheckout(params: {
   donorFirstName?: string;
   donorLastName?: string;
   donorCountry?: string;
+  /** Dernière session ouverte dans ce navigateur, et confirmation de payer à nouveau. */
+  previousSessionId?: string;
+  confirmAgain?: boolean;
   locale: Locale;
-}): Promise<string> {
+}): Promise<CheckoutResult> {
   const fallback =
     params.locale === 'fr'
       ? 'Une erreur est survenue. Merci de réessayer.'
@@ -77,24 +141,39 @@ export async function startStripeCheckout(params: {
         donorEmail: params.donorEmail || undefined,
         donorFirstName: params.donorFirstName || undefined,
         donorLastName: params.donorLastName || undefined,
-        donorCountry: params.donorCountry || undefined
+        donorCountry: params.donorCountry || undefined,
+        previousSessionId: params.previousSessionId,
+        confirmAgain: params.confirmAgain || undefined
       })
     });
     if (response.status === 201) {
       const data = await response.json();
+      if (typeof data.sessionId === 'string') {
+        rememberCheckout({
+          sessionId: data.sessionId,
+          kind: 'don',
+          amount: params.amount,
+          currency: params.currency,
+          startedAt: Date.now()
+        });
+      }
       // Page de paiement hébergée par Stripe. La confirmation du don ne
       // vient JAMAIS de cette redirection, seulement du webhook vérifié.
       window.location.href = data.url;
-      return '';
+      return {};
     }
     if (response.status === 503) {
-      return params.locale === 'fr'
-        ? "Le paiement en ligne n'est pas encore activé. Merci d'utiliser le virement bancaire (page Faire un don)."
-        : 'Online payment is not switched on yet. Please use a bank transfer (Donate page).';
+      return {
+        error:
+          params.locale === 'fr'
+            ? "Le paiement en ligne n'est pas encore activé. Merci d'utiliser le virement bancaire (page Faire un don)."
+            : 'Online payment is not switched on yet. Please use a bank transfer (Donate page).'
+      };
     }
     const data = await response.json().catch(() => ({}));
-    return data.error || fallback;
+    if (response.status === 409 && data.code === 'ALREADY_PAID') return { alreadyPaid: true };
+    return { error: data.error || fallback };
   } catch {
-    return fallback;
+    return { error: fallback };
   }
 }

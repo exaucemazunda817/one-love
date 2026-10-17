@@ -6,6 +6,7 @@ import { upsertDonorFillEmpty } from '@/lib/donations';
 import { escapeHtml } from '@/lib/validation';
 import { CONTACT_EMAIL } from '@/lib/i18n';
 import { CURRENCIES, SPONSOR_LIMITS, formatMoney, indicativeEur, type Currency } from '@/lib/money';
+import { checkoutGuardFields } from '@/lib/schemas';
 
 // Parrainage : on devient parrain en PAYANT, jamais autrement (décision de
 // Mazunda, 29/09/2026). Une ligne `Sponsor` n'est créée que par le webhook
@@ -47,7 +48,8 @@ export const sponsorSessionSchema = z.object({
   /** Page d'où vient le formulaire, pour revenir au bon endroit si le paiement est annulé. */
   from: z.enum(['parrainer', 'dons']).default('parrainer'),
   /** Carte ou prélèvement SEPA (euros seulement) ; le virement passe par /api/parrainer/virement. */
-  paymentMethod: z.enum(['card', 'sepa']).default('card')
+  paymentMethod: z.enum(['card', 'sepa']).default('card'),
+  ...checkoutGuardFields
 }).superRefine((value, ctx) => {
   if (value.paymentMethod === 'sepa' && value.currency !== 'EUR') {
     ctx.addIssue({ code: 'custom', path: ['paymentMethod'], message: 'Le prélèvement SEPA n’existe qu’en euros.' });

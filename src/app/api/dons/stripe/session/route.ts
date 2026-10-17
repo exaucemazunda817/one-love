@@ -8,6 +8,7 @@ import { org } from '@/lib/content';
 import { toMinorUnits } from '@/lib/money';
 
 import { getSiteUrl } from '@/lib/site-url';
+import { guardAgainstDoublePayment } from '@/lib/payment-guard';
 
 export async function POST(request: NextRequest) {
   if (!isStripeConfigured()) {
@@ -48,6 +49,18 @@ export async function POST(request: NextRequest) {
   }
   const description = project ? `Don — ${project.name} — ${org.name}` : `Don — ${org.name}`;
 
+  // Paiement déjà passé (connexion coupée avant la page de remerciement) :
+  // on ne rouvre pas de session sans confirmation du visiteur.
+  const blocked = await guardAgainstDoublePayment({
+    previousSessionId: data.previousSessionId,
+    confirmAgain: data.confirmAgain,
+    kind: 'don',
+    email: data.donorEmail || null,
+    amount: data.amount,
+    currency: data.currency
+  });
+  if (blocked) return blocked;
+
   try {
     const siteUrl = getSiteUrl();
     if (data.frequency === 'once') {
@@ -77,7 +90,7 @@ export async function POST(request: NextRequest) {
       });
 
       if (!session.url) throw new Error('Stripe n’a renvoyé aucune URL de paiement.');
-      return NextResponse.json({ url: session.url }, { status: 201 });
+      return NextResponse.json({ url: session.url, sessionId: session.id }, { status: 201 });
     }
 
     // Don mensuel : aucun Donation créé ici — voir le commentaire de
@@ -99,7 +112,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!session.url) throw new Error('Stripe n’a renvoyé aucune URL de paiement.');
-    return NextResponse.json({ url: session.url }, { status: 201 });
+    return NextResponse.json({ url: session.url, sessionId: session.id }, { status: 201 });
   } catch (error) {
     console.error('Création de session Stripe échouée', error);
     return NextResponse.json(

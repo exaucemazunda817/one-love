@@ -4,6 +4,7 @@ import { CheckCircleIcon } from '@phosphor-icons/react/ssr';
 import { TextHero, btn } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { localeHref, type Locale } from '@/lib/i18n';
+import { ForgetCheckout } from '@/components/site/ForgetCheckout';
 
 // Comme /dons/merci : cette page ne confirme RIEN par elle-même. Stripe y
 // redirige tout visiteur qui termine le paiement ; la seule source de vérité
@@ -48,6 +49,7 @@ export function SponsorThanksPage({ locale }: { locale: Locale }) {
   const t = text[locale];
   return (
     <>
+      <ForgetCheckout />
       <TextHero eyebrow={t.eyebrow} title={t.title} />
       <section className="bg-cream">
         <div className="mx-auto flex max-w-2xl flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">

@@ -203,6 +203,25 @@ export async function getStripeSubscription(subscriptionId: string): Promise<Str
   return stripeGet<StripeSubscriptionObject>(`/subscriptions/${subscriptionId}`);
 }
 
+/** Session Checkout telle que relue après coup (protection contre le double paiement). */
+export interface StripeCheckoutSessionStatus {
+  id: string;
+  /** « open » : pas encore payée ; « complete » : terminée ; « expired » : abandonnée. */
+  status: 'open' | 'complete' | 'expired' | null;
+  payment_status: 'paid' | 'unpaid' | 'no_payment_required';
+  amount_total: number | null;
+  currency: string | null;
+}
+
+export async function getCheckoutSession(sessionId: string): Promise<StripeCheckoutSessionStatus> {
+  return stripeGet<StripeCheckoutSessionStatus>(`/checkout/sessions/${encodeURIComponent(sessionId)}`);
+}
+
+/** Ferme une session encore ouverte : elle ne pourra plus être payée. */
+export async function expireCheckoutSession(sessionId: string): Promise<void> {
+  await stripePost(`/checkout/sessions/${encodeURIComponent(sessionId)}/expire`, {});
+}
+
 /**
  * Événement webhook minimal et volontairement peu typé : `data.object` change
  * de forme selon `type` (session de paiement ou facture), et on ne modélise
@@ -233,15 +252,16 @@ export function verifyStripeWebhookSignature(
 ): boolean {
   if (!signatureHeader) return false;
 
-  const parts = Object.fromEntries(
-    signatureHeader.split(',').map((part) => {
-      const [key, value] = part.split('=');
-      return [key, value];
-    })
-  );
-  const timestamp = parts.t;
-  const signature = parts.v1;
-  if (!timestamp || !signature) return false;
+  // Plusieurs signatures v1 possibles : pendant un changement de secret,
+  // Stripe signe avec l'ancien et le nouveau. Une seule doit correspondre.
+  let timestamp = '';
+  const signatures: string[] = [];
+  for (const part of signatureHeader.split(',')) {
+    const [key, value] = part.split('=');
+    if (key === 't') timestamp = value ?? '';
+    if (key === 'v1' && value) signatures.push(value);
+  }
+  if (!timestamp || signatures.length === 0) return false;
 
   const age = Math.abs(Date.now() / 1000 - Number(timestamp));
   if (!Number.isFinite(age) || age > toleranceSeconds) return false;
@@ -252,7 +272,8 @@ export function verifyStripeWebhookSignature(
     .digest('hex');
 
   const expectedBuf = Buffer.from(expected, 'hex');
-  const actualBuf = Buffer.from(signature, 'hex');
-  if (expectedBuf.length !== actualBuf.length) return false;
-  return crypto.timingSafeEqual(expectedBuf, actualBuf);
+  return signatures.some((signature) => {
+    const actualBuf = Buffer.from(signature, 'hex');
+    return actualBuf.length === expectedBuf.length && crypto.timingSafeEqual(expectedBuf, actualBuf);
+  });
 }

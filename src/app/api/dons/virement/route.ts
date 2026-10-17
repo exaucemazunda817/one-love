@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { reference } = await createTransferPledge({
+    const { reference, reused } = await createTransferPledge({
       amount: data.amount,
       currency: data.currency,
       isRecurring: data.frequency === 'monthly',
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
       donorLastName: data.donorLastName || null,
       donorCountry: data.donorCountry || null
     });
-    return NextResponse.json({ reference }, { status: 201 });
+    return NextResponse.json({ reference, reused }, { status: 201 });
   } catch (error) {
     console.error('Promesse de virement non enregistrée', error);
     return NextResponse.json({ error: 'Une erreur est survenue. Merci de réessayer.' }, { status: 500 });

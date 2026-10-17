@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
 
   if (!ok) {
     return NextResponse.json(
-      { error: 'Action impossible : ce virement a peut-être déjà été traité. Rechargez la page.' },
+      { error: 'Action impossible : ce virement a peut-être déjà été traité, ou un versement de cette référence est déjà enregistré à cette date. Rechargez la page.' },
       { status: 409 }
     );
   }

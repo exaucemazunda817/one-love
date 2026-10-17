@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { CheckCircleIcon } from '@phosphor-icons/react/ssr';
 import { TextHero, btn } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
+import { ForgetCheckout } from '@/components/site/ForgetCheckout';
 
 export const metadata: Metadata = {
   title: 'Merci pour votre don',
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 export default function MerciPage() {
   return (
     <>
+      <ForgetCheckout />
       <TextHero eyebrow="Don" title="Merci pour votre soutien" />
       <section className="bg-cream">
         <div className="mx-auto flex max-w-2xl flex-col gap-8 px-[clamp(20px,4vw,32px)] py-[clamp(48px,7vw,88px)]">
