@@ -83,6 +83,9 @@ const nextConfig: NextConfig = {
       { source: '/voyage-humanitaire', destination: '/s-impliquer', ...perm },
       { source: '/actions/:slug+', destination: '/actions', ...perm },
       { source: '/en/un-peu-de-nous', destination: '/en/association', ...perm },
+      // Pages légales : françaises seulement, pas de version /en (anciens liens qui répondaient 404).
+      { source: '/en/mentions-legales', destination: '/mentions-legales', ...perm },
+      { source: '/en/confidentialite', destination: '/confidentialite', ...perm },
       { source: '/en/un-peu-de-nous/:slug*', destination: '/en/association', ...perm },
       { source: '/en/parrainage', destination: '/en/parrainer', ...perm },
       { source: '/en/ca-bouge', destination: '/en/galerie', ...perm },

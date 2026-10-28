@@ -130,7 +130,7 @@ export function TransparencyPage({ locale }: { locale: Locale }) {
           <LockKeyIcon size={36} className="text-copper-600" aria-hidden />
           <h3 className="m-0 font-serif text-[26px] font-medium">{t.dataTitle}</h3>
           <p className="m-0 text-pretty text-[17px] leading-[1.65] text-ink-body">{t.dataText}</p>
-          <Link href={localeHref('/confidentialite', locale)} className="inline-flex min-h-11 items-center gap-1.5 font-bold no-underline">
+          <Link href="/confidentialite" className="inline-flex min-h-11 items-center gap-1.5 font-bold no-underline">
             {t.dataLink}
             <ArrowRightIcon aria-hidden />
           </Link>
