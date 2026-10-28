@@ -963,6 +963,19 @@ parrainage.
 - **Redirections de l'ancien WordPress** dans `next.config.ts` (utiles au branchement de `associationonelove.org`).
 - Rapport complet des audits : `~/Documents/Mazunda/08-Divers/One-Love/audits-2026-09-29.md`.
 
+## Règles UX du skill `ui-ux-pro-max` (28/10/2026)
+
+Mesurées sur 14 pages (téléphone et ordinateur) avec de vraies tabulations clavier.
+Déjà conformes : zoom, noms des boutons, étiquettes, champs à 16 px, images décrites,
+lien « Aller au contenu », aucun élément caché au clavier (les « hors écran » vus au
+premier passage venaient du `scroll-behavior: smooth`, à couper pour mesurer), cibles
+≥ 24 px (règle web du skill ; liens du pied de page à 32 px = choix de Mazunda).
+Corrigé : contour de focus des `<video>` et du bouton YouTube dessiné à l'intérieur
+(`outline-offset: -5px`, classe `ol-play-inset`) car leur cadre `overflow-hidden` le
+coupait ; cartes photo mobiles de `/actions` en `h2` (prop `headingLevel` de
+`MobilePhotoCard`) au lieu d'un saut h1 → h3. Non changé, volontairement : textes
+courants à 14-15 px sur téléphone (tailles de la maquette, à ne pas « arrondir »).
+
 ## IndexNow et Bing Webmaster (08/10/2026)
 
 - Site inscrit sur **Bing Webmaster Tools** (compte de Mazunda, import depuis

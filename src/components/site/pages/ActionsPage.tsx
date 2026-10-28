@@ -127,6 +127,7 @@ export function ActionsPage({ locale }: { locale: Locale }) {
                   }
                   title={a.t}
                   text={a.d}
+                  headingLevel={2}
                 />
               </div>
               <Reveal className="hidden grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] items-center gap-[clamp(28px,5vw,64px)] md:grid">

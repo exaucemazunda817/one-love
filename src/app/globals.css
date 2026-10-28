@@ -206,6 +206,14 @@ body {
   outline-offset: 3px;
 }
 
+/* Vidéos et bouton « Lire » YouTube posés dans un cadre arrondi qui coupe ce qui
+   dépasse (overflow-hidden) : le contour, dessiné dehors, devenait invisible au
+   clavier (mesuré le 28/10/2026). Il est donc dessiné à l'intérieur. */
+video:focus-visible,
+.ol-play-inset:focus-visible {
+  outline-offset: -5px;
+}
+
 /* Champ « montant libre » des modules de don : le contour de sélection
    général se dessinait À L'INTÉRIEUR de la boîte arrondie et n'en laissait
    voir que deux barres verticales. On le retire du champ et on met en valeur

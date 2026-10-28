@@ -28,7 +28,7 @@ export function YouTubeLite({ id, title, playLabel }: { id: string; title: strin
       type="button"
       onClick={() => setPlaying(true)}
       aria-label={`${playLabel} : ${title}`}
-      className="group absolute inset-0 block h-full w-full cursor-pointer border-0 bg-night p-0"
+      className="ol-play-inset group absolute inset-0 block h-full w-full cursor-pointer border-0 bg-night p-0"
     >
       <Image
         src={`/histoire/youtube/${id}.webp`}
