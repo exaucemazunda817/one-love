@@ -10,7 +10,7 @@ import { org } from '@/lib/content';
 // qui pourrait se servir du formulaire pour faire envoyer par l'association
 // un texte de son choix à l'adresse d'un tiers. Le rate limiting (8 par heure
 // et par IP) borne le reste.
-const ACK: Record<'contact' | 'parrainage' | 'mobile-money', { subject: string; body: string }> = {
+const ACK: Record<'contact' | 'parrainage' | 'mobile-money' | 'helloasso', { subject: string; body: string }> = {
   contact: {
     subject: `${org.name} — nous avons bien reçu votre message`,
     body: "Bonjour,\n\nNous avons bien reçu votre message et nous vous répondrons dès que possible.\n\nL'équipe One Love"
@@ -22,6 +22,10 @@ const ACK: Record<'contact' | 'parrainage' | 'mobile-money', { subject: string; 
   'mobile-money': {
     subject: `${org.name} — don par Mobile Money`,
     body: "Bonjour,\n\nC'est noté : nous vous préviendrons dès que le don par Mobile Money (Orange Money, Airtel Money, M-Pesa) sera disponible.\n\nL'équipe One Love"
+  },
+  helloasso: {
+    subject: `${org.name} — merci pour votre don`,
+    body: "Bonjour,\n\nMerci pour votre don. HelloAsso vous envoie le justificatif de votre paiement. Si vous avez choisi de parrainer un enfant, nous vous écrivons très vite pour vous le présenter.\n\nL'équipe One Love"
   }
 };
 

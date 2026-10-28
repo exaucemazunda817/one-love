@@ -1066,3 +1066,11 @@ Rapport : `~/Documents/Mazunda/08-Divers/One-Love/audit-securite-paiements-2026-
   de compter (sinon une rafale simultanée contournait la limite).
 - **Testé** sur une branche Neon jetable avec une clé Stripe factice : la
   logique de garde l'est, le parcours complet avec un vrai Stripe ne l'est pas.
+
+## Dons par carte et prélèvement : HelloAsso intégré (28/10/2026)
+
+- **Décision de Mazunda** : carte et prélèvement passent **tous** par HelloAsso, dans le formulaire de l'association (`association-one-love/formulaires/6`, celui de l'ancien site WordPress, ponctuel et mensuel). Le donateur **ne quitte jamais le site** : le formulaire est intégré à l'étape 3 de `/dons` (`HelloAssoWidget.tsx`, iframe `/widget`, `frame-src https://www.helloasso.com` dans la CSP). **Stripe est mis de côté** : plus aucun appel depuis le formulaire, le code serveur (`lib/stripe.ts`, routes, webhook) reste en place pour plus tard.
+- HelloAsso = **euros seulement** : en $ ou en FC, la carte est grisée et le virement est proposé.
+- Le site préremplit montant, prénom, nom, e-mail et pays (messages officiels de HelloAsso), règle la hauteur de l'iframe et reçoit le message `purchase` à la fin du paiement. Il envoie alors un message à l'association (`/api/contact`, origine `helloasso`) avec la raison du don, le montant et le n° de commande HelloAsso, car HelloAsso ne connaît pas l'affectation (village, parrainage). Les dons HelloAsso ne sont **pas** enregistrés dans la table `Donation` ni dans `/gestion` ; un parrainage payé sur HelloAsso est à inscrire à la main.
+- Virement direct inchangé (référence, confirmation dans `/gestion/virements`). Mobile Money reste « Bientôt » en attendant Moko Afrika ou pawaPay (branche `feature/pawapay-mobile-money` non publiée, à adapter : elle modifie aussi `DonationFlow.tsx`).
+- Test automatisé impossible jusqu'au bout : HelloAsso affiche une vérification Cloudflare à un navigateur piloté. À tester à la main (préremplissage, hauteur, message de fin).

@@ -8,7 +8,6 @@ import {
   BankIcon,
   CheckIcon,
   ArrowRightIcon,
-  LockSimpleIcon,
   CopyIcon,
   ShieldCheckIcon,
   ArrowsClockwiseIcon,
@@ -19,16 +18,13 @@ import {
   type Currency,
   SYMBOL,
   formatCustom,
-  sanitizeAmount,
-  startStripeCheckout,
-  readCheckout,
-  rememberCheckout,
-  forgetCheckout,
-  type StartedCheckout
+  sanitizeAmount
 } from '@/lib/donation-ui';
 import { DONATION_LIMITS, SPONSOR_FROM, SPONSOR_LIMITS, formatMoney } from '@/lib/money';
 import { bankTransfer } from '@/lib/content';
 import { VILLAGE_SLUG, reasonFromParam, type DonationReason } from '@/lib/funds';
+import { helloAssoWidgetUrl } from '@/lib/helloasso';
+import { HelloAssoWidget, type HelloAssoPurchase } from '@/components/site/HelloAssoWidget';
 
 // Montants proposés, FIXÉS dans chaque devise (07/10/2026) : le don est payé
 // exactement dans la devise et au montant affichés, sans reconversion. Les
@@ -39,9 +35,10 @@ const PRESETS: Record<Currency, readonly number[]> = {
   USD: [11, 28, 55, 110],
   CDF: [31_000, 78_000, 155_000, 310_000]
 };
-// Carte, prélèvement SEPA et virement pour les trois raisons du don
-// (08/10/2026) ; Mobile Money reste « bientôt », hors parrainage.
-type Method = 'card' | 'sepa' | 'virement' | 'momo';
+// Carte et prélèvement passent par le formulaire HelloAsso intégré à la page,
+// en euros (28/10/2026, Stripe mis de côté) ; virement direct pour les trois
+// raisons du don ; Mobile Money reste « bientôt », hors parrainage.
+type Method = 'card' | 'virement' | 'momo';
 
 const T = {
   fr: {
@@ -78,7 +75,6 @@ const T = {
     required: 'Ce champ est obligatoire.',
     emailInvalid: 'Cette adresse e-mail ne semble pas valide.',
     charterRequired: 'Merci d’accepter la charte pour devenir parrain ou marraine.',
-    sponsorPay: (label: string) => `Payer et devenir parrain · ${label} / mois`,
     sponsorThanks: 'Dès la confirmation de votre paiement, nous vous écrivons avec toutes les informations sur votre filleul.',
     coords: 'Vos coordonnées',
     firstName: 'Prénom',
@@ -96,10 +92,13 @@ const T = {
     newsletterNeedsEmail: '(indiquez votre e-mail ci-dessus)',
     newsletterSent: "Un e-mail vient de vous être envoyé pour confirmer votre inscription aux nouvelles du terrain.",
     currencyNote: 'Votre don est payé dans la devise choisie, sans conversion.',
-    cardSoonTag: 'Bientôt',
-    cardSoonNote: 'Le paiement par carte et par prélèvement sera bientôt disponible. En attendant, le virement bancaire est ouvert.',
-    sepaEuroOnly: 'Le prélèvement SEPA n’existe qu’en euros. Choisissez l’euro, ou un autre moyen de paiement.',
-    sepaNote: 'Prélèvement sur votre compte bancaire en euros (IBAN), via Stripe. Le prélèvement apparaît sur votre relevé quelques jours plus tard.',
+    euroOnly: 'La carte et le prélèvement passent par HelloAsso, en euros seulement. Choisissez l’euro, ou le virement bancaire.',
+    helloIntro: (amount: string, monthly: boolean) =>
+      `Réglez votre don ci-dessous, sans quitter notre site, avec HelloAsso, la plateforme de paiement des associations. Le montant de ${amount} est déjà indiqué${monthly ? ' : choisissez « Mensuel » dans le formulaire' : ''}.`,
+    helloTitle: 'Formulaire de don HelloAsso',
+    helloTrust: 'Paiement sécurisé par HelloAsso, sans quitter notre site',
+    helloThanks: 'Merci ! Votre don est bien enregistré. HelloAsso vous envoie le justificatif de paiement par e-mail.',
+    helloSponsorThanks: 'Merci ! Votre paiement est enregistré : nous vous écrivons très vite pour vous présenter votre filleul.',
     getReference: 'Obtenir ma référence de virement',
     referenceTitle: 'Votre référence de virement',
     referenceOnce: (amount: string) => `Faites un virement de ${amount} sur ce compte, en recopiant exactement cette référence dans le libellé.`,
@@ -117,8 +116,7 @@ const T = {
     transferTrust: "Virement direct sur le compte de notre association",
     payMethod: 'Moyen de paiement',
     methods: {
-      card: { t: 'Carte bancaire', d: 'Visa, Mastercard… via Stripe, en quelques instants', tag: 'Recommandé' },
-      sepa: { t: 'Prélèvement SEPA', d: 'Directement sur votre compte bancaire en euros, via Stripe', tag: 'En euros' },
+      card: { t: 'Carte bancaire ou prélèvement', d: 'CB, Visa, Mastercard, Apple Pay ou prélèvement SEPA, via HelloAsso', tag: 'En euros' },
       virement: { t: 'Virement bancaire', d: 'Depuis votre banque, avec une référence à recopier', tag: 'IBAN' },
       momo: { t: 'Mobile Money', d: 'Orange Money, Airtel Money, M-Pesa', tag: 'Bientôt' }
     } as Record<Method, { t: string; d: string; tag: string }>,
@@ -131,10 +129,8 @@ const T = {
     momoNote: 'Orange Money, Airtel Money et M-Pesa seront bientôt disponibles pour les donateurs en RDC. Laissez votre numéro et votre e-mail pour être prévenu.',
     phonePlaceholder: '+243 …',
     notifyMe: 'Me prévenir',
-    stripeNote: 'Paiement sécurisé par Stripe. Vous serez redirigé vers une page de paiement chiffrée.',
     back: 'Retour',
     next: 'Continuer',
-    pay: (label: string, monthly: boolean) => `Payer ${label}${monthly ? ' / mois' : ''}`,
     chooseOther: 'Choisir un autre moyen',
     summary: 'Récapitulatif',
     perMonth: 'par mois',
@@ -143,23 +139,11 @@ const T = {
     eqConfirm: (eq: string) => `${eq} (équivalence indicative)`,
     genericThanks: 'Merci : chaque euro rejoint directement les programmes de terrain.',
     allocation: 'Raison du don :',
-    encrypted: 'Paiement chiffré par Stripe, confirmation par e-mail',
     editable: 'Don mensuel modifiable à tout moment',
     badge: 'Association loi 1901 · RNA W951001528',
     question: 'Une question ? Écrivez-nous',
     error: 'Une erreur est survenue. Merci de réessayer.',
-    // Protection contre le double paiement (17/10/2026).
-    prevPaid: (what: string, when: string) =>
-      `Votre ${what} du ${when} a bien été reçu. Inutile de recommencer : Stripe vous a envoyé un reçu par e-mail.`,
-    prevProcessing: (what: string, when: string) =>
-      `Votre ${what} du ${when} est en cours de traitement par votre banque. Inutile de recommencer.`,
-    prevGift: (amount: string) => `don de ${amount}`,
-    prevSponsor: (amount: string) => `parrainage de ${amount} par mois`,
-    payAgain: 'Faire un nouveau paiement quand même',
     referenceReused: 'Vous aviez déjà demandé une référence pour ce don : c’est la même. Ne faites qu’un seul virement.',
-    alreadyPaidAsk:
-      'Un paiement identique semble avoir été reçu il y a peu. Vérifiez votre boîte e-mail (reçu de Stripe) avant de recommencer.',
-    confirmPayAgain: 'Oui, je veux payer une nouvelle fois'
   },
   en: {
     steps: ['Amount', 'Your details', 'Payment'],
@@ -195,7 +179,6 @@ const T = {
     required: 'This field is required.',
     emailInvalid: "This email address doesn't look valid.",
     charterRequired: 'Please accept the charter to become a sponsor.',
-    sponsorPay: (label: string) => `Pay and become a sponsor · ${label} / month`,
     sponsorThanks: 'As soon as your payment is confirmed, we write to you with all the information about your sponsored child.',
     coords: 'Your details',
     firstName: 'First name',
@@ -213,10 +196,13 @@ const T = {
     newsletterNeedsEmail: '(enter your email above)',
     newsletterSent: 'We have just sent you an email to confirm your subscription to news from the field.',
     currencyNote: 'Your gift is paid in the currency you choose, with no conversion.',
-    cardSoonTag: 'Coming soon',
-    cardSoonNote: 'Card and direct debit payment will be available soon. In the meantime, bank transfer is open.',
-    sepaEuroOnly: 'SEPA direct debit only exists in euros. Choose the euro, or another payment method.',
-    sepaNote: 'Debit from your euro bank account (IBAN), via Stripe. It shows on your statement a few days later.',
+    euroOnly: 'Card and direct debit go through HelloAsso, in euros only. Choose the euro, or bank transfer.',
+    helloIntro: (amount: string, monthly: boolean) =>
+      `Complete your gift below, without leaving our site, with HelloAsso, the payment platform for associations. The amount of ${amount} is already filled in${monthly ? ': choose “Monthly” in the form' : ''}.`,
+    helloTitle: 'HelloAsso donation form',
+    helloTrust: 'Secure payment by HelloAsso, without leaving our site',
+    helloThanks: 'Thank you! Your gift has been recorded. HelloAsso emails you the payment receipt.',
+    helloSponsorThanks: 'Thank you! Your payment is recorded: we will write to you very soon to introduce your sponsored child.',
     getReference: 'Get my transfer reference',
     referenceTitle: 'Your transfer reference',
     referenceOnce: (amount: string) => `Make a transfer of ${amount} to this account, copying this reference exactly into the transfer description.`,
@@ -234,8 +220,7 @@ const T = {
     transferTrust: "Direct transfer to our association’s account",
     payMethod: 'Payment method',
     methods: {
-      card: { t: 'Bank card', d: 'Visa, Mastercard… via Stripe, in a few moments', tag: 'Recommended' },
-      sepa: { t: 'SEPA direct debit', d: 'Straight from your euro bank account, via Stripe', tag: 'Euros' },
+      card: { t: 'Bank card or direct debit', d: 'Visa, Mastercard, Apple Pay or SEPA direct debit, via HelloAsso', tag: 'Euros' },
       virement: { t: 'Bank transfer', d: 'From your bank, with a reference to copy', tag: 'IBAN' },
       momo: { t: 'Mobile Money', d: 'Orange Money, Airtel Money, M-Pesa', tag: 'Coming soon' }
     } as Record<Method, { t: string; d: string; tag: string }>,
@@ -248,10 +233,8 @@ const T = {
     momoNote: 'Orange Money, Airtel Money and M-Pesa will soon be available for donors in the DRC. Leave your number and email to be notified.',
     phonePlaceholder: '+243 …',
     notifyMe: 'Notify me',
-    stripeNote: 'Secure payment via Stripe. You will be redirected to an encrypted payment page.',
     back: 'Back',
     next: 'Continue',
-    pay: (label: string, monthly: boolean) => `Pay ${label}${monthly ? ' / month' : ''}`,
     chooseOther: 'Choose another method',
     summary: 'Summary',
     perMonth: 'per month',
@@ -260,41 +243,29 @@ const T = {
     eqConfirm: (eq: string) => `${eq} (indicative equivalent)`,
     genericThanks: 'Thank you: every euro goes directly to our field programmes.',
     allocation: 'Reason for giving:',
-    encrypted: 'Encrypted payment via Stripe, confirmation by email',
     editable: 'Monthly gift, editable at any time',
     badge: 'Registered non-profit (France) · RNA W951001528',
     question: 'A question? Write to us',
     error: 'Something went wrong. Please try again.',
-    prevPaid: (what: string, when: string) =>
-      `Your ${what} of ${when} has been received. No need to pay again: Stripe has emailed you a receipt.`,
-    prevProcessing: (what: string, when: string) =>
-      `Your ${what} of ${when} is being processed by your bank. No need to pay again.`,
-    prevGift: (amount: string) => `gift of ${amount}`,
-    prevSponsor: (amount: string) => `sponsorship of ${amount} a month`,
-    payAgain: 'Make a new payment anyway',
     referenceReused: 'You already asked for a reference for this gift: it is the same one. Please make only one transfer.',
-    alreadyPaidAsk:
-      'An identical payment seems to have been received a moment ago. Please check your inbox (Stripe receipt) before paying again.',
-    confirmPayAgain: 'Yes, I want to pay again'
   }
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
- * `cardEnabled` vient du serveur (clé Stripe présente ou non). Tant que Stripe
- * n'est pas branché, la carte reste visible mais marquée « Bientôt » et le
- * virement est présélectionné — avant, la carte était présélectionnée et
- * « Recommandée », et le donateur ne découvrait qu'au dernier clic, après
- * trois étapes, que le paiement n'était pas activé (audit du 27/09/2026).
+ * Parcours de don en trois étapes. Carte et prélèvement : formulaire HelloAsso
+ * intégré à l'étape 3 (euros seulement), prérempli avec le montant et les
+ * coordonnées ; quand HelloAsso signale la fin du paiement, l'association
+ * reçoit un message avec la raison du don (village, parrainage…), que
+ * HelloAsso ne connaît pas. Virement : référence à recopier, confirmée par
+ * l'équipe dans /gestion/virements.
  */
 export function DonationFlow({
   locale,
-  cardEnabled,
   sponsorPrices
 }: {
   locale: Locale;
-  cardEnabled: boolean;
   /** Prix des trois formules de parrainage, lus côté serveur (lib/sponsorship.ts). */
   sponsorPrices: Record<Currency, number>[];
 }) {
@@ -333,7 +304,8 @@ export function DonationFlow({
   const [donorEmail, setDonorEmail] = useState('');
   const [country, setCountry] = useState('FR');
   const [newsletter, setNewsletter] = useState(false);
-  const [method, setMethod] = useState<Method>(cardEnabled ? 'card' : 'virement');
+  const [method, setMethod] = useState<Method>('card');
+  const [helloPaid, setHelloPaid] = useState<HelloAssoPurchase | null>(null);
   const [copied, setCopied] = useState(false);
   const [phone, setPhone] = useState('');
   const [phoneSent, setPhoneSent] = useState(false);
@@ -346,30 +318,6 @@ export function DonationFlow({
   const [newsletterSent, setNewsletterSent] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
-  // Dernier paiement commencé dans ce navigateur, s'il est déjà passé, et
-  // confirmation explicite de payer à nouveau (protection anti-doublon).
-  const [previousPaid, setPreviousPaid] = useState<{ checkout: StartedCheckout; state: 'paid' | 'processing' } | null>(null);
-  const [confirmAgain, setConfirmAgain] = useState(false);
-  const [alreadyPaidAsk, setAlreadyPaidAsk] = useState(false);
-
-  // Au retour sur le formulaire (connexion coupée après un paiement, page de
-  // remerciement jamais affichée) : le paiement précédent est-il passé ?
-  useEffect(() => {
-    const checkout = readCheckout();
-    if (!checkout) return;
-    let cancelled = false;
-    fetch(`/api/paiement/statut?session_id=${encodeURIComponent(checkout.sessionId)}`)
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data: { state?: string } | null) => {
-        if (cancelled || !data) return;
-        if (data.state === 'paid' || data.state === 'processing') setPreviousPaid({ checkout, state: data.state });
-        else if (data.state === 'expired') forgetCheckout();
-      })
-      .catch(() => undefined);
-    return () => {
-      cancelled = true;
-    };
-  }, []);
   const emailOk = EMAIL_RE.test(donorEmail.trim());
 
   // Le parrainage est toujours mensuel ; les montants proposés sont alors les
@@ -387,15 +335,12 @@ export function DonationFlow({
     : formatMoney(presetValue(amt), cur, locale);
   // Montant réellement versé : celui affiché, dans la devise choisie.
   const amount = isCustom ? (cVal > 0 ? cVal : 0) : presetValue(amt);
-  const payLabel = amountStr;
   const projectSlug = reason === 'village' ? VILLAGE_SLUG : undefined;
-  // Parrainage : carte (ou SEPA) uniquement, c'est le paiement confirmé qui
-  // inscrit le parrain. Pas d'étiquette « Bientôt » sur ce parcours
-  // (décision du 29/09/2026) : si Stripe n'est pas branché, le serveur répond
-  // « momentanément indisponible ».
-  const stripeMethod = method === 'card' || method === 'sepa';
-  const sepaBlocked = method === 'sepa' && cur !== 'EUR';
-  const cardUsable = stripeMethod && (cardEnabled || isSponsor) && !sepaBlocked;
+  // Carte et prélèvement : HelloAsso, en euros uniquement.
+  const onlineBlocked = cur !== 'EUR';
+  const helloSrc = helloAssoWidgetUrl();
+  const showHello = method === 'card' && !onlineBlocked && Boolean(helloSrc);
+  const ISO3: Record<string, string> = { FR: 'FRA', CD: 'COD', BE: 'BEL' };
 
   function chooseReason(next: DonationReason) {
     setReason(next);
@@ -405,7 +350,7 @@ export function DonationFlow({
     setTransferDone(false);
     if (next === 'parrainage') {
       // Mobile Money n'est pas proposé pour un parrainage.
-      if (method === 'momo') setMethod(cardEnabled ? 'card' : 'virement');
+      if (method === 'momo') setMethod('card');
       // Garde un montant libre valide, sinon revient à la formule du milieu.
       if (amt > 2) setAmt(1);
     }
@@ -422,55 +367,9 @@ export function DonationFlow({
     return out;
   }
 
-  async function startSponsorship(again: boolean) {
-    setPending(true);
-    setError('');
-    setAlreadyPaidAsk(false);
-    await subscribeNewsletter();
-    try {
-      const response = await fetch('/api/parrainer/session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          email: donorEmail.trim(),
-          phone: sponsorPhone.trim(),
-          mode: 'child',
-          plan: isCustom ? 1 : amt,
-          currency: cur,
-          locale,
-          from: 'dons',
-          paymentMethod: method === 'sepa' ? 'sepa' : 'card',
-          previousSessionId: readCheckout()?.sessionId,
-          confirmAgain: again || undefined,
-          ...(isCustom ? { amount: cVal } : {})
-        })
-      });
-      const data = await response.json().catch(() => ({}));
-      if (response.status === 201 && typeof data.url === 'string') {
-        if (typeof data.sessionId === 'string') {
-          rememberCheckout({
-            sessionId: data.sessionId,
-            kind: 'parrainage',
-            amount: isCustom ? cVal : sponsorPrices[amt][cur],
-            currency: cur,
-            startedAt: Date.now()
-          });
-        }
-        window.location.href = data.url;
-        return;
-      }
-      if (response.status === 409 && data.code === 'ALREADY_PAID') setAlreadyPaidAsk(true);
-      else setError(data.error || t.error);
-    } catch {
-      setError(t.error);
-    }
-    setPending(false);
-  }
-
   function chooseMethod(next: Method) {
     setMethod(next);
+    setHelloPaid(null);
     setTransferRef('');
     setTransferDone(false);
     setError('');
@@ -597,48 +496,45 @@ export function DonationFlow({
       await requestTransferReference();
       return;
     }
-    if (!cardUsable) {
-      // Carte ou prélèvement pas encore activés, ou Mobile Money : le bouton
-      // propose de passer au virement plutôt que de ne rien faire.
-      chooseMethod('virement');
-      return;
-    }
-    await payOnline(confirmAgain);
+    // Carte en devise autre que l'euro, ou Mobile Money : le bouton propose
+    // de passer au virement plutôt que de ne rien faire.
+    chooseMethod('virement');
   }
 
-  /** Carte ou prélèvement : ouvre la page de paiement Stripe. `again` = le
-   * visiteur a confirmé vouloir payer malgré un paiement identique récent. */
-  async function payOnline(again: boolean) {
-    if (isSponsor) {
-      await startSponsorship(again);
-      return;
+  /** Fin du paiement signalée par HelloAsso : remerciement, inscription aux
+   * nouvelles si demandée, et message à l'association avec la raison du don
+   * (HelloAsso ne la connaît pas). Sans e-mail, pas de message : HelloAsso
+   * garde de toute façon la trace du paiement. */
+  async function onHelloPurchase(purchase: HelloAssoPurchase) {
+    setHelloPaid(purchase);
+    setNewsletterSent(await subscribeNewsletter());
+    if (!emailOk) return;
+    const reasonFr = T.fr.reasons[reason].t;
+    const freqFr = purchase.frequency === 'monthly' ? 'mensuel' : purchase.frequency === 'one_time' ? 'ponctuel' : purchase.frequency || 'inconnue';
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: `${firstName} ${lastName}`.trim() || donorEmail.trim(),
+          email: donorEmail.trim(),
+          phone: sponsorPhone.trim(),
+          subject: `Don HelloAsso — ${reasonFr}`,
+          message: [
+            `Don réglé sur le formulaire HelloAsso intégré à /dons.`,
+            `Raison : ${reasonFr}${isSponsor && !isCustom ? ` (${T.fr.planNames[amt]})` : ''}`,
+            `Montant payé : ${purchase.value} € (${freqFr})`,
+            `Commande HelloAsso n° ${purchase.transactionId || 'inconnu'}`,
+            isSponsor ? 'Parrainage : à inscrire dans /gestion/parrains et à contacter.' : ''
+          ]
+            .filter(Boolean)
+            .join('\n'),
+          origin: 'helloasso'
+        })
+      });
+    } catch {
+      // Le paiement est fait : un message perdu ne doit pas inquiéter le donateur.
     }
-    setPending(true);
-    setError('');
-    setAlreadyPaidAsk(false);
-    await subscribeNewsletter();
-    const result = await startStripeCheckout({
-      amount,
-      currency: cur,
-      frequency: monthly ? 'monthly' : 'once',
-      paymentMethod: method === 'sepa' ? 'sepa' : 'card',
-      projectSlug,
-      donorEmail: emailOk ? donorEmail.trim() : undefined,
-      donorFirstName: firstName.trim() || undefined,
-      donorLastName: lastName.trim() || undefined,
-      donorCountry: country || undefined,
-      previousSessionId: readCheckout()?.sessionId,
-      confirmAgain: again || undefined,
-      locale
-    });
-    if (result.alreadyPaid) setAlreadyPaidAsk(true);
-    else if (result.error) setError(result.error);
-    setPending(false);
-  }
-
-  function payAgainAnyway() {
-    setConfirmAgain(true);
-    setPreviousPaid(null);
   }
 
   const noNext = !valid;
@@ -648,31 +544,6 @@ export function DonationFlow({
       <div className="grid grid-cols-1 gap-10 dk:grid-cols-[2fr_1fr] dk:items-start">
         {/* Colonne formulaire */}
         <div className="flex flex-col gap-8">
-          {previousPaid && (
-            <div role="status" className="flex flex-col gap-3 rounded-card border border-sage-700/30 bg-white p-5 shadow-ol-sm">
-              <p className="m-0 flex items-start gap-2.5 text-[15px] leading-relaxed text-ink-body">
-                <ShieldCheckIcon size={22} weight="fill" className="mt-0.5 shrink-0 text-sage-700" aria-hidden />
-                {(previousPaid.state === 'paid' ? t.prevPaid : t.prevProcessing)(
-                  (previousPaid.checkout.kind === 'parrainage' ? t.prevSponsor : t.prevGift)(
-                    formatMoney(previousPaid.checkout.amount, previousPaid.checkout.currency, locale)
-                  ),
-                  new Date(previousPaid.checkout.startedAt).toLocaleString(locale === 'fr' ? 'fr-FR' : 'en-GB', {
-                    day: 'numeric',
-                    month: 'long',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })
-                )}
-              </p>
-              <button
-                type="button"
-                onClick={payAgainAnyway}
-                className="inline-flex min-h-11 w-fit cursor-pointer items-center rounded-full border border-card-line bg-transparent px-4 text-[14px] font-bold text-ink-soft hover:text-ink"
-              >
-                {t.payAgain}
-              </button>
-            </div>
-          )}
           {/* Étapes */}
           <ol aria-label={t.steps.join(', ')} className="flex list-none gap-3 p-0">
             {t.steps.map((label, i) => {
@@ -767,7 +638,7 @@ export function DonationFlow({
                       onClick={() => {
                         setCur(c);
                         setTransferRef('');
-                        if (c !== 'EUR' && method === 'sepa') setMethod('card');
+                        if (c !== 'EUR' && method === 'card') setMethod('virement');
                       }}
                       className={`min-h-11 min-w-12 cursor-pointer rounded-md border-[1.5px] px-2.5 text-[13px] font-bold ${
                         cur === c ? 'border-ink bg-ink text-cream' : 'border-field-line bg-white text-ink'
@@ -980,12 +851,11 @@ export function DonationFlow({
                   .filter((k) => !(isSponsor && k === 'momo'))
                   .map((k) => {
                   const m = t.methods[k];
-                  const recommended = k === 'card' && (cardEnabled || isSponsor);
-                  const soon = (k === 'card' || k === 'sepa') && !cardEnabled && !isSponsor;
-                  const tag = soon ? t.cardSoonTag : m.tag;
-                  // Prélèvement SEPA : euros seulement.
-                  const unavailable = k === 'sepa' && cur !== 'EUR';
-                  const Icon = k === 'card' ? CreditCardIcon : k === 'momo' ? DeviceMobileIcon : k === 'sepa' ? ArrowsClockwiseIcon : BankIcon;
+                  const recommended = k === 'card' && cur === 'EUR';
+                  const tag = m.tag;
+                  // Carte et prélèvement (HelloAsso) : euros seulement.
+                  const unavailable = k === 'card' && cur !== 'EUR';
+                  const Icon = k === 'card' ? CreditCardIcon : k === 'momo' ? DeviceMobileIcon : BankIcon;
                   return (
                     <label
                       key={k}
@@ -1018,12 +888,33 @@ export function DonationFlow({
                 })}
               </div>
 
-              {cur !== 'EUR' && <p className="m-0 -mt-3 text-[13px] text-ink-soft">{t.sepaEuroOnly}</p>}
-              {method === 'card' && (
-                <p className="m-0 text-[13px] text-ink-soft">{cardEnabled || isSponsor ? t.stripeNote : t.cardSoonNote}</p>
-              )}
-              {method === 'sepa' && !sepaBlocked && (
-                <p className="m-0 text-[13px] text-ink-soft">{cardEnabled || isSponsor ? t.sepaNote : t.cardSoonNote}</p>
+              {cur !== 'EUR' && <p className="m-0 -mt-3 text-[13px] text-ink-soft">{t.euroOnly}</p>}
+              {showHello && helloSrc && (
+                <div className="flex flex-col gap-4">
+                  {helloPaid ? (
+                    <p role="status" className="m-0 flex items-start gap-2 rounded-xl bg-sand p-5 text-[15px] font-bold leading-relaxed text-ink">
+                      <CheckIcon size={20} className="mt-0.5 flex-none text-sage-700" aria-hidden />
+                      <span>
+                        {isSponsor ? t.helloSponsorThanks : t.helloThanks}
+                        {newsletterSent && <span className="mt-1 block font-normal text-ink-soft">{t.newsletterSent}</span>}
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="m-0 text-[14px] leading-[1.6] text-ink-body">{t.helloIntro(amountStr, monthly)}</p>
+                  )}
+                  <HelloAssoWidget
+                    src={helloSrc}
+                    title={t.helloTitle}
+                    prefill={{
+                      amount,
+                      firstName,
+                      lastName,
+                      email: emailOk ? donorEmail.trim() : undefined,
+                      country: ISO3[country]
+                    }}
+                    onPurchase={onHelloPurchase}
+                  />
+                </div>
               )}
 
               {method === 'virement' && (
@@ -1126,22 +1017,6 @@ export function DonationFlow({
                 </p>
               )}
 
-              {alreadyPaidAsk && (
-                <div role="alert" className="flex flex-col gap-3 rounded-card border border-copper-600/40 bg-white p-4">
-                  <p className="m-0 text-[14px] font-bold leading-relaxed text-ink">{t.alreadyPaidAsk}</p>
-                  <button
-                    type="button"
-                    disabled={pending}
-                    onClick={() => {
-                      setConfirmAgain(true);
-                      void payOnline(true);
-                    }}
-                    className="inline-flex min-h-11 w-fit cursor-pointer items-center rounded-full border border-card-line bg-transparent px-4 text-[14px] font-bold text-ink-soft hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {t.confirmPayAgain}
-                  </button>
-                </div>
-              )}
             </div>
           )}
 
@@ -1164,7 +1039,7 @@ export function DonationFlow({
             >
               {t.back}
             </button>
-            {!(step === 3 && method === 'virement' && transferDone) && (
+            {!(step === 3 && ((method === 'virement' && transferDone) || showHello)) && (
               <button
                 type="button"
                 disabled={noNext || pending}
@@ -1175,11 +1050,6 @@ export function DonationFlow({
                   <>
                     {t.next}
                     <ArrowRightIcon aria-hidden />
-                  </>
-                ) : cardUsable ? (
-                  <>
-                    <LockSimpleIcon aria-hidden />
-                    {pending ? '…' : isSponsor ? t.sponsorPay(payLabel) : t.pay(payLabel, monthly)}
                   </>
                 ) : method === 'virement' ? (
                   <>
@@ -1219,7 +1089,7 @@ export function DonationFlow({
             </span>
             <span className="flex items-center gap-2">
               <ShieldCheckIcon size={16} aria-hidden />
-              {cardUsable ? t.encrypted : t.transferTrust}
+              {method === 'card' && !onlineBlocked ? t.helloTrust : t.transferTrust}
             </span>
             {monthly && (
               <span className="flex items-center gap-2">

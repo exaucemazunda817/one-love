@@ -9,9 +9,7 @@ import { DonationFlow } from '@/components/site/DonationFlow';
 import { CancelNotice } from '@/app/(site)/dons/CancelNotice';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { BackStrip } from '@/components/site/BackLink';
-import { isStripeConfigured } from '@/lib/stripe';
 import { SPONSOR_PLANS } from '@/lib/sponsorship';
-import { helloAssoUrl } from '@/lib/helloasso';
 
 export const text = {
   fr: {
@@ -34,10 +32,6 @@ export const text = {
     otherTitle: "Autrement qu’un don",
     otherText: "Vous pouvez aussi rejoindre notre équipe comme bénévole ou construire un partenariat avec notre association.",
     otherCta: 'Prendre contact',
-    helloTitle: 'Vous êtes en France ?',
-    helloText: 'Vous pouvez aussi donner en euros sur HelloAsso, une fois ou tous les mois, comme sur notre ancien site. Vous quittez alors notre site pour le formulaire de HelloAsso.',
-    helloCta: 'Donner via HelloAsso',
-    newTab: '(nouvel onglet)',
     cancelled: 'Le paiement a été annulé. Aucun montant n’a été prélevé.'
   },
   en: {
@@ -60,10 +54,6 @@ export const text = {
     otherTitle: 'Other ways to help',
     otherText: 'You can also join our team as a volunteer or build a partnership with our association.',
     otherCta: 'Get in touch',
-    helloTitle: 'Giving from France?',
-    helloText: 'You can also give in euros on HelloAsso, once or every month. You will leave our site for the HelloAsso form.',
-    helloCta: 'Give via HelloAsso',
-    newTab: '(new tab)',
     cancelled: 'The payment was cancelled. No amount was charged.'
   }
 };
@@ -80,8 +70,6 @@ export function donsMetadata(locale: Locale): Metadata {
 export function DonsPage({ locale }: { locale: Locale }) {
   const t = text[locale];
   const href = (p: string) => localeHref(p, locale);
-  // Lu au build, comme la clé Stripe : voir src/lib/helloasso.ts.
-  const helloAsso = helloAssoUrl();
 
   return (
     <>
@@ -106,13 +94,9 @@ export function DonsPage({ locale }: { locale: Locale }) {
         <CancelBanner locale={locale} />
       </Suspense>
 
-      {/* Lu au build (page statique) : après avoir ajouté la clé Stripe sur
-          Vercel, un redéploiement suffit pour que la carte s’active. */}
-      <DonationFlow
-        locale={locale}
-        cardEnabled={isStripeConfigured()}
-        sponsorPrices={SPONSOR_PLANS.child.map((plan) => plan.prices)}
-      />
+      {/* Carte et prélèvement : formulaire HelloAsso intégré (28/10/2026). Le
+          code Stripe reste en place côté serveur, mis de côté. */}
+      <DonationFlow locale={locale} sponsorPrices={SPONSOR_PLANS.child.map((plan) => plan.prices)} />
 
       <section className="bg-sand">
         <Reveal className="mx-auto flex max-w-[1200px] flex-col gap-3 px-[clamp(20px,4vw,32px)] py-[clamp(56px,8vw,96px)]">
@@ -139,20 +123,6 @@ export function DonsPage({ locale }: { locale: Locale }) {
             {t.sponsorCta}
           </Link>
         </Reveal>
-        {helloAsso && (
-          <Reveal delay={135} className="rounded-xl border border-card-line p-6">
-            <h2 className="m-0 text-[18px] font-black">{t.helloTitle}</h2>
-            <p className="mt-2.5 text-[15px] leading-[1.6] text-ink-body">{t.helloText}</p>
-            <a
-              href={helloAsso}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex min-h-11 items-center gap-1.5 font-bold text-copper-700 no-underline"
-            >
-              {t.helloCta} <span className="sr-only">{t.newTab}</span>
-            </a>
-          </Reveal>
-        )}
         <Reveal delay={180} className="rounded-xl bg-sand p-6">
           <h2 className="m-0 text-[18px] font-black">{t.otherTitle}</h2>
           <p className="mt-2.5 text-[15px] leading-[1.6] text-ink-body">{t.otherText}</p>

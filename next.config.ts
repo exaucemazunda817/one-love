@@ -19,8 +19,9 @@ const CSP = [
   "font-src 'self' data:",
   "connect-src 'self'",
   // Lecteur vidéo « Notre histoire » (youtube-nocookie, chargé au clic
-  // seulement — voir YouTubeLite.tsx).
-  "frame-src https://www.youtube-nocookie.com",
+  // seulement — voir YouTubeLite.tsx) et formulaire de don HelloAsso intégré
+  // dans /dons (voir HelloAssoWidget.tsx).
+  "frame-src https://www.youtube-nocookie.com https://www.helloasso.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",

@@ -18,10 +18,11 @@ export const contactSchema = z.object({
   subject: z.string().trim().min(1, 'Champ requis.').max(140),
   message: longText(10, 4000),
   // D'où vient le message : le formulaire de contact lui-même, une demande de
-  // parrainage (/parrainer) ou une demande d'alerte Mobile Money (/dons). Ne
+  // parrainage (/parrainer), une demande d'alerte Mobile Money (/dons) ou un
+  // don terminé sur le formulaire HelloAsso intégré (/dons). Ne
   // sert qu'à choisir le texte de l'accusé de réception — jamais à décider de
   // droits ni d'un destinataire.
-  origin: z.enum(['contact', 'parrainage', 'mobile-money']).optional()
+  origin: z.enum(['contact', 'parrainage', 'mobile-money', 'helloasso']).optional()
 });
 
 export const volunteerSchema = z.object({

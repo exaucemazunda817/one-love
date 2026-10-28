@@ -102,9 +102,9 @@ export default function ConfidentialitePage() {
             <HandCoinsIcon size={36} className="text-copper-600 max-md:hidden" aria-hidden />
             <h2 className="m-0 text-balance font-serif text-[24px] font-medium leading-[1.25] max-md:text-[26px]"><BrushLast text="Donateurs" /></h2>
             <p className="m-0 text-[16px] leading-[1.65] text-ink-body">
-              Pour un don par carte ou prélèvement, le paiement est traité par Stripe :
-              votre numéro de carte ne transite jamais par nos serveurs et n&apos;y est
-              jamais stocké. Nous conservons votre nom, votre e-mail et le montant de
+              Pour un don par carte ou prélèvement, le paiement est traité par HelloAsso,
+              dans un formulaire intégré à notre page : votre numéro de carte ne transite
+              jamais par nos serveurs et n&apos;y est jamais stocké. Nous conservons votre nom, votre e-mail et le montant de
               votre don pour la comptabilité de l&apos;association, dans les délais
               légaux applicables. {donationNotice.privacy}
             </p>
