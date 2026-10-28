@@ -1,4 +1,5 @@
 import { escapeHtml } from '@/lib/validation';
+import { CONTACT_EMAIL } from '@/lib/i18n';
 
 // Envoi d'e-mails via Resend, par appel HTTP direct — pas de SDK, donc zéro
 // dépendance supplémentaire et zéro surprise au moment du déploiement.
@@ -54,7 +55,10 @@ export async function sendEmail({
         subject,
         text,
         html,
-        ...(replyTo && looksLikeEmail(replyTo) ? { reply_to: replyTo } : {})
+        // Sans adresse de réponse précisée, les réponses vont à la vraie boîte de
+        // l'association : l'adresse d'envoi (send.associationonelove.org) n'a
+        // pas de boîte de réception, une réponse y serait perdue (28/10/2026).
+        reply_to: replyTo && looksLikeEmail(replyTo) ? replyTo : CONTACT_EMAIL
       }),
       signal: controller.signal
     });
