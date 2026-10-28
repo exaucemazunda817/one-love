@@ -1,10 +1,12 @@
-// Lien vers le formulaire de don HelloAsso de l'association (https://www.helloasso.com/
-// associations/<nom>/formulaires/<n>). Lu au build (NEXT_PUBLIC_) : après l'avoir
-// renseigné sur Vercel (type Configuration, jamais Sensible), un redéploiement suffit
-// pour que la carte apparaisse sur /dons. Tant que l'adresse est absente ou n'est
-// pas une adresse HelloAsso en https, rien ne s'affiche.
+// Formulaire de don HelloAsso de l'association, déjà utilisé par l'ancien site
+// WordPress (page « Faire un don », iframe du formulaire 6). Vérifié ouvert le
+// 28/10/2026, dons ponctuels et mensuels. NEXT_PUBLIC_HELLOASSO_URL peut le
+// remplacer (lu au build, type Configuration sur Vercel). Une adresse qui n'est
+// pas un formulaire HelloAsso en https n'affiche rien.
+const DEFAULT_URL = 'https://www.helloasso.com/associations/association-one-love/formulaires/6';
+
 export function helloAssoUrl(): string | null {
-  const raw = process.env.NEXT_PUBLIC_HELLOASSO_URL?.trim();
+  const raw = (process.env.NEXT_PUBLIC_HELLOASSO_URL || DEFAULT_URL).trim();
   if (!raw) return null;
   try {
     const url = new URL(raw);

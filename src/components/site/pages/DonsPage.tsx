@@ -35,7 +35,7 @@ export const text = {
     otherText: "Vous pouvez aussi rejoindre notre équipe comme bénévole ou construire un partenariat avec notre association.",
     otherCta: 'Prendre contact',
     helloTitle: 'Vous êtes en France ?',
-    helloText: 'Vous pouvez aussi donner en euros par carte sur HelloAsso, la plateforme de paiement des associations. Vous quittez alors notre site pour le formulaire de HelloAsso.',
+    helloText: 'Vous pouvez aussi donner en euros sur HelloAsso, une fois ou tous les mois, comme sur notre ancien site. Vous quittez alors notre site pour le formulaire de HelloAsso.',
     helloCta: 'Donner via HelloAsso',
     newTab: '(nouvel onglet)',
     cancelled: 'Le paiement a été annulé. Aucun montant n’a été prélevé.'
@@ -61,7 +61,7 @@ export const text = {
     otherText: 'You can also join our team as a volunteer or build a partnership with our association.',
     otherCta: 'Get in touch',
     helloTitle: 'Giving from France?',
-    helloText: 'You can also give in euros by card on HelloAsso, the payment platform for associations. You will leave our site for the HelloAsso form.',
+    helloText: 'You can also give in euros on HelloAsso, once or every month. You will leave our site for the HelloAsso form.',
     helloCta: 'Give via HelloAsso',
     newTab: '(new tab)',
     cancelled: 'The payment was cancelled. No amount was charged.'
