@@ -18,7 +18,7 @@
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
     "@prisma/client": "^6.19.3",
-    "@vercel/blob": "^2.8.0",
+    "@vercel/blob": "^2.8.2",
     "bcryptjs": "^3.0.3",
     "exceljs": "^4.4.0",
     "lucide-react": "^1.44.0",
@@ -27,7 +27,7 @@
     "prisma": "^6.19.3",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "zod": "^4.6.1"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -40,5 +40,8 @@
     "tailwindcss": "^4",
     "tsx": "^4.23.13",
     "typescript": "^5"
+  },
+  "overrides": {
+    "zod": "$zod"
   }
 }
