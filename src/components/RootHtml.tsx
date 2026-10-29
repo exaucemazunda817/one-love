@@ -47,10 +47,23 @@ const SCRIPT =
   "addEventListener('scroll',function(){if(!t)h.classList.add('is-scrolling');clearTimeout(t);" +
   "t=setTimeout(function(){h.classList.remove('is-scrolling');t=0},150)},{passive:true})})()";
 
-// Écran d'ouverture (site public uniquement) : posé à chaque chargement complet
-// de page, retiré au plus tard à 3,6 s ; jamais si « Réduire les animations ».
+// Écran d'ouverture (site public uniquement) : posé à l'ouverture du site et à
+// chaque actualisation (demande de Mazunda du 05/10/2026), retiré au plus tard à
+// 3,6 s ; jamais si « Réduire les animations ».
+//
+// PAS joué quand on arrive d'une AUTRE PAGE DU SITE (29/10/2026, signalé par
+// Mazunda : cliquer sur un article rejouait l'animation). Cause : sur une
+// connexion lente, un clic fait AVANT que la page soit prête (JavaScript pas
+// encore chargé) n'est pas une navigation cliente mais un rechargement complet,
+// donc l'intro repartait. C'est aussi le cas du changement de langue (layouts
+// racines différents) et du retour en arrière. Règle : même origine pour la
+// page précédente (referrer) et pas une actualisation, ou retour en arrière,
+// donc pas d'intro.
 const INTRO_SCRIPT =
-  "(function(){var h=document.documentElement;try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return}catch(e){}" +
+  "(function(){var h=document.documentElement;try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;" +
+  "var n=performance.getEntriesByType('navigation')[0],ty=n&&n.type;" +
+  "if(ty==='back_forward')return;" +
+  "if(ty!=='reload'&&document.referrer&&new URL(document.referrer).origin===location.origin)return}catch(e){}" +
   "h.setAttribute('data-intro','');setTimeout(function(){h.removeAttribute('data-intro')},3600)})()";
 
 export function RootHtml({ lang, children, intro = false }: { lang: 'fr' | 'en'; children: React.ReactNode; intro?: boolean }) {
