@@ -61,6 +61,7 @@ export function NewsInteractive({ t }: { t: NewsText }) {
                 <MobilePhotoCard
                   src={p.img}
                   alt={p.alt}
+                  video={p.video}
                   heightClass="h-[440px]"
                   badge={
                     <span className="rounded-full bg-cream px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.08em] text-copper-700">

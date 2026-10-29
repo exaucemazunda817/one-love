@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { Reveal } from '@/components/Reveal';
+import { HoverVideo } from '@/components/site/HoverVideo';
 
 // Carte photo plein cadre pour le mobile : le texte est posé sur l'image, sur un
 // dégradé sombre qui garantit la lisibilité, et chaque élément (pastille, titre,
@@ -8,6 +9,7 @@ import { Reveal } from '@/components/Reveal';
 export function MobilePhotoCard({
   src,
   alt,
+  video,
   badge,
   title,
   text,
@@ -18,6 +20,8 @@ export function MobilePhotoCard({
 }: {
   src: string;
   alt: string;
+  // Vidéo d'aperçu facultative : démarre sans le son quand la carte est bien à l'écran.
+  video?: string;
   badge?: React.ReactNode;
   title: string;
   text: string;
@@ -42,6 +46,7 @@ export function MobilePhotoCard({
           style={{ objectPosition: imagePosition }}
         />
       </Reveal>
+      {video && <HoverVideo variant="card" src={video} label={alt} />}
       <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--scrim-0)_18%,var(--scrim-3)_52%,var(--scrim-5)_100%)]" />
       <div className="absolute inset-0 flex flex-col justify-end gap-2.5 p-5 text-cream">
         {badge && (

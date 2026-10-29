@@ -2,27 +2,30 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-/// Vidéo qui démarre toute seule, AVEC le son, quand la souris passe dessus
-/// (ordinateur uniquement : un téléphone n'a pas de survol, on y touche pour
-/// lancer). Elle s'arrête et revient au début quand la souris s'en va.
+/// Vidéo qui démarre toute seule quand on « passe dessus ».
 ///
-/// LIMITE DES NAVIGATEURS : un son ne peut démarrer sans clic que si le
-/// visiteur a déjà cliqué, touché ou tapé quelque chose sur la page (Chrome,
-/// Firefox, Safari). On essaie donc d'abord AVEC le son ; si le navigateur
-/// refuse (premier survol d'une page ouverte directement), la vidéo démarre
-/// SANS le son, et le visiteur le met avec les commandes (lecteur) ou en
-/// entrant dans l'article (carte). Un clic dans le menu ou sur un lien du site
-/// suffit ensuite pour que le son marche partout.
+/// ORDINATEUR (souris) : elle démarre AVEC le son quand la souris passe dessus
+/// et s'arrête, revenue au début, quand la souris s'en va.
+///
+/// TÉLÉPHONE ET TABLETTE (pas de souris) : « passer dessus » = la faire entrer
+/// à l'écran en défilant. Elle démarre alors SANS le son (les navigateurs
+/// mobiles n'autorisent jamais un son qui démarre seul) et s'arrête quand elle
+/// sort de l'écran. Le son se met avec les commandes du lecteur (article) ou en
+/// ouvrant l'article (carte).
+///
+/// LIMITE DES NAVIGATEURS (ordinateur) : un son ne peut démarrer sans clic que
+/// si le visiteur a déjà cliqué ou tapé quelque chose sur la page. On essaie
+/// donc d'abord AVEC le son ; si le navigateur refuse, on démarre sans le son.
 ///
 /// Deux usages :
-///  - `variant="card"` : vidéo d'aperçu posée sur l'image d'une carte
-///    (le survol de TOUTE la carte, le lien parent, la lance) ; invisible tant
-///    qu'elle ne joue pas, l'image reste donc affichée.
+///  - `variant="card"` : vidéo d'aperçu posée sur l'image d'une carte, invisible
+///    tant qu'elle ne joue pas (l'image reste donc affichée) ;
 ///  - `variant="player"` : lecteur de l'article, avec ses commandes ; si le
-///    visiteur s'en sert, le survol ne l'arrête plus.
+///    visiteur s'en sert, la sortie de la souris ne l'arrête plus.
 ///
-/// Le chargement ne commence qu'au premier survol (`preload="none"`), jamais
-/// avec « économiser les données », ni avec « réduire les animations ».
+/// Le chargement ne commence qu'au premier survol ou à la première entrée à
+/// l'écran (`preload="none"`), jamais avec « économiser les données », « réduire
+/// les animations » ou une connexion 2G.
 export function HoverVideo({
   src,
   poster,
@@ -44,60 +47,104 @@ export function HoverVideo({
     if (!video) return;
     const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
-    if (!canHover || reduce || nav.connection?.saveData) return;
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } };
+    const slow = nav.connection?.effectiveType === 'slow-2g' || nav.connection?.effectiveType === '2g';
+    if (reduce || nav.connection?.saveData || slow) return;
 
-    // Zone de survol : la carte entière (lien parent) ou la vidéo elle-même.
-    const host: HTMLElement = variant === 'card' ? (video.closest('a') ?? video) : video;
-    let touched = false; // le visiteur a utilisé les commandes : on ne l'arrête plus
-    let inside = false;
-
-    const start = async () => {
-      video.muted = false;
-      try {
-        await video.play();
-      } catch {
-        // Son refusé par le navigateur : on démarre sans le son.
-        video.muted = true;
-        try {
-          await video.play();
-        } catch {
-          /* rien à faire */
-        }
-      }
-      // La souris est repartie pendant le chargement : on arrête.
-      if (!inside && !touched) video.pause();
-    };
-    const onEnter = () => {
-      inside = true;
-      void start();
-    };
-    const onLeave = () => {
-      inside = false;
-      if (touched) return;
-      video.pause();
-      video.currentTime = 0;
-      setPlaying(false);
-    };
     const onPlaying = () => setPlaying(true);
     const onPause = () => {
       if (variant === 'card') setPlaying(false);
     };
-    const onUser = () => {
-      touched = true;
-    };
-
-    host.addEventListener('pointerenter', onEnter);
-    host.addEventListener('pointerleave', onLeave);
     video.addEventListener('playing', onPlaying);
     video.addEventListener('pause', onPause);
-    if (variant === 'player') video.addEventListener('pointerdown', onUser);
+
+    // Zone de survol ou de visibilité : la carte entière (lien parent) si elle
+    // existe, sinon l'élément qui contient la vidéo.
+    const host: HTMLElement = (variant === 'card' ? video.closest('a') : null) ?? video.parentElement ?? video;
+    const cleanups: Array<() => void> = [];
+
+    if (canHover) {
+      let touched = false; // le visiteur a utilisé les commandes : on ne l'arrête plus
+      let inside = false;
+      const start = async () => {
+        video.muted = false;
+        try {
+          await video.play();
+        } catch {
+          // Son refusé par le navigateur : on démarre sans le son.
+          video.muted = true;
+          try {
+            await video.play();
+          } catch {
+            /* rien à faire */
+          }
+        }
+        // La souris est repartie pendant le chargement : on arrête.
+        if (!inside && !touched) video.pause();
+      };
+      const onEnter = () => {
+        inside = true;
+        void start();
+      };
+      const onLeave = () => {
+        inside = false;
+        if (touched) return;
+        video.pause();
+        video.currentTime = 0;
+        setPlaying(false);
+      };
+      const onUser = () => {
+        touched = true;
+      };
+      const hoverHost = variant === 'card' ? host : video;
+      hoverHost.addEventListener('pointerenter', onEnter);
+      hoverHost.addEventListener('pointerleave', onLeave);
+      if (variant === 'player') video.addEventListener('pointerdown', onUser);
+      cleanups.push(() => {
+        hoverHost.removeEventListener('pointerenter', onEnter);
+        hoverHost.removeEventListener('pointerleave', onLeave);
+        video.removeEventListener('pointerdown', onUser);
+      });
+    } else {
+      // Téléphone : lecture sans le son quand la vidéo est bien à l'écran.
+      video.muted = true; // une seule fois : si le visiteur met le son, on n'y touche plus
+      let ourPause = false;
+      let userPaused = false; // le visiteur a mis pause lui-même : on respecte son choix
+      const onPauseByUser = () => {
+        if (!ourPause) userPaused = true;
+      };
+      const onPlay = () => {
+        userPaused = false;
+      };
+      video.addEventListener('pause', onPauseByUser);
+      video.addEventListener('play', onPlay);
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+              if (!userPaused && document.visibilityState === 'visible') void video.play().catch(() => undefined);
+            } else if (entry.intersectionRatio < 0.25) {
+              ourPause = true;
+              video.pause();
+              if (variant === 'card') video.currentTime = 0;
+              ourPause = false;
+            }
+          }
+        },
+        { threshold: [0, 0.25, 0.6, 1] }
+      );
+      observer.observe(host);
+      cleanups.push(() => {
+        observer.disconnect();
+        video.removeEventListener('pause', onPauseByUser);
+        video.removeEventListener('play', onPlay);
+      });
+    }
+
     return () => {
-      host.removeEventListener('pointerenter', onEnter);
-      host.removeEventListener('pointerleave', onLeave);
       video.removeEventListener('playing', onPlaying);
       video.removeEventListener('pause', onPause);
-      video.removeEventListener('pointerdown', onUser);
+      cleanups.forEach((fn) => fn());
     };
   }, [variant]);
 
