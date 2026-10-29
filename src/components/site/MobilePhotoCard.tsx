@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
 import { HoverVideo } from '@/components/site/HoverVideo';
 
@@ -14,6 +15,7 @@ export function MobilePhotoCard({
   title,
   text,
   action,
+  href,
   heightClass = 'h-[440px]',
   imagePosition = '50% 35%',
   headingLevel = 3
@@ -26,6 +28,8 @@ export function MobilePhotoCard({
   title: string;
   text: string;
   action?: React.ReactNode;
+  // Adresse ouverte quand on touche n'importe où sur la carte (facultative).
+  href?: string;
   heightClass?: string;
   imagePosition?: string;
   // Niveau du titre : 2 quand la carte suit directement le titre de la page (pas de
@@ -62,6 +66,11 @@ export function MobilePhotoCard({
         </Reveal>
         {action && <Reveal delay={480}>{action}</Reveal>}
       </div>
+      {/* Toute la carte s'ouvre au toucher (règle de Mazunda, 29/10/2026 : les
+          visiteurs ne pensent pas à viser le petit lien). Lien de recouvrement
+          réservé au toucher et à la souris ; le lien du texte reste celui du
+          clavier et des lecteurs d'écran (pas de doublon annoncé). */}
+      {href && <Link href={href} aria-hidden tabIndex={-1} className="absolute inset-0 z-10 [-webkit-tap-highlight-color:transparent]" />}
     </Reveal>
   );
 }

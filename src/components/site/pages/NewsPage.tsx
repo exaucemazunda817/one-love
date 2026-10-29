@@ -88,7 +88,9 @@ export function NewsPage({ locale }: { locale: Locale }) {
       d: n.lead[locale],
       img: n.img,
       alt: n.alt[locale],
-      video: n.video ? `/histoire/videos/${n.video}.mp4` : undefined
+      // Les cartes jouent un court aperçu (8 s, ~300 Ko) et non la vidéo entière
+      // (2 à 16 Mo) : sur les connexions lentes, le démarrage serait sinon trop long.
+      video: n.video ? `/histoire/videos/${n.video}-apercu.mp4` : undefined
     }))
   };
 

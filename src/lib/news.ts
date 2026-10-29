@@ -19,6 +19,8 @@ export type NewsArticle = {
   img: string;
   // Vidéo de l'article (facultative) : nom du fichier MP4 sans extension, dans
   // public/histoire/videos. `img` sert alors d'affiche (poster) à la vidéo.
+  // OBLIGATOIRE : un court aperçu « <nom>-apercu.mp4 » (8 s, 270 × 480, ~300 Ko)
+  // dans le même dossier, joué par les cartes de la liste Actualités.
   video?: string;
   alt: L;
   source: string;
