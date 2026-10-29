@@ -7,6 +7,7 @@ import { XIcon } from '@phosphor-icons/react';
 import { BrushLast } from '@/components/site/ui';
 import { Reveal } from '@/components/Reveal';
 import { MobilePhotoCard } from '@/components/site/MobilePhotoCard';
+import { HoverVideo } from '@/components/site/HoverVideo';
 import { publishableGallery } from '@/lib/content';
 
 export interface NewsText {
@@ -14,7 +15,7 @@ export interface NewsText {
   listTitle: string;
   categories: string[];
   readLabel: string;
-  posts: { tag: string; date: string; t: string; url: string; d: string; img: string; alt: string }[];
+  posts: { tag: string; date: string; t: string; url: string; d: string; img: string; alt: string; video?: string }[];
   galleryTitle: string;
   galleryIntro: string;
   galleryEmpty: string;
@@ -87,6 +88,7 @@ export function NewsInteractive({ t }: { t: NewsText }) {
                     <Reveal variant="zoom" className="absolute inset-0">
                       <Image src={p.img} alt={p.alt} fill sizes="(max-width: 1200px) 50vw, 380px" className="photo-tone object-cover" />
                     </Reveal>
+                    {p.video && <HoverVideo variant="card" src={p.video} label={p.alt} />}
                   </div>
                   <div className="flex flex-1 flex-col gap-2 px-5 pb-5">
                     <Reveal variant="soft" delay={180 + (i % 3) * 90}>

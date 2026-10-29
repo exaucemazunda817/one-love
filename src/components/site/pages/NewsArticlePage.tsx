@@ -5,6 +5,7 @@ import { ArrowLeftIcon, HeartIcon, InstagramLogoIcon } from '@phosphor-icons/rea
 import { pageMetadata } from '@/lib/seo';
 import { Reveal } from '@/components/Reveal';
 import { InnerHero } from '@/components/site/InnerHero';
+import { HoverVideo } from '@/components/site/HoverVideo';
 import { CallBanner } from '@/components/site/ui';
 import { localeHref, type Locale } from '@/lib/i18n';
 import { NEWS, NEWS_TAGS, formatNewsDate, type NewsArticle } from '@/lib/news';
@@ -62,16 +63,7 @@ export function NewsArticlePage({ article: a, locale }: { article: NewsArticle; 
           <Reveal delay={40}>
             <figure className="m-0 mx-auto w-full max-w-[360px]">
               <div className="relative aspect-[9/16] overflow-hidden rounded-2xl bg-night shadow-ol-sm">
-                <video
-                  controls
-                  playsInline
-                  preload="none"
-                  poster={a.img}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  aria-label={a.alt[locale]}
-                >
-                  <source src={`/histoire/videos/${a.video}.mp4`} type="video/mp4" />
-                </video>
+                <HoverVideo variant="player" src={`/histoire/videos/${a.video}.mp4`} poster={a.img} label={a.alt[locale]} />
               </div>
             </figure>
           </Reveal>

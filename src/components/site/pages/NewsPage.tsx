@@ -87,7 +87,8 @@ export function NewsPage({ locale }: { locale: Locale }) {
       url: localeHref(`/galerie/${n.slug}`, locale),
       d: n.lead[locale],
       img: n.img,
-      alt: n.alt[locale]
+      alt: n.alt[locale],
+      video: n.video ? `/histoire/videos/${n.video}.mp4` : undefined
     }))
   };
 
