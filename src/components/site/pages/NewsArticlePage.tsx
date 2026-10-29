@@ -58,6 +58,24 @@ export function NewsArticlePage({ article: a, locale }: { article: NewsArticle; 
         <Reveal>
           <p className="m-0 text-pretty font-serif text-[clamp(21px,2.2vw,25px)] leading-[1.5] text-ink">{a.lead[locale]}</p>
         </Reveal>
+        {a.video && (
+          <Reveal delay={40}>
+            <figure className="m-0 mx-auto w-full max-w-[360px]">
+              <div className="relative aspect-[9/16] overflow-hidden rounded-2xl bg-night shadow-ol-sm">
+                <video
+                  controls
+                  playsInline
+                  preload="none"
+                  poster={a.img}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  aria-label={a.alt[locale]}
+                >
+                  <source src={`/histoire/videos/${a.video}.mp4`} type="video/mp4" />
+                </video>
+              </div>
+            </figure>
+          </Reveal>
+        )}
         {a.body[locale].map((para, i) => (
           <Reveal key={para.slice(0, 24)} delay={80 + i * 60}>
             <p className="m-0 text-pretty text-[17px] leading-[1.75] text-ink-body">{para}</p>

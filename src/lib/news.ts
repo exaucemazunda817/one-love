@@ -17,6 +17,9 @@ export type NewsArticle = {
   lead: L;
   body: { fr: string[]; en: string[] };
   img: string;
+  // Vidéo de l'article (facultative) : nom du fichier MP4 sans extension, dans
+  // public/histoire/videos. `img` sert alors d'affiche (poster) à la vidéo.
+  video?: string;
   alt: L;
   source: string;
 };
@@ -29,6 +32,33 @@ export const NEWS_TAGS: Record<NewsTag, L> = {
 };
 
 export const NEWS: NewsArticle[] = [
+  {
+    slug: 'reves-2-continue',
+    date: '2026-10-15',
+    tag: 'reves',
+    title: { fr: 'Rêves 2 continue', en: 'RÊVES 2 goes on' },
+    lead: {
+      fr: 'Le projet évolue, les enfants continuent d’apprendre, de découvrir et surtout de s’amuser.',
+      en: 'The project is moving forward and the children keep learning, discovering and, above all, having fun.'
+    },
+    body: {
+      fr: [
+        'Chaque moment est une occasion de grandir, de partager et de créer de beaux souvenirs.',
+        'L’aventure continue !'
+      ],
+      en: [
+        'Every moment is a chance to grow, to share and to make lovely memories.',
+        'The adventure goes on!'
+      ]
+    },
+    img: '/histoire/posters/2026-10-reves2-continue.webp',
+    video: '2026-10-reves2-continue',
+    alt: {
+      fr: 'Des mains préparent des légumes pendant un atelier de cuisine du projet RÊVES 2.',
+      en: 'Hands preparing vegetables during a cooking workshop of the RÊVES 2 project.'
+    },
+    source: 'https://www.instagram.com/reel/DehCTITtHAZ/'
+  },
   {
     slug: 'reves-2-nouveaux-ateliers-tam-tam-cuisine',
     date: '2026-10-16',
@@ -98,8 +128,36 @@ export const NEWS: NewsArticle[] = [
       ]
     },
     img: '/histoire/posters/2026-reves2-formation.webp',
+    video: '2026-reves2-formation',
     alt: { fr: 'La formation des animateurs de RÊVES 2.', en: 'The RÊVES 2 facilitator training.' },
     source: 'https://www.instagram.com/reel/DdEItmagznY/'
+  },
+  {
+    slug: 'reves-2-quotidien-des-enfants',
+    date: '2026-09-15',
+    tag: 'reves',
+    title: { fr: 'Le quotidien des enfants avec RÊVES 2', en: 'The children’s daily life with RÊVES 2' },
+    lead: {
+      fr: 'On vous emmène dans le quotidien des enfants, au rythme des ateliers de RÊVES 2.',
+      en: 'We take you into the children’s daily life, at the pace of the RÊVES 2 workshops.'
+    },
+    body: {
+      fr: [
+        'Dans le cadre du projet RÊVES 2, plusieurs ateliers rythment leurs journées : alphabétisation, cuisine, multisport, danse, anglais, céramique et bien plus encore.',
+        'Des moments pour apprendre, créer, bouger, découvrir et surtout s’épanouir. Une journée avec eux, ça ressemble à ça.'
+      ],
+      en: [
+        'As part of the RÊVES 2 project, several workshops fill their days: literacy, cooking, multisport, dance, English, ceramics and much more.',
+        'Moments to learn, create, move, discover and above all to blossom. A day with them looks like this.'
+      ]
+    },
+    img: '/histoire/posters/2026-09-reves2-quotidien-rire.webp',
+    video: '2026-reves2-quotidien',
+    alt: {
+      fr: 'Un enfant en maillot jaune éclate de rire pendant un atelier de RÊVES 2.',
+      en: 'A child in a yellow shirt bursts out laughing during a RÊVES 2 workshop.'
+    },
+    source: 'https://www.instagram.com/reel/DdUgL_Hg32u/'
   },
   {
     slug: 'kermesse-educative-fevrier-2026',
