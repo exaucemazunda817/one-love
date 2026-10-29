@@ -30,6 +30,32 @@ export const NEWS_TAGS: Record<NewsTag, L> = {
 
 export const NEWS: NewsArticle[] = [
   {
+    slug: 'reves-2-nouveaux-ateliers-tam-tam-cuisine',
+    date: '2026-10-16',
+    tag: 'reves',
+    title: { fr: 'Tam-tam, cuisine et nouvelles découvertes', en: 'Drumming, cooking and new discoveries' },
+    lead: {
+      fr: 'L’apprentissage continue avec de nouveaux ateliers dans le cadre du projet RÊVES 2.',
+      en: 'Learning goes on with new workshops as part of the RÊVES 2 project.'
+    },
+    body: {
+      fr: [
+        'Parmi eux, l’initiation à la musique avec le tam-tam, la cuisine et bien d’autres découvertes qui enrichissent le quotidien des enfants.',
+        'L’amour et la foi, notre carburant.'
+      ],
+      en: [
+        'Among them: an introduction to music with the tam-tam, cooking and many other discoveries that enrich the children’s everyday life.',
+        'Love and faith, our fuel.'
+      ]
+    },
+    img: '/histoire/2026-10-tam-tam.webp',
+    alt: {
+      fr: 'Des enfants debout derrière des tam-tams, pendant l’atelier de musique.',
+      en: 'Children standing behind tam-tam drums during the music workshop.'
+    },
+    source: 'https://www.instagram.com/p/DejFkLQDdV9/'
+  },
+  {
     slug: 'reves-2-premiers-pas-alphabetisation',
     date: '2026-09-05',
     tag: 'reves',
