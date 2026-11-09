@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { allowRequest, TOO_MANY_REQUESTS_MESSAGE } from '@/lib/rate-limit';
+import { allowRequest, clientIp, TOO_MANY_REQUESTS_MESSAGE } from '@/lib/rate-limit';
+import { verifyTurnstile } from '@/lib/turnstile';
+import { HONEYPOT_FIELD } from '@/components/forms/HoneypotField';
 import { notifyAssociation, sendEmail } from '@/lib/email';
 import { contactSchema } from '@/lib/schemas';
 import { org } from '@/lib/content';
@@ -35,6 +37,16 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json().catch(() => null);
+
+  // Champ piège (voir HoneypotField) : un visiteur ne le voit pas, un robot le
+  // remplit. On répond « succès » sans rien enregistrer ni envoyer, pour ne pas
+  // lui apprendre qu'il a été repéré. L'appel compte quand même dans la
+  // limitation de débit ci-dessus.
+  const trap = body && typeof body === 'object' ? (body as Record<string, unknown>)[HONEYPOT_FIELD] : undefined;
+  if (typeof trap === 'string' && trap.trim() !== '') {
+    return NextResponse.json({ id: 'ok' }, { status: 201 });
+  }
+
   const parsed = contactSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
@@ -43,6 +55,14 @@ export async function POST(request: NextRequest) {
     );
   }
   const data = parsed.data;
+
+  // Captcha Turnstile (si configuré) sur les formulaires remplis par un visiteur
+  // : contact et « S'impliquer ». Les autres origines sont des notifications
+  // automatiques du parcours de don (aucun champ à remplir, donc pas de
+  // captcha possible) ; elles restent bornées par la limitation de débit.
+  if ((data.origin ?? 'contact') === 'contact' && !(await verifyTurnstile(data.turnstileToken, clientIp(request)))) {
+    return NextResponse.json({ error: 'Vérification anti-robot échouée. Merci de réessayer.' }, { status: 400 });
+  }
 
   const message = await prisma.contactMessage.create({
     data: {

@@ -2,6 +2,8 @@
 
 import { useId, useRef, useState } from 'react';
 import { FieldError, errorProps } from '@/components/forms/FieldError';
+import { HoneypotField, HONEYPOT_FIELD } from '@/components/forms/HoneypotField';
+import { TurnstileWidget, TURNSTILE_SITE_KEY } from '@/components/forms/TurnstileWidget';
 import { focusFirstError, serverIssuesToErrors, validateFields, type FieldErrors } from '@/lib/form-validation';
 import type { Locale } from '@/lib/i18n';
 import { PaperPlaneTiltIcon, CheckIcon } from '@phosphor-icons/react';
@@ -31,6 +33,8 @@ export function ContactFormCard({
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [errors, setErrors] = useState<FieldErrors>({});
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
   const id = useId();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -47,6 +51,10 @@ export function ContactFormCard({
       focusFirstError(event.currentTarget, checked);
       return;
     }
+    if (TURNSTILE_SITE_KEY && !captchaToken) {
+      setError(locale === 'fr' ? 'Merci de valider la vérification anti-robot.' : 'Please complete the anti-bot check.');
+      return;
+    }
     setPending(true);
     const formEl = event.currentTarget;
     const formData = new FormData(formEl);
@@ -55,7 +63,9 @@ export function ContactFormCard({
       email: String(formData.get('email') || ''),
       phone: '',
       subject: String(formData.get('subject') || t.subjects[0]),
-      message: String(formData.get('message') || '')
+      message: String(formData.get('message') || ''),
+      [HONEYPOT_FIELD]: String(formData.get(HONEYPOT_FIELD) || ''),
+      turnstileToken: captchaToken ?? undefined
     };
     try {
       const response = await fetch('/api/contact', {
@@ -80,6 +90,9 @@ export function ContactFormCard({
       setError(t.error);
     } finally {
       setPending(false);
+      // Un jeton ne sert qu'une fois : on en demande un neuf après chaque envoi.
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
     }
   }
 
@@ -129,6 +142,8 @@ export function ContactFormCard({
         <span className="text-[15px] font-bold">{t.message}</span>
         <textarea {...errorProps(`${id}-message-err`, errors.message)} name="message" required minLength={10} maxLength={4000} rows={5} className="resize-y rounded-lg border-[1.5px] border-field-line p-3.5 text-[17px] leading-[1.5] outline-none focus:border-copper-600 aria-invalid:border-error" />
       </label><FieldError id={`${id}-message-err`} message={errors.message} /></div>
+      <HoneypotField />
+      <TurnstileWidget locale={locale === 'fr' ? 'fr' : 'en'} onToken={setCaptchaToken} resetKey={captchaReset} />
       {error && (
         <p role="alert" className="m-0 text-[14px] font-bold text-error">
           {error}

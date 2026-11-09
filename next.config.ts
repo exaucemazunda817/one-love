@@ -13,15 +13,17 @@ import type { NextConfig } from "next";
 // marginal ici.
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  // challenges.cloudflare.com : captcha Turnstile des formulaires (script,
+  // cadre du défi et appels de vérification).
+  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
-  "connect-src 'self'",
+  "connect-src 'self' https://challenges.cloudflare.com",
   // Lecteur vidéo « Notre histoire » (youtube-nocookie, chargé au clic
   // seulement — voir YouTubeLite.tsx) et formulaire de don HelloAsso intégré
   // dans /dons (voir HelloAssoWidget.tsx).
-  "frame-src https://www.youtube-nocookie.com https://www.helloasso.com",
+  "frame-src https://www.youtube-nocookie.com https://www.helloasso.com https://challenges.cloudflare.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
