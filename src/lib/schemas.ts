@@ -22,7 +22,9 @@ export const contactSchema = z.object({
   // don terminé sur le formulaire HelloAsso intégré (/dons). Ne
   // sert qu'à choisir le texte de l'accusé de réception — jamais à décider de
   // droits ni d'un destinataire.
-  origin: z.enum(['contact', 'parrainage', 'mobile-money', 'helloasso']).optional()
+  origin: z.enum(['contact', 'parrainage', 'mobile-money', 'helloasso']).optional(),
+  // Jeton du captcha Turnstile : vérifié par la route, jamais enregistré.
+  turnstileToken: z.string().max(2048).optional()
 });
 
 export const volunteerSchema = z.object({

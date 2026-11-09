@@ -3,6 +3,8 @@
 import { SwipeDots } from '@/components/site/SwipeDots';
 import { useId, useRef, useState } from 'react';
 import { FieldError, errorProps } from '@/components/forms/FieldError';
+import { HoneypotField, HONEYPOT_FIELD } from '@/components/forms/HoneypotField';
+import { TurnstileWidget, TURNSTILE_SITE_KEY } from '@/components/forms/TurnstileWidget';
 import { focusFirstError, serverIssuesToErrors, validateFields, type FieldErrors } from '@/lib/form-validation';
 import Link from 'next/link';
 import {
@@ -58,6 +60,8 @@ export function InvolvedInteractive({
   const formRef = useRef<HTMLFormElement>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
 
   function pick(k: Interest) {
     setInterest(k);
@@ -77,6 +81,10 @@ export function InvolvedInteractive({
       focusFirstError(event.currentTarget, checked);
       return;
     }
+    if (TURNSTILE_SITE_KEY && !captchaToken) {
+      setError(locale === 'fr' ? 'Merci de valider la vérification anti-robot.' : 'Please complete the anti-bot check.');
+      return;
+    }
     setPending(true);
     const formEl = event.currentTarget;
     const formData = new FormData(formEl);
@@ -87,7 +95,9 @@ export function InvolvedInteractive({
       email: String(formData.get('email') || ''),
       phone: '',
       subject: t.interests[interest],
-      message: org ? `${message}\n\n${t.org}: ${org}` : message
+      message: org ? `${message}\n\n${t.org}: ${org}` : message,
+      [HONEYPOT_FIELD]: String(formData.get(HONEYPOT_FIELD) || ''),
+      turnstileToken: captchaToken ?? undefined
     };
     try {
       const response = await fetch('/api/contact', {
@@ -112,6 +122,9 @@ export function InvolvedInteractive({
       setError(t.error);
     } finally {
       setPending(false);
+      // Un jeton ne sert qu'une fois : on en demande un neuf après chaque envoi.
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
     }
   }
 
@@ -244,6 +257,8 @@ export function InvolvedInteractive({
                   className="resize-y rounded-lg border-[1.5px] border-field-line p-3.5 text-[17px] leading-[1.5] outline-none focus:border-copper-600 aria-invalid:border-error"
                 />
               </label><FieldError id={`${id}-message-err`} message={errors.message} /></div>
+              <HoneypotField />
+              <TurnstileWidget locale={locale === 'fr' ? 'fr' : 'en'} onToken={setCaptchaToken} resetKey={captchaReset} />
               {error && (
                 <p role="alert" className="m-0 text-[14px] font-bold text-error">
                   {error}
