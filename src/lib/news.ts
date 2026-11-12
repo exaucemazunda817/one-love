@@ -35,6 +35,33 @@ export const NEWS_TAGS: Record<NewsTag, L> = {
 
 export const NEWS: NewsArticle[] = [
   {
+    slug: 'reves-2-ateliers-passions-talents',
+    date: '2026-11-04',
+    tag: 'reves',
+    title: { fr: 'Djembé, journalisme et nouvelles passions', en: 'Djembe, journalism and new passions' },
+    lead: {
+      fr: 'Au cœur des différents ateliers du projet RÊVES 2, les enfants découvrent de nouvelles passions et développent leurs talents.',
+      en: 'At the heart of the various RÊVES 2 workshops, the children are discovering new passions and developing their talents.'
+    },
+    body: {
+      fr: [
+        'Entre l’apprentissage du djembé, la découverte du journalisme et bien d’autres activités, ils continuent d’apprendre, d’explorer et surtout de s’amuser, toujours avec le sourire.',
+        'L’amour et la foi, notre carburant.'
+      ],
+      en: [
+        'Between learning the djembe, discovering journalism and many other activities, they keep learning, exploring and, above all, having fun, always with a smile.',
+        'Love and faith, our fuel.'
+      ]
+    },
+    img: '/histoire/posters/2026-11-reves-2-ateliers-talents.webp',
+    video: '2026-11-reves-2-ateliers-talents',
+    alt: {
+      fr: 'Un enfant sourit pendant l’atelier de journalisme du projet RÊVES 2.',
+      en: 'A child smiles during the journalism workshop of the RÊVES 2 project.'
+    },
+    source: 'https://www.instagram.com/reel/DfU-MhKNeWJ/'
+  },
+  {
     slug: 'reves-2-continue',
     date: '2026-10-15',
     tag: 'reves',
